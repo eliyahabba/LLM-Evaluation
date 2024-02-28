@@ -1,4 +1,4 @@
-from pathlib import Path
+from abc import abstractmethod
 
 from src.Modifiers.DatasetModifier import DatasetModifier
 from src.utils.Constants import Constants
