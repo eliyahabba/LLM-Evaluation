@@ -8,7 +8,7 @@ DatasetModifierConstants = Constants.DatasetModifier
 SocialQAConstants = Constants.SocialQAModifier
 
 
-class SocialQAModifier(DatasetModifier):
+class SocialQAModifier(MultipleChoiceModifier):
     """
     Modifier for SocialQA dataset.
     """

@@ -1,7 +1,8 @@
 from pathlib import Path
+from abc import ABC, abstractmethod
 
 
-class DatasetModifier:
+class DatasetModifier(ABC):
     """
     Base class for dataset modifiers. Defines the interface for modification.
     """
@@ -33,6 +34,7 @@ class DatasetModifier:
         modified_data = self._modify(data)
         self.save_data(modified_data)
 
+    @abstractmethod
     def _modify(self, data: str) -> str:
         """
         Modifies the dataset. Needs to be implemented by subclasses.

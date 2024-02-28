@@ -4,10 +4,10 @@ from src.Modifiers.DatasetModifier import DatasetModifier
 from src.utils.Constants import Constants
 
 DatasetModifierConstants = Constants.DatasetModifier
-SocialQAConstants = Constants.SocialQAModifier
+MMLUModifierConstants = Constants.MMLUModifierConstants
 
 
-class MMLUModifier(DatasetModifier):
+class MMLUModifier(MultipleChoiceModifier):
     """
     Modifier for MMLU dataset.
     """
@@ -26,7 +26,7 @@ class MMLUModifier(DatasetModifier):
 
 
 if __name__ == "__main__":
-    data_path = DatasetModifierConstants.DATA_PATH / SocialQAConstants.DATA_NAME / DatasetModifierConstants.TEST_FILE
-    modified_data_path = DatasetModifierConstants.MODIFIED_DATA_PATH / SocialQAConstants.DATA_NAME / DatasetModifierConstants.TEST_FILE
+    data_path = DatasetModifierConstants.DATA_PATH / MMLUModifierConstants.DATA_NAME / DatasetModifierConstants.TEST_FILE
+    modified_data_path = DatasetModifierConstants.MODIFIED_DATA_PATH / MMLUModifierConstants.DATA_NAME / DatasetModifierConstants.TEST_FILE
     mmlu_modifier = MMLUModifier(data_path, modified_data_path)
     mmlu_modifier.modify()

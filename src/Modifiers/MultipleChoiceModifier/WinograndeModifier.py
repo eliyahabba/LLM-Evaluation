@@ -4,10 +4,10 @@ from src.Modifiers.DatasetModifier import DatasetModifier
 from src.utils.Constants import Constants
 
 DatasetModifierConstants = Constants.DatasetModifier
-SocialQAConstants = Constants.SocialQAModifier
+WinograndeModifierConstants = Constants.WinograndeModifierConstants
 
 
-class WinograndeModifier(DatasetModifier):
+class WinograndeModifier(MultipleChoiceModifier):
     """
     Modifier for Winogrande dataset.
     """
@@ -26,7 +26,7 @@ class WinograndeModifier(DatasetModifier):
 
 
 if __name__ == "__main__":
-    data_path = DatasetModifierConstants.DATA_PATH / SocialQAConstants.DATA_NAME / DatasetModifierConstants.TEST_FILE
-    modified_data_path = DatasetModifierConstants.MODIFIED_DATA_PATH / SocialQAConstants.DATA_NAME / DatasetModifierConstants.TEST_FILE
+    data_path = DatasetModifierConstants.DATA_PATH / WinograndeModifierConstants.DATA_NAME / DatasetModifierConstants.TEST_FILE
+    modified_data_path = DatasetModifierConstants.MODIFIED_DATA_PATH / WinograndeModifierConstants.DATA_NAME / DatasetModifierConstants.TEST_FILE
     winogrande_modifier = WinograndeModifier(data_path, modified_data_path)
     winogrande_modifier.modify()
