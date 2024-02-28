@@ -1,9 +1,9 @@
 from pathlib import Path
 
-from src.Modifiers.DatasetModifier import DatasetModifier
+from src.Modifiers.MultipleChoiceModifier.MultipleChoiceModifier import MultipleChoiceModifier
 from src.utils.Constants import Constants
 
-DatasetModifierConstants = Constants.DatasetModifier
+DatasetModifierConstants = Constants.DatasetModifierConstants
 MMLUModifierConstants = Constants.MMLUModifierConstants
 
 

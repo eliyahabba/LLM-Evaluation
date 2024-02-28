@@ -1,10 +1,10 @@
-from pathlib import Path
+from abc import abstractmethod
 
 from src.Modifiers.DatasetModifier import DatasetModifier
 from src.utils.Constants import Constants
 
-from abc import abstractmethod
-DatasetModifierConstants = Constants.DatasetModifier
+DatasetModifierConstants = Constants.DatasetModifierConstants
+
 
 class QAModifier(DatasetModifier):
     @abstractmethod
@@ -16,6 +16,11 @@ class QAModifier(DatasetModifier):
         """
         raise NotImplementedError()
 
-    def paraphrase_question(self, question, paraphraser_model):
+    def paraphrase_question(self, question:str, paraphraser_model: str) -> str:
+        """
+        Paraphrases the question using the specified model
+        :param question: The question
+        :param paraphraser_model: The name / path of model to use for paraphrasing
+        """
         # Implement question paraphrasing
         pass

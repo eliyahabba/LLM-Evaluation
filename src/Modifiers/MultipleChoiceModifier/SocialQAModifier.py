@@ -1,11 +1,10 @@
 from pathlib import Path
 
-from src.Modifiers.DatasetModifier import DatasetModifier
-
+from src.Modifiers.MultipleChoiceModifier.MultipleChoiceModifier import MultipleChoiceModifier
 from src.utils.Constants import Constants
 
-DatasetModifierConstants = Constants.DatasetModifier
-SocialQAConstants = Constants.SocialQAModifier
+DatasetModifierConstants = Constants.DatasetModifierConstants
+SocialQAConstants = Constants.SocialQAModifierConstants
 
 
 class SocialQAModifier(MultipleChoiceModifier):

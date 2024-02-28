@@ -1,9 +1,10 @@
 from abc import abstractmethod
+from typing import List, Tuple
 
 from src.Modifiers.DatasetModifier import DatasetModifier
 from src.utils.Constants import Constants
 
-DatasetModifierConstants = Constants.DatasetModifier
+DatasetModifierConstants = Constants.DatasetModifierConstants
 
 
 class MultipleChoiceModifier(DatasetModifier):
@@ -19,7 +20,7 @@ class MultipleChoiceModifier(DatasetModifier):
         """
         raise NotImplementedError()
 
-    def shuffle_answers(answers: List[str], gold_answer_index: int) -> Tuple[List[str], int]:
+    def shuffle_answers(self, answers: List[str], gold_answer_index: int) -> Tuple[List[str], int]:
         """
         Shuffles the answers and returns the shuffled answers and the index of the gold answer
         :param answers: The list of answers
