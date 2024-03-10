@@ -1,0 +1,16 @@
+{
+    "type": "multiple_choice_template",
+    "input_format": "What is the capital of {topic}?\n\nChoose from:\n{choices}",
+    "choices_field": "options",
+    "target_field": "correct_answer",
+    "choices_seperator": "\n",
+    "enumerator": "roman",
+    "source_choice_format": [
+        "{choice_text}",
+        "{choice_numeral}. {choice_text}"
+    ],
+    "target_choice_format": [
+        "{choice_numeral}",
+        "{choice_text}"
+    ]
+}
