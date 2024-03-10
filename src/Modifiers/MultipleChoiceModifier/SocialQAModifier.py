@@ -18,8 +18,8 @@ class SocialQAModifier(MultipleChoiceModifier):
     def _modify(self, data: str) -> str:
         """
         Modifies the dataset (a json file)
-        :param data: The dataset
-        :return: str: The modified dataset
+        @param data: The dataset
+        @return: str: The modified dataset
         """
         pass
         return data

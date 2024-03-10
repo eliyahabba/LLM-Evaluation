@@ -38,7 +38,7 @@ class DatasetModifier(ABC):
     def _modify(self, data: str) -> str:
         """
         Modifies the dataset. Needs to be implemented by subclasses.
-        :param data: The dataset
-        :return: str: The modified dataset
+        @param data: The dataset
+        @return: str: The modified dataset
         """
         raise NotImplementedError()
