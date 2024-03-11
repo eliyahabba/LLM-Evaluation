@@ -6,7 +6,7 @@ from unitxt.templates import MultipleChoiceTemplate, Template
 
 from src.utils.Constants import Constants
 
-UnitxtDataConstants = Constants.UnitxtDataConstants
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class CatalogManager:
@@ -49,7 +49,7 @@ class CatalogManager:
 if __name__ == "__main__":
     # Define the path to your local catalog directory within your repository (replace with your actual path)
     parser = argparse.ArgumentParser()
-    parser.add_argument("--catalog_path", type=str, default=UnitxtDataConstants.MULTIPLE_CHOICE_PATH)
+    parser.add_argument("--catalog_path", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH)
     parser.add_argument("--template_name", type=str, default="my_custom_qa_template")
     args = parser.parse_args()
 

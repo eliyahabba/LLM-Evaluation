@@ -5,7 +5,7 @@ from unitxt.templates import MultipleChoiceTemplate
 
 from src.utils.Constants import Constants
 
-UnitxtDataConstants = Constants.UnitxtDataConstants
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class TemplateGenerator:
