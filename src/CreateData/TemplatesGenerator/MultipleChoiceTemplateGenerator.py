@@ -4,7 +4,7 @@ from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.TemplatesGenerator.TemplateGenerator import TemplateGenerator
 from src.utils.Constants import Constants
 
-UnitxtDataConstants = Constants.UnitxtDataConstants
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class MultipleChoiceTemplateGenerator(TemplateGenerator):
@@ -46,6 +46,6 @@ if __name__ == "__main__":
     created_templates = generator.create_templates()
 
     # Save templates to local catalog
-    catalog_manager = CatalogManager(UnitxtDataConstants.MULTIPLE_CHOICE_PATH)
+    catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH)
     for i, template in enumerate(created_templates):
         catalog_manager.save_to_catalog(template, f"template_{i}")
