@@ -53,4 +53,4 @@ if __name__ == "__main__":
 
     llmp = LLMPredictor(args.model_name)
     llm_eval = LLMEvaluator(llmp)
-    results = llm_eval.predict_dataset(llm_dataset, args.evaluate_on, results_file_name=json_file_name)
+    results = llm_eval.predict_dataset(llm_dataset, args.evaluate_on, results_file_name=results_file_name)
