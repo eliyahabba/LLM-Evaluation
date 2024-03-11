@@ -17,7 +17,7 @@ class LLMEvaluator:
     def __init__(self, llmp: LLMPredictor):
         self.llmp = llmp
 
-    def predict_on_single_dataset(self, eval_set, file_name: str = None):
+    def predict_on_single_dataset(self, eval_set, eval_value: str, file_name: Path):
         """
         Predict the model on a single dataset.
 
@@ -30,11 +30,12 @@ class LLMEvaluator:
         for idx, instance in enumerate(eval_set):
             input_text = instance["source"]
             result = self.llmp.predict(input_text)
-            self.save_results(file_name, idx, input_text, result)
+            self.save_results(file_name, eval_value, idx, input_text, result)
             results.append(result)
         return results
 
-    def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list = None) -> list:
+    def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list,
+                        results_file_name: Path) -> list:
         """
         Predict the model on all the instances in the dataset.
 
@@ -46,12 +47,12 @@ class LLMEvaluator:
 
             else:
                 eval_dataset = llm_dataset.dataset[eval_value]
-                result = self.predict_on_single_dataset(eval_dataset,
-                                                        file_name=f"results_{llm_dataset.data_name}_{eval_value}.json")
+                result = self.predict_on_single_dataset(eval_dataset, eval_value,
+                                                        file_name=results_file_name)
                 results.append(result)
         return results
 
-    def save_results(self, file_name: str, idx: int, instance: dict, result: str) -> None:
+    def save_results(self, file_name: Path, eval_value: str, idx: int, instance: dict, result: str) -> None:
         """
         Save the results in a JSON file.
 
@@ -65,14 +66,16 @@ class LLMEvaluator:
             "Result": result
         }
 
-        if Path(file_name).exists():
-            with open(file_name, 'r') as file:
-                existing_data = json.load(file)
-                existing_data.append(entry)
-        else:
-            existing_data = [entry]
+        with open(file_name, "r") as f:
+            data = json.load(f)
+            results = data['results']
+            if eval_value in results:
+                results[eval_value].append(entry)
+            else:
+                results[eval_value] = [entry]
+        data['results'] = results
         with open(file_name, "w") as f:
-            json.dump(existing_data, f, indent=4, sort_keys=True)
+            json.dump(data, f)
 
     def evaluate(self, dataset):
         """
