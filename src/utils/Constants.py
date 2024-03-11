@@ -18,5 +18,5 @@ class Constants:
 
     class UnitxtDataConstants:
         DATA_PATH = 'unitxt/data'
-        CATALOG_FOLDER_NAME = "datasets_catalog"
-        CATALOG_PATH = Path(__file__).parents[2] / "Data" / CATALOG_FOLDER_NAME
+        MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplates"
+        MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_FOLDER_NAME

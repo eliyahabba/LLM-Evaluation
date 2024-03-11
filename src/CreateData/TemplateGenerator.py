@@ -73,6 +73,6 @@ if __name__ == "__main__":
     created_templates = generator.create_templates()
 
     # Save templates to local catalog
-    saver = CatalogManager(UnitxtDataConstants.CATALOG_PATH)
+    saver = CatalogManager(UnitxtDataConstants.MULTIPLE_CHOICE_PATH)
     for i, template in enumerate(created_templates):
         saver.save_to_catalog(template, f"template_{i}")

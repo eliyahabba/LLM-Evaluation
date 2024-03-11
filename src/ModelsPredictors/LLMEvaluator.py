@@ -81,7 +81,7 @@ if __name__ == "__main__":
     args = args.parse_args()
 
     # Save templates to local catalog
-    catalog_manager = CatalogManager(UnitxtDataConstants.CATALOG_PATH)
+    catalog_manager = CatalogManager(UnitxtDataConstants.MULTIPLE_CHOICE_PATH)
     template = catalog_manager.load_from_catalog(args.template_name)
 
     llm_dataset_loader = DatasetLoader(card=args.card,
