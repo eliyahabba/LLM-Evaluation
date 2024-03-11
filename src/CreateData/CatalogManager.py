@@ -2,7 +2,7 @@ import argparse
 
 from unitxt import add_to_catalog
 from unitxt import get_from_catalog
-from unitxt.templates import MultipleChoiceTemplate
+from unitxt.templates import MultipleChoiceTemplate, Template
 
 from src.utils.Constants import Constants
 
@@ -35,7 +35,7 @@ class CatalogManager:
         add_to_catalog(template, name, catalog_path=self.catalog_path, overwrite=True)
         print(f"Dataset saved successfully to local catalog: {self.catalog_path}")
 
-    def load_from_catalog(self, name: str) -> MultipleChoiceTemplate:
+    def load_from_catalog(self, name: str) -> Template:
         """
         Loads the dataset from the local catalog.
 
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Create an instance of the DatasetSaver
-    saver = CatalogManager(args.catalog_path)
+    catalog_manager = CatalogManager(args.catalog_path)
 
     # Define the MultipleChoiceTemplate (assuming your data adheres to this format)
 
@@ -66,8 +66,7 @@ if __name__ == "__main__":
         add_numerals_as_field="numerals",
         postprocessors=["processors.first_character"],
     )
-    # my_task = get_from_catalog(template_name, catalog_path=catalog_path)
-    # # load the task from the catalog
+
     # Save the dataset using the saver
-    saver.save_to_catalog(template, args.template_name)
-    my_task = get_from_catalog(template_name, catalog_path=args.catalog_path)
+    catalog_manager.save_to_catalog(template, args.template_name)
+    my_task = get_from_catalog(args.template_name, catalog_path=args.catalog_path)
