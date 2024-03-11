@@ -3,7 +3,6 @@ from itertools import product
 
 from unitxt.templates import MultipleChoiceTemplate
 
-from CatalogManager import CatalogManager
 from src.utils.Constants import Constants
 
 UnitxtDataConstants = Constants.UnitxtDataConstants
