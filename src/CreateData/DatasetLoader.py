@@ -1,10 +1,11 @@
 from unitxt.standard import StandardRecipe
+from unitxt.templates import Template
 
 from src.CreateData.LLMDataset import LLMDataset
 
 
 class DatasetLoader:
-    def __init__(self, card: str, template: str, num_demos: int, demos_pool_size: int, system_format: str,
+    def __init__(self, card: str, template: Template, num_demos: int, demos_pool_size: int, system_format: str,
                  max_train_instances: int, template_name: str):
         self.card = card
         self.template = template
