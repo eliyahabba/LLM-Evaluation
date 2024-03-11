@@ -1,0 +1,5 @@
+datasets~=2.18.0
+unitxt~=1.7.0
+numpy~=1.26.4
+torch~=2.2.1
+transformers~=4.38.2
