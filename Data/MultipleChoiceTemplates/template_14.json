@@ -3,8 +3,8 @@
     "input_format": "The following are multiple choice questions (with answers)\n\nQuestion: {question}\nChoose from {numerals}\nAnswers:\n{choices}\nAnswer:",
     "choices_field": "choices",
     "target_field": "answer",
-    "choices_seperator": ", ",
-    "enumerator": "lowercase",
+    "choices_seperator": "; ",
+    "enumerator": "numbers",
     "postprocessors": [
         "processors.first_character"
     ]

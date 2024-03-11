@@ -4,7 +4,7 @@
     "choices_field": "choices",
     "target_field": "answer",
     "choices_seperator": ", ",
-    "enumerator": "lowercase",
+    "enumerator": "roman",
     "postprocessors": [
         "processors.first_character"
     ]
