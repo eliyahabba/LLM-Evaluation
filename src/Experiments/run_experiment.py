@@ -33,8 +33,6 @@ if __name__ == "__main__":
                                        template_name=args.template_name)
 
     llm_dataset = llm_dataset_loader.load()
-    llmp = LLMPredictor(args.model_name)
-
     # save to json file the params of the experiment and the results of the evaluation
     entry_experiment = {
         "card": args.card,
@@ -51,6 +49,8 @@ if __name__ == "__main__":
     results_file_name = results_path / json_file_name
     with open(results_file_name, 'w') as json_file:
         json.dump(entry_experiment, json_file)
+    print(f"Results will be saved in {results_file_name}")
 
+    llmp = LLMPredictor(args.model_name)
     llm_eval = LLMEvaluator(llmp)
     results = llm_eval.predict_dataset(llm_dataset, args.evaluate_on, results_file_name=json_file_name)
