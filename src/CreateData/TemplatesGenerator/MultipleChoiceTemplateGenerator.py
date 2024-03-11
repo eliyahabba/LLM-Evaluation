@@ -25,7 +25,8 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
 if __name__ == "__main__":
     # Base arguments for all templates
     base_args = {
-        "input_format": "What is the capital of {topic}?\n\nChoose from:\n{choices}",
+        "input_format": "The following are multiple choice questions (with answers) about {topic}.\n\nQuestion:"
+                        " {question}\nChoose from {numerals}\nAnswers:\n{choices}\nAnswer:",
         "choices_field": "options",
         "target_field": "answer",
         "choices_seperator": "\n",
@@ -37,7 +38,6 @@ if __name__ == "__main__":
     # Override options for different parameters
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman"],
-        "target_field": ["answer", "correct_answer", "response"],
         # Add more parameters and their possible values as needed
     }
 
