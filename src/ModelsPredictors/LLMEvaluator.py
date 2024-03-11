@@ -1,4 +1,6 @@
 import argparse
+import json
+from pathlib import Path
 
 import numpy as np
 
@@ -8,39 +10,75 @@ from src.CreateData.LLMDataset import LLMDataset
 from src.ModelsPredictors.LLMPredictor import LLMPredictor
 from src.utils.Constants import Constants
 
-UnitxtDataConstants = Constants.UnitxtDataConstants
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class LLMEvaluator:
-    def __init__(self, llmp: LLMPredictor, llm_dataset: LLMDataset):
+    def __init__(self, llmp: LLMPredictor):
         self.llmp = llmp
-        self.llm_dataset = llm_dataset
 
-    def predict_dataset(self) -> list:
+    def predict_on_single_dataset(self, eval_set, file_name: str = None):
+        """
+        Predict the model on a single dataset.
+
+        @eval_set: The evaluation set name.
+        @file_name: The name of the file to save the results in.
+
+        @return: The list of prediction results for the dataset.
+        """
+        results = []
+        for idx, instance in enumerate(eval_set):
+            input_text = instance["source"]
+            result = self.llmp.predict(input_text)
+            self.save_results(file_name, idx, input_text, result)
+            results.append(result)
+        return results
+
+    def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list = None) -> list:
         """
         Predict the model on all the instances in the dataset.
 
         """
         results = []
-        for idx, instance in enumerate(self.llm_dataset.dataset):
-            result = self.llmp.predict(instance)
-            self.save_results(idx, instance, result)
-            results.append(result)
+        for eval_value in evaluate_on:
+            if eval_value not in llm_dataset.dataset:
+                raise ValueError(f"The evaluation set {eval_value} is not in the dataset.")
+
+            else:
+                eval_dataset = llm_dataset.dataset[eval_value]
+                result = self.predict_on_single_dataset(eval_dataset,
+                                                        file_name=f"results_{llm_dataset.data_name}_{eval_value}.json")
+                results.append(result)
         return results
 
-    def save_results(self, idx: int, instance: dict, result: str) -> None:
+    def save_results(self, file_name: str, idx: int, instance: dict, result: str) -> None:
         """
-        Save the results in a json file.
+        Save the results in a JSON file.
+
+        @param idx: The index of the instance.
+        @param instance: The instance dictionary.
+        @param result: The prediction result string.
         """
-        data_name = self.llm_dataset.data_name
-        with open(f"results_{data_name}.json", "a") as f:
-            f.write(f"Index: {idx}\n")
-            f.write(f"Instance: {instance}\n")
-            f.write(f"Result: {result}\n")
+        entry = {
+            "Index": idx,
+            "Instance": instance,
+            "Result": result
+        }
+
+        if Path(file_name).exists():
+            with open(file_name, 'r') as file:
+                existing_data = json.load(file)
+                existing_data.append(entry)
+        else:
+            existing_data = [entry]
+        with open(file_name, "w") as f:
+            json.dump(existing_data, f, indent=4, sort_keys=True)
 
     def evaluate(self, dataset):
         """
         Evaluate the model on all the instances in the dataset with the given prompt.
+
+        @param dataset: The dataset to evaluate the model on.
         """
         results = self.llmp.predict(dataset)
         # calculate the accuracy of the model with the dataset GT and the results
@@ -56,6 +94,9 @@ class LLMEvaluator:
     def check_answer(self, result, instance):
         """
         Check if the prediction matches the ground truth answer on multiple choice questions.
+
+        @param result: The prediction result.
+        @param instance: The instance dictionary.
         """
         # check if the result is in the choices
         if result in instance['target']:
@@ -75,24 +116,21 @@ if __name__ == "__main__":
     args.add_argument("--max_train_instances", type=int, default=5)
 
     args.add_argument("--template_name", type=str, default="template_0")
-    args.add_argument("--data_path", type=str, default=UnitxtDataConstants.DATA_PATH,
-                      help="The path to the dataset to evaluate the model on.")
 
     args = args.parse_args()
 
     # Save templates to local catalog
-    catalog_manager = CatalogManager(UnitxtDataConstants.MULTIPLE_CHOICE_PATH)
+    catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH)
     template = catalog_manager.load_from_catalog(args.template_name)
 
     llm_dataset_loader = DatasetLoader(card=args.card,
                                        template=template,
                                        num_demos=args.num_demos, demos_pool_size=args.demos_pool_size,
-                                        system_format=args.system_format, max_train_instances=args.max_train_instances,
-                                        template_name=args.template_name)
-
+                                       system_format=args.system_format, max_train_instances=args.max_train_instances,
+                                       template_name=args.template_name)
 
     llm_dataset = llm_dataset_loader.load()
     llmp = LLMPredictor(args.model_name)
 
-    llm_eval = LLMEvaluator(llmp, llm_dataset)
-    results = llm_eval.predict_dataset()
+    llm_eval = LLMEvaluator(llmp)
+    results = llm_eval.predict_dataset(llm_dataset, args.evaluate_on)

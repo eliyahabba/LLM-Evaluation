@@ -19,8 +19,6 @@ if __name__ == "__main__":
     args.add_argument('--evaluate_on', nargs='+', default=['train'], help='The data types to evaluate the model on.')
 
     args.add_argument("--template_name", type=str, default="template_0")
-    args.add_argument("--data_path", type=str, default=TemplatesGeneratorConstants.DATA_PATH,
-                      help="The path to the dataset to evaluate the model on.")
 
     args = args.parse_args()
 
@@ -36,5 +34,5 @@ if __name__ == "__main__":
     llm_dataset = llm_dataset_loader.load()
     llmp = LLMPredictor(args.model_name)
 
-    llm_eval = LLMEvaluator(llmp, llm_dataset, evaluate_on=args.evaluate_on)
-    results = llm_eval.predict_dataset()
+    llm_eval = LLMEvaluator(llmp)
+    results = llm_eval.predict_dataset(llm_dataset, args.evaluate_on)
