@@ -42,7 +42,7 @@ if __name__ == "__main__":
     }
 
     # Create templates
-    generator = TemplateGenerator(base_args, override_options)
+    generator = MultipleChoiceTemplateGenerator(base_args, override_options)
     created_templates = generator.create_templates()
 
     # Save templates to local catalog
