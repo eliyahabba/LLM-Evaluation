@@ -1,41 +1,14 @@
-from itertools import product
 from unitxt.templates import MultipleChoiceTemplate
-from CatalogManager import CatalogManager
 
+from src.CreateData.CatalogManager import CatalogManager
+from src.CreateData.TemplatesGenerator.TemplateGenerator import TemplateGenerator
 from src.utils.Constants import Constants
 
 UnitxtDataConstants = Constants.UnitxtDataConstants
 
 
-class TemplateGenerator:
-    def __init__(self, base_args: dict, override_options: dict):
-        """
-        Initializes the TemplateGenerator with base arguments and override options.
-
-        @param base_args: A dictionary containing base arguments for the template.
-        @param override_options: A dictionary containing override options for the template.
-        """
-        self.base_args = base_args
-        self.override_options = override_options
-
-    def create_templates(self) -> list:
-        """
-        Creates a list of MultipleChoiceTemplate instances with different parameters.
-
-        @return: A list of the created templates.
-        """
-        templates = []
-        for options in product(*self.override_options.values()):
-            override_args = dict(zip(self.override_options.keys(), options))
-            args = {**self.base_args, **override_args}
-            template = MultipleChoiceTemplate(**args)
-            templates.append(template)
-            print(f"Created template with options: {override_args}")
-        print("All templates created!")
-        return templates
-
-    @staticmethod
-    def create_template(base_args: dict, **override_args) -> MultipleChoiceTemplate:
+class MultipleChoiceTemplateGenerator(TemplateGenerator):
+    def create_template(self, **override_args) -> MultipleChoiceTemplate:
         """
         Creates a MultipleChoiceTemplate instance with specific parameters.
 
@@ -44,7 +17,7 @@ class TemplateGenerator:
 
         @return: MultipleChoiceTemplate: The created template instance.
         """
-        args = {**base_args, **override_args}
+        args = {**self.base_args, **override_args}
         template = MultipleChoiceTemplate(**args)
         return template
 
@@ -73,6 +46,6 @@ if __name__ == "__main__":
     created_templates = generator.create_templates()
 
     # Save templates to local catalog
-    saver = CatalogManager(UnitxtDataConstants.MULTIPLE_CHOICE_PATH)
+    catalog_manager = CatalogManager(UnitxtDataConstants.MULTIPLE_CHOICE_PATH)
     for i, template in enumerate(created_templates):
-        saver.save_to_catalog(template, f"template_{i}")
+        catalog_manager.save_to_catalog(template, f"template_{i}")
