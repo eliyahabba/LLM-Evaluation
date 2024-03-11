@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from itertools import product
 
+from tqdm import tqdm
 from unitxt.templates import MultipleChoiceTemplate
 
 from src.utils.Constants import Constants
@@ -26,7 +27,7 @@ class TemplateGenerator:
         @return: A list of the created templates.
         """
         templates = []
-        for options in product(*self.override_options.values()):
+        for options in tqdm(product(*self.override_options.values())):
             override_args = dict(zip(self.override_options.keys(), options))
             template = self.create_template(**override_args)
             templates.append(template)
