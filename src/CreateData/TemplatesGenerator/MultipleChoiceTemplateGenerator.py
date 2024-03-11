@@ -25,19 +25,19 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
 if __name__ == "__main__":
     # Base arguments for all templates
     base_args = {
-        "input_format": "The following are multiple choice questions (with answers) about {topic}.\n\nQuestion:"
-                        " {question}\nChoose from {numerals}\nAnswers:\n{choices}\nAnswer:",
-        "choices_field": "options",
+        "input_format": "The following are multiple choice questions (with answers)\n\nQuestion:"
+                        " {question}\nChoose the correct answer from {numerals}\nAnswers:\n{choices}\nAnswer:",
+        "choices_field": "choices",
         "target_field": "answer",
         "choices_seperator": "\n",
         "enumerator": ["numbers", "capitals", "lowercase"],
-        "source_choice_format": ["{choice_text}", "{choice_numeral}. {choice_text}"],
-        "target_choice_format": ["{choice_numeral}", "{choice_text}"],
+        "postprocessors": ["processors.first_character"]
     }
 
     # Override options for different parameters
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman"],
+        "choices_seperator": ["\n", ", ", "; ", " | ", "OR", "or"],
         # Add more parameters and their possible values as needed
     }
 
