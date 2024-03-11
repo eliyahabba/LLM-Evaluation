@@ -5,7 +5,7 @@ import numpy as np
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
 from src.CreateData.LLMDataset import LLMDataset
-from src.DataModels.LLMPredictor import LLMPredictor
+from src.ModelsPredictors.LLMPredictor import LLMPredictor
 from src.utils.Constants import Constants
 
 UnitxtDataConstants = Constants.UnitxtDataConstants
