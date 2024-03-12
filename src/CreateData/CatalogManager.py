@@ -1,4 +1,5 @@
 import argparse
+from pathlib import Path
 
 from unitxt import add_to_catalog
 from unitxt import get_from_catalog
@@ -14,7 +15,7 @@ class CatalogManager:
     Class to save datasets to the Unitxt local catalog.
     """
 
-    def __init__(self, catalog_path: str) -> None:
+    def __init__(self, catalog_path: Path) -> None:
         """
         Initializes the DatasetSaver with the path to the local catalog.
         @param catalog_path: The path to the local catalog.
@@ -32,7 +33,7 @@ class CatalogManager:
 
         @return: None
         """
-        add_to_catalog(template, name, catalog_path=self.catalog_path, overwrite=True)
+        add_to_catalog(template, name, catalog_path=str(self.catalog_path), overwrite=True)
         print(f"Dataset saved successfully to local catalog: {self.catalog_path}")
 
     def load_from_catalog(self, name: str) -> Template:
@@ -43,7 +44,7 @@ class CatalogManager:
 
         @return: The dataset from the local catalog.
         """
-        return get_from_catalog(name, catalog_path=self.catalog_path)
+        return get_from_catalog(name, catalog_path=str(self.catalog_path))
 
 
 if __name__ == "__main__":
