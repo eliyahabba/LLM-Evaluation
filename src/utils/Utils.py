@@ -12,3 +12,12 @@ class Utils:
         """
         card_name = card.split('cards.')[1]
         return path / card_name
+
+    @staticmethod
+    def get_template_name(template_num: int) -> str:
+        """
+        Get the name of the template.
+        @param template_num: The number of the template
+        @return: The name of the template
+        """
+        return f"template_{template_num}"
