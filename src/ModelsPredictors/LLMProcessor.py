@@ -80,7 +80,7 @@ class LLMProcessor:
         print("The decoded generated tokens are:")
         print(generated_tokens_decoded)
 
-    def generate_model_text(self, input_text: str, is_print: bool = False) -> list:
+    def generate_model_text(self, input_text: str, is_print: bool = False) -> str:
         """
         Generate text using a pre-trained language model and print the results.
 
@@ -98,6 +98,8 @@ class LLMProcessor:
         generated_tokens_decoded = self.decode_tokens(generated_tokens)
         if is_print:
             self.print_generated_tokens_decoded(generated_tokens_decoded)
+        # covnert the list to string
+        generated_tokens_decoded = " ".join(generated_tokens_decoded)
         return generated_tokens_decoded
 
     def predict(self, input_text: str):
