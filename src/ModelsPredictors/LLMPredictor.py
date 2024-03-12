@@ -1,117 +1,142 @@
 import argparse
+import json
+from pathlib import Path
 
 import numpy as np
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from transformers.tokenization_utils_base import BatchEncoding
+
+from src.CreateData.CatalogManager import CatalogManager
+from src.CreateData.DatasetLoader import DatasetLoader
+from src.CreateData.LLMDataset import LLMDataset
+from src.ModelsPredictors.LLMProcessor import LLMProcessor
+from src.utils.Constants import Constants
+
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class LLMPredictor:
-    def __init__(self, model_name: str):
-        # Define the pre-trained model and tokenizer
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModelForCausalLM.from_pretrained(model_name)
+    def __init__(self, llmp: LLMProcessor):
+        self.llmp = llmp
 
-    def tokenize_text(self, input_text: str) -> BatchEncoding:
+    def predict_on_single_dataset(self, eval_set, eval_value: str, file_name: Path):
         """
-        Tokenize the input text.
+        Predict the model on a single dataset.
 
-        @param input_text: Text to be tokenized.
-        @return: Tokenized input text.
-        """
-        return self.tokenizer(input_text, return_tensors="pt")
+        @eval_set: The evaluation set name.
+        @file_name: The name of the file to save the results in.
 
-    def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 50) -> dict:
+        @return: The list of prediction results for the dataset.
         """
-        Generate text using a pre-trained language model.
+        results = []
+        for idx, instance in enumerate(eval_set):
+            input_text = instance["source"]
+            ground_truth = instance["target"]
+            result = self.llmp.predict(input_text)
+            self.save_results(file_name, eval_value, idx, input_text, result, ground_truth)
+            results.append(result)
+        return results
 
-        @param input_tokenized: Tokenized input text.
-        @param max_new_tokens: Maximum number of tokens to generate.
-        @return: Generated text.
+    def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list,
+                        results_file_name: Path) -> list:
         """
-        outputs = self.model.generate(
-            **input_tokenized,
-            max_new_tokens=max_new_tokens,
-            return_dict_in_generate=True,
-            output_scores=True,
-            do_sample=False,
-        )
-        return outputs
+        Predict the model on all the instances in the dataset.
 
-    def compute_transition_scores(self, sequences: torch.Tensor, scores: torch.Tensor) -> torch.Tensor:
         """
-        Compute transition scores for generated tokens.
+        results = []
+        for eval_value in evaluate_on:
+            if eval_value not in llm_dataset.dataset:
+                raise ValueError(f"The evaluation set {eval_value} is not in the dataset.")
 
-        @param sequences: Generated token sequences.
-        @param scores: Scores associated with generated tokens.
-        @return: Transition scores.
-        """
-        return self.model.compute_transition_scores(sequences, scores, normalize_logits=True)
+            else:
+                eval_dataset = llm_dataset.dataset[eval_value]
+                result = self.predict_on_single_dataset(eval_dataset, eval_value,
+                                                        file_name=results_file_name)
+                results.append(result)
+        return results
 
-    def decode_tokens(self, generated_tokens):
+    def save_results(self, file_name: Path, eval_value: str, idx: int, instance: dict, result: str,
+                     ground_truth: str) -> None:
         """
-        Decode generated tokens.
+        Save the results in a JSON file.
 
-        @param generated_tokens: Generated token sequences.
-        @return: Decoded tokens.
-        """
-        return self.tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+        @param file_name: The name of the file to save the results in.
+        @param idx: The index of the instance.
+        @param instance: The instance dictionary.
+        @param result: The prediction result string.
+        @param ground_truth: The ground truth answer.
 
-    def print_generated_tokens(self, generated_tokens, transition_scores):
         """
-        Print generated tokens with their scores and probabilities.
+        entry = {
+            "Index": idx,
+            "Instance": instance,
+            "Result": result,
+            "GroundTruth": ground_truth
+        }
 
-        @param generated_tokens: Generated token sequences.
-        @param transition_scores: Transition scores associated with generated tokens.
-        """
-        print("The generated tokens with their scores and probabilities are:")
-        print("| token | token string | logits | probability")
-        for tok, score in zip(generated_tokens[0], transition_scores[0]):
-            print(
-                f"| {tok:5d} | {self.tokenizer.decode(tok):8s} | {score.numpy():.4f} | {np.exp(score.numpy()):.2%}"
-            )
+        with open(file_name, "r") as f:
+            data = json.load(f)
+            results = data['results']
+            if eval_value in results:
+                results[eval_value].append(entry)
+            else:
+                results[eval_value] = [entry]
+        data['results'] = results
+        with open(file_name, "w") as f:
+            json.dump(data, f)
 
-    def print_generated_tokens_decoded(self, generated_tokens_decoded):
+    def evaluate(self, dataset):
         """
-        Print decoded generated tokens.
+        Evaluate the model on all the instances in the dataset with the given prompt.
 
-        @param generated_tokens_decoded: Decoded generated tokens.
+        @param dataset: The dataset to evaluate the model on.
         """
-        print("The decoded generated tokens are:")
-        print(generated_tokens_decoded)
+        results = self.llmp.predict(dataset)
+        # calculate the accuracy of the model with the dataset GT and the results
+        answers = []
+        for i in range(len(results)):
+            answer = self.check_answer(results[i], dataset[i])
+            answers.append(answer)
 
-    def generate_model_text(self, input_text: str, is_print: bool = False) -> list:
-        """
-        Generate text using a pre-trained language model and print the results.
+        # calculate the accuracy
+        accuracy = np.mean(answers)
+        return accuracy
 
-        @param input_text: Text used as input for text generation.
-        @param is_print: Whether to print the generated tokens and their scores and probabilities.
+    def check_answer(self, result, instance):
+        """
+        Check if the prediction matches the ground truth answer on multiple choice questions.
 
-        @return: The generated tokens decoded.
+        @param result: The prediction result.
+        @param instance: The instance dictionary.
         """
-        input_tokenized = self.tokenize_text(input_text)
-        outputs = self.generate_text(input_tokenized)
-        transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
-        generated_tokens = outputs.sequences[:, input_tokenized.input_ids.shape[1]:]
-        if is_print:
-            self.print_generated_tokens(generated_tokens, transition_scores)
-        generated_tokens_decoded = self.decode_tokens(generated_tokens)
-        if is_print:
-            self.print_generated_tokens_decoded(generated_tokens_decoded)
-        return generated_tokens_decoded
-
-    def predict(self, input_text: str):
-        """
-        Predict the next word in the sequence.
-        """
-        return self.generate_model_text(input_text)
+        # check if the result is in the choices
+        if result in instance['target']:
+            return 1
+        else:
+            return 0
 
 
 # Execute the main function
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--model_name", type=str, default="mistralai/Mistral-7B-Instruct-v0.2")
+    args.add_argument("--card", type=str, default="cards.hellaswag")
+    args.add_argument("--system_format", type=str, default="unitxt")
+    args.add_argument("--max_instances", type=int, default=5)
+    args.add_argument("--template_name", type=str, default="template_0")
+
     args = args.parse_args()
-    model_name = args.model_name
-    llmp = LLMPredictor(model_name)
-    llmp.predict("please tell about the history of the world.")
+
+    # Save templates to local catalog
+    catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH)
+    template = catalog_manager.load_from_catalog(args.template_name)
+
+    llm_dataset_loader = DatasetLoader(card=args.card,
+                                       template=template,
+                                       system_format=args.system_format, max_instances=args.max_instances,
+                                       template_name=args.template_name)
+
+    llm_dataset = llm_dataset_loader.load()
+    llm_proc = LLMProcessor(args.model_name)
+
+    llm_pred = LLMPredictor(llm_proc)
+    results = llm_pred.predict_dataset(llm_dataset, evaluate_on=["train", "test"],
+                                        results_file_name=Path("results.json"))
