@@ -83,35 +83,6 @@ class LLMPredictor:
         with open(file_name, "w") as f:
             json.dump(data, f)
 
-    def evaluate(self, dataset):
-        """
-        Evaluate the model on all the instances in the dataset with the given prompt.
-
-        @param dataset: The dataset to evaluate the model on.
-        """
-        results = self.llmp.predict(dataset)
-        # calculate the accuracy of the model with the dataset GT and the results
-        answers = []
-        for i in range(len(results)):
-            answer = self.check_answer(results[i], dataset[i])
-            answers.append(answer)
-
-        # calculate the accuracy
-        accuracy = np.mean(answers)
-        return accuracy
-
-    def check_answer(self, result, instance):
-        """
-        Check if the prediction matches the ground truth answer on multiple choice questions.
-
-        @param result: The prediction result.
-        @param instance: The instance dictionary.
-        """
-        # check if the result is in the choices
-        if result in instance['target']:
-            return 1
-        else:
-            return 0
 
 
 # Execute the main function
