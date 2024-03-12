@@ -7,6 +7,7 @@ import pandas as pd
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
 from src.utils.Constants import Constants
+from src.utils.Utils import Utils
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
@@ -36,7 +37,8 @@ class EvaluateModel:
         self.load_experiment_file()
 
         template_name = f"{self.experiment['template_name']}"
-        catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH)
+        catalog_manager = CatalogManager(Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH,
+                                                             self.experiment['card']))
         template = catalog_manager.load_from_catalog(template_name)
 
         llm_dataset_loader = DatasetLoader(card=self.experiment['card'], template=template,
@@ -63,7 +65,8 @@ class EvaluateModel:
         results_to_eval = results[self.eval_on]
         predictions = [result['Result'] for result in results_to_eval]
         predictions_idx = [result['Index'] for result in results_to_eval]
-        predictions = [" ".join(prediction)  if isinstance(prediction, list) else prediction for prediction in predictions]
+        predictions = [" ".join(prediction) if isinstance(prediction, list) else prediction for prediction in
+                       predictions]
         reference_dataset = llm_dataset.dataset[self.eval_on]
         # get the references for the predictions that were made
         reference_dataset = [reference_dataset[idx] for idx in predictions_idx]
@@ -79,7 +82,7 @@ class EvaluateModel:
         metadata_values = [self.experiment[metadata] for metadata in metadata_columns]
         scores_values = [scores[0]['score']['global'][score_name] for score_name in scores_columns]
         scores_values = [f"{score:.3f}" if isinstance(score, float) else score for score in scores_values]
-        scores_df = pd.DataFrame([metadata_values + scores_values+ [len(scores)]], columns=columns)
+        scores_df = pd.DataFrame([metadata_values + scores_values + [len(scores)]], columns=columns)
         # take the template column to be the row index
         scores_df.set_index('template_name', inplace=True)
 
@@ -104,7 +107,8 @@ class EvaluateModel:
 if __name__ == "__main__":
     # Load the model and the dataset
     results_folder = ExperimentConstants.RESULTS_PATH
-    eval_on = "train"
+    eval_on = ExperimentConstants.EVALUATE_ON
     for results_file in results_folder.glob("*.json"):
-        eval_model = EvaluateModel(results_file, eval_on)
-        results = eval_model.evaluate()
+        for eval_on in ExperimentConstants.EVALUATE_ON:
+            eval_model = EvaluateModel(results_file, eval_on)
+            results = eval_model.evaluate()

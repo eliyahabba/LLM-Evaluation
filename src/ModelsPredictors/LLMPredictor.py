@@ -2,15 +2,15 @@ import argparse
 import json
 from pathlib import Path
 
-import numpy as np
-
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
 from src.CreateData.LLMDataset import LLMDataset
 from src.ModelsPredictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
+from src.utils.Utils import Utils
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
+ExperimentConstants = Constants.ExperimentConstants
 
 
 class LLMPredictor:
@@ -84,25 +84,30 @@ class LLMPredictor:
             json.dump(data, f)
 
 
-
 # Execute the main function
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--model_name", type=str, default="mistralai/Mistral-7B-Instruct-v0.2")
-    args.add_argument("--card", type=str, default="cards.hellaswag")
+    args.add_argument("--card", type=str)
     args.add_argument("--system_format", type=str, default="unitxt")
-    args.add_argument("--max_instances", type=int, default=5)
-    args.add_argument("--template_name", type=str, default="template_0")
+    args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
+    args.add_argument("--template_num", type=int, default=ExperimentConstants.TEMPLATE_NUM)
+    args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
+    args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
 
     args = args.parse_args()
 
     # Save templates to local catalog
-    catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH)
+    catalog_manager = CatalogManager(Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH,
+                                                         args.card))
     template = catalog_manager.load_from_catalog(args.template_name)
 
     llm_dataset_loader = DatasetLoader(card=args.card,
                                        template=template,
-                                       system_format=args.system_format, max_instances=args.max_instances,
+                                       system_format=args.system_format,
+                                       num_demos=args.num_demos,
+                                       demos_pool_size=args.demos_pool_size,
+                                       max_instances=args.max_instances,
                                        template_name=args.template_name)
 
     llm_dataset = llm_dataset_loader.load()
@@ -110,4 +115,4 @@ if __name__ == "__main__":
 
     llm_pred = LLMPredictor(llm_proc)
     results = llm_pred.predict_dataset(llm_dataset, evaluate_on=["train", "test"],
-                                        results_file_name=Path("results.json"))
+                                       results_file_name=Path("results.json"))

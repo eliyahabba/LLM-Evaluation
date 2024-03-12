@@ -6,25 +6,26 @@ from src.CreateData.DatasetLoader import DatasetLoader
 from src.ModelsPredictors.LLMPredictor import LLMPredictor
 from src.ModelsPredictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
+from src.utils.Utils import Utils
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 
-
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
-    args.add_argument("--model_name", type=str, default="mistralai/Mistral-7B-Instruct-v0.2")
     args.add_argument("--card", type=str)
-    args.add_argument("--system_format", type=str, default="formats.empty")
-    args.add_argument("--max_instances", type=int, default=100)
-    args.add_argument('--evaluate_on', nargs='+', default=['train'], help='The data types to evaluate the model on.')
-    args.add_argument("--template_num", type=int, default=0)
-    args.add_argument("--num_demos", type=int, default=1)
-    args.add_argument("--demos_pool_size", type=int, default=10)
+    args.add_argument("--model_name", type=str, default=ExperimentConstants.MODEL_NAME)
+    args.add_argument("--system_format", type=str, default=ExperimentConstants.SYSTEM_FORMATS)
+    args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
+    args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON,
+                      help='The data types to evaluate the model on.')
+    args.add_argument("--template_num", type=int, default=ExperimentConstants.TEMPLATE_NUM)
+    args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
+    args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
 
     args = args.parse_args()
-    template_name = f"template_{args.template_num}"
-    catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / args.card.split('cards.')[1])
+    template_name = Utils.get_template_name(args.template_num)
+    catalog_manager = CatalogManager(Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH, args.card))
     template = catalog_manager.load_from_catalog(template_name)
 
     llm_dataset_loader = DatasetLoader(card=args.card,
@@ -46,9 +47,9 @@ if __name__ == "__main__":
         "demos_pool_size": args.demos_pool_size,
         "results": {}
     }
-    json_file_name = "experiment_" + args.card + "_" + template_name + ".json"
+    json_file_name = "experiment_" + template_name + ".json"
     results_path = ExperimentConstants.RESULTS_PATH
-    results_file_name = results_path / json_file_name
+    results_file_name = results_path / args.card.split('cards.')[1] / json_file_name
     with open(results_file_name, 'w') as json_file:
         json.dump(entry_experiment, json_file)
     print(f"Results will be saved in {results_file_name}")
