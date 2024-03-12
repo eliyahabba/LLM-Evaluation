@@ -14,7 +14,7 @@ ExperimentConstants = Constants.ExperimentConstants
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--model_name", type=str, default="mistralai/Mistral-7B-Instruct-v0.2")
-    args.add_argument("--card", type=str, default="cards.copa")
+    args.add_argument("--card", type=str)
     args.add_argument("--system_format", type=str, default="formats.empty")
     args.add_argument("--max_instances", type=int, default=100)
     args.add_argument('--evaluate_on', nargs='+', default=['train'], help='The data types to evaluate the model on.')
@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     args = args.parse_args()
     template_name = f"template_{args.template_num}"
-    catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH)
+    catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / args.card.split('cards.')[1])
     template = catalog_manager.load_from_catalog(template_name)
 
     llm_dataset_loader = DatasetLoader(card=args.card,
