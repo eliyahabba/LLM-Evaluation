@@ -21,7 +21,7 @@ class LLMProcessor:
         """
         return self.tokenizer(input_text, return_tensors="pt")
 
-    def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 20) -> dict:
+    def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 5) -> dict:
         """
         Generate text using a pre-trained language model.
 
