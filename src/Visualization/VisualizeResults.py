@@ -6,14 +6,16 @@ from typing import Tuple, List
 import pandas as pd
 import streamlit as st
 
+file_path = Path(__file__).parents[2]
+sys.path.append(str(file_path))
+
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 
 RESULTS_FOLDER = ExperimentConstants.RESULTS_PATH
-file_path = Path(__file__).parents[2]
-sys.path.append(str(file_path))
+
 
 class VisualizeResults:
     def display_page(self):
@@ -68,7 +70,8 @@ class VisualizeResults:
                                     results_folder.iterdir() if
                                     f.is_file() and f.name.endswith(".json")}
         # sort the files by the number of the experiment
-        results_names_to_display = dict(sorted(results_names_to_display.items(), key=lambda item: int(item[0].split("_")[1])))
+        results_names_to_display = dict(
+            sorted(results_names_to_display.items(), key=lambda item: int(item[0].split("_")[1])))
         results_file = st.sidebar.selectbox("Select template file", list(results_names_to_display.keys()))
         instances, preds = self.load_results_preds(results_names_to_display[results_file])
         st.write("Sample examples")
@@ -98,7 +101,6 @@ class VisualizeResults:
                 st.sidebar.markdown(f"**{key}** : {value}")
             else:
                 st.sidebar.markdown(f"**{key}** : {value}")
-
 
 
 if __name__ == "__main__":
