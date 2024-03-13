@@ -23,7 +23,6 @@ if __name__ == '__main__':
                         help='add port to run the app. for example: --server_port 8501')
     args = parser.parse_args()
     
-    # run this file :src / Visualization / VisualizeResults.py
     sys.argv = ["streamlit", "run", "src/Visualization/VisualizeResults.py",
                 # "--server.headless", "true",
                 # "global.developmentMode", "false",

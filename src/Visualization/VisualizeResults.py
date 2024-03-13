@@ -1,4 +1,5 @@
 import json
+import sys
 from pathlib import Path
 from typing import Tuple, List
 
@@ -11,7 +12,8 @@ TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 
 RESULTS_FOLDER = ExperimentConstants.RESULTS_PATH
-
+file_path = Path(__file__).parents[2]
+sys.path.append(str(file_path))
 
 class VisualizeResults:
     def display_page(self):
