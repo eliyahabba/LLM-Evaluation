@@ -18,4 +18,4 @@ class Constants:
         NUM_DEMOS = 1
         DEMOS_POOL_SIZE = 10
 
-        BATCH_SIZE = 8
+        BATCH_SIZE = 10
