@@ -1,8 +1,10 @@
 import argparse
 import json
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
+
 from termcolor import colored
+
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
 from src.CreateData.LLMDataset import LLMDataset
@@ -34,7 +36,8 @@ class LLMPredictor:
         @return: The list of prediction results for the dataset.
         """
         eval_set_indexes = list(range(len(eval_set)))
-        filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_set, eval_value, eval_set_indexes, results_file_path)
+        filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_set, eval_value, eval_set_indexes,
+                                                                               results_file_path)
         # print in red the number of instances that were already predicted and will be skipped
         print(colored(f"{len(eval_set)} instances were already predicted and will be skipped.", "red"))
         # print in green the number of instances that will be predicted
@@ -133,7 +136,8 @@ class LLMPredictor:
         } for idx, instance, result, ground_truth in zip(idxs, input_texts, results, ground_truths)]
         return entries
 
-    def filter_saved_instances(self, eval_set: list, eval_value: str, eval_set_indexes: list, results_file_path: Path) -> list:
+    def filter_saved_instances(self, eval_set: list, eval_value: str, eval_set_indexes: list,
+                               results_file_path: Path) -> Tuple[list, list]:
         """
         Filter the instances that have already been saved in the results file.
         @param eval_set: The evaluation set.
@@ -144,6 +148,8 @@ class LLMPredictor:
         """
 
         data = self.load_results_file(results_file_path)
+        if eval_value not in data['results']:
+            return eval_set, eval_set_indexes
         results = data['results'][eval_value]
         indexes = [entry["Index"] for entry in results]
 
@@ -154,7 +160,8 @@ class LLMPredictor:
             if idx not in indexes:
                 filter_eval_set.append(instance)
                 filter_eval_set_indexes.append(idx)
-        return eval_set
+        return filter_eval_set, filter_eval_set_indexes
+
 
 # Execute the main function
 if __name__ == "__main__":
