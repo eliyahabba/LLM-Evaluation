@@ -1,5 +1,6 @@
 import argparse
 import sys
+from pathlib import Path
 
 from streamlit.web import cli as stcli
 
@@ -11,6 +12,9 @@ from streamlit.web import cli as stcli
 # "global.logLevel", "error",
 # "global.suppressWarning", "true",
 # "global.sharingMode", "off"]
+# add python path to the sys.path
+file_path = Path(__file__).parents[2]
+sys.path.append(str(file_path))
 
 if __name__ == '__main__':
     # use argparse to get the flags
