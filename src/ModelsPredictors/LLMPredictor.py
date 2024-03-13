@@ -114,12 +114,12 @@ class LLMPredictor:
         """
 
         data = self.load_results_file(results_file_path)
-        results = data['results']
+        loaded_results = data['results']
         entries = self.create_entries(idxs, input_texts, results, ground_truths)
-        if eval_value in results:
-            results[eval_value].extend(entries)
+        if eval_value in loaded_results:
+            loaded_results[eval_value].extend(entries)
         else:
-            results[eval_value] = entries
+            loaded_results[eval_value] = entries
         data['results'] = results
         with open(results_file_path, "w") as f:
             json.dump(data, f)
