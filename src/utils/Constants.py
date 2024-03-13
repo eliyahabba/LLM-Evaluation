@@ -13,7 +13,7 @@ class Constants:
         MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2"
         SYSTEM_FORMATS = "formats.empty"
         MAX_INSTANCES = 100
-        EVALUATE_ON = ['train']
+        EVALUATE_ON = ['train', 'test']
         TEMPLATE_NUM = 0
         NUM_DEMOS = 1
         DEMOS_POOL_SIZE = 10

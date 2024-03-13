@@ -33,8 +33,8 @@ class LLMPredictor:
 
         @return: The list of prediction results for the dataset.
         """
-        eval_set_indexs = range(len(eval_set))
-        filter_eval_set, filter_eval_set_indexs = self.filter_saved_instances(eval_set, eval_value, eval_set_indexs, results_file_path)
+        eval_set_indexes = list(range(len(eval_set)))
+        filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_set, eval_value, eval_set_indexes, results_file_path)
         # print in red the number of instances that were already predicted and will be skipped
         print(colored(f"{len(eval_set)} instances were already predicted and will be skipped.", "red"))
         # print in green the number of instances that will be predicted
@@ -45,7 +45,7 @@ class LLMPredictor:
         input_texts = []
         ground_truths = []
 
-        for idx, instance in zip(filter_eval_set_indexs, filter_eval_set):
+        for idx, instance in zip(filter_eval_set_indexes, filter_eval_set):
             input_text = instance["source"]
             ground_truth = instance["target"]
             result = self.llmp.predict(input_text)
@@ -133,12 +133,12 @@ class LLMPredictor:
         } for idx, instance, result, ground_truth in zip(idxs, input_texts, results, ground_truths)]
         return entries
 
-    def filter_saved_instances(self, eval_set: list, eval_value: str, eval_set_indexs: list, results_file_path: Path) -> list:
+    def filter_saved_instances(self, eval_set: list, eval_value: str, eval_set_indexes: list, results_file_path: Path) -> list:
         """
         Filter the instances that have already been saved in the results file.
         @param eval_set: The evaluation set.
         @param eval_value: The evaluation set name.
-        @param eval_set_indexs: The indices of the instances in the evaluation set.
+        @param eval_set_indexes: The indices of the instances in the evaluation set.
         @param results_file_path: The name of the file to save the results in.
         @return:
         """
@@ -149,11 +149,11 @@ class LLMPredictor:
 
         # filter the eval set and the indexes
         filter_eval_set = []
-        filter_eval_set_indexs = []
-        for idx, instance in zip(eval_set_indexs, eval_set):
+        filter_eval_set_indexes = []
+        for idx, instance in zip(eval_set_indexes, eval_set):
             if idx not in indexes:
                 filter_eval_set.append(instance)
-                filter_eval_set_indexs.append(idx)
+                filter_eval_set_indexes.append(idx)
         return eval_set
 
 # Execute the main function
