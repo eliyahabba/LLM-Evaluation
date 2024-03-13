@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # Override options for different parameters
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman"],
-        "choices_seperator": [" ", "\n", ", ", "; ", " | ", "OR", "or"],
+        "choices_seperator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
         # Add more parameters and their possible values as needed
     }
 
