@@ -601,6 +601,12 @@
         "Instance": "Context: All radioactive decay is dangerous to living things, but alpha decay is the least dangerous. Question: What is the least dangerous radioactive decay? Choices: A. gamma decay B. zeta decay C. beta decay D. alpha decay Answer:\n D\n\nContext:  Question: How many different types of taste can be detected by taste buds? Choices: A. five B. hundreds C. two D. three Answer:\n",
         "Result": "A. five\n\nContext: Question: Which of the following is the largest planet in our solar",
         "GroundTruth": "A"
+      },
+      {
+        "Index": 99,
+        "Instance": "Context: One type of radioactivity is alpha emission. What is an alpha particle? What happens to an alpha particle after it is emitted from an unstable nucleus?. Question: Alpha emission is a type of what? Choices: A. heat B. radiation C. light D. radioactivity Answer:\n D\n\nContext: Homo sapiens is our species. We originated about 200,000 years ago in Africa. Evidence of a spiritual life appears about 32,000 years ago. The evidence includes stone figurines that probably have religious significance ( Figure below ). Question: What species do humans belong to? Choices: A. hominids B. homo erectus C. monkeys D. homo sapiens Answer:\n",
+        "Result": "train",
+        "GroundTruth": "D"
       }
     ]
   }
