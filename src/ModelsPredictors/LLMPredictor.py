@@ -120,7 +120,7 @@ class LLMPredictor:
             loaded_results[eval_value].extend(entries)
         else:
             loaded_results[eval_value] = entries
-        data['results'] = results
+        data['results'] = loaded_results
         with open(results_file_path, "w") as f:
             json.dump(data, f)
 
