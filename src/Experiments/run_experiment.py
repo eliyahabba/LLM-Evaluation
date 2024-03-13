@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from typing import Tuple
 
+from termcolor import colored
 from unitxt.templates import Template
 
 from src.CreateData.CatalogManager import CatalogManager
@@ -65,10 +66,22 @@ class ExperimentRunner:
         results_file_path = results_path / self.args.card.split('cards.')[1] / json_file_name
 
         results_file_path.parent.mkdir(parents=True, exist_ok=True)
+        print(f"Results will be saved in {results_file_path}")
 
+        if results_file_path.exists():
+            # check if the entry_experiment is equal to the one in the file
+            with open(results_file_path, 'r') as json_file:
+                data = json.load(json_file)
+                for key in data:
+                    if key != "results":
+                        if data[key] != entry_experiment[key]:
+                            raise ValueError(f"The metadata of the experiment in {results_file_path} "
+                                             f"is different from the one in the current experiment.")
+                # print blue message
+            print(colored(f"Results already exist in {results_file_path}", "blue"))
+            return results_file_path
         with open(results_file_path, 'w') as json_file:
             json.dump(entry_experiment, json_file)
-        print(f"Results will be saved in {results_file_path}")
         return results_file_path
 
     def run_experiment(self) -> list:

@@ -2,7 +2,7 @@ import argparse
 import json
 from pathlib import Path
 from typing import List
-
+from termcolor import colored
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
 from src.CreateData.LLMDataset import LLMDataset
@@ -35,9 +35,9 @@ class LLMPredictor:
         """
         filter_eval_set = self.filter_saved_instances(eval_set, results_file_path)
         # print in red the number of instances that were already predicted and will be skipped
-        print(f"\033[91m{len(eval_set)} instances were already predicted and will be skipped.\033[0m")
+        print(colored(f"{len(eval_set)} instances were already predicted and will be skipped.", "red"))
         # print in green the number of instances that will be predicted
-        print(f"\033[92m{len(filter_eval_set)} instances will be predicted.\033[0m")
+        print(colored(f"{len(filter_eval_set)} instances will be predicted.", "green"))
         results = []
         # run the model on the dataset and save the results in the file after each batch
         idxs = []
