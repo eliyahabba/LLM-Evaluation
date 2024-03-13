@@ -1,6 +1,7 @@
 import argparse
 import json
 from pathlib import Path
+from typing import List
 
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
@@ -14,8 +15,14 @@ ExperimentConstants = Constants.ExperimentConstants
 
 
 class LLMPredictor:
-    def __init__(self, llmp: LLMProcessor):
+    def __init__(self, llmp: LLMProcessor, batch_size: int = ExperimentConstants.BATCH_SIZE):
+        """
+        Initializes the LLMPredictor.
+        @param llmp:
+        @param batch_size:
+        """
         self.llmp = llmp
+        self.batch_size = batch_size
 
     def predict_on_single_dataset(self, eval_set, eval_value: str, results_file_path: Path):
         """
@@ -26,13 +33,32 @@ class LLMPredictor:
 
         @return: The list of prediction results for the dataset.
         """
+        filter_eval_set = self.filter_saved_instances(eval_set, results_file_path)
+        # print in red the number of instances that were already predicted and will be skipped
+        print(f"\033[91m{len(eval_set)} instances were already predicted and will be skipped.\033[0m")
+        # print in green the number of instances that will be predicted
+        print(f"\033[92m{len(filter_eval_set)} instances will be predicted.\033[0m")
         results = []
-        for idx, instance in enumerate(eval_set):
+        # run the model on the dataset and save the results in the file after each batch
+        idxs = []
+        input_texts = []
+        ground_truths = []
+
+        for idx, instance in enumerate(filter_eval_set):
             input_text = instance["source"]
             ground_truth = instance["target"]
             result = self.llmp.predict(input_text)
-            self.save_results(results_file_path, eval_value, idx, input_text, result, ground_truth)
+            idxs.append(idx)
+            input_texts.append(input_text)
+            ground_truths.append(ground_truth)
             results.append(result)
+            if idx % self.batch_size == 0:
+                self.save_results(results_file_path, eval_value, idxs, input_texts, results, ground_truths)
+                idxs = []
+                input_texts = []
+                ground_truths = []
+                results = []
+
         return results
 
     def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list,
@@ -52,36 +78,73 @@ class LLMPredictor:
                 results.append(result)
         return results
 
-    def save_results(self, results_file_path: Path, eval_value: str, idx: int, instance: dict, result: str,
-                     ground_truth: str) -> None:
+    def load_results_file(self, results_file_path: Path) -> dict:
+        """
+        Load the results from a JSON file.
+        @param results_file_path: The name of the file to load the results from.
+        @return: The dictionary containing the results.
+        """
+        with open(results_file_path, "r") as f:
+            data = json.load(f)
+        return data
+
+    def save_results(self, results_file_path: Path, eval_value: str,
+                     idxs: List[int], input_texts: List[str], results: List[str], ground_truths: List[str]) -> None:
         """
         Save the results in a JSON file.
 
         @param results_file_path: The name of the file to save the results in.
-        @param idx: The index of the instance.
-        @param instance: The instance dictionary.
-        @param result: The prediction result string.
-        @param ground_truth: The ground truth answer.
+        @param eval_value: The evaluation set name.
+        @param idxs: The indices of the instances.
+        @param input_texts: The input texts of the instances.
+        @param results: The model predictions.
+        @param ground_truths: The ground truth of the instances.
+
+
 
         """
-        entry = {
-            "Index": idx,
-            "Instance": instance,
-            "Result": result,
-            "GroundTruth": ground_truth
-        }
 
-        with open(results_file_path, "r") as f:
-            data = json.load(f)
-            results = data['results']
-            if eval_value in results:
-                results[eval_value].append(entry)
-            else:
-                results[eval_value] = [entry]
+        data = self.load_results_file(results_file_path)
+        results = data['results']
+        entries = self.create_entries(idxs, input_texts, results, ground_truths)
+        if eval_value in results:
+            results[eval_value].extend(entries)
+        else:
+            results[eval_value] = entries
         data['results'] = results
         with open(results_file_path, "w") as f:
             json.dump(data, f)
 
+    def create_entries(self, idxs: List[int], input_texts: List[str], results: List[str], ground_truths: List[str]):
+        """
+        Create the entries for the results file.
+        @param idxs: The indices of the instances.
+        @param input_texts: The input texts of the instances.
+        @param results: The model predictions.
+        @param ground_truths: The ground truth of the instances.
+        @return: The list of entries.
+        """
+        entries = [{
+            "Index": idx,
+            "Instance": instance,
+            "Result": result,
+            "GroundTruth": ground_truth
+        } for idx, instance, result, ground_truth in zip(idxs, input_texts, results, ground_truths)]
+        return entries
+
+    def filter_saved_instances(self, eval_set: list, results_file_path: Path) -> list:
+        """
+        Filter the instances that have already been saved in the results file.
+        @param eval_set:
+        @param results_file_path:
+        @return:
+        """
+
+        data = self.load_results_file(results_file_path)
+        results = data['results']
+        indexes = [entry["Index"] for entry in results]
+        eval_set = [instance for idx, instance in enumerate(eval_set) if idx not in indexes]
+        return eval_set
 
 # Execute the main function
 if __name__ == "__main__":

@@ -17,3 +17,5 @@ class Constants:
         TEMPLATE_NUM = 0
         NUM_DEMOS = 1
         DEMOS_POOL_SIZE = 10
+
+        BATCH_SIZE = 8
