@@ -17,12 +17,12 @@ class LLMPredictor:
     def __init__(self, llmp: LLMProcessor):
         self.llmp = llmp
 
-    def predict_on_single_dataset(self, eval_set, eval_value: str, file_name: Path):
+    def predict_on_single_dataset(self, eval_set, eval_value: str, file_path: Path):
         """
         Predict the model on a single dataset.
 
         @eval_set: The evaluation set name.
-        @file_name: The name of the file to save the results in.
+        @file_path: The name of the file to save the results in.
 
         @return: The list of prediction results for the dataset.
         """
@@ -31,7 +31,7 @@ class LLMPredictor:
             input_text = instance["source"]
             ground_truth = instance["target"]
             result = self.llmp.predict(input_text)
-            self.save_results(file_name, eval_value, idx, input_text, result, ground_truth)
+            self.save_results(file_path, eval_value, idx, input_text, result, ground_truth)
             results.append(result)
         return results
 
@@ -48,17 +48,16 @@ class LLMPredictor:
 
             else:
                 eval_dataset = llm_dataset.dataset[eval_value]
-                result = self.predict_on_single_dataset(eval_dataset, eval_value,
-                                                        file_name=results_file_name)
+                result = self.predict_on_single_dataset(eval_dataset, eval_value, file_path=results_file_name)
                 results.append(result)
         return results
 
-    def save_results(self, file_name: Path, eval_value: str, idx: int, instance: dict, result: str,
+    def save_results(self, file_path: Path, eval_value: str, idx: int, instance: dict, result: str,
                      ground_truth: str) -> None:
         """
         Save the results in a JSON file.
 
-        @param file_name: The name of the file to save the results in.
+        @param file_path: The name of the file to save the results in.
         @param idx: The index of the instance.
         @param instance: The instance dictionary.
         @param result: The prediction result string.
@@ -72,7 +71,7 @@ class LLMPredictor:
             "GroundTruth": ground_truth
         }
 
-        with open(file_name, "r") as f:
+        with open(file_path, "r") as f:
             data = json.load(f)
             results = data['results']
             if eval_value in results:
@@ -80,7 +79,7 @@ class LLMPredictor:
             else:
                 results[eval_value] = [entry]
         data['results'] = results
-        with open(file_name, "w") as f:
+        with open(file_path, "w") as f:
             json.dump(data, f)
 
 
