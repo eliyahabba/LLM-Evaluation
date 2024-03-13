@@ -48,7 +48,9 @@ class LLMPredictor:
         input_texts = []
         ground_truths = []
 
+        counter_idx = 0
         for idx, instance in zip(filter_eval_set_indexes, filter_eval_set):
+            counter_idx += 1
             input_text = instance["source"]
             ground_truth = instance["target"]
             result = self.llmp.predict(input_text)
@@ -56,12 +58,15 @@ class LLMPredictor:
             input_texts.append(input_text)
             ground_truths.append(ground_truth)
             results.append(result)
-            if idx % self.batch_size == 0:
+            if counter_idx % self.batch_size == 0:
                 self.save_results(results_file_path, eval_value, idxs, input_texts, results, ground_truths)
                 idxs = []
                 input_texts = []
                 ground_truths = []
                 results = []
+        # save the remaining results if there are any
+        if len(results) > 0:
+            self.save_results(results_file_path, eval_value, idxs, input_texts, results, ground_truths)
 
         return results
 
