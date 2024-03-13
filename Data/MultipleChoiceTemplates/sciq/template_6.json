@@ -1,0 +1,11 @@
+{
+    "type": "multiple_choice_template",
+    "input_format": "Context: {context} Question: {question} Choices: {choices} Answer:",
+    "choices_field": "choices",
+    "target_field": "answer",
+    "choices_seperator": "or",
+    "enumerator": "capitals",
+    "postprocessors": [
+        "processors.first_character"
+    ]
+}
