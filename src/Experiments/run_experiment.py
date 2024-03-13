@@ -50,6 +50,8 @@ if __name__ == "__main__":
     json_file_name = "experiment_" + template_name + ".json"
     results_path = ExperimentConstants.RESULTS_PATH
     results_file_name = results_path / args.card.split('cards.')[1] / json_file_name
+    # create the directory if it does not exist
+    results_file_name.parent.mkdir(parents=True, exist_ok=True)
     with open(results_file_name, 'w') as json_file:
         json.dump(entry_experiment, json_file)
     print(f"Results will be saved in {results_file_name}")
