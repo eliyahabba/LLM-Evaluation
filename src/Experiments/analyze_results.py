@@ -3,6 +3,7 @@ from pathlib import Path
 
 import evaluate
 import pandas as pd
+from tqdm import tqdm
 
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
@@ -96,11 +97,10 @@ class EvaluateModel:
             if scores_df.index[0] in scores_df.index:
                 current_scores_df = pd.read_csv(file_path, index_col=0)
                 current_scores_df.loc[scores_df.index[0]] = scores_df.loc[scores_df.index[0]]
-                # sort the rows by the index
-                current_scores_df.sort_index(inplace=True)
+                current_scores_df.sort_index(inplace=True, key=lambda x: x.str.extract(r'(\d+)', expand=False).astype(int))
                 current_scores_df.to_csv(file_path)
             else:
-                scores_df.sort_index(inplace=True)
+                scores_df.sort_index(inplace=True, key=lambda x: x.str.extract(r'(\d+)', expand=False).astype(int))
                 scores_df.to_csv(file_path, mode='a', header=False)
 
 
@@ -108,7 +108,9 @@ if __name__ == "__main__":
     # Load the model and the dataset
     results_folder = ExperimentConstants.RESULTS_PATH
     eval_on = ExperimentConstants.EVALUATE_ON
-    for results_file in results_folder.glob("*.json"):
-        for eval_on in ExperimentConstants.EVALUATE_ON:
-            eval_model = EvaluateModel(results_file, eval_on)
-            results = eval_model.evaluate()
+
+    for dataset_folder in [file for file in results_folder.glob("*") if file.is_dir()]:
+        for results_file in tqdm(dataset_folder.glob("*.json")):
+            for eval_on in ExperimentConstants.EVALUATE_ON:
+                eval_model = EvaluateModel(results_file, eval_on)
+                results = eval_model.evaluate()
