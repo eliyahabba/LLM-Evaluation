@@ -106,7 +106,6 @@ class ExperimentRunner:
         results = llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
         return results
 
-
 def main():
     args = argparse.ArgumentParser()
     args.add_argument("--card", type=str)
