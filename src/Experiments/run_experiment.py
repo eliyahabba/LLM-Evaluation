@@ -62,14 +62,14 @@ class ExperimentRunner:
         """
         json_file_name = "experiment_" + template_name + ".json"
         results_path = ExperimentConstants.RESULTS_PATH
-        results_file_name = results_path / self.args.card.split('cards.')[1] / json_file_name
+        results_file_path = results_path / self.args.card.split('cards.')[1] / json_file_name
 
-        results_file_name.parent.mkdir(parents=True, exist_ok=True)
+        results_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(results_file_name, 'w') as json_file:
+        with open(results_file_path, 'w') as json_file:
             json.dump(entry_experiment, json_file)
-        print(f"Results will be saved in {results_file_name}")
-        return results_file_name
+        print(f"Results will be saved in {results_file_path}")
+        return results_file_path
 
     def run_experiment(self) -> list:
         """
@@ -86,11 +86,11 @@ class ExperimentRunner:
         llm_dataset = llm_dataset_loader.load()
 
         entry_experiment = self.create_entry_experiment(template_name)
-        results_file_name = self.save_results_to_json(entry_experiment, template_name)
+        results_file_path = self.save_results_to_json(entry_experiment, template_name)
 
         llm_proc = LLMProcessor(self.args.model_name)
         llm_pred = LLMPredictor(llm_proc)
-        results = llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_name=results_file_name)
+        results = llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
         return results
 
 
