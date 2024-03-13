@@ -3,7 +3,7 @@
     "input_format": "The following are multiple choice questions (with answers) about {topic}. Question: {question} Answers: {choices} Answer:",
     "choices_field": "choices",
     "target_field": "answer",
-    "choices_seperator": "or",
+    "choices_seperator": " or ",
     "enumerator": "capitals",
     "postprocessors": [
         "processors.first_character"

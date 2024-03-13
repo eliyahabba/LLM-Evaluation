@@ -1,6 +1,8 @@
+from tqdm import tqdm
 from unitxt.templates import MultipleChoiceTemplate
 
 from src.CreateData.CatalogManager import CatalogManager
+from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.CreateData.TemplatesGenerator.TemplateGenerator import TemplateGenerator
 from src.utils.Constants import Constants
 
@@ -24,63 +26,14 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
 
 if __name__ == "__main__":
     # Base arguments for all templates
-    dataset_name = "sciq"
-    base_args_copa = {
-        "input_format": "The following are multiple choice questions (with answers)\n\nQuestion:"
-                        " {question}\nChoose the correct answer from {numerals}\nAnswers:\n{choices}\nAnswer:",
-        "choices_field": "choices",
-        "target_field": "answer",
-        "choices_seperator": "\n",
-        "enumerator": "numbers",
-        "postprocessors": ["processors.first_character"]
-    }
+    dataset_names_to_templates = ConfigParams.dataset_names_to_templates
+    override_options = ConfigParams.override_options
+    for dataset_name, base_args in dataset_names_to_templates.items():
+        # Override options for different parameters and create templates
+        generator = MultipleChoiceTemplateGenerator(base_args, override_options)
+        created_templates = generator.create_templates()
 
-    base_args_sciq = {
-        "input_format": "Context: {context} Question: {question} Choices: {choices} Answer:",
-        "choices_field": "choices",
-        "target_field": "answer",
-        "choices_seperator": "\n",
-        "enumerator": "numbers",
-        "postprocessors": ["processors.first_character"]
-    }
-
-    base_args_race = {
-        "input_format": "Context: {context} Question: {question}. Answers: {choices}",
-        "choices_field": "choices",
-        "target_field": "answer",
-        "choices_seperator": "\n",
-        "enumerator": "numbers",
-        "postprocessors": ["processors.first_character"]
-    }
-
-    base_args_ai2_arc_easy = {
-        "input_format": "The following are multiple choice questions (with answers) about {topic}. Question: {question} Answers: {choices} Answer:",
-        "choices_field": "choices",
-        "target_field": "answer",
-        "choices_seperator": "\n",
-        "enumerator": "numbers",
-        "postprocessors": ["processors.first_character"]
-    }
-
-    dataset_name = "sciq"
-    base_args = base_args_sciq
-    dataset_name = "race"
-    base_args = base_args_race
-    dataset_name = "arc"
-    base_args = base_args_ai2_arc_easy
-
-    # Override options for different parameters
-    override_options = {
-        "enumerator": ["capitals", "lowercase", "numbers", "roman"],
-        "choices_seperator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
-        # Add more parameters and their possible values as needed
-    }
-
-    # Create templates
-    generator = MultipleChoiceTemplateGenerator(base_args, override_options)
-    created_templates = generator.create_templates()
-
-    # Save templates to local catalog
-    catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / dataset_name)
-    for i, template in enumerate(created_templates):
-        catalog_manager.save_to_catalog(template, f"template_{i}")
+        # Save templates to local catalog
+        catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / dataset_name)
+        for i, template in tqdm(enumerate(created_templates)):
+            catalog_manager.save_to_catalog(template, f"template_{i}")

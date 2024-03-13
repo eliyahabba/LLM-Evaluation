@@ -3,7 +3,7 @@
     "input_format": "Context: {context} Question: {question}. Answers: {choices}",
     "choices_field": "choices",
     "target_field": "answer",
-    "choices_seperator": "or",
+    "choices_seperator": " or ",
     "enumerator": "roman",
     "postprocessors": [
         "processors.first_character"
