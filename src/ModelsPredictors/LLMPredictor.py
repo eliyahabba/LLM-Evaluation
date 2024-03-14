@@ -26,14 +26,13 @@ class LLMPredictor:
         self.llmp = llmp
         self.batch_size = batch_size
 
-    def predict_on_single_dataset(self, eval_set, eval_value: str, results_file_path: Path):
+    def predict_on_single_dataset(self, eval_set, eval_value: str, results_file_path: Path)-> None:
         """
         Predict the model on a single dataset.
 
         @eval_set: The evaluation set name.
         @results_file_path: The name of the file to save the results in.
 
-        @return: The list of prediction results for the dataset.
         """
         eval_set_indexes = list(range(len(eval_set)))
         filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_set, eval_value, eval_set_indexes,
@@ -69,28 +68,24 @@ class LLMPredictor:
                 self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
                                   loaded_ground_truths, loaded_data)
                 # save the remaining results if there are any
-        if len(results) > 0:
+        if counter_idx % self.batch_size != 0:
             self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
                               loaded_ground_truths, loaded_data)
 
-        return results
 
     def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list,
-                        results_file_path: Path) -> list:
+                        results_file_path: Path) -> None:
         """
         Predict the model on all the instances in the dataset.
 
         """
-        results = []
         for eval_value in evaluate_on:
             if eval_value not in llm_dataset.dataset:
                 raise ValueError(f"The evaluation set {eval_value} is not in the dataset.")
 
             else:
                 eval_dataset = llm_dataset.dataset[eval_value]
-                result = self.predict_on_single_dataset(eval_dataset, eval_value, results_file_path=results_file_path)
-                results.append(result)
-        return results
+                self.predict_on_single_dataset(eval_dataset, eval_value, results_file_path=results_file_path)
 
     def load_results_file(self, results_file_path: Path) -> dict:
         """
@@ -196,5 +191,5 @@ if __name__ == "__main__":
     llm_proc = LLMProcessor(args.model_name)
 
     llm_pred = LLMPredictor(llm_proc)
-    results = llm_pred.predict_dataset(llm_dataset, evaluate_on=["train", "test"],
+    llm_pred.predict_dataset(llm_dataset, evaluate_on=["train", "test"],
                                        results_file_path=Path("results.json"))
