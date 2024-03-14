@@ -54,20 +54,34 @@ class ExperimentRunner:
         }
         return entry_experiment
 
-    def save_results_to_json(self, entry_experiment: dict, template_name: str) -> Path:
+    def get_result_file_path(self, template_name: str, num_demos: int) -> Path:
+        """
+        Returns the path to the results file.
+        @param template_name: The name of the template.
+        @param num_demos: The number of demos (The number of demonstrations for in-context learning).
+        @return: The path to the results file.
+        """
+        json_file_name = "experiment_" + template_name + ".json"
+        num_of_shot_str = "zero" if num_demos == 0 else "one" if num_demos == 1 else "two" if num_demos == 2 \
+            else None
+        if num_of_shot_str is None:
+            raise ValueError(f"num_demos should be between 0 and 2, but it is {num_demos}.")
+        num_of_shot_icl = f"{num_of_shot_str}_shot"
+        results_path = ExperimentConstants.RESULTS_PATH
+        results_file_path = results_path / self.args.card.split('cards.')[1] / num_of_shot_icl / json_file_name
+        results_file_path.parent.mkdir(parents=True, exist_ok=True)
+        print(f"Results will be saved in {results_file_path}")
+        return results_file_path
+
+    def save_results_to_json(self, entry_experiment: dict, template_name: str, num_demos: int) -> Path:
         """
         Saves the results to a json file.
         @param entry_experiment: The entry for the experiment.
         @param template_name: The name of the template.
+        @param num_demos: The number of demos (The number of demonstrations for in-context learning).
         @return: The path to the results file.
         """
-        json_file_name = "experiment_" + template_name + ".json"
-        results_path = ExperimentConstants.RESULTS_PATH
-        results_file_path = results_path / self.args.card.split('cards.')[1] / json_file_name
-
-        results_file_path.parent.mkdir(parents=True, exist_ok=True)
-        print(f"Results will be saved in {results_file_path}")
-
+        results_file_path = self.get_result_file_path(template_name, num_demos)
         if results_file_path.exists():
             # check if the entry_experiment is equal to the one in the file
             with open(results_file_path, 'r') as json_file:
@@ -99,12 +113,13 @@ class ExperimentRunner:
         llm_dataset = llm_dataset_loader.load()
 
         entry_experiment = self.create_entry_experiment(template_name)
-        results_file_path = self.save_results_to_json(entry_experiment, template_name)
+        results_file_path = self.save_results_to_json(entry_experiment, template_name, self.args.num_demos)
 
         llm_proc = LLMProcessor(self.args.model_name)
         llm_pred = LLMPredictor(llm_proc)
         results = llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
         return results
+
 
 def main():
     args = argparse.ArgumentParser()
