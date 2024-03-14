@@ -1,0 +1,131 @@
+{
+  "card": "cards.sciq",
+  "template_name": "template_0",
+  "model_name": "mistralai/Mistral-7B-Instruct-v0.2",
+  "system_format": "formats.empty",
+  "max_instances": 100,
+  "num_demos": 0,
+  "demos_pool_size": 10,
+  "results": {
+    "train": [
+      {
+        "Index": 0,
+        "Instance": "Context: One way to keep iron from corroding is to keep it painted. The layer of paint prevents the water and oxygen necessary for rust formation from coming into contact with the iron. As long as the paint remains intact, the iron is protected from corrosion. Other strategies include alloying the iron with other metals. For example, stainless steel is mostly iron with a bit of chromium. The chromium tends to collect near the surface, where it forms an oxide layer that protects the iron. Zinc-plated or galvanized iron uses a different strategy. Zinc is more easily oxidized than iron because zinc has a lower reduction potential. Since zinc has a lower reduction potential, it is a more active metal. Thus, even if the zinc coating is scratched, the zinc will still oxidize before the iron. This suggests that this approach should work with other active metals. Another important way to protect metal is to make it the cathode in a galvanic cell. This is cathodic protection and can be used for metals other than just iron. For example, the rusting of underground iron storage tanks and pipes can be prevented or greatly reduced by connecting them to a more active metal such as zinc or magnesium (Figure 17.18). This is also used to protect the metal parts in water heaters. The more active metals (lower reduction potential) are called sacrificial anodes because as they get used up as they corrode (oxidize) at the anode. The metal being protected serves as the cathode, and so does not oxidize (corrode). When the anodes are properly monitored and periodically replaced, the useful lifetime of the iron storage tank can be greatly extended. Question: Zinc is more easily oxidized than iron because zinc has a lower reduction potential. since zinc has a lower reduction potential, it is a more what? Choices: A. much metal B. Trap metal C. active metal D. usually metal Answer:\n",
+        "Result": "\nC. active metal",
+        "GroundTruth": "C"
+      },
+      {
+        "Index": 1,
+        "Instance": "Context: Most animal behaviors are controlled by both genes and experiences in a given environment. Question: What is controlled by both genes and experiences in a given envionment? Choices: A. animal behaviors B. reflexes C. instincts D. learned behaviors Answer:\n",
+        "Result": "\nThe correct answer is",
+        "GroundTruth": "A"
+      },
+      {
+        "Index": 2,
+        "Instance": "Context: The information listed at the right of the label tells you what to look for. At the top of the label, look for the serving size. The serving size tells you how much of the food you should eat to get the nutrients listed on the label. A cup of food from the label pictured below is a serving. The calories in one serving are listed next. In this food, there are 250 calories per serving. Question: What tells you how much of the food you should eat to get the nutrients listed on the label? Choices: A. scoop size B. regular size C. longer size D. serving size Answer:\n",
+        "Result": "\nD. serving size",
+        "GroundTruth": "D"
+      },
+      {
+        "Index": 3,
+        "Instance": "Context: Nuclear symbols are used to write nuclear equations for radioactive decay. Let\u2019s consider the example of the beta-minus decay of thorium-234 to protactinium-234. This reaction is represented by the equation:. Question: What are used to write nuclear equations for radioactive decay? Choices: A. critical symbols B. nuclear symbols C. trigonometric symbols D. radioactive symbols Answer:\n",
+        "Result": "\nB. nuclear symbols",
+        "GroundTruth": "B"
+      },
+      {
+        "Index": 4,
+        "Instance": "Context: Gene transcription is controlled by regulatory proteins that bind to regulatory elements on DNA. The proteins usually either activate or repress transcription. Question: What is controlled by regulatory proteins that bind to regulatory elements on dna? Choices: A. gene transcription B. amino acids C. substance transcription D. mRNA Answer:\n",
+        "Result": "\nA. gene trans",
+        "GroundTruth": "A"
+      },
+      {
+        "Index": 5,
+        "Instance": "Context: Occurrence, Preparation, and Compounds of Boron and Silicon Boron constitutes less than 0.001% by weight of the earth\u2019s crust. In nature, it only occurs in compounds with oxygen. Boron is widely distributed in volcanic regions as boric acid, B(OH)3, and in dry lake regions, including the desert areas of California, as borates and salts of boron oxyacids, such as borax, Na2B4O7\u22c510H2O. Elemental boron is chemically inert at room temperature, reacting with only fluorine and oxygen to form boron trifluoride, BF3, and boric oxide, B2O3, respectively. At higher temperatures, boron reacts with all nonmetals, except tellurium and the noble gases, and with nearly all metals; it oxidizes to B2O3 when heated with concentrated nitric or sulfuric acid. Boron does not react with nonoxidizing acids. Many boron compounds react readily with water to give boric acid, B(OH)3 (sometimes written as H3BO3). Reduction of boric oxide with magnesium powder forms boron (95\u201398.5% pure) as a brown, amorphous powder: B 2 O 3(s) + 3Mg(s) \u27f6 2B(s) + 3MgO(s) An amorphous substance is a material that appears to be a solid, but does not have a long-range order like a true solid. Treatment with hydrochloric acid removes the magnesium oxide. Further purification of the boron begins with conversion of the impure boron into boron trichloride. The next step is to heat a mixture of boron trichloride and hydrogen: 1500 \u00b0C. Question: Boron only occurs naturally in compounds with what element? Choices: A. carbon B. nitrogen C. helium D. oxygen Answer:\n",
+        "Result": "\nD. oxygen",
+        "GroundTruth": "D"
+      },
+      {
+        "Index": 6,
+        "Instance": "Context: 42.1 Circulatory systems link exchange surfaces with cells throughout the body. Question: What organ systems link exchange surfaces with cells throughout the body? Choices: A. circulatory B. nervous C. pulmonary D. vascular Answer:\n",
+        "Result": "\nThe correct answer is",
+        "GroundTruth": "A"
+      },
+      {
+        "Index": 7,
+        "Instance": "Context: An allergy occurs when the immune system attacks a harmless substance that enters the body from the outside. A substance that causes an allergy is called an allergen. It is the immune system, not the allergen, that causes the symptoms of an allergy. Question: What occurs when the immune system attacks a harmless substance that enters the body from the outside? Choices: A. allergy B. plague C. panic attack D. nausea Answer:\n",
+        "Result": "\nA. allergy",
+        "GroundTruth": "A"
+      },
+      {
+        "Index": 8,
+        "Instance": "Context: Fertilization is the union of a sperm and egg, resulting in the formation of a zygote. Question: Fertilization is the union of a sperm and egg, resulting in the formation of what? Choices: A. a nuclei B. a zygote C. a cytoplasm D. a bacteriophage Answer:\n",
+        "Result": "\nThe correct answer is",
+        "GroundTruth": "B"
+      },
+      {
+        "Index": 9,
+        "Instance": "Context: All plants have a characteristic life cycle that includes alternation of generations . Plants alternate between haploid and diploid generations. Alternation of generations allows for both asexual and sexual reproduction. Asexual reproduction with spores produces haploid individuals called gametophytes . Sexual reproduction with gametes and fertilization produces diploid individuals called sporophytes . A typical plant\u2019s life cycle is diagrammed in Figure below . Question: The plants alternation between haploid and diploud generations allow it to do what? Choices: A. reproduce asexually and biologically B. reproduce asexually and simultaneously C. reproduce asexually and sexually D. reproduce sexually and autonomously Answer:\n",
+        "Result": "\nC. reproduce a",
+        "GroundTruth": "C"
+      },
+      {
+        "Index": 10,
+        "Instance": "Context: Enzymes are critical to the body\u2019s healthy functioning. They assist, for example, with the breakdown of food and its conversion to energy. In fact, most of the chemical reactions in the body are facilitated by enzymes. Question: Most of the chemical reactions in the body are facilitated by what? Choices: A. enzymes B. carbohydrates C. proteins D. vitamins Answer:\n",
+        "Result": "\nA. enzym",
+        "GroundTruth": "A"
+      },
+      {
+        "Index": 11,
+        "Instance": "Context:  Question: What is the termination of a pregnancy in progress called? Choices: A. delivery B. abortion C. miscarriage D. contraception Answer:\n",
+        "Result": "\nC. miscar",
+        "GroundTruth": "B"
+      },
+      {
+        "Index": 12,
+        "Instance": "Context: Cutting down on the use of chemical fertilizers is one way to prevent dead zones in bodies of water. Preserving wetlands is also important. Wetlands are habitats such as swamps, marshes, and bogs where the ground is soggy or covered with water much of the year. Wetlands slow down and filter runoff before it reaches bodies of water. Wetlands also provide breeding grounds for many different species of organisms. Question: Cutting down on the use of chemical fertilizers and preserving wetlands are ways to prevent what \"unlivable\" regions in bodies of water? Choices: A. inhabitable zones B. fresh zones C. hostile zones D. dead zones Answer:\n",
+        "Result": "\nD. dead zones",
+        "GroundTruth": "D"
+      },
+      {
+        "Index": 13,
+        "Instance": "Context: Intrinsic Muscles of the Hand The intrinsic muscles of the hand both originate and insert within it (Figure 11.28). These muscles allow your fingers to also make precise movements for actions, such as typing or writing. These muscles are divided into three groups. The thenar muscles are on the radial aspect of the palm. The hypothenar muscles are on the medial aspect of the palm, and the intermediate muscles are midpalmar. The thenar muscles include the abductor pollicis brevis, opponens pollicis, flexor pollicis brevis, and the adductor pollicis. These muscles form the thenar eminence, the rounded contour of the base of the thumb, and all act on the thumb. The movements of the thumb play an integral role in most precise movements of the hand. The hypothenar muscles include the abductor digiti minimi, flexor digiti minimi brevis, and the opponens digiti minimi. These muscles form the hypothenar eminence, the rounded contour of the little finger, and as such, they all act on the little finger. Finally, the intermediate muscles act on all the fingers and include the lumbrical, the palmar interossei, and the dorsal interossei. Question: Which muscles allow your fingers to also make precise movements for actions? Choices: A. motoric muscles B. intrinsic muscles C. paired muscles D. fine movement muscles Answer:\n",
+        "Result": "\nB. intrinsic",
+        "GroundTruth": "B"
+      },
+      {
+        "Index": 14,
+        "Instance": "Context: Usually, testing a hypothesis requires making observations or performing experiments. In this case, we will look into existing scientific literature to see if either of these hypotheses can be disproved, or if one or both can be supported by the data. Question: Testing what usually requires making observations or performing experiments? Choices: A. homeostasis B. conclusion C. hypothesis D. variables Answer:\n",
+        "Result": "\nA. testing a",
+        "GroundTruth": "C"
+      },
+      {
+        "Index": 15,
+        "Instance": "Context: any other electron, they become a part of the molecule\u2019s electron system.204 This sharing of electrons produces what is known as a covalent bond. Covalent bonds are ~20 to 50 times stronger than van der Waals interactions. What exactly does that mean? Basically, it takes 20 to 50 times more energy to break a covalent bond compared to a van der Waals interaction. While the bonded form of atoms in a molecule is always more stable than the unbounded form, it may not be stable enough to withstand the energy delivered through collisions with neighboring molecules. Different bonds between different atoms in different molecular contexts differ in terms of bond stability; the bond energy refers the energy needed to break a particular bond. A molecule is stable if the bond energies associated with bonded atoms within the molecule are high enough to survive the energy delivered to the molecule through either collisions with neighboring molecules or the absorption of energy (light). When atoms form a covalent bond, their individual van der Waals surfaces merge to produce a new molecular van der Waals surface. There are a number of ways to draw molecules, but the spacefilling or van der Waals surface view is the most realistic (at least for our purposes). While realistic it can also be confusing, since it obscures the underlying molecular structure, that is, how the atoms in the molecule are linked together. This can be seen in this set of representations of the simple molecule 2methylpropane (\u2192).205 As molecules become larger, as is the case with many biologically important molecules, it can become impossible to appreciate their underlying organization based on a van der Waals surface representation. Because they form a new stable entity, it is not surprising (perhaps) that the properties of a molecule are quite distinct from, although certainly influenced by, the properties of the atoms from which they are composed. To a first order approximation, a molecule\u2019s properties are based on its shape, which is dictated by how the various atoms withjn the molecule are connected to one another. These geometries are imposed by each atom\u2019s underlying quantum mechanical properties and (particularly as molecules get larger, as they so often do in biological systems) the interactions between different parts of the molecule with one another. Some atoms, common to biological systems, such as hydrogen (H), can form only a single covalent bond. Others can make two (oxygen (O) and sulfur (S)), three (nitrogen (N)), four (carbon (C)), or five (phosphorus (P)) bonds. In addition to smaller molecules, biological systems contain a number of distinct types of extremely large molecules, composed of many thousands of atoms; these are known as macromolecules. Such macromolecules are not rigid; they can often fold back on themselves leading to intramolecular interactions. There are also interactions between molecules. The strength and specificity of these interactions can vary dramatically and even small changes in molecular structure (such as caused by mutations and allelic variations) can have dramatic effects. Question: This sharing of electrons produces what is known as a covalent bond. covalent bonds are ~20 to 50 times stronger than what? Choices: A. gravitational pull B. Mendelian systems C. van der waals interactions D. Newton's third law Answer:\n",
+        "Result": "\nC. van der",
+        "GroundTruth": "C"
+      },
+      {
+        "Index": 16,
+        "Instance": "Context: Water molecules move about continuously due to their kinetic energy. When a crystal of sodium chloride is placed into water, the water\u2019s molecules collide with the crystal lattice. Recall that the crystal lattice is composed of alternating positive and negative ions. Water is attracted to the sodium chloride crystal because water is polar and has both a positive and a negative end. The positively charged sodium ions in the crystal attract the oxygen end of the water molecules because they are partially negative. The negatively charged chloride ions in the crystal attract the hydrogen end of the water molecules because they are partially positive. The action of the polar water molecules takes the crystal lattice apart (see image below). Question: Water molecules move about continuously due to what type of energy? Choices: A. kinetic B. optical C. seismic D. potential Answer:\n",
+        "Result": "\nA. kinet",
+        "GroundTruth": "A"
+      },
+      {
+        "Index": 17,
+        "Instance": "Context: Geologic maps display rock units and geologic features. A small scale map displays individual rock units while a large scale map shows geologic provinces. Question: A small scale version of what type of map displays individual rock units? Choices: A. seismic map B. geologic map C. polar map D. geographic map Answer:\n",
+        "Result": "\nB. geolog",
+        "GroundTruth": "B"
+      },
+      {
+        "Index": 18,
+        "Instance": "Context: One idea is that evolution happens. Evolution is a change in the inherited traits of organisms over time. Living things have changed as descendants diverged from common ancestors in the past. Question: What is defined as a change in the inherited traits of organisms over time? Choices: A. generation B. divergence C. evolution D. variation Answer:\n",
+        "Result": "\nC. evolution\n",
+        "GroundTruth": "C"
+      },
+      {
+        "Index": 19,
+        "Instance": "Context: What causes puberty to begin? The hypothalamus in the brain \u201ctells\u201d the pituitary gland to secrete hormones that target the testes. The main pituitary hormone involved is luteinizing hormone (LH) . It stimulates the testes to secrete testosterone. Testosterone, in turn, promotes protein synthesis and growth. It brings about most of the physical changes of puberty, some of which are shown in Figure below . In addition to the changes shown below, during puberty male facial hair begins to grow, the shoulders broaden, and the male voice deepens. You can watch an animation of these and other changes that occur in boys during puberty at the Interactive Body link: http://www. bbc. co. uk/science/humanbody/body/interactives/lifecycle/teenagers/ . Question: What hormone, which is associated with luteinizing hormone and male sexuality, helps bring about physical changes in puberty? Choices: A. epinephrine B. estrogen C. testosterone D. steroids Answer:\n",
+        "Result": "\nC. testoster",
+        "GroundTruth": "C"
+      },
+      {
