@@ -42,31 +42,36 @@ class LLMPredictor:
         print(colored(f"{len(eval_set)} instances were already predicted and will be skipped.", "red"))
         # print in green the number of instances that will be predicted
         print(colored(f"{len(filter_eval_set)} instances will be predicted.", "green"))
-        results = []
-        # run the model on the dataset and save the results in the file after each batch
-        idxs = []
-        input_texts = []
-        ground_truths = []
 
+        loaded_data = self.load_results_file(results_file_path)
+        # each result is a dictionary with the keys: 'idx', 'input_text', 'result', 'ground_truth'.
+        # create a list of the indexes of the instances that were already predicted
+
+        loaded_results = loaded_data['results']
+
+        loaded_idxs = [result['idx'] for result in loaded_results]
+        loaded_input_texts = [result['input_text'] for result in loaded_results]
+        loaded_ground_truths = [result['ground_truth'] for result in loaded_results]
+        loaded_answers = [result['result'] for result in loaded_results]
+
+        # run the model on the dataset and save the results in the file after each batch
         counter_idx = 0
         for idx, instance in zip(filter_eval_set_indexes, filter_eval_set):
             counter_idx += 1
             input_text = instance["source"]
             ground_truth = instance["target"]
             result = self.llmp.predict(input_text)
-            idxs.append(idx)
-            input_texts.append(input_text)
-            ground_truths.append(ground_truth)
-            results.append(result)
+            loaded_idxs.append(idx)
+            loaded_input_texts.append(input_text)
+            loaded_ground_truths.append(ground_truth)
+            loaded_answers.append(result)
             if counter_idx % self.batch_size == 0:
-                self.save_results(results_file_path, eval_value, idxs, input_texts, results, ground_truths)
-                idxs = []
-                input_texts = []
-                ground_truths = []
-                results = []
-        # save the remaining results if there are any
+                self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
+                                  loaded_ground_truths, loaded_data)
+                # save the remaining results if there are any
         if len(results) > 0:
-            self.save_results(results_file_path, eval_value, idxs, input_texts, results, ground_truths)
+            self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
+                              loaded_ground_truths, loaded_data)
 
         return results
 
@@ -98,7 +103,8 @@ class LLMPredictor:
         return data
 
     def save_results(self, results_file_path: Path, eval_value: str,
-                     idxs: List[int], input_texts: List[str], results: List[str], ground_truths: List[str]) -> None:
+                     idxs: List[int], input_texts: List[str], results: List[str], ground_truths: List[str],
+                     loaded_data: dict) -> None:
         """
         Save the results in a JSON file.
 
@@ -109,20 +115,12 @@ class LLMPredictor:
         @param results: The model predictions.
         @param ground_truths: The ground truth of the instances.
 
-
-
         """
 
-        data = self.load_results_file(results_file_path)
-        loaded_results = data['results']
         entries = self.create_entries(idxs, input_texts, results, ground_truths)
-        if eval_value in loaded_results:
-            loaded_results[eval_value].extend(entries)
-        else:
-            loaded_results[eval_value] = entries
-        data['results'] = loaded_results
+        loaded_data['results'][eval_value] = entries
         with open(results_file_path, "w") as f:
-            json.dump(data, f)
+            json.dump(loaded_data, f)
 
     def create_entries(self, idxs: List[int], input_texts: List[str], results: List[str], ground_truths: List[str]):
         """
