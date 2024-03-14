@@ -140,4 +140,12 @@ def main():
 
 
 if __name__ == "__main__":
+    # measure the time of the experiment
+    import time
+    from termcolor import colored
+    start = time.time()
     main()
+    end = time.time()
+    # print the time of the experiment in minutes (blue color)
+    print(colored(f"Time of the experiment: {round((end - start) / 60, 2)} minutes", "blue"))
+
