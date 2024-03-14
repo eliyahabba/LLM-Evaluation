@@ -5,6 +5,8 @@
     "target_field": "answer",
     "choices_seperator": " | ",
     "enumerator": "roman",
+    "source_choice_format": "{choice_numeral}. {choice_text}",
+    "target_choice_format": "{choice_numeral}",
     "postprocessors": [
         "processors.first_character"
     ]
