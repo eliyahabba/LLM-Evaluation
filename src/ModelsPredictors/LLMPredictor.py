@@ -46,12 +46,12 @@ class LLMPredictor:
         # each result is a dictionary with the keys: 'idx', 'input_text', 'result', 'ground_truth'.
         # create a list of the indexes of the instances that were already predicted
 
-        loaded_results = loaded_data['results']
+        loaded_results = loaded_data['results'][eval_value]
 
-        loaded_idxs = [result['idx'] for result in loaded_results]
-        loaded_input_texts = [result['input_text'] for result in loaded_results]
-        loaded_ground_truths = [result['ground_truth'] for result in loaded_results]
-        loaded_answers = [result['result'] for result in loaded_results]
+        loaded_idxs = [result['Index'] for result in loaded_results]
+        loaded_input_texts = [result['Instance'] for result in loaded_results]
+        loaded_ground_truths = [result['GroundTruth'] for result in loaded_results]
+        loaded_answers = [result['Result'] for result in loaded_results]
 
         # run the model on the dataset and save the results in the file after each batch
         counter_idx = 0
