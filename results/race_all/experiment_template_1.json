@@ -1,0 +1,12 @@
+{
+  "card": "cards.race_all",
+  "template_name": "template_1",
+  "model_name": "mistralai/Mistral-7B-Instruct-v0.2",
+  "system_format": "formats.empty",
+  "max_instances": 100,
+  "num_demos": 1,
+  "demos_pool_size": 10,
+  "results": {
+    "train": []
+  }
+}

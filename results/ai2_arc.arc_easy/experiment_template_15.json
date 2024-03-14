@@ -1,0 +1,163 @@
+{
+  "card": "cards.ai2_arc.arc_easy",
+  "template_name": "template_15",
+  "model_name": "mistralai/Mistral-7B-Instruct-v0.2",
+  "system_format": "formats.empty",
+  "max_instances": 100,
+  "num_demos": 1,
+  "demos_pool_size": 10,
+  "results": {
+    "train": [
+      {
+        "Index": 0,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which of the following events during meiosis contributes most to the variation within a species? Answers: 1. pairing of chromosomes\n2. creation of haploid gametes\n3. segregation of alleles\n4. separation of chromatids Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: Which of the following was probably most important in the formation of dark, fertile soil that is good for farming? Answers: 1. plant decomposition\n2. radioactive decay\n3. water erosion\n4. wind erosion Answer:\n",
+        "Result": "1.\n\n",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 1,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which of the following is an example of an assistive device? Answers: 1. contact lens\n2. motorcycle\n3. raincoat\n4. coffee pot Answer:\n 1\n\nThe following are multiple choice questions (with answers) about science. Question: When igneous rock is changed into metamorphic rock, which form of energy is this process? Answers: 1. heat\n2. chemical\n3. magnetic\n4. light Answer:\n",
+        "Result": "1\n\nThe",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 2,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: A chewable calcium carbonate tablet is a common treatment for stomach discomfort. Calcium carbonate is most likely used as this type of medicine because calcium carbonate Answers: 1. has a pleasant flavor.\n2. is inexpensive to produce.\n3. neutralizes digestive acid.\n4. occurs naturally in the body. Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: In humans, the digestion process begins in Answers: 1. the intestine, with squeezing.\n2. the mouth, with chewing and saliva.\n3. the stomach, with churning and acid.\n4. the esophagus, with pushing towards the stomach. Answer:\n",
+        "Result": "2\n\nThe",
+        "GroundTruth": "2"
+      },
+      {
+        "Index": 3,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which two body systems are directly involved in movement? Answers: 1. muscular and skeletal\n2. digestive and muscular\n3. skeletal and respiratory\n4. respiratory and digestive Answer:\n 1\n\nThe following are multiple choice questions (with answers) about science. Question: Which of these items contains only a solution? Answers: 1. a jar of pickles\n2. a bottle of juice\n3. a bag of peanuts\n4. a can of mixed fruit Answer:\n",
+        "Result": "2\n\nThe",
+        "GroundTruth": "2"
+      },
+      {
+        "Index": 4,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which two body systems are directly involved in movement? Answers: 1. muscular and skeletal\n2. digestive and muscular\n3. skeletal and respiratory\n4. respiratory and digestive Answer:\n 1\n\nThe following are multiple choice questions (with answers) about science. Question: Many natural rock formations change color over time. In Utah, for example, iron oxidized and formed red, orange, and yellow rock. Which of the following is the cause of this change? Answers: 1. chemical weathering\n2. mechanical weathering\n3. water erosion\n4. wind erosion Answer:\n",
+        "Result": "1\n\nThe",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 5,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which of the following is an example of an assistive device? Answers: 1. contact lens\n2. motorcycle\n3. raincoat\n4. coffee pot Answer:\n 1\n\nThe following are multiple choice questions (with answers) about science. Question: A population of small, plant-eating beetles lives in a forest. About half of the beetles are light brown and the others are dark green. If years of drought cause the area to become dry with few trees, what would the beetle population most likely look like after several generations? Answers: 1. It would be mostly light brown beetles.\n2. It would be mostly dark green beetles.\n3. It would be mostly carnivorous beetles.\n4. It would be mostly very large beetles. Answer:\n",
+        "Result": "1\n\nThe following",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 6,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: A chewable calcium carbonate tablet is a common treatment for stomach discomfort. Calcium carbonate is most likely used as this type of medicine because calcium carbonate Answers: 1. has a pleasant flavor.\n2. is inexpensive to produce.\n3. neutralizes digestive acid.\n4. occurs naturally in the body. Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: A scientist wanting to document a change in a river's flow pattern should observe a river over a period of Answers: 1. days.\n2. weeks.\n3. months.\n4. years. Answer:\n",
+        "Result": "3\n\nThe",
+        "GroundTruth": "4"
+      },
+      {
+        "Index": 7,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which change in the state of water particles causes the particles to become arranged in a fixed position? Answers: 1. boiling\n2. melting\n3. freezing\n4. evaporating Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: Automobile engines built today are designed to be gas efficient. Gas-efficient engines most likely affect a city by reducing Answers: 1. air pollution.\n2. heat pollution.\n3. noise pollution.\n4. light pollution. Answer:\n",
+        "Result": "1\n\nThe",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 8,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which of the following events during meiosis contributes most to the variation within a species? Answers: 1. pairing of chromosomes\n2. creation of haploid gametes\n3. segregation of alleles\n4. separation of chromatids Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: A student in an empty classroom shouts, \"Hello!\" Which best explains what the student hears after the shout? Answers: 1. an increased loudness of sound\n2. a reflection of sound\n3. an increased frequency of sound\n4. a refraction of sound Answer:\n",
+        "Result": "1.\n\n",
+        "GroundTruth": "2"
+      },
+      {
+        "Index": 9,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Lichens are symbiotic organisms made of green algae and fungi. What do the green algae supply to the fungi in this symbiotic relationship? Answers: 1. carbon dioxide\n2. food\n3. protection\n4. water Answer:\n 2\n\nThe following are multiple choice questions (with answers) about science. Question: Which type of energy in gasoline is transformed into mechanical energy in a motorcycle engine? Answers: 1. chemical\n2. nuclear\n3. magnetic\n4. electrical Answer:\n",
+        "Result": "1\n\nThe",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 10,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which of the following events during meiosis contributes most to the variation within a species? Answers: 1. pairing of chromosomes\n2. creation of haploid gametes\n3. segregation of alleles\n4. separation of chromatids Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: A student standing near a campfire feels warmer as the fire grows. Which process most likely transfers heat from the campfire to the student? Answers: 1. conduction\n2. convection\n3. radiation\n4. transformation Answer:\n",
+        "Result": "1. conduction",
+        "GroundTruth": "3"
+      },
+      {
+        "Index": 11,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Earth's core is primarily composed of which of the following materials? Answers: 1. basalt\n2. iron\n3. magma\n4. quartz Answer:\n 2\n\nThe following are multiple choice questions (with answers) about science. Question: In snapdragon plants, red flowers are dominant to white flowers. When red-flowered plants are crossed with white-flowered plants, pink flowers are produced. If a researcher wants to produce plants with only white flowers, what color should the parent plants be? Answers: 1. both red\n2. both white\n3. one red and one white\n4. one white and one pink Answer:\n",
+        "Result": "2\n\nThe",
+        "GroundTruth": "2"
+      },
+      {
+        "Index": 12,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which change in the state of water particles causes the particles to become arranged in a fixed position? Answers: 1. boiling\n2. melting\n3. freezing\n4. evaporating Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: Scientists use the term \"light year\" to describe Answers: 1. how fast light travels in space.\n2. the distance light travels in one year.\n3. how large the diameters of different stars are.\n4. the time it takes the Sun to move through the galaxy. Answer:\n",
+        "Result": "2\n\nThe",
+        "GroundTruth": "2"
+      },
+      {
+        "Index": 13,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Earth's core is primarily composed of which of the following materials? Answers: 1. basalt\n2. iron\n3. magma\n4. quartz Answer:\n 2\n\nThe following are multiple choice questions (with answers) about science. Question: Plate movement can form different features on Earth. The movement of tectonic plates can be both a constructive and a destructive force. At which type of plate boundary is new crust formed? Answers: 1. convergent\n2. subduction\n3. transform\n4. divergent Answer:\n",
+        "Result": "4\n\nThe",
+        "GroundTruth": "4"
+      },
+      {
+        "Index": 14,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: When a switch is used in an electrical circuit, the switch can Answers: 1. cause the charge to build.\n2. increase and decrease the voltage.\n3. cause the current to change direction.\n4. stop and start the flow of current. Answer:\n 4\n\nThe following are multiple choice questions (with answers) about science. Question: Which group of organisms can show significant trait changes in the shortest period of time? Answers: 1. bacteria\n2. birds\n3. fish\n4. reptiles Answer:\n",
+        "Result": "1\n\nThe",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 15,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: A chewable calcium carbonate tablet is a common treatment for stomach discomfort. Calcium carbonate is most likely used as this type of medicine because calcium carbonate Answers: 1. has a pleasant flavor.\n2. is inexpensive to produce.\n3. neutralizes digestive acid.\n4. occurs naturally in the body. Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: Peach trees have sweet-smelling blossoms and produce rich fruit. What is the main purpose of the flowers of a peach tree? Answers: 1. to attract bees for pollination\n2. to create flower arrangements\n3. to protect the tree from disease\n4. to feed migratory birds Answer:\n",
+        "Result": "1\n\nThe",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 16,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which of the following is an example of an assistive device? Answers: 1. contact lens\n2. motorcycle\n3. raincoat\n4. coffee pot Answer:\n 1\n\nThe following are multiple choice questions (with answers) about science. Question: A group of students are researching changes in climate in their region. Which of these would best provide evidence of changes in temperature and rainfall over a period of years? Answers: 1. tree rings\n2. pollen samples\n3. harvest production\n4. carbon dating Answer:\n",
+        "Result": "1\n\nThe",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 17,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: When a switch is used in an electrical circuit, the switch can Answers: 1. cause the charge to build.\n2. increase and decrease the voltage.\n3. cause the current to change direction.\n4. stop and start the flow of current. Answer:\n 4\n\nThe following are multiple choice questions (with answers) about science. Question: Which of these would help to prevent infections from occurring in small cuts and scrapes? Answers: 1. apply a cold ice pack\n2. raise the injured area\n3. apply pressure to stop bleeding\n4. wash the area with warm, soapy water Answer:\n",
+        "Result": "4\n\nThe",
+        "GroundTruth": "4"
+      },
+      {
+        "Index": 18,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which of the following events during meiosis contributes most to the variation within a species? Answers: 1. pairing of chromosomes\n2. creation of haploid gametes\n3. segregation of alleles\n4. separation of chromatids Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: Which best describes why winds at the beach change direction between day and night? Answers: 1. because the temperatures over land and over water change\n2. because warm air over land sinks and stays in place over land\n3. because cool air rises and is replaced by warm air from the ocean\n4. because cool air sinks and stays in place over land Answer:\n",
+        "Result": "1.\n\n",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 19,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which of the following events during meiosis contributes most to the variation within a species? Answers: 1. pairing of chromosomes\n2. creation of haploid gametes\n3. segregation of alleles\n4. separation of chromatids Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: Soil erosion can be best prevented by Answers: 1. removing grass from the steepest slope.\n2. building terraces into the sides of a slope.\n3. heavily watering the vegetation on the slope.\n4. increasing the slope of the land by adding more soil. Answer:\n",
+        "Result": "2.\n\n",
+        "GroundTruth": "2"
+      },
+      {
+        "Index": 20,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Earth's core is primarily composed of which of the following materials? Answers: 1. basalt\n2. iron\n3. magma\n4. quartz Answer:\n 2\n\nThe following are multiple choice questions (with answers) about science. Question: Which of the following properties provides the BEST way to identify a mineral? Answers: 1. hardness\n2. shape\n3. size\n4. temperature Answer:\n",
+        "Result": "1\n\nThe",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 21,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which factor will most likely cause a person to develop a fever? Answers: 1. a leg muscle relaxing after exercise\n2. a bacterial population in the bloodstream\n3. several viral particles on the skin\n4. carbohydrates being digested in the stomach Answer:\n 2\n\nThe following are multiple choice questions (with answers) about science. Question: Which sequence represents the order of development for many plants? Answers: 1. seed develops inside fruit -> seed is dispersed -> seed germinates -> plant grows\n2. seed is dispersed -> seed develops inside fruit -> seed germinates -> plant grows\n3. seed germinates -> plant grows -> seed is dispersed -> seed develops inside fruit\n4. seed is dispersed -> plant grows -> seed germinates -> seed develops inside fruit Answer:\n",
+        "Result": "1\n\nThe following",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 22,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which of the following events during meiosis contributes most to the variation within a species? Answers: 1. pairing of chromosomes\n2. creation of haploid gametes\n3. segregation of alleles\n4. separation of chromatids Answer:\n 3\n\nThe following are multiple choice questions (with answers) about science. Question: When ice cream is left out of a freezer, the ice cream changes from a ___. Answers: 1. solid to a gas\n2. gas to a liquid\n3. solid to a liquid\n4. liquid to a gas Answer:\n",
+        "Result": "2\n\nThe",
+        "GroundTruth": "3"
+      },
+      {
+        "Index": 23,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: Which two body systems are directly involved in movement? Answers: 1. muscular and skeletal\n2. digestive and muscular\n3. skeletal and respiratory\n4. respiratory and digestive Answer:\n 1\n\nThe following are multiple choice questions (with answers) about science. Question: Which equipment will best separate a mixture of iron filings and black pepper? Answers: 1. magnet\n2. filter paper\n3. triple-beam balance\n4. voltmeter Answer:\n",
+        "Result": "1\n\nThe",
+        "GroundTruth": "1"
+      },
+      {
+        "Index": 24,
+        "Instance": "The following are multiple choice questions (with answers) about science. Question: When a switch is used in an electrical circuit, the switch can Answers: 1. cause the charge to build.\n2. increase and decrease the voltage.\n3. cause the current to change direction.\n4. stop and start the flow of current. Answer:\n 4\n\nThe following are multiple choice questions (with answers) about science. Question: Which characteristic is shared by all cells? Answers: 1. They need energy.\n2. They reproduce sexually.\n3. They make their own food.\n4. They move from place to place. Answer:\n",
+        "Result": "1\n\nThe following",
+        "GroundTruth": "1"
+      }
+    ]
+  }
+}
