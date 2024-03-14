@@ -16,10 +16,10 @@ metric = evaluate.load("unitxt/metric")
 
 
 class EvaluateModel:
-    def __init__(self, results_file: Path, eval_on: str):
+    def __init__(self, results_file: Path, eval_on_value: str):
         self.experiment = None
         self.results_file = results_file
-        self.eval_on = eval_on
+        self.eval_on_value = eval_on_value
 
     def load_experiment_file(self):
         """
@@ -57,18 +57,20 @@ class EvaluateModel:
         @return: the scores
         """
         results, llm_dataset = self.load_results_and_dataset()
+        if self.eval_on_value not in results:
+            return None
         predictions, references = self.get_predictions_and_references(results, llm_dataset)
         scores = metric.compute(predictions=predictions, references=references)
         self.save_scores(scores)
         return scores
 
     def get_predictions_and_references(self, results, llm_dataset):
-        results_to_eval = results[self.eval_on]
+        results_to_eval = results[self.eval_on_value]
         predictions = [result['Result'] for result in results_to_eval]
         predictions_idx = [result['Index'] for result in results_to_eval]
         predictions = [" ".join(prediction) if isinstance(prediction, list) else prediction for prediction in
                        predictions]
-        reference_dataset = llm_dataset.dataset[self.eval_on]
+        reference_dataset = llm_dataset.dataset[self.eval_on_value]
         # get the references for the predictions that were made
         reference_dataset = [reference_dataset[idx] for idx in predictions_idx]
         return predictions, reference_dataset
@@ -89,7 +91,7 @@ class EvaluateModel:
 
         card_name = scores_df['card'].values[0]
         folder_path = self.results_file.parent
-        file_path = folder_path / f"{card_name}_scores.csv"
+        file_path = folder_path / f"{card_name}_scores_{self.eval_on_value}_data.csv"
         if not file_path.exists():
             scores_df.to_csv(file_path)
         else:
@@ -97,7 +99,8 @@ class EvaluateModel:
             if scores_df.index[0] in scores_df.index:
                 current_scores_df = pd.read_csv(file_path, index_col=0)
                 current_scores_df.loc[scores_df.index[0]] = scores_df.loc[scores_df.index[0]]
-                current_scores_df.sort_index(inplace=True, key=lambda x: x.str.extract(r'(\d+)', expand=False).astype(int))
+                current_scores_df.sort_index(inplace=True,
+                                             key=lambda x: x.str.extract(r'(\d+)', expand=False).astype(int))
                 current_scores_df.to_csv(file_path)
             else:
                 scores_df.sort_index(inplace=True, key=lambda x: x.str.extract(r'(\d+)', expand=False).astype(int))
@@ -111,6 +114,10 @@ if __name__ == "__main__":
 
     for dataset_folder in [file for file in results_folder.glob("*") if file.is_dir()]:
         for results_file in tqdm(dataset_folder.glob("*.json")):
-            for eval_on in ExperimentConstants.EVALUATE_ON:
-                eval_model = EvaluateModel(results_file, eval_on)
-                results = eval_model.evaluate()
+            for eval_on_value in ExperimentConstants.EVALUATE_ON:
+                try:
+                    eval_model = EvaluateModel(results_file, eval_on_value)
+                    results = eval_model.evaluate()
+                except Exception as e:
+                    print(f"Error in {results_file}: {e}")
+                    continue
