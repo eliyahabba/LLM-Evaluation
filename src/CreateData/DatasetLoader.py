@@ -23,7 +23,6 @@ class DatasetLoader:
         """
         recipe = StandardRecipe(
             card=self.card,
-            # template="templates.qa.multiple_choice.with_context.no_intro.helm[enumerator=[option 1, option 2]]",
             template=self.template,
             format=self.system_format,
             num_demos=self.num_demos,
