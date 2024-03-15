@@ -45,7 +45,7 @@ class LLMPredictor:
         loaded_data = self.load_results_file(results_file_path)
         # each result is a dictionary with the keys: 'idx', 'input_text', 'result', 'ground_truth'.
         # create a list of the indexes of the instances that were already predicted
-        if eval_value not in loaded_data['results']:
+        if eval_value in loaded_data['results']:
             loaded_results = loaded_data['results'][eval_value]
             loaded_idxs = [result['Index'] for result in loaded_results]
             loaded_input_texts = [result['Instance'] for result in loaded_results]
