@@ -1,14 +1,11 @@
 import json
 from pathlib import Path
 
-from tqdm import tqdm
-
 from src.utils.Constants import Constants
 
 ExperimentConstants = Constants.ExperimentConstants
 
 
-# MAX_DEMOS_POOL_SIZE = ExperimentConstants.MAX_DEMOS_POOL_SIZE
 
 class ExperimentsResults:
     def __init__(self, results_file: Path, eval_on: str):
