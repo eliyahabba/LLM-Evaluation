@@ -1,0 +1,13 @@
+{
+    "type": "multiple_choice_template",
+    "input_format": "Context: {context} Question: {question}. Answers: {choices}",
+    "choices_field": "choices",
+    "target_field": "answer",
+    "choices_seperator": "; ",
+    "enumerator": "numbers",
+    "source_choice_format": "{choice_numeral}. {choice_text}",
+    "target_choice_format": "{choice_numeral}. {choice_text}",
+    "postprocessors": [
+        "processors.first_character"
+    ]
+}
