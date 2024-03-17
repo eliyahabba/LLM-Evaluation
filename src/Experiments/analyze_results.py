@@ -113,11 +113,12 @@ if __name__ == "__main__":
     eval_on = ExperimentConstants.EVALUATE_ON
 
     for dataset_folder in [file for file in results_folder.glob("*") if file.is_dir()]:
-        for results_file in tqdm(dataset_folder.glob("*.json")):
-            for eval_on_value in ExperimentConstants.EVALUATE_ON:
-                try:
-                    eval_model = EvaluateModel(results_file, eval_on_value)
-                    results = eval_model.evaluate()
-                except Exception as e:
-                    print(f"Error in {results_file}: {e}")
-                    continue
+        for shot in [file for file in dataset_folder.glob("*") if file.is_dir()]:
+            for results_file in tqdm(shot.glob("*.json")):
+                for eval_on_value in ExperimentConstants.EVALUATE_ON:
+                    try:
+                        eval_model = EvaluateModel(results_file, eval_on_value)
+                        results = eval_model.evaluate()
+                    except Exception as e:
+                        print(f"Error in {results_file}: {e}")
+                        continue
