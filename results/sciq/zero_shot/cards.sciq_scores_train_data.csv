@@ -1,6 +1,6 @@
 template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,groups_mean_score,number_of_instances
-template_0,cards.sciq,formats.empty,0,10,100,0.000,0.000,accuracy,,,,,0.000,100
-template_1,cards.sciq,formats.empty,0,10,100,0.000,0.000,accuracy,,,,,0.000,100
+template_0,cards.sciq,formats.empty,0,10,100,0.150,0.150,accuracy,0.090,0.230,0.090,0.230,0.150,100
+template_1,cards.sciq,formats.empty,0,10,100,0.900,0.900,accuracy,0.830,0.950,0.830,0.950,0.900,100
 template_2,cards.sciq,formats.empty,0,10,100,0.000,0.000,accuracy,,,,,0.000,100
 template_3,cards.sciq,formats.empty,0,10,100,0.000,0.000,accuracy,,,,,0.000,100
 template_4,cards.sciq,formats.empty,0,10,100,0.000,0.000,accuracy,,,,,0.000,100
