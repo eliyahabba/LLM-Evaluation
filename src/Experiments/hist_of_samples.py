@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Union
 
 import evaluate
+import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
@@ -47,10 +48,11 @@ class EvaluateModel:
         """
         if self.eval_on_value not in results:
             return None
-        predictions, references = self.get_predictions_and_references(results, llm_dataset)
+        predictions, references, predictions_idx = self.get_predictions_and_references(results, llm_dataset)
         scores = metric.compute(predictions=predictions, references=references)
         self.save_scores(scores)
-        return scores
+        scores_by_index = self.parser_predictions(scores, predictions_idx, len(llm_dataset.dataset[self.eval_on_value]))
+        return scores_by_index
 
     def get_predictions_and_references(self, results: dict, llm_dataset: LLMDataset):
         results_to_eval = results[self.eval_on_value]
@@ -61,7 +63,7 @@ class EvaluateModel:
         reference_dataset = llm_dataset.dataset[self.eval_on_value]
         # get the references for the predictions that were made
         reference_dataset = [reference_dataset[idx] for idx in predictions_idx]
-        return predictions, reference_dataset
+        return predictions, reference_dataset, predictions_idx
 
     def create_row_from_metadata(self) -> dict:
         """
@@ -120,6 +122,13 @@ class EvaluateModel:
                 scores_df.sort_index(inplace=True, key=lambda x: x.str.extract(r'(\d+)', expand=False).astype(int))
                 scores_df.to_csv(file_path, mode='a', header=False)
 
+    def parser_predictions(self, scores, predictions_idx, num_of_total_instances):
+        scores_by_index = np.nan * np.zeros(num_of_total_instances)
+        for idx, score in zip(predictions_idx, scores):
+            scores_by_index[idx] = 1 if score['score']['instance']['accuracy'] == 1 else 0
+        return scores_by_index
+        pass
+
 
 def read_experiment(results_file: Path) -> dict:
     """
@@ -169,17 +178,26 @@ if __name__ == "__main__":
         loaded_datasets = {}
         for shot in shots:
             results_files = [file for file in shot.glob("*.json")]
-            # results_files = [file for file in results_files if "template_21" in str(file)]
+            # results_files = [file for file in results_files if "template_0" in str(file)]
+
+            summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in eval_on}
             for results_file in tqdm(results_files):
                 for eval_on_value in ExperimentConstants.EVALUATE_ON:
                     try:
                         llm_dataset = load_dataset(results_file, loaded_datasets)
                         eval_model = EvaluateModel(results_file, eval_on_value)
                         results = eval_model.load_results_from_experiment_file()
-                        scores = eval_model.evaluate(results, llm_dataset)
+                        scores_by_index = eval_model.evaluate(results, llm_dataset)
+                        scores_by_index_series = pd.Series(scores_by_index, name=results_file.stem)
+                        # add the scores to the cumsum df so that the name of the file will be the index
+                        summary_of_accuracy_results[eval_on_value] = pd.concat([summary_of_accuracy_results[eval_on_value], scores_by_index_series], axis=1)
                     except Exception as e:
                         error_files.append(results_file)
                         print(f"Error in {results_file}: {e}")
                         continue
+            for eval_on_value, results_df in summary_of_accuracy_results.items():
+                # sort the columns by the number of the template that in the columns name
+                results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])), axis=1)
+                results_df.to_csv(shot / f"{eval_on_value}_accuracy_results.csv", index=False)
     for file in error_files:
         print(file)
