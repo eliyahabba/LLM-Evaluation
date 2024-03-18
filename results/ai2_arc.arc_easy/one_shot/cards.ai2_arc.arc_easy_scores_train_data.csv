@@ -1,4 +1,4 @@
 template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,groups_mean_score,number_of_instances
-template_14,cards.ai2_arc.arc_easy,formats.empty,1,10,100,0.84,0.84,accuracy,0.64,0.96,0.64,0.96,0.84,25
-template_15,cards.ai2_arc.arc_easy,formats.empty,1,10,100,0.84,0.84,accuracy,0.64,0.96,0.64,0.96,0.84,25
-template_16,cards.ai2_arc.arc_easy,formats.empty,1,10,100,0.917,0.917,accuracy,0.708,1.000,0.708,1.000,0.917,24
+template_14,cards.ai2_arc.arc_easy,formats.empty,1,10,100,0.840,0.840,accuracy,0.640,0.960,0.640,0.960,0.840,
+template_15,cards.ai2_arc.arc_easy,formats.empty,1,10,100,0.840,0.840,accuracy,0.640,0.960,0.640,0.960,0.840,
+template_16,cards.ai2_arc.arc_easy,formats.empty,1,10,100,0.917,0.917,accuracy,0.708,1.000,0.708,1.000,0.917,
