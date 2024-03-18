@@ -2,9 +2,10 @@ template_name,card,system_format,num_demos,demos_pool_size,max_instances,accurac
 template_0,cards.race_all,formats.empty,0,10,100,0.150,0.150,accuracy,0.090,0.240,0.090,0.240,0.150,100
 template_1,cards.race_all,formats.empty,0,10,100,0.150,0.150,accuracy,0.090,0.230,0.090,0.230,0.150,100
 template_2,cards.race_all,formats.empty,0,10,100,0.160,0.160,accuracy,0.100,0.250,0.100,0.250,0.160,100
-template_3,cards.race_all,formats.empty,0,10,100,0.200,0.200,accuracy,0.100,0.320,0.100,0.320,0.200,50
-template_4,cards.race_all,formats.empty,0,10,100,0.200,0.200,accuracy,0.000,0.600,0.000,0.600,0.200,10
-template_6,cards.race_all,formats.empty,0,10,100,0.100,0.100,accuracy,0.000,0.400,0.000,0.400,0.100,10
+template_3,cards.race_all,formats.empty,0,10,100,0.170,0.170,accuracy,0.110,0.260,0.110,0.260,0.170,100
+template_4,cards.race_all,formats.empty,0,10,100,0.720,0.720,accuracy,0.630,0.800,0.630,0.800,0.720,100
+template_5,cards.race_all,formats.empty,0,10,100,0.767,0.767,accuracy,0.678,0.850,0.678,0.850,0.767,90
+template_6,cards.race_all,formats.empty,0,10,100,0.711,0.711,accuracy,0.622,0.800,0.622,0.800,0.711,90
 template_7,cards.race_all,formats.empty,0,10,100,0.000,0.000,accuracy,,,,,0.000,10
 template_8,cards.race_all,formats.empty,0,10,100,0.000,0.000,accuracy,,,,,0.000,10
 template_9,cards.race_all,formats.empty,0,10,100,0.000,0.000,accuracy,,,,,0.000,10
