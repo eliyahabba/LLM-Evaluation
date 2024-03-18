@@ -78,7 +78,7 @@ class EvaluateModel:
         scores_values = [scores[0]['score']['global'][score_name] for score_name in scores_columns]
         scores_values = [f"{score:.3f}" if isinstance(score, float) else score for score in scores_values]
         # add to the scores the number of results
-        scores_columns.append('num_results')
+        scores_columns.append('number_of_instances')
         scores_values.append(len(scores))
         return {score: value for score, value in zip(scores_columns, scores_values)}
 
