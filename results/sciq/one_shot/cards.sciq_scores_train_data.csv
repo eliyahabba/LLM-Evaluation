@@ -8,7 +8,7 @@ template_5,cards.sciq,formats.empty,1,10,100,0.950,0.950,accuracy,0.890,0.980,0.
 template_6,cards.sciq,formats.empty,1,10,100,0.980,0.980,accuracy,0.930,1.000,0.930,1.000,0.980,100
 template_7,cards.sciq,formats.empty,1,10,100,0.810,0.810,accuracy,0.727,0.880,0.727,0.880,0.810,100
 template_8,cards.sciq,formats.empty,1,10,100,0.980,0.980,accuracy,0.930,1.000,0.930,1.000,0.980,100
-template_9,cards.sciq,formats.empty,1,10,100,0.000,0.000,accuracy,,,,,0.000,100
+template_9,cards.sciq,formats.empty,1,10,100,0.980,0.980,accuracy,0.930,1.000,0.930,1.000,0.980,100
 template_10,cards.sciq,formats.empty,1,10,100,0.970,0.970,accuracy,0.920,0.990,0.920,0.990,0.970,100
 template_11,cards.sciq,formats.empty,1,10,100,0.980,0.980,accuracy,0.930,1.000,0.930,1.000,0.980,100
 template_12,cards.sciq,formats.empty,1,10,100,0.960,0.960,accuracy,0.900,0.990,0.900,0.990,0.960,100
