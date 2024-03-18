@@ -48,7 +48,8 @@ class HistogramOfSamples:
             result_file = result_files_to_display[result_file_name]
             df = self.display_samples(result_file)
             self.plot_histogram(df)
-            self.display_sample_examples(selected_shot_file_name, dataset_file_name)
+            dataset_type = result_file_name.split("_")[0]
+            self.display_sample_examples(selected_shot_file_name, dataset_file_name, dataset_type)
         else:
             st.markdown("No results file found in the folder")
             st.stop()
@@ -77,20 +78,20 @@ class HistogramOfSamples:
         st.write(df)
         return df
 
-    def load_results_preds_gt(self, results_file: Path) -> Tuple[List[str], List[str], List[str]]:
+    def load_results_preds_gt(self, results_file: Path, dataset_type:str) -> Tuple[List[str], List[str], List[str]]:
         """
         Load the results from the json file.
         @return: list of results
         """
         with open(results_file, "r") as f:
             json_data = json.load(f)
-        results = json_data['results']['train']
+        results = json_data['results'][dataset_type]
         instances = [result['Instance'] for result in results]
         preds = [result['Result'] for result in results]
         gt = [result['GroundTruth'] for result in results]
         return instances, preds, gt
 
-    def display_sample_examples(self, results_folder: Path, dataset_file_name: str) -> None:
+    def display_sample_examples(self, results_folder: Path, dataset_file_name: str, dataset_type:str) -> None:
         """
         Display sample examples from the results file.
         @param results_folder: the path to the results folder
@@ -104,7 +105,7 @@ class HistogramOfSamples:
         datasets_names_to_display = dict(
             sorted(datasets_names_to_display.items(), key=lambda item: int(item[0].split("_")[1])))
         results_file = st.sidebar.selectbox("Select template file", list(datasets_names_to_display.keys()))
-        instances, preds, gt = self.load_results_preds_gt(datasets_names_to_display[results_file])
+        instances, preds, gt = self.load_results_preds_gt(datasets_names_to_display[results_file], dataset_type)
         st.write("Sample examples")
         if "file_index" not in st.session_state:
             st.session_state["file_index"] = 0
