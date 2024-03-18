@@ -29,45 +29,15 @@ class EvaluateModel:
         @return: list of results
         """
         with open(self.results_file, "r") as f:
-            json_data = json.load(f)
-        self.experiment = json_data
+            self.experiment = json.load(f)
 
-    # def load_results(self) -> dict:
-    #     """
-    #     Load the results from the json file.
-    #     @return: list of results
-    #     """
-    #     return self.experiment['results']
-    #
-    # def load_dataset(self) -> LLMDataset:
-    #     """
-    #     Load the dataset from the experiment.
-    #
-    #     @return: the dataset
-    #     """
-    #     template_name = f"{self.experiment['template_name']}"
-    #
-    #     catalog_manager = CatalogManager(Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH,
-    #                                                          self.experiment['card']))
-    #     template = catalog_manager.load_from_catalog(template_name)
-    #
-    #     llm_dataset_loader = DatasetLoader(card=self.experiment['card'], template=template,
-    #                                        system_format=self.experiment['system_format'],
-    #                                        num_demos=self.experiment['num_demos'],
-    #                                        demos_pool_size=self.experiment['demos_pool_size'],
-    #                                        max_instances=self.experiment['max_instances'],
-    #                                        template_name=self.experiment['template_name'])
-    #     llm_dataset = llm_dataset_loader.load()
-    #     return llm_dataset
-
-    def load_results(self) -> dict:
+    def load_results_from_experiment_file(self) -> dict:
         """
         Load the results from the json file.
         @return: list of results
         """
         self.load_experiment_file()
         results = self.experiment['results']
-        # llm_dataset = self.load_dataset()
         return results
 
     def evaluate(self, results: dict, llm_dataset: LLMDataset) -> Union[None, dict]:
@@ -93,29 +63,54 @@ class EvaluateModel:
         reference_dataset = [reference_dataset[idx] for idx in predictions_idx]
         return predictions, reference_dataset
 
+    def create_row_from_metadata(self) -> dict:
+        """
+        Get the metadata of the experiment.
+        """
+        metadata_columns = ['card', 'template_name', 'system_format', 'num_demos', 'demos_pool_size', 'max_instances']
+        return {metadata: self.experiment[metadata] for metadata in metadata_columns}
+
+    def create_row_from_scores(self, scores: dict) -> dict:
+        """
+        Get the columns of the scores.
+        """
+        scores_columns = list(scores[0]['score']['global'].keys())
+        scores_values = [scores[0]['score']['global'][score_name] for score_name in scores_columns]
+        scores_values = [f"{score:.3f}" if isinstance(score, float) else score for score in scores_values]
+        # add to the scores the number of results
+        scores_columns.append('num_results')
+        scores_values.append(len(scores))
+        return {score: value for score, value in zip(scores_columns, scores_values)}
+
     def save_scores(self, scores: dict):
         """
         Save the scores to a csv file with the metadata of the experiment.
         """
-        metadata_columns = ['card', 'template_name', 'system_format', 'num_demos', 'demos_pool_size', 'max_instances']
-        scores_columns = list(scores[0]['score']['global'].keys())
-        columns = metadata_columns + scores_columns + ['number_of_instances']
-        metadata_values = [self.experiment[metadata] for metadata in metadata_columns]
-        scores_values = [scores[0]['score']['global'][score_name] for score_name in scores_columns]
-        scores_values = [f"{score:.3f}" if isinstance(score, float) else score for score in scores_values]
-        scores_df = pd.DataFrame([metadata_values + scores_values + [len(scores)]], columns=columns)
-        # take the template column to be the row index
-        scores_df.set_index('template_name', inplace=True)
+        row_metadata = self.create_row_from_metadata()
+        row_scores = self.create_row_from_scores(scores)
 
+        scores_df = self._create_scores_dataframe(row_metadata, row_scores)
+        self._write_scores_to_file(scores_df)
+
+    def _create_scores_dataframe(self, metadata: dict, scores: dict) -> pd.DataFrame:
+        """
+        Create a DataFrame containing evaluation scores.
+        """
+        scores_df = pd.DataFrame([{**metadata, **scores}])
+        scores_df.set_index('template_name', inplace=True)
+        return scores_df
+
+    def _write_scores_to_file(self, scores_df: pd.DataFrame) -> None:
+        """
+        Write the evaluation scores to a CSV file.
+        """
         card_name = scores_df['card'].values[0]
         folder_path = self.results_file.parent
         file_path = folder_path / f"{card_name}_scores_{self.eval_on_value}_data.csv"
         if not file_path.exists():
             scores_df.to_csv(file_path)
         else:
-            # if the row already exists, dont add it again, just update the values
             if scores_df.index[0] in scores_df.index:
-                # read all the columns as object to avoid the error of mixing types
                 current_scores_df = pd.read_csv(file_path, index_col=0, dtype=object)
                 current_scores_df.loc[scores_df.index[0]] = scores_df.loc[scores_df.index[0]]
                 current_scores_df.sort_index(inplace=True,
@@ -195,8 +190,8 @@ if __name__ == "__main__":
                 for eval_on_value in ExperimentConstants.EVALUATE_ON:
                     try:
                         eval_model = EvaluateModel(results_file, eval_on_value)
-                        results = eval_model.load_results()
-                        results = eval_model.evaluate(results, llm_dataset)
+                        results = eval_model.load_results_from_experiment_file()
+                        scores = eval_model.evaluate(results, llm_dataset)
                     except Exception as e:
                         print(f"Error in {results_file}: {e}")
                         continue
