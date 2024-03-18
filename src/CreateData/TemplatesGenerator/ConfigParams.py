@@ -21,7 +21,7 @@ class ConfigParams:
     }
 
     base_args_race = {
-        "input_format": "Context: {context} Question: {question}. Answers: {choices}",
+        "input_format": "Context: {context} Question: {question}. Answers: {choices}. Answer:",
         "choices_field": "choices",
         "target_field": "answer",
         "choices_seperator": "\n",
