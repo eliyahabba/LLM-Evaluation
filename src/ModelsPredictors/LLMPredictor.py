@@ -138,6 +138,8 @@ class LLMPredictor:
             "Result": result,
             "GroundTruth": ground_truth
         } for idx, instance, result, ground_truth in zip(idxs, input_texts, results, ground_truths)]
+        # sort the entries by the index
+        entries = sorted(entries, key=lambda x: x["Index"])
         return entries
 
     def filter_saved_instances(self, eval_set: list, eval_value: str, eval_set_indexes: list,
