@@ -69,7 +69,7 @@ class VisualizeResults:
         df = df[columns_order]
         st.write(df)
 
-    def load_results_preds(self, results_file: Path) -> Tuple[List[str], List[str]]:
+    def load_results_preds_gt(self, results_file: Path) -> Tuple[List[str], List[str], List[str]]:
         """
         Load the results from the json file.
         @return: list of results
@@ -79,7 +79,8 @@ class VisualizeResults:
         results = json_data['results']['train']
         instances = [result['Instance'] for result in results]
         preds = [result['Result'] for result in results]
-        return instances, preds
+        gt = [result['GroundTruth'] for result in results]
+        return instances, preds, gt
 
     def display_sample_examples(self, results_folder: Path, dataset_file_name: str) -> None:
         """
@@ -95,12 +96,14 @@ class VisualizeResults:
         datasets_names_to_display = dict(
             sorted(datasets_names_to_display.items(), key=lambda item: int(item[0].split("_")[1])))
         results_file = st.sidebar.selectbox("Select template file", list(datasets_names_to_display.keys()))
-        instances, preds = self.load_results_preds(datasets_names_to_display[results_file])
+        instances, preds, gt = self.load_results_preds_gt(datasets_names_to_display[results_file])
         st.write("Sample examples")
-        for i in range(5):
-            formatted_str = instances[i].replace("\n\n", "<br><br>").replace("\n", "<br>")
-            st.markdown(f"Instance: {formatted_str}", unsafe_allow_html=True)
-            st.write(f"Prediction: {preds[i]}")
+        for i in range(3):
+            current_instance = instances[st.session_state["file_index"]]
+            formatted_str = current_instance.replace("\n\n", "<br><br>").replace("\n", "<br>")
+            st.markdown(f"**Instance**: {formatted_str}", unsafe_allow_html=True)
+            st.write(f"**Prediction**: {preds[st.session_state['file_index']]}")
+            st.write(f"**Ground True**: {gt[st.session_state['file_index']]}")
             st.write("----")
 
         self.load_template(results_file, dataset_file_name)

@@ -1,3 +1,4 @@
+import numpy as np
 import json
 import sys
 from pathlib import Path
@@ -47,6 +48,7 @@ class HistogramOfSamples:
             result_file = result_files_to_display[result_file_name]
             df = self.display_samples(result_file)
             self.plot_histogram(df)
+            self.display_sample_examples(selected_shot_file_name, dataset_file_name)
         else:
             st.markdown("No results file found in the folder")
             st.stop()
@@ -75,7 +77,7 @@ class HistogramOfSamples:
         st.write(df)
         return df
 
-    def load_results_preds(self, results_file: Path) -> Tuple[List[str], List[str]]:
+    def load_results_preds_gt(self, results_file: Path) -> Tuple[List[str], List[str], List[str]]:
         """
         Load the results from the json file.
         @return: list of results
@@ -85,7 +87,8 @@ class HistogramOfSamples:
         results = json_data['results']['train']
         instances = [result['Instance'] for result in results]
         preds = [result['Result'] for result in results]
-        return instances, preds
+        gt = [result['GroundTruth'] for result in results]
+        return instances, preds, gt
 
     def display_sample_examples(self, results_folder: Path, dataset_file_name: str) -> None:
         """
@@ -101,13 +104,32 @@ class HistogramOfSamples:
         datasets_names_to_display = dict(
             sorted(datasets_names_to_display.items(), key=lambda item: int(item[0].split("_")[1])))
         results_file = st.sidebar.selectbox("Select template file", list(datasets_names_to_display.keys()))
-        instances, preds = self.load_results_preds(datasets_names_to_display[results_file])
+        instances, preds, gt = self.load_results_preds_gt(datasets_names_to_display[results_file])
         st.write("Sample examples")
-        for i in range(5):
-            formatted_str = instances[i].replace("\n\n", "<br><br>").replace("\n", "<br>")
-            st.markdown(f"Instance: {formatted_str}", unsafe_allow_html=True)
-            st.write(f"Prediction: {preds[i]}")
-            st.write("----")
+        if "file_index" not in st.session_state:
+            st.session_state["file_index"] = 0
+            st.session_state["files_number"] = len(instances)
+
+        # add bottoms to choose example
+        col1, col2 = st.sidebar.columns(2)
+        with col1:
+            st.button(label="Previous sentence for tagging", on_click=ExamplesNavigator.previous_sentence)
+        with col2:
+            st.button(label="Next sentence for tagging", on_click=ExamplesNavigator.next_sentence)
+        st.sidebar.selectbox(
+            "Sentences",
+            [f"sentence {i}" for i in range(0, st.session_state["files_number"])],
+            index=st.session_state["file_index"],
+            on_change=ExamplesNavigator.go_to_sentence,
+            key="selected_sentence",
+        )
+
+        current_instance = instances[st.session_state["file_index"]]
+        formatted_str = current_instance.replace("\n\n", "<br><br>").replace("\n", "<br>")
+        st.markdown(f"**Instance**: {formatted_str}", unsafe_allow_html=True)
+        st.write(f"**Prediction**: {preds[st.session_state['file_index']]}")
+        st.write(f"**Ground True**: {gt[st.session_state['file_index']]}")
+        st.write("----")
 
         self.load_template(results_file, dataset_file_name)
 
@@ -126,21 +148,98 @@ class HistogramOfSamples:
                 st.sidebar.markdown(f"**{key}** : {value}")
             else:
                 st.sidebar.markdown(f"**{key}** : {value}")
-
     def plot_histogram(self, df):
+        """
+        Plot the histogram of the results.
+        @param df: DataFrame containing the data to plot.
+        """
+        # Setting up the plot
+        fig, ax = plt.subplots(figsize=(11, 6))
+        ax.grid(True)  # Add grid lines for better readability
+        ax.set_axisbelow(True)  # Ensure grid lines are behind other plot elements
+
+        # Plotting the histogram
+        bins = np.arange(0, 105, 5)  # Adjust bins to include the range from 12 to 100
+        df['accuracy'].plot(kind='hist', bins=bins, ax=ax, color='skyblue', edgecolor='black')
+
+        # Adding title and labels
+        ax.set_title("Histogram of Prediction Accuracy", fontsize=16)
+        ax.set_xlabel("Number of Templates with Correct Prediction", fontsize=14)
+        ax.set_ylabel("Number of Examples", fontsize=14)
+
+        # Customizing tick labels from and plot all the bins
+        ax.set_xticks(bins)
+        ax.set_xticklabels([f'{i}' for i in bins])
+        ax.tick_params(axis='both', which='major', labelsize=12)
+
+        # Add the number of examples in the histogram bars in the center
+        for rect in ax.patches:
+            height = rect.get_height()
+            if height:
+                ax.annotate(f'{int(height)}', xy=(rect.get_x() + rect.get_width() / 2, height),
+                            xytext=(0, 3),  # 3 points vertical offset
+                            textcoords="offset points",
+                            ha='center', va='bottom', fontsize=12, color='blue', fontweight='bold')
+
+        # Display the plot
+        plt.tight_layout()  # Adjust layout to prevent clipping of labels
+        # plt.show()
+        st.pyplot(fig)
+
+def plot_histogram2(self, df):
         """
         Plot the histogram of the results.
         @param df:
         @return:
         """
+        # Plotting the histogram of the accuracy from 0 to 100
 
-        st.write("Histogram of the results")
-        fig, ax = plt.subplots()
-        df['accuracy'].plot(kind='hist', bins=20, ax=ax)
-        ax.set_xlabel("Accuracy")
-        ax.set_ylabel("Number of examples")
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.grid(True)  # Add grid lines for better readability
+        ax.set_axisbelow(True)  # Ensure grid lines are behind other plot elements
+
+        df['accuracy'].plot(kind='hist', bins=20, ax=ax, color='skyblue', edgecolor='black')
+
+        # Adding title and labels
+        ax.set_title("Histogram of Prediction Accuracy", fontsize=16)
+        ax.set_xlabel("Number of Templates with Correct Prediction", fontsize=14)
+        ax.set_ylabel("Number of Examples", fontsize=14)
+
+        # Customizing tick labels
+        ax.tick_params(axis='both', which='major', labelsize=12)
+        # add the number of examples in the histogram bars in the center
+        for i in ax.patches:
+            ax.text(i.get_x() + i.get_width() / 2, i.get_height() + 0.5, str(int(i.get_height())), ha='center',
+                    va='bottom', fontsize=10)
+        # Display the plot
+        plt.tight_layout()  # Adjust layout to prevent clipping of labels
         st.pyplot(fig)
 
+class ExamplesNavigator:
+    @staticmethod
+    def next_sentence():
+        file_index = st.session_state["file_index"]
+        if file_index < st.session_state["files_number"] - 1:
+            st.session_state["file_index"] += 1
+
+        else:
+            st.warning('This is the last sentence.')
+
+    @staticmethod
+    def previous_sentence():
+        file_index = st.session_state["file_index"]
+        if file_index > 0:
+            st.session_state["file_index"] -= 1
+        else:
+            st.warning('This is the first sentence.')
+
+
+    @staticmethod
+    def go_to_sentence():
+        # split the number of the sentence from the string of st.session_state["sentence_for_tagging"]
+        # and then convert it to int
+        sentence_number = int(st.session_state["selected_sentence"].split(" ")[1]) - 1
+        st.session_state["file_index"] = sentence_number
 
 if __name__ == '__main__':
     hos = HistogramOfSamples()
