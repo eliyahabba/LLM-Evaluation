@@ -132,25 +132,6 @@ def read_experiment(results_file: Path) -> dict:
     return experiment
 
 
-def get_experiment_values(experiment: dict) -> dict:
-    """
-    """
-
-    metadata_experiment = ['card', 'system_format', 'num_demos', 'demos_pool_size', 'max_instances']
-    return {metadata: experiment[metadata] for metadata in metadata_experiment}
-
-
-def compare_experiments_files(experiment_file1: Path, experiment_file2: Path) -> bool:
-    """
-    """
-    experiment1 = read_experiment(experiment_file1)
-    experiment2 = read_experiment(experiment_file2)
-
-    experiment1_values = get_experiment_values(experiment1)
-    experiment2_values = get_experiment_values(experiment2)
-    return experiment1_values == experiment2_values
-
-
 def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
     """
     Load the dataset from the experiment.
@@ -160,7 +141,7 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
     catalog_manager = CatalogManager(Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH,
                                                          experiment['card']))
     template = catalog_manager.load_from_catalog(template_name)
-    template_hash = template.enumerator + template.target_choice_format
+    template_hash = str(template.enumerator) + str(template.target_choice_format)
     if template_hash in loaded_datasets:
         return loaded_datasets[template_hash]
 
@@ -181,25 +162,24 @@ if __name__ == "__main__":
     eval_on = ExperimentConstants.EVALUATE_ON
     datasets = [file for file in results_folder.glob("*") if file.is_dir()]
     # datasets = [dataset for dataset in datasets if "sciq" in str(dataset)]
+    error_files = []
     for dataset_folder in datasets:
         shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
-        # shots = [shot for shot in shots if "one" in str(shot)]
+        # shots = [shot for shot in shots if "zero" in str(shot)]
         loaded_datasets = {}
         for shot in shots:
-            # use the first file in the folder of the current dataset to compare the experiments
-            # first_result_file = next(shot.glob("*.json"))
-            for results_file in tqdm(sorted(shot.glob("*.json"))):
-                # check that the experiment is the same as the first one
-                llm_dataset = load_dataset(results_file, loaded_datasets)
-                experiment = read_experiment(results_file)
-                if not compare_experiments_files(results_file, results_file):
-                    print(f"The experiment in {results_file} is not the same as the first one.")
-                    continue
+            results_files = [file for file in shot.glob("*.json")]
+            # results_files = [file for file in results_files if "template_0" in str(file)]
+            for results_file in tqdm(results_files):
                 for eval_on_value in ExperimentConstants.EVALUATE_ON:
                     try:
+                        llm_dataset = load_dataset(results_file, loaded_datasets)
                         eval_model = EvaluateModel(results_file, eval_on_value)
                         results = eval_model.load_results_from_experiment_file()
                         scores = eval_model.evaluate(results, llm_dataset)
                     except Exception as e:
+                        error_files.append(results_file)
                         print(f"Error in {results_file}: {e}")
                         continue
+    for file in error_files:
+        print(file)
