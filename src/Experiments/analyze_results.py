@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Tuple, Union
+from typing import Union
 
 import evaluate
 import pandas as pd
@@ -151,7 +151,7 @@ def compare_experiments_files(experiment_file1: Path, experiment_file2: Path) ->
     return experiment1_values == experiment2_values
 
 
-def load_dataset(results_file: Path) -> LLMDataset:
+def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
     """
     Load the dataset from the experiment.
     """
@@ -160,6 +160,9 @@ def load_dataset(results_file: Path) -> LLMDataset:
     catalog_manager = CatalogManager(Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH,
                                                          experiment['card']))
     template = catalog_manager.load_from_catalog(template_name)
+    template_hash = template.enumerator + template.target_choice_format
+    if template_hash in loaded_datasets:
+        return loaded_datasets[template_hash]
 
     llm_dataset_loader = DatasetLoader(card=experiment['card'], template=template,
                                        system_format=experiment['system_format'],
@@ -168,6 +171,7 @@ def load_dataset(results_file: Path) -> LLMDataset:
                                        max_instances=experiment['max_instances'],
                                        template_name=experiment['template_name'])
     llm_dataset = llm_dataset_loader.load()
+    loaded_datasets[template_hash] = llm_dataset
     return llm_dataset
 
 
@@ -175,16 +179,20 @@ if __name__ == "__main__":
     # Load the model and the dataset
     results_folder = ExperimentConstants.RESULTS_PATH
     eval_on = ExperimentConstants.EVALUATE_ON
-
-    for dataset_folder in [file for file in results_folder.glob("*") if file.is_dir()]:
-        for shot in [file for file in dataset_folder.glob("*") if file.is_dir()]:
+    datasets = [file for file in results_folder.glob("*") if file.is_dir()]
+    # datasets = [dataset for dataset in datasets if "sciq" in str(dataset)]
+    for dataset_folder in datasets:
+        shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
+        # shots = [shot for shot in shots if "one" in str(shot)]
+        loaded_datasets = {}
+        for shot in shots:
             # use the first file in the folder of the current dataset to compare the experiments
-            first_result_file = next(shot.glob("*.json"))
-            llm_dataset = load_dataset(first_result_file)
-            for results_file in tqdm(shot.glob("*.json")):
+            # first_result_file = next(shot.glob("*.json"))
+            for results_file in tqdm(sorted(shot.glob("*.json"))):
                 # check that the experiment is the same as the first one
+                llm_dataset = load_dataset(results_file, loaded_datasets)
                 experiment = read_experiment(results_file)
-                if not compare_experiments_files(results_file, first_result_file):
+                if not compare_experiments_files(results_file, results_file):
                     print(f"The experiment in {results_file} is not the same as the first one.")
                     continue
                 for eval_on_value in ExperimentConstants.EVALUATE_ON:
