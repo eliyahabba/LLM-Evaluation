@@ -37,9 +37,9 @@ class VisualizeResults:
         # find the csv file in the folder if exists
         result_files = [f for f in selected_shot_file_name.iterdir() if f.is_file() and f.name.endswith(".csv")]
         if result_files:
-            train_file = [f for f in result_files if "train" in f.name]
+            train_file = [f for f in result_files if "train" in f.name and "scores" in f.name]
             assert len(train_file) >= 1, f"More than one train file found in the folder {selected_shot_file_name}"
-            test_file = [f for f in result_files if "test" in f.name]
+            test_file = [f for f in result_files if "test" in f.name and "scores" in f.name]
             assert len(test_file) >= 1, f"More than one test file found in the folder {selected_shot_file_name}"
             result_files_to_display = {}
             if len(train_file) == 1:
@@ -48,17 +48,11 @@ class VisualizeResults:
                 result_files_to_display['test_examples'] = test_file[0]
             result_file_name = st.sidebar.selectbox("Select the results file to visualize", result_files_to_display)
             result_file = result_files_to_display[result_file_name]
+            self.display_results(result_file)
+            self.display_sample_examples(selected_shot_file_name, dataset_file_name)
         else:
             st.markdown("No results file found in the folder")
             st.stop()
-
-        if result_file:
-            results_file = result_file
-            self.display_results(results_file)
-            self.display_sample_examples(selected_shot_file_name, dataset_file_name)
-
-        else:
-            st.markdown("No results file found in the folder")
 
     def display_results(self, results_file: Path):
         """
