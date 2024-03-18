@@ -80,7 +80,7 @@ class LLMProcessor:
         print("The decoded generated tokens are:")
         print(generated_tokens_decoded)
 
-    def generate_model_text(self, input_text: str, is_print: bool = False) -> str:
+    def generate_model_text(self, input_text: str, max_new_tokens:int, is_print: bool = False) -> str:
         """
         Generate text using a pre-trained language model and print the results.
 
@@ -90,7 +90,7 @@ class LLMProcessor:
         @return: The generated tokens decoded.
         """
         input_tokenized = self.tokenize_text(input_text)
-        outputs = self.generate_text(input_tokenized)
+        outputs = self.generate_text(input_tokenized, max_new_tokens)
         transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
         generated_tokens = outputs.sequences[:, input_tokenized.input_ids.shape[1]:]
         if is_print:
@@ -102,11 +102,11 @@ class LLMProcessor:
         generated_tokens_decoded = " ".join(generated_tokens_decoded)
         return generated_tokens_decoded
 
-    def predict(self, input_text: str):
+    def predict(self, input_text: str, max_new_tokens: int):
         """
         Predict the next word in the sequence.
         """
-        return self.generate_model_text(input_text)
+        return self.generate_model_text(input_text, max_new_tokens)
 
 
 # Execute the main function
@@ -116,4 +116,4 @@ if __name__ == "__main__":
     args = args.parse_args()
     model_name = args.model_name
     llmp = LLMProcessor(model_name)
-    llmp.predict("please tell about the history of the world.")
+    llmp.predict("please tell about the history of the world.", max_new_tokens=5)

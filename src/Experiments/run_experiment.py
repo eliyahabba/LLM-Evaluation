@@ -98,7 +98,7 @@ class ExperimentRunner:
             json.dump(entry_experiment, json_file)
         return results_file_path
 
-    def run_experiment(self) -> list:
+    def run_experiment(self) -> None:
         """
         Runs the experiment.
         @return: The results of the experiment.
@@ -117,13 +117,12 @@ class ExperimentRunner:
 
         llm_proc = LLMProcessor(self.args.model_name)
         llm_pred = LLMPredictor(llm_proc)
-        results = llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
-        return results
+        llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
 
 
 def main():
     args = argparse.ArgumentParser()
-    args.add_argument("--card", type=str)
+    args.add_argument("--card", type=str, default="cards.sciq")
     args.add_argument("--model_name", type=str, default=Constants.ExperimentConstants.MODEL_NAME)
     args.add_argument("--system_format", type=str, default=Constants.ExperimentConstants.SYSTEM_FORMATS)
     args.add_argument("--max_instances", type=int, default=Constants.ExperimentConstants.MAX_INSTANCES)

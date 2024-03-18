@@ -26,7 +26,7 @@ class LLMPredictor:
         self.llmp = llmp
         self.batch_size = batch_size
 
-    def predict_on_single_dataset(self, eval_set, eval_value: str, results_file_path: Path)-> None:
+    def predict_on_single_dataset(self, eval_set, eval_value: str, results_file_path: Path) -> None:
         """
         Predict the model on a single dataset.
 
@@ -34,6 +34,9 @@ class LLMPredictor:
         @results_file_path: The name of the file to save the results in.
 
         """
+        # find the max_new_tokens parameter from the eval_set (the maximum number of tokens in the target)
+        max_new_tokens = max([len(instance["target"].split()) for instance in eval_set])
+
         eval_set_indexes = list(range(len(eval_set)))
         filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_set, eval_value, eval_set_indexes,
                                                                                results_file_path)
@@ -63,7 +66,7 @@ class LLMPredictor:
             counter_idx += 1
             input_text = instance["source"]
             ground_truth = instance["target"]
-            result = self.llmp.predict(input_text)
+            result = self.llmp.predict(input_text, max_new_tokens)
             loaded_idxs.append(idx)
             loaded_input_texts.append(input_text)
             loaded_ground_truths.append(ground_truth)
@@ -75,7 +78,6 @@ class LLMPredictor:
         if counter_idx % self.batch_size != 0:
             self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
                               loaded_ground_truths, loaded_data)
-
 
     def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list,
                         results_file_path: Path) -> None:
@@ -196,4 +198,4 @@ if __name__ == "__main__":
 
     llm_pred = LLMPredictor(llm_proc)
     llm_pred.predict_dataset(llm_dataset, evaluate_on=["train", "test"],
-                                       results_file_path=Path("results.json"))
+                             results_file_path=Path("results.json"))
