@@ -20,6 +20,18 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
         @return: MultipleChoiceTemplate: The created template instance.
         """
         args = {**self.base_args, **override_args}
+        if args['enumerator'] == 'roman':
+            args['postprocessors'] = [
+                "processors.to_string_stripped",
+                "processors.take_first_non_empty_line",
+                "processors.match_closest_option"
+            ]
+        if args['target_choice_format'] in ["{choice_numeral}. {choice_text}", "{choice_text}"]:
+            args['postprocessors'] = [
+                "processors.to_string_stripped",
+                "processors.take_first_non_empty_line",
+                "processors.match_closest_option"
+            ]
         template = MultipleChoiceTemplate(**args)
         return template
 

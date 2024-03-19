@@ -42,10 +42,16 @@ class VisualizeResults:
     def display_possible_templates_args(self):
         with st.expander("Possible template arguments"):
             override_options = ConfigParams.override_options
-            for k, v in override_options.items():
-                # display the options in the main page
-                st.markdown(f"The possible values for **{k}** are:  \n")
-                st.markdown(f"**{v}**")
+            color_palette = ["#FF5733", "#3366FF", "#FF33E9", "#4CAF50"]  # Soft green color added
+
+            for i, (k, v) in enumerate(override_options.items()):
+                # Choose a color from the color palette based on the index
+                color = color_palette[i % len(color_palette)]
+
+                # Display the options in the main page with different colors
+                st.markdown(f'<span style="color:{color}">The possible values for <b>{k}</b> are:</span>', unsafe_allow_html=True)
+                st.markdown(f'<span style="color:{color}"><b>{v}</b></span>', unsafe_allow_html=True)
+
 
 
 if __name__ == "__main__":
