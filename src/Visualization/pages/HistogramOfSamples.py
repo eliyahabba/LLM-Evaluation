@@ -34,13 +34,13 @@ class HistogramOfSamples:
         # ones + zeros)
         predictions_columns = [col for col in df.columns if "experiment_template" in col]
         df['count_true_preds'] = df[predictions_columns].sum(axis=1)
-        df['num_of_instances'] = df[predictions_columns].notnull().sum(axis=1)
+        df['num_of_predictions'] = df[predictions_columns].notnull().sum(axis=1)
         # count the values for each row
-        df['accuracy'] = df['count_true_preds'] / df['num_of_instances']
+        df['accuracy'] = df['count_true_preds'] / df['num_of_predictions']
         # multiply the accuracy by 100
         df['accuracy'] = round(df['accuracy'] * 100, 2)
         # put the accuracy in the first column
-        df = df[['num_of_instances', 'accuracy'] + predictions_columns]
+        df = df[['num_of_predictions', 'accuracy'] + predictions_columns]
         # add name to the index column
         df.index.name = 'example number'
         st.write(df)
