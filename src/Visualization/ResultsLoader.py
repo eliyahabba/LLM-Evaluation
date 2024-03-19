@@ -64,18 +64,19 @@ class ResultsLoader:
         results_file = st.sidebar.selectbox("Select template file", list(datasets_names_to_display.keys()))
         instances, preds, gt = ResultsLoader.load_results_preds_gt(datasets_names_to_display[results_file],
                                                                    dataset_type)
-        st.write("Sample examples")
+        # write on the center of the page
+        st.markdown(f"#### Examples: prompt + prediction", unsafe_allow_html=True)
         if "file_index" not in st.session_state:
             st.session_state["file_index"] = 0
             st.session_state["files_number"] = len(instances)
 
         # add bottoms to choose example
-        col1, col2 = st.sidebar.columns(2)
+        col1, col2 = st.columns(2)
         with col1:
-            st.button(label="Previous sentence for tagging", on_click=SamplesNavigator.previous_sentence)
+            st.button(label="Previous sentence", on_click=SamplesNavigator.previous_sentence)
         with col2:
-            st.button(label="Next sentence for tagging", on_click=SamplesNavigator.next_sentence)
-        st.sidebar.selectbox(
+            st.button(label="Next sentence", on_click=SamplesNavigator.next_sentence)
+        st.selectbox(
             "Sentences",
             [f"sentence {i}" for i in range(0, st.session_state["files_number"])],
             index=st.session_state["file_index"],
