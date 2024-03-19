@@ -99,11 +99,11 @@ class VisualizeResults:
         instances, preds, gt = self.load_results_preds_gt(datasets_names_to_display[results_file])
         st.write("Sample examples")
         for i in range(3):
-            current_instance = instances[st.session_state["file_index"]]
+            current_instance = instances[i]
             formatted_str = current_instance.replace("\n\n", "<br><br>").replace("\n", "<br>")
             st.markdown(f"**Instance**: {formatted_str}", unsafe_allow_html=True)
-            st.write(f"**Prediction**: {preds[st.session_state['file_index']]}")
-            st.write(f"**Ground True**: {gt[st.session_state['file_index']]}")
+            st.write(f"**Prediction**: {preds[i]}")
+            st.write(f"**Ground True**: {gt[i]}")
             st.write("----")
 
         self.load_template(results_file, dataset_file_name)
