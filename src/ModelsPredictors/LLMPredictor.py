@@ -36,7 +36,7 @@ class LLMPredictor:
         """
         # find the max_new_tokens parameter from the eval_set (the maximum number of tokens in the target)
         max_new_tokens = max([len(instance["target"].split()) for instance in eval_set])
-        max_new_tokens = max(max_new_tokens, 8)
+        max_new_tokens = max(max_new_tokens, 12)
         max_new_tokens = min(max_new_tokens, 25)
 
 
