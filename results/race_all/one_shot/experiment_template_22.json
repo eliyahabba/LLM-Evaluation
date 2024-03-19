@@ -5,5 +5,7 @@
   "system_format": "formats.empty",
   "max_instances": 100,
   "num_demos": 1,
-  "demos_pool_size": 10
+  "demos_pool_size": 10,
+  "results": {
+  }
 }
