@@ -68,7 +68,7 @@ class ResultsLoader:
         st.markdown(f"#### Examples: prompt + prediction", unsafe_allow_html=True)
         if "file_index" not in st.session_state:
             st.session_state["file_index"] = 0
-            st.session_state["files_number"] = len(instances)
+        st.session_state["files_number"] = len(instances)
 
         # add bottoms to choose example
         col1, col2 = st.columns(2)
