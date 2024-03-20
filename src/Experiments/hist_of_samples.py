@@ -50,7 +50,7 @@ class EvaluateModel:
             return None
         predictions, references, predictions_idx = self.get_predictions_and_references(results, llm_dataset)
         scores = metric.compute(predictions=predictions, references=references)
-        self.save_scores(scores)
+        # self.save_scores(scores)
         scores_by_index = self.parser_predictions(scores, predictions_idx, len(llm_dataset.dataset[self.eval_on_value]))
         return scores_by_index
 
@@ -150,7 +150,13 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
     catalog_manager = CatalogManager(Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH,
                                                          experiment['card']))
     template = catalog_manager.load_from_catalog(template_name)
-    template_hash = str(template.enumerator) + str(template.target_choice_format)
+    if experiment['num_demos'] == 0:
+        template.postprocessors = [
+            "processors.to_string_stripped",
+            "processors.take_first_non_empty_line",
+            "processors.match_closest_option"
+        ]
+    template_hash = str(template.enumerator) + str(template.target_choice_format) +str(experiment['num_demos'])
     if template_hash in loaded_datasets:
         return loaded_datasets[template_hash]
 
@@ -169,35 +175,40 @@ if __name__ == "__main__":
     # Load the model and the dataset
     results_folder = ExperimentConstants.RESULTS_PATH
     eval_on = ExperimentConstants.EVALUATE_ON
+    eval_on = ['train', 'test']
     datasets = [file for file in results_folder.glob("*") if file.is_dir()]
-    # datasets = [dataset for dataset in datasets if "sciq" in str(dataset)]
+    # datasets = [dataset for dataset in datasets if "race" in str(dataset)]
     error_files = []
+    errors_msgs = []
     for dataset_folder in datasets:
         shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
-        # shots = [shot for shot in shots if "zero" in str(shot)]
+        # shots = [shot for shot in shots if "one" in str(shot)]
         loaded_datasets = {}
         for shot in shots:
             results_files = [file for file in shot.glob("*.json")]
-            # results_files = [file for file in results_files if "template_0" in str(file)]
+            # results_files = [file for file in results_files if "template_21" in str(file)]
 
             summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in eval_on}
             for results_file in tqdm(results_files):
-                for eval_on_value in ExperimentConstants.EVALUATE_ON:
+                for eval_on_value in eval_on:
                     try:
                         llm_dataset = load_dataset(results_file, loaded_datasets)
                         eval_model = EvaluateModel(results_file, eval_on_value)
                         results = eval_model.load_results_from_experiment_file()
                         scores_by_index = eval_model.evaluate(results, llm_dataset)
-                        scores_by_index_series = pd.Series(scores_by_index, name=results_file.stem)
-                        # add the scores to the cumsum df so that the name of the file will be the index
-                        summary_of_accuracy_results[eval_on_value] = pd.concat([summary_of_accuracy_results[eval_on_value], scores_by_index_series], axis=1)
+                        if scores_by_index is not None:
+                            scores_by_index_series = pd.Series(scores_by_index, name=results_file.stem)
+                            # add the scores to the cumsum df so that the name of the file will be the index
+                            summary_of_accuracy_results[eval_on_value] = pd.concat([summary_of_accuracy_results[eval_on_value], scores_by_index_series], axis=1)
                     except Exception as e:
                         error_files.append(results_file)
+                        errors_msgs.append(e)
                         print(f"Error in {results_file}: {e}")
                         continue
             for eval_on_value, results_df in summary_of_accuracy_results.items():
                 # sort the columns by the number of the template that in the columns name
                 results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])), axis=1)
                 results_df.to_csv(shot / f"{eval_on_value}_accuracy_results.csv", index=False)
-    for file in error_files:
+    for file, error in zip(error_files, errors_msgs):
+        print(error)
         print(file)
