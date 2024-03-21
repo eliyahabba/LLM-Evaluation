@@ -41,6 +41,4 @@ class Utils:
         @param system_format: The system format
         @return: The system format class
         """
-        # get the  key of ExperimentConstants.SYSTEM_FORMATS from the system_format value
-        return list(ExperimentConstants.SYSTEM_FORMATS_NAMES.keys())[
-            list(ExperimentConstants.SYSTEM_FORMATS_NAMES.values()).index(system_format)]
+        return ExperimentConstants.SYSTEM_FORMATS_NAMES[system_format]

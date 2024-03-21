@@ -48,7 +48,7 @@ class ExperimentRunner:
             "card": self.args.card,
             "template_name": template_name,
             "model_name": self.args.model_name,
-            "system_format": self.args.system_format,
+            "system_format": ExperimentConstants.SYSTEM_FORMATS_NAMES[self.args.system_format],
             "max_instances": self.args.max_instances,
             "num_demos": self.args.num_demos,
             "demos_pool_size": self.args.demos_pool_size,
@@ -70,10 +70,9 @@ class ExperimentRunner:
             raise ValueError(f"num_demos should be between 0 and 2, but it is {num_demos}.")
         num_of_shot_icl = f"{num_of_shot_str}_shot"
 
-        system_foramt = Utils.get_system_format_class(self.args.system_format)
-
+        system_foramt_name = ExperimentConstants.SYSTEM_FORMATS_NAMES[self.args.system_format]
         results_path = ExperimentConstants.RESULTS_PATH
-        results_file_path = results_path / self.args.card.split('cards.')[1] / num_of_shot_icl / system_foramt / \
+        results_file_path = results_path / self.args.card.split('cards.')[1] / num_of_shot_icl / system_foramt_name / \
                             json_file_name
         results_file_path.parent.mkdir(parents=True, exist_ok=True)
         print(f"Results will be saved in {results_file_path}")

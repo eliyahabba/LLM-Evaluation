@@ -1,3 +1,4 @@
+from unitxt.formats import SystemFormat
 from unitxt.standard import StandardRecipe
 from unitxt.templates import Template
 
@@ -21,10 +22,16 @@ class DatasetLoader:
 
         @return: The dataset
         """
+        if self.system_format.startswith("formats."):
+            system_format = self.system_format
+        else:
+            system_format = SystemFormat(
+                model_input_format=f"{self.system_format}\n{{source}}",
+            )
         recipe = StandardRecipe(
             card=self.card,
             template=self.template,
-            format=self.system_format,
+            format=system_format,
             num_demos=self.num_demos,
             demos_pool_size=self.demos_pool_size,
             max_train_instances=self.max_instances,
