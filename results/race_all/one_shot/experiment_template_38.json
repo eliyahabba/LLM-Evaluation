@@ -1,0 +1,10 @@
+{
+  "card": "cards.race_all",
+  "template_name": "template_38",
+  "model_name": "mistralai/Mixtral-8x7b-Instruct-v0.1",
+  "system_format": "formats.empty",
+  "max_instances": 100,
+  "num_demos": 1,
+  "demos_pool_size": 10,
+  "results": {}
+}
