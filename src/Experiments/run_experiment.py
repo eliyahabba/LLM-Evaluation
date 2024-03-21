@@ -1,5 +1,6 @@
 import argparse
 import json
+import time
 from pathlib import Path
 from typing import Tuple
 
@@ -15,6 +16,7 @@ from src.utils.Utils import Utils
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
+LLMProcessorConstants = Constants.LLMProcessorConstants
 
 
 class ExperimentRunner:
@@ -25,12 +27,12 @@ class ExperimentRunner:
     def __init__(self, args):
         self.args = args
 
-    def load_template(self) -> Tuple[str, Template]:
+    def load_template(self, template_num: int) -> Tuple[str, Template]:
         """
         Loads the template from the specified path.
         @return: The template
         """
-        template_name = Utils.get_template_name(self.args.template_num)
+        template_name = Utils.get_template_name(template_num)
         catalog_manager = CatalogManager(
             Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH, self.args.card))
         template = catalog_manager.load_from_catalog(template_name)
@@ -67,8 +69,12 @@ class ExperimentRunner:
         if num_of_shot_str is None:
             raise ValueError(f"num_demos should be between 0 and 2, but it is {num_demos}.")
         num_of_shot_icl = f"{num_of_shot_str}_shot"
+
+        system_foramt = Utils.get_system_format_class(self.args.system_format)
+
         results_path = ExperimentConstants.RESULTS_PATH
-        results_file_path = results_path / self.args.card.split('cards.')[1] / num_of_shot_icl / json_file_name
+        results_file_path = results_path / self.args.card.split('cards.')[1] / num_of_shot_icl / system_foramt / \
+                            json_file_name
         results_file_path.parent.mkdir(parents=True, exist_ok=True)
         print(f"Results will be saved in {results_file_path}")
         return results_file_path
@@ -103,7 +109,17 @@ class ExperimentRunner:
         Runs the experiment.
         @return: The results of the experiment.
         """
-        template_name, template = self.load_template()
+        min_template, max_template = self.args.template_range
+        llm_proc = LLMProcessor(self.args.model_name, self.args.load_in_4bit, self.args.load_in_8bit)
+        for template_num in range(min_template, max_template + 1):
+            start = time.time()
+            self.run_single_experiment(llm_proc, template_num)
+            end = time.time()
+            # print the time of the experiment in minutes (blue color)
+            print(colored(f"Time of the experiment: {round((end - start) / 60, 2)} minutes", "blue"))
+
+    def run_single_experiment(self, llm_proc: LLMProcessor, template_num: int) -> None:
+        template_name, template = self.load_template(template_num)
         llm_dataset_loader = DatasetLoader(card=self.args.card,
                                            template=template,
                                            system_format=self.args.system_format,
@@ -115,7 +131,6 @@ class ExperimentRunner:
         entry_experiment = self.create_entry_experiment(template_name)
         results_file_path = self.save_results_to_json(entry_experiment, template_name, self.args.num_demos)
 
-        llm_proc = LLMProcessor(self.args.model_name)
         llm_pred = LLMPredictor(llm_proc)
         llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
 
@@ -123,28 +138,30 @@ class ExperimentRunner:
 def main():
     args = argparse.ArgumentParser()
     args.add_argument("--card", type=str, default="cards.sciq")
-    args.add_argument("--model_name", type=str, default=Constants.ExperimentConstants.MODEL_NAME)
-    args.add_argument("--system_format", type=str, default=Constants.ExperimentConstants.SYSTEM_FORMATS)
-    args.add_argument("--max_instances", type=int, default=Constants.ExperimentConstants.MAX_INSTANCES)
-    args.add_argument('--evaluate_on', nargs='+', default=Constants.ExperimentConstants.EVALUATE_ON,
+    args.add_argument("--model_name", type=str, default=LLMProcessorConstants.MODEL_NAME)
+    args.add_argument("--load_in_4bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_4BIT,
+                      help="True if the model should be loaded in 4-bit.")
+    args.add_argument("--load_in_8bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_8BIT,
+                      help="True if the model should be loaded in 8-bit.")
+    args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
+
+    args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
+    args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON,
                       help='The data types to evaluate the model on.')
-    args.add_argument("--template_num", type=int, default=Constants.ExperimentConstants.TEMPLATE_NUM)
-    args.add_argument("--num_demos", type=int, default=Constants.ExperimentConstants.NUM_DEMOS)
-    args.add_argument("--demos_pool_size", type=int, default=Constants.ExperimentConstants.DEMOS_POOL_SIZE)
-
+    args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
+    args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
+    # args.add_argument("--template_num", type=int, default=ExperimentConstants.TEMPLATE_NUM)
+    # # option to give a range of templates to run the experiment on (e.g. 1 10). with 2 parameters min and max template
+    args.add_argument("--template_range", nargs=2, type=int, default=ExperimentConstants.TEMPLATES_RANGE,
+                      help="Specify the range of templates to run the experiment on (e.g., 1 10).")
+    # add param
     args = args.parse_args()
-
+    # add the syte  format to the args
+    args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
     runner = ExperimentRunner(args)
     runner.run_experiment()
 
 
 if __name__ == "__main__":
     # measure the time of the experiment
-    import time
-    from termcolor import colored
-    start = time.time()
     main()
-    end = time.time()
-    # print the time of the experiment in minutes (blue color)
-    print(colored(f"Time of the experiment: {round((end - start) / 60, 2)} minutes", "blue"))
-
