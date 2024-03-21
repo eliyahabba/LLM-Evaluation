@@ -10,7 +10,7 @@ from src.utils.Constants import Constants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 
-RESULTS_FOLDER = ExperimentConstants.RESULTS_PATH
+RESULTS_PATHS = ExperimentConstants.RESULTS_PATHS
 
 
 class ResultsLoader:
@@ -95,16 +95,29 @@ class ResultsLoader:
 
     @staticmethod
     def select_dataset_and_shot():
-        datasets_folders_names = [f for f in RESULTS_FOLDER.iterdir() if f.is_dir()]
+        results_folders_names = [results_folder for results_folder in RESULTS_PATHS]
+        results_names_to_display = {f.name: f for f in results_folders_names}
+        results_file_name = st.sidebar.selectbox("Select results folder to visualize",
+                                                 list(results_names_to_display.keys()))
+        selected_results_file_name = results_names_to_display[results_file_name]
+
+        datasets_folders_names = [f for f in selected_results_file_name.iterdir() if f.is_dir()]
         datasets_names_to_display = {f.name: f for f in datasets_folders_names}
         dataset_file_name = st.sidebar.selectbox("Select dataset to visualize", list(datasets_names_to_display.keys()))
         selected_dataset_file_name = datasets_names_to_display[dataset_file_name]
 
         shot_folders_name = [f for f in selected_dataset_file_name.iterdir() if f.is_dir()]
-        shot_folders_name = {f.name: f for f in shot_folders_name}
-        shot_file_name = st.sidebar.selectbox("Select the number of shots to visualize", list(shot_folders_name.keys()))
+        shot_folders_name_to_display = {f.name: f for f in shot_folders_name}
+        shot_file_name = st.sidebar.selectbox("Select the number of shots to visualize",
+                                              list(shot_folders_name_to_display.keys()))
         selected_shot_file_name = shot_folders_name[shot_file_name]
-        return dataset_file_name, selected_shot_file_name
+
+        system_prompt_folders_name = [f for f in selected_shot_file_name.iterdir() if f.is_dir()]
+        system_prompt_name_to_display = {f.name: f for f in system_prompt_folders_name}
+        system_prompt_name = st.sidebar.selectbox("Select the number of shots to visualize", list(system_prompt_name_to_display.keys()))
+        selected_system_prompt_name = system_prompt_folders_name[system_prompt_name]
+
+        return dataset_file_name, selected_system_prompt_name
 
     @staticmethod
     def select_result_file(result_files, results_type_name="scores"):
