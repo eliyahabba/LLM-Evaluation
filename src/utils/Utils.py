@@ -1,5 +1,9 @@
 from pathlib import Path
 
+from src.utils.Constants import Constants
+
+ExperimentConstants = Constants.ExperimentConstants
+
 
 class Utils:
     @staticmethod
@@ -29,3 +33,14 @@ class Utils:
         @return: The name of the template
         """
         return f"template_{template_num}"
+
+    @staticmethod
+    def get_system_format_class(system_format: str) -> str:
+        """
+        Get the system format class.
+        @param system_format: The system format
+        @return: The system format class
+        """
+        # get the  key of ExperimentConstants.SYSTEM_FORMATS from the system_format value
+        return list(ExperimentConstants.SYSTEM_FORMATS.keys())[
+            list(ExperimentConstants.SYSTEM_FORMATS.values()).index(system_format)]
