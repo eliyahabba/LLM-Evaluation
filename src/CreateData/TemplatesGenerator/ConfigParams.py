@@ -44,8 +44,20 @@ class ConfigParams:
         "shuffle_choices": False,
         "postprocessors": ["processors.first_character"]
     }
-    datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy]
-    dataset_names = ["sciq", "race_all", "ai2_arc.arc_easy"]
+    base_args_mmlu_global_facts = {
+        "input_format": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {question} Choices: {choices} Answer:",
+        "choices_field": "choices",
+        "target_field": "answer",
+        "choices_seperator": "\n",
+        "enumerator": "numbers",
+        "source_choice_format": "{choice_numeral}. {choice_text}",
+        "target_choice_format": "{choice_numeral}",
+        "shuffle_choices": False,
+        "postprocessors": ["processors.first_character"]
+    }
+
+    datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_mmlu_global_facts]
+    dataset_names = ["sciq", "race_all", "ai2_arc.arc_easy", "mmlu.global_facts"]
     dataset_names_to_templates = dict(zip(dataset_names, datasets_templates))
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman"],
