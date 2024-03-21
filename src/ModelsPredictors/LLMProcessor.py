@@ -5,12 +5,17 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers.tokenization_utils_base import BatchEncoding
 
+from src.utils.Constants import Constants
+
+LLMProcessorConstants = Constants.LLMProcessorConstants
+
 
 class LLMProcessor:
-    def __init__(self, model_name: str):
+    def __init__(self, model_name: str, load_in_4bit: bool = False, load_in_8bit: bool = False):
         # Define the pre-trained model and tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModelForCausalLM.from_pretrained(model_name)
+        self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
+                                                          load_in_8bit=load_in_8bit)
 
     def tokenize_text(self, input_text: str) -> BatchEncoding:
         """
@@ -80,7 +85,7 @@ class LLMProcessor:
         print("The decoded generated tokens are:")
         print(generated_tokens_decoded)
 
-    def generate_model_text(self, input_text: str, max_new_tokens:int, is_print: bool = False) -> str:
+    def generate_model_text(self, input_text: str, max_new_tokens: int, is_print: bool = False) -> str:
         """
         Generate text using a pre-trained language model and print the results.
 
@@ -112,7 +117,11 @@ class LLMProcessor:
 # Execute the main function
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
-    args.add_argument("--model_name", type=str, default="mistralai/Mistral-7B-Instruct-v0.2")
+    args.add_argument("--model_name", type=str, default=LLMProcessorConstants.MODEL_NAME)
+    args.add_argument("--load_in_4bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_4BIT,
+                      help="True if the model should be loaded in 4-bit.")
+    args.add_argument("--load_in_8bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_8BIT,
+                      help="True if the model should be loaded in 8-bit.")
     args = args.parse_args()
     model_name = args.model_name
     llmp = LLMProcessor(model_name)
