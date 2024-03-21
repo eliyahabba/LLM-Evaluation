@@ -1,12 +1,13 @@
 {
     "type": "multiple_choice_template",
-    "input_format": "The following are multiple choice questions (with answers) about {topic}. Question: {question} Answers: {choices} Answer:",
+    "input_format": "Context: [context] Question: [question] Choices: [choices] Answer: [answer]\nContext: {context} Question: {question} Choices: {choices} Answer:",
     "choices_field": "choices",
     "target_field": "answer",
-    "choices_seperator": " or ",
+    "choices_seperator": "; ",
     "enumerator": "capitals",
     "source_choice_format": "{choice_numeral}. {choice_text}",
     "target_choice_format": "{choice_numeral}",
+    "shuffle_choices": false,
     "postprocessors": [
         "processors.first_character"
     ]
