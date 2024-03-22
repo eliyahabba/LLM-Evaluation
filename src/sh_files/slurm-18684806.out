@@ -1,0 +1,12 @@
+     User        JobID    JobName  Partition      State  Timelimit               Start                 End    Elapsed     MaxRSS  MaxVMSize   NNodes      NCPUS        NodeList 
+--------- ------------ ---------- ---------- ---------- ---------- ------------------- ------------------- ---------- ---------- ---------- -------- ---------- --------------- 
+eliyahab+ 18684806     allocation               PENDING                        Unknown             Unknown   00:00:00                              0          0        arion-02 
+          18684806.ba+      batch               RUNNING            2024-03-22T09:34:56             Unknown   00:00:02                              1          1        arion-02 
+          18684806.ex+     extern               RUNNING            2024-03-22T09:34:56             Unknown   00:00:02                              1          1        arion-02 
+
+The following have been reloaded with a version change:
+  1) cuda/11.7 => cuda/11.3
+
+
+The `load_in_4bit` and `load_in_8bit` arguments are deprecated and will be removed in the future versions. Please, pass a `BitsAndBytesConfig` object in `quantization_config` argument instead.
+`low_cpu_mem_usage` was None, now set to True since model is quantized.
