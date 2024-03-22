@@ -10,12 +10,16 @@ from src.utils.Constants import Constants
 LLMProcessorConstants = Constants.LLMProcessorConstants
 access_token = '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'
 
+
 class LLMProcessor:
-    def __init__(self, model_name: str, load_in_4bit: bool = False, load_in_8bit: bool = False):
+    def __init__(self, model_name: str, load_in_4bit: bool = False, load_in_8bit: bool = False,
+                 trust_remote_code: bool = False):
         # Define the pre-trained model and tokenizer
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name,token = access_token)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name, token=access_token,
+                                                       trust_remote_code=trust_remote_code)
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
-                                                          load_in_8bit=load_in_8bit, token = access_token)
+                                                          load_in_8bit=load_in_8bit, token=access_token,
+                                                          trust_remote_code=trust_remote_code)
 
     def tokenize_text(self, input_text: str) -> BatchEncoding:
         """
