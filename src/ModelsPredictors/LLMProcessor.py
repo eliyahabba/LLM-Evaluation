@@ -8,14 +8,14 @@ from transformers.tokenization_utils_base import BatchEncoding
 from src.utils.Constants import Constants
 
 LLMProcessorConstants = Constants.LLMProcessorConstants
-
+access_token = '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'
 
 class LLMProcessor:
     def __init__(self, model_name: str, load_in_4bit: bool = False, load_in_8bit: bool = False):
         # Define the pre-trained model and tokenizer
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name,token = access_token)
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
-                                                          load_in_8bit=load_in_8bit)
+                                                          load_in_8bit=load_in_8bit, token = access_token)
 
     def tokenize_text(self, input_text: str) -> BatchEncoding:
         """

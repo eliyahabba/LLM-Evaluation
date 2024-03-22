@@ -3,7 +3,11 @@ from pathlib import Path
 
 class Constants:
     class LLMProcessorConstants:
-        MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2"
+        MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
+        LLAMA_MODEL = "meta-llama/Llama-2-7b-chat-hf"
+        GEMMA_MODEL = "google/gemma-7b"
+        PHI_MODEL = "microsoft/phi-2"
+
         LOAD_IN_4BIT = False
         LOAD_IN_8BIT = True
 
