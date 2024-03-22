@@ -68,7 +68,8 @@ class ConfigParams:
         "postprocessors": ["processors.first_character"]
     }
 
-    datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_mmlu_global_facts]
+    datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_mmlu_global_facts,
+                          base_args_mmlu_machine_learning]
     dataset_names = ["sciq", "race_all", "ai2_arc.arc_easy", "mmlu.global_facts", "mmlu.machine_learning"]
     dataset_names_to_templates = dict(zip(dataset_names, datasets_templates))
     override_options = {
