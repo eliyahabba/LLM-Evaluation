@@ -1,10 +1,11 @@
 #!/bin/bash
-#SBATCH --mem=30g
-#SBATCH --time=0-3
-#SBATCH --gres=gpu:1,vmem:48g
+#SBATCH --mem=20g
+#SBATCH --time=1-0
+#SBATCH --gres=gpu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
-#SBATCH --killable
+#SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
+
 
 export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
 export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
@@ -19,4 +20,4 @@ cd $dir
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --template_num $1 --card cards.ai2_arc.arc_easy
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLMProcessorConstants.GEMMA_MODEL --card cards.race_all --template_range $1 $2
