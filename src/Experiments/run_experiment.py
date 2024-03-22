@@ -112,7 +112,7 @@ class ExperimentRunner:
         @return: The results of the experiment.
         """
         min_template, max_template = self.args.template_range
-        llm_proc = LLMProcessor(self.args.model_name, self.args.load_in_4bit, self.args.load_in_8bit, self.args.trust_remote_code)
+        llm_proc = LLMProcessor(self.args.model_name, self.args.not_load_in_4bit, self.args.not_load_in_8bit, self.args.trust_remote_code)
         for template_num in range(min_template, max_template + 1):
             start = time.time()
             self.run_single_experiment(llm_proc, template_num)
