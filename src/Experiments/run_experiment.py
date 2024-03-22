@@ -72,8 +72,11 @@ class ExperimentRunner:
 
         system_foramt_name = ExperimentConstants.SYSTEM_FORMATS_NAMES[self.args.system_format]
         results_path = ExperimentConstants.RESULTS_PATH
-        results_file_path = results_path / self.args.card.split('cards.')[1] / num_of_shot_icl / system_foramt_name / \
-                            json_file_name
+        model_name = self.args.model_name.split('/')[-1]
+        results_file_path = (results_path /
+                             model_name /
+                             self.args.card.split('cards.')[1] / num_of_shot_icl / system_foramt_name / \
+                            json_file_name)
         results_file_path.parent.mkdir(parents=True, exist_ok=True)
         print(f"Results will be saved in {results_file_path}")
         return results_file_path
