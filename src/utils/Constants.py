@@ -7,6 +7,7 @@ class Constants:
         LLAMA_MODEL = "meta-llama/Llama-2-7b-chat"
         GEMMA_MODEL = "google/gemma-7b"
         PHI_MODEL = "microsoft/phi-2"
+        MODEL_NAMES = {"PHI" : PHI_MODEL, "MISTRAL" : MISTRAL_MODEL, "LLAMA" : LLAMA_MODEL, "GEMMA" : GEMMA_MODEL}
 
         LOAD_IN_4BIT = False
         LOAD_IN_8BIT = True

@@ -164,6 +164,8 @@ def main():
     args = args.parse_args()
     # add the syte  format to the args
     args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
+    # map between the model name to the real model name from the constants
+    args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
     runner = ExperimentRunner(args)
     runner.run_experiment()
 
