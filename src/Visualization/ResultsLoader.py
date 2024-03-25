@@ -100,8 +100,12 @@ class ResultsLoader:
         results_file_name = st.sidebar.selectbox("Select results folder to visualize",
                                                  list(results_names_to_display.keys()))
         selected_results_file_name = results_names_to_display[results_file_name]
+        model_folders_names = [f for f in selected_results_file_name.iterdir() if f.is_dir()]
+        model_names_to_display = {f.name: f for f in model_folders_names}
+        model_file_name = st.sidebar.selectbox("Select model to visualize", list(model_names_to_display.keys()))
+        selected_model_file_name = model_names_to_display[model_file_name]
 
-        datasets_folders_names = [f for f in selected_results_file_name.iterdir() if f.is_dir()]
+        datasets_folders_names = [f for f in selected_model_file_name.iterdir() if f.is_dir()]
         datasets_names_to_display = {f.name: f for f in datasets_folders_names}
         dataset_file_name = st.sidebar.selectbox("Select dataset to visualize", list(datasets_names_to_display.keys()))
         selected_dataset_file_name = datasets_names_to_display[dataset_file_name]
@@ -110,14 +114,15 @@ class ResultsLoader:
         shot_folders_name_to_display = {f.name: f for f in shot_folders_name}
         shot_file_name = st.sidebar.selectbox("Select the number of shots to visualize",
                                               list(shot_folders_name_to_display.keys()))
-        selected_shot_file_name = shot_folders_name[shot_file_name]
+        selected_shot_file_name = shot_folders_name_to_display[shot_file_name]
 
-        system_prompt_folders_name = [f for f in selected_shot_file_name.iterdir() if f.is_dir()]
-        system_prompt_name_to_display = {f.name: f for f in system_prompt_folders_name}
-        system_prompt_name = st.sidebar.selectbox("Select the number of shots to visualize", list(system_prompt_name_to_display.keys()))
-        selected_system_prompt_name = system_prompt_folders_name[system_prompt_name]
+        system_format_folders_name = [f for f in selected_shot_file_name.iterdir() if f.is_dir()]
+        system_format_name_to_display = {f.name: f for f in system_format_folders_name}
+        system_format_name = st.sidebar.selectbox("Select the system format to visualize",
+                                                  list(system_format_name_to_display.keys()))
+        selected_system_format_name = system_format_name_to_display[system_format_name]
 
-        return dataset_file_name, selected_system_prompt_name
+        return dataset_file_name, selected_system_format_name
 
     @staticmethod
     def select_result_file(result_files, results_type_name="scores"):
