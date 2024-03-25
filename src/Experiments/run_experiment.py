@@ -76,7 +76,7 @@ class ExperimentRunner:
         results_file_path = (results_path /
                              model_name /
                              self.args.card.split('cards.')[1] / num_of_shot_icl / system_foramt_name / \
-                            json_file_name)
+                             json_file_name)
         results_file_path.parent.mkdir(parents=True, exist_ok=True)
         print(f"Results will be saved in {results_file_path}")
         return results_file_path
@@ -112,7 +112,8 @@ class ExperimentRunner:
         @return: The results of the experiment.
         """
         min_template, max_template = self.args.template_range
-        llm_proc = LLMProcessor(self.args.model_name, self.args.not_load_in_4bit, self.args.not_load_in_8bit, self.args.trust_remote_code)
+        llm_proc = LLMProcessor(self.args.model_name, self.args.not_load_in_4bit, self.args.not_load_in_8bit,
+                                self.args.trust_remote_code)
         for template_num in range(min_template, max_template + 1):
             start = time.time()
             self.run_single_experiment(llm_proc, template_num)
@@ -146,8 +147,7 @@ def main():
     args.add_argument("--not_load_in_8bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_8BIT,
                       help="True if the model should be loaded in 8-bit.")
     args.add_argument("--trust_remote_code", action="store_true", default=LLMProcessorConstants.TRUST_REMOTE_CODE,
-                        help="True if the model should trust remote code.")
-
+                      help="True if the model should trust remote code.")
 
     args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
 
