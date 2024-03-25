@@ -25,11 +25,10 @@ class Constants:
         RESULTS_PATHS = [RESULTS_WITHOUT_STRUCTURE_PATH, RESULTS_PATH]
 
         EMPTY_SYSTEM_FORMATS = "formats.empty"
-        MISTRAL_SYSTEM_FORMATS = "Always assist with care, respect, and truth. Respond with utmost utility yet securely. Avoid harmful, unethical, prejudiced, or negative content. Ensure replies promote fairness and positivity."
         LLAMA_SYSTEM_FORMATS = "formats.llama"
-        SYSTEM_FORMATS = [EMPTY_SYSTEM_FORMATS, MISTRAL_SYSTEM_FORMATS]
+        SYSTEM_FORMATS = [EMPTY_SYSTEM_FORMATS, LLAMA_SYSTEM_FORMATS]
         SYSTEM_FORMATS_NAMES = {EMPTY_SYSTEM_FORMATS: "empty_system_format",
-                                MISTRAL_SYSTEM_FORMATS: "mistral_system_format"}
+                                LLAMA_SYSTEM_FORMATS: "llama_system_format"}
         SYSTEM_FORMAT_INDEX = 0
 
         MAX_INSTANCES = 100
