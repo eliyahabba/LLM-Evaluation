@@ -26,6 +26,7 @@ class Constants:
 
         EMPTY_SYSTEM_FORMATS = "formats.empty"
         MISTRAL_SYSTEM_FORMATS = "Always assist with care, respect, and truth. Respond with utmost utility yet securely. Avoid harmful, unethical, prejudiced, or negative content. Ensure replies promote fairness and positivity."
+        LLAMA_SYSTEM_FORMATS = "formats.llama"
         SYSTEM_FORMATS = [EMPTY_SYSTEM_FORMATS, MISTRAL_SYSTEM_FORMATS]
         SYSTEM_FORMATS_NAMES = {EMPTY_SYSTEM_FORMATS: "empty_system_format",
                                 MISTRAL_SYSTEM_FORMATS: "mistral_system_format"}
