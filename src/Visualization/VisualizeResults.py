@@ -13,7 +13,7 @@ from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 class VisualizeResults:
     def display_page(self):
         st.title("Templates Visualization")
-        dataset_file_name, selected_shot_file_name = ResultsLoader.select_dataset_and_shot()
+        dataset_file_name, selected_shot_file_name = ResultsLoader.select_experiment_params()
         self.display_possible_templates_args()
 
         # find the csv file in the folder if exists

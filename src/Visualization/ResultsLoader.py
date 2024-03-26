@@ -108,6 +108,19 @@ class ResultsLoader:
         selected_file_name = names_to_display[results_file_name]
         return selected_file_name
 
+    @staticmethod
+    def select_experiment_params():
+        selected_results_file = ResultsLoader.get_folder_selections_options(MAIN_RESULTS_PATH,
+                                                                            "Select results folder to visualize")
+        selected_model_file = ResultsLoader.get_folder_selections_options(selected_results_file,
+                                                                          "Select model to visualize")
+        selected_dataset_file = ResultsLoader.get_folder_selections_options(selected_model_file,
+                                                                            "Select dataset to visualize")
+        selected_shot_file = ResultsLoader.get_folder_selections_options(selected_dataset_file,
+                                                                         "Select shot to visualize")
+        selected_system_format = ResultsLoader.get_folder_selections_options(selected_shot_file,
+                                                                             "Select system format to visualize")
+        return selected_dataset_file.name, selected_system_format
 
     @staticmethod
     def select_result_file(result_files, results_type_name="scores"):

@@ -11,7 +11,7 @@ from src.Visualization.ResultsLoader import ResultsLoader
 class HistogramOfSamples:
     def display_page(self):
         st.title("Histogram of Samples")
-        dataset_file_name, selected_shot_file_name = ResultsLoader.select_dataset_and_shot()
+        dataset_file_name, selected_shot_file_name = ResultsLoader.select_experiment_params()
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
