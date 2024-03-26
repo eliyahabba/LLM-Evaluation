@@ -1,4 +1,5 @@
 from typing import List
+from termcolor import colored
 
 from tqdm import tqdm
 from unitxt.templates import MultipleChoiceTemplate
@@ -42,8 +43,8 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
         metadata_df = generator.create_metadata_from_templates(created_templates, params=override_options)
 
         # replace the spaces and new lines with the escape character
-        metadata_df['choices_seperator'].replace(' ', '\\s', inplace=True)
-        metadata_df['choices_seperator'].replace('\n', '\\n', inplace=True)
+        metadata_df['choices_seperator'] = metadata_df['choices_seperator'].replace(' ', '\\s')
+        metadata_df['choices_seperator'] = metadata_df['choices_seperator'].replace('\n', '\\n')
         # replace the enumerator values with their names
         # convert the enumerator to string to be able to replace the values with their names
         metadata_df['enumerator'] = metadata_df['enumerator'].astype(str)
@@ -57,6 +58,7 @@ if __name__ == "__main__":
     dataset_names_to_templates = ConfigParams.dataset_names_to_templates
     override_options = ConfigParams.override_options
     for dataset_name, base_args in dataset_names_to_templates.items():
+        print(colored(f"Creating templates for {dataset_name}", "blue"))
         # Override options for different parameters and create templates
         generator = MultipleChoiceTemplateGenerator(base_args, override_options)
         created_templates = generator.create_templates()
