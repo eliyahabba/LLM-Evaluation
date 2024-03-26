@@ -1,3 +1,5 @@
+from typing import List
+
 from tqdm import tqdm
 from unitxt.templates import MultipleChoiceTemplate
 
@@ -35,6 +37,20 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
         template = MultipleChoiceTemplate(**args)
         return template
 
+    def create_and_process_metadata(self, created_templates: List[MultipleChoiceTemplate], dataset_name: str,
+                                    override_options: dict) -> None:
+        metadata_df = generator.create_metadata_from_templates(created_templates, params=override_options)
+
+        # replace the spaces and new lines with the escape character
+        metadata_df['choices_seperator'].replace(' ', '\\s', inplace=True)
+        metadata_df['choices_seperator'].replace('\n', '\\n', inplace=True)
+        # replace the enumerator values with their names
+        # convert the enumerator to string to be able to replace the values with their names
+        metadata_df['enumerator'] = metadata_df['enumerator'].astype(str)
+        metadata_df.replace({"enumerator": ConfigParams.map_enumerator}, inplace=True)
+        # save the metadata to a csv file
+        metadata_df.to_csv(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / dataset_name / "templates_metadata.csv")
+
 
 if __name__ == "__main__":
     # Base arguments for all templates
@@ -49,3 +65,6 @@ if __name__ == "__main__":
         catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / dataset_name)
         for i, template in tqdm(enumerate(created_templates)):
             catalog_manager.save_to_catalog(template, f"template_{i}")
+
+        # add a df that contains the templates and their parameter
+        generator.create_and_process_metadata(created_templates, dataset_name, override_options)
