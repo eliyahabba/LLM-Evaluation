@@ -1,0 +1,57 @@
+template_name,enumerator,choices_seperator
+template_0,capitals,\s
+template_1,capitals,\s
+template_2,capitals,\n
+template_3,capitals,\n
+template_4,capitals,", "
+template_5,capitals,", "
+template_6,capitals,; 
+template_7,capitals,; 
+template_8,capitals, | 
+template_9,capitals, | 
+template_10,capitals, OR 
+template_11,capitals, OR 
+template_12,capitals, or 
+template_13,capitals, or 
+template_14,lowercase,\s
+template_15,lowercase,\s
+template_16,lowercase,\n
+template_17,lowercase,\n
+template_18,lowercase,", "
+template_19,lowercase,", "
+template_20,lowercase,; 
+template_21,lowercase,; 
+template_22,lowercase, | 
+template_23,lowercase, | 
+template_24,lowercase, OR 
+template_25,lowercase, OR 
+template_26,lowercase, or 
+template_27,lowercase, or 
+template_28,numbers,\s
+template_29,numbers,\s
+template_30,numbers,\n
+template_31,numbers,\n
+template_32,numbers,", "
+template_33,numbers,", "
+template_34,numbers,; 
+template_35,numbers,; 
+template_36,numbers, | 
+template_37,numbers, | 
+template_38,numbers, OR 
+template_39,numbers, OR 
+template_40,numbers, or 
+template_41,numbers, or 
+template_42,roman,\s
+template_43,roman,\s
+template_44,roman,\n
+template_45,roman,\n
+template_46,roman,", "
+template_47,roman,", "
+template_48,roman,; 
+template_49,roman,; 
+template_50,roman, | 
+template_51,roman, | 
+template_52,roman, OR 
+template_53,roman, OR 
+template_54,roman, or 
+template_55,roman, or 
