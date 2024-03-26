@@ -4,13 +4,13 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from src.Visualization.CreateHeatmap import CreateHeatmap
-
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
 
 from src.Visualization.ResultsLoader import ResultsLoader
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
+from src.Visualization.CreateHeatmap import CreateHeatmap
+
 
 class VisualizeResults:
     def display_page(self):
@@ -51,10 +51,11 @@ class VisualizeResults:
                 color = color_palette[i % len(color_palette)]
 
                 # Display the options in the main page with different colors
-                st.markdown(f'<span style="color:{color}">The possible values for <b>{k}</b> are:</span>', unsafe_allow_html=True)
+                st.markdown(f'<span style="color:{color}">The possible values for <b>{k}</b> are:</span>',
+                            unsafe_allow_html=True)
                 st.markdown(f'<span style="color:{color}"><b>{v}</b></span>', unsafe_allow_html=True)
 
-    def display_heatmap(self, dataset_file_name:str, result_file: Path):
+    def display_heatmap(self, dataset_file_name: str, result_file: Path):
         create_heatmap = CreateHeatmap(dataset_file_name, result_file)
         create_heatmap.create_heatmap()
 

@@ -4,7 +4,7 @@ from typing import List
 
 import pandas as pd
 from tqdm import tqdm
-from unitxt.templates import MultipleChoiceTemplate, Template
+from unitxt.templates import Template
 
 from src.utils.Constants import Constants
 
