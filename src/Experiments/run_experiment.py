@@ -17,6 +17,7 @@ from src.utils.Utils import Utils
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
+RESULTS_PATH = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
 
 
 class ExperimentRunner:
@@ -71,9 +72,8 @@ class ExperimentRunner:
         num_of_shot_icl = f"{num_of_shot_str}_shot"
 
         system_foramt_name = ExperimentConstants.SYSTEM_FORMATS_NAMES[self.args.system_format]
-        results_path = ExperimentConstants.RESULTS_PATH
         model_name = self.args.model_name.split('/')[-1]
-        results_file_path = (results_path /
+        results_file_path = (RESULTS_PATH /
                              model_name /
                              self.args.card.split('cards.')[1] / num_of_shot_icl / system_foramt_name / \
                              json_file_name)
