@@ -176,7 +176,7 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
 
 if __name__ == "__main__":
     # Load the model and the dataset
-    results_folder = ExperimentConstants.RESULTS_PATH
+    results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
     eval_on = ExperimentConstants.EVALUATE_ON
     # eval_on = [ 'test', 'train']
     models_names = [file for file in results_folder.glob("*") if file.is_dir()]
