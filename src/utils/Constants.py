@@ -22,8 +22,8 @@ class Constants:
         MAIN_RESULTS_FOLDER_NAME = "results"
         MAIN_RESULTS_PATH = Path(__file__).parents[2] / MAIN_RESULTS_FOLDER_NAME
 
-        STRUCTURED_INPUT_FOLDER = "not_structured_input"
-        NOT_STRUCTURED_INPUT_FOLDER = "structured_input"
+        STRUCTURED_INPUT_FOLDER = "structured_input"
+        NOT_STRUCTURED_INPUT_FOLDER = "not_structured_input"
         STRUCTURED_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / STRUCTURED_INPUT_FOLDER
         NOT_STRUCTURED_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / NOT_STRUCTURED_INPUT_FOLDER
 
