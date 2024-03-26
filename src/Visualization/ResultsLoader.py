@@ -10,7 +10,7 @@ from src.utils.Constants import Constants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 
-RESULTS_PATHS = ExperimentConstants.RESULTS_PATHS
+MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
 
 class ResultsLoader:
@@ -94,35 +94,20 @@ class ResultsLoader:
         ResultsLoader.load_template(results_file, dataset_file_name)
 
     @staticmethod
-    def select_dataset_and_shot():
-        results_folders_names = [results_folder for results_folder in RESULTS_PATHS]
-        results_names_to_display = {f.name: f for f in results_folders_names}
-        results_file_name = st.sidebar.selectbox("Select results folder to visualize",
-                                                 list(results_names_to_display.keys()))
-        selected_results_file_name = results_names_to_display[results_file_name]
-        model_folders_names = [f for f in selected_results_file_name.iterdir() if f.is_dir()]
-        model_names_to_display = {f.name: f for f in model_folders_names}
-        model_file_name = st.sidebar.selectbox("Select model to visualize", list(model_names_to_display.keys()))
-        selected_model_file_name = model_names_to_display[model_file_name]
+    def get_folder_selections_options(folder_path: Path, text_to_display: str) -> Path:
+        """
+        Get the folder selection options. The user can select the folder to visualize.
+        @param folder_path: the path to the folder
+        @param text_to_display: the text to display in the sidebar
 
-        datasets_folders_names = [f for f in selected_model_file_name.iterdir() if f.is_dir()]
-        datasets_names_to_display = {f.name: f for f in datasets_folders_names}
-        dataset_file_name = st.sidebar.selectbox("Select dataset to visualize", list(datasets_names_to_display.keys()))
-        selected_dataset_file_name = datasets_names_to_display[dataset_file_name]
+        @return: the selected folder name
+        """
+        folders_names = [file for file in folder_path.iterdir() if file.is_dir()]
+        names_to_display = {f.name: f for f in folders_names}
+        results_file_name = st.sidebar.selectbox(text_to_display, list(names_to_display.keys()))
+        selected_file_name = names_to_display[results_file_name]
+        return selected_file_name
 
-        shot_folders_name = [f for f in selected_dataset_file_name.iterdir() if f.is_dir()]
-        shot_folders_name_to_display = {f.name: f for f in shot_folders_name}
-        shot_file_name = st.sidebar.selectbox("Select the number of shots to visualize",
-                                              list(shot_folders_name_to_display.keys()))
-        selected_shot_file_name = shot_folders_name_to_display[shot_file_name]
-
-        system_format_folders_name = [f for f in selected_shot_file_name.iterdir() if f.is_dir()]
-        system_format_name_to_display = {f.name: f for f in system_format_folders_name}
-        system_format_name = st.sidebar.selectbox("Select the system format to visualize",
-                                                  list(system_format_name_to_display.keys()))
-        selected_system_format_name = system_format_name_to_display[system_format_name]
-
-        return dataset_file_name, selected_system_format_name
 
     @staticmethod
     def select_result_file(result_files, results_type_name="scores"):
