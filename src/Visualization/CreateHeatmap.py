@@ -1,3 +1,4 @@
+import seaborn as sns
 import sys
 from pathlib import Path
 
@@ -37,12 +38,15 @@ class CreateHeatmap:
         # Validate that exactly 2 options are selected for the axis
         if len(axis_options) != 2:
             st.error("Please select exactly 2 axis options.")
+            # stop the execution of the function
+            st.stop()
+
             return None, None
 
         # for the others params, add option to choose the value for each one
-        selected_options = [option for option in config_options if option in axis_options]
+        # selected_options = [option for option in config_options if option in axis_options]
         selected_values = {}
-        for option in selected_options:
+        for option in config_options:
             if option not in axis_options:
                 selected_values[option] = st.selectbox(f"Choose the value for {option}", override_options[option])
         return axis_options, selected_values
@@ -59,8 +63,13 @@ class CreateHeatmap:
 
     def plot_heatmap(self, heatmap_df: pd.DataFrame):
         #create visualization for the heatmap with seaborn
-        import seaborn as sns
         fig = plt.figure(figsize=(10, 6))
+        # if the big size of the axis is the rows, we need to rotate the y axis
+        if heatmap_df.shape[0] > heatmap_df.shape[1]:
+            # rotate the matrix
+            heatmap_df = heatmap_df.T
+
+
 
         g = sns.heatmap(heatmap_df, annot=True, cmap="YlGnBu", fmt='.2f', annot_kws={"fontsize": 16},
                     linewidths=2, linecolor='black',
@@ -68,44 +77,17 @@ class CreateHeatmap:
         g.set_yticklabels(g.get_yticklabels(), rotation=0, fontsize=14)
         g.set_xticklabels(g.get_xticklabels(), rotation=0, fontsize=14)
         # resize the name of the axis
-        g.set_ylabel(g.get_ylabel(), fontsize=16, fontweight='bold')
-        g.set_xlabel(g.get_xlabel(), fontsize=16, fontweight='bold')
+        g.set_ylabel(g.get_ylabel(), fontsize=16, fontweight='bold', color="red")
+        g.set_xlabel(g.get_xlabel(), fontsize=16, fontweight='bold', color="red")
         # put the x label on top
         g.xaxis.tick_top()
         g.xaxis.set_label_position('top')
         # add a titlw to the heatmap
+        plt.title("Heatmap of the accuracy of the templates", fontsize=17, fontweight='bold')
+        # add a gap between the title and the heatmap
+        plt.subplots_adjust(top=0.9)
         plt.tight_layout()
-        plt.tight_layout()
-
-        # st.write(sns.heatmap(heatmap_df, annot=True, cmap="YlGnBu"))
         st.pyplot(fig)
-
-        # create visualization for the heatmap with plotly
-        # import plotly.express as px
-        # fig = px.imshow(heatmap_df, labels=dict(x="x", y="y", color="z"))
-        # st.write(fig)
-    # def generate_heatmap2(self, metadata_df: pd.DataFrame , axis_options: list, selected_values: dict)-> pd.DataFrame:
-    #     # hover_name_value = st.sidebar.selectbox("Hover name", index=length_of_options, options=dropdown_options)
-    #     # facet_row_value = st.sidebar.selectbox("Facet row", index=length_of_options, options=dropdown_options, )
-    #     # facet_column_value = st.sidebar.selectbox("Facet column", index=length_of_options,
-    #     #                                           options=dropdown_options)
-    #     for option, value in selected_values.items():
-    #         metadata_df = metadata_df[metadata_df[option] == value]
-    #
-    #     # now we have the relevant rows, we need to choose the relevant columns for the heatmap
-    #     # create 2d matrix when the rows are the values of the first axis and the columns are the values of the second axis
-    #     # and the values are the accuracy of the template
-    #     df = pd.read_csv(self.result_file)
-    #     # add the 'accuracy' columns from df to the metadata_df by the template_name
-    #     metadata_df = metadata_df.join(df.set_index('template_name')['accuracy'], on='template_name')
-    #
-    #     title = st.sidebar.text_input(label='Title of chart')
-    #     plot = px.density_heatmap(data_frame=metadata_df, x=x_values, y=y_values,
-    #                               z=z_value, histfunc=hist_func, histnorm=histnorm,
-    #                               hover_name=hover_name_value, facet_row=facet_row_value,
-    #                               facet_col=facet_column_value, log_x=log_x,
-    #                               log_y=log_y, marginal_y=marginaly, marginal_x=marginalx,
-    #                               template=template, title=title)
 
 
 
