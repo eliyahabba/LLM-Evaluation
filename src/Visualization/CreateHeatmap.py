@@ -29,7 +29,15 @@ class CreateHeatmap:
         # choose every time 2 params from the override_options to be the axis's
         # in the heatmap, and detemine the value of the other params
         config_options = list(override_options.keys())
-        axis_options = st.multiselect("Choose the axis's for the heatmap", config_options, default=config_options[:2])
+
+        # Display message informing the user to choose exactly 2 options for the axis
+        axis_options = st.multiselect("Choose exactly 2 axis options for the heatmap", config_options,
+                                      default=config_options[:2], key="axis_selection")
+
+        # Validate that exactly 2 options are selected for the axis
+        if len(axis_options) != 2:
+            st.error("Please select exactly 2 axis options.")
+            return None, None
 
         # for the others params, add option to choose the value for each one
         selected_options = [option for option in config_options if option in axis_options]
