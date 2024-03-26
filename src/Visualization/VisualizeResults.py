@@ -4,6 +4,8 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+from src.Visualization.CreateHeatmap import CreateHeatmap
+
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
 
@@ -21,7 +23,7 @@ class VisualizeResults:
         result_file_name, result_file = ResultsLoader.select_result_file(result_files, "scores")
 
         self.display_results(result_file)
-
+        self.display_heatmap(dataset_file_name, result_file)
         ResultsLoader.display_sample_examples(selected_shot_file_name, dataset_file_name, result_file_name)
 
     def display_results(self, results_file: Path):
@@ -52,6 +54,9 @@ class VisualizeResults:
                 st.markdown(f'<span style="color:{color}">The possible values for <b>{k}</b> are:</span>', unsafe_allow_html=True)
                 st.markdown(f'<span style="color:{color}"><b>{v}</b></span>', unsafe_allow_html=True)
 
+    def display_heatmap(self, dataset_file_name:str, result_file: Path):
+        create_heatmap = CreateHeatmap(dataset_file_name, result_file)
+        create_heatmap.create_heatmap()
 
 
 if __name__ == "__main__":
