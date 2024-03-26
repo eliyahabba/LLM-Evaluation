@@ -11,7 +11,6 @@ from src.utils.Constants import Constants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 
-RESULTS_FOLDER = ExperimentConstants.RESULTS_PATH
 
 class SamplesNavigator:
     @staticmethod
