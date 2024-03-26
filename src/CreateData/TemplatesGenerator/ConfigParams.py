@@ -6,7 +6,11 @@ class ConfigParams:
         "target_field": "answer",
         "choices_seperator": "\n",
         "enumerator": "numbers",
-        "postprocessors": ["processors.first_character"]
+        "postprocessors": [
+            "processors.to_string_stripped",
+            "processors.take_first_non_empty_line",
+            "processors.match_closest_option"
+        ]
     }
 
     base_args_sciq = {
@@ -18,7 +22,11 @@ class ConfigParams:
         "source_choice_format": "{choice_numeral}. {choice_text}",
         "target_choice_format": "{choice_numeral}",
         "shuffle_choices": False,
-        "postprocessors": ["processors.first_character"]
+        "postprocessors": [
+            "processors.to_string_stripped",
+            "processors.take_first_non_empty_line",
+            "processors.match_closest_option"
+        ]
     }
 
     base_args_race = {
@@ -30,7 +38,11 @@ class ConfigParams:
         "source_choice_format": "{choice_numeral}. {choice_text}",
         "target_choice_format": "{choice_numeral}. {choice_text}",
         "shuffle_choices": False,
-        "postprocessors": ["processors.first_character"]
+        "postprocessors": [
+            "processors.to_string_stripped",
+            "processors.take_first_non_empty_line",
+            "processors.match_closest_option"
+        ]
     }
 
     base_args_ai2_arc_easy = {
@@ -42,7 +54,11 @@ class ConfigParams:
         "source_choice_format": "{choice_numeral}. {choice_text}",
         "target_choice_format": "{choice_numeral}. {choice_text}",
         "shuffle_choices": False,
-        "postprocessors": ["processors.first_character"]
+        "postprocessors": [
+            "processors.to_string_stripped",
+            "processors.take_first_non_empty_line",
+            "processors.match_closest_option"
+        ]
     }
     base_args_mmlu_global_facts = {
         "input_format": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {question} Choices: {choices} Answer:",
@@ -53,7 +69,11 @@ class ConfigParams:
         "source_choice_format": "{choice_numeral}. {choice_text}",
         "target_choice_format": "{choice_numeral}. {choice_text}",
         "shuffle_choices": False,
-        "postprocessors": ["processors.first_character"]
+        "postprocessors": [
+            "processors.to_string_stripped",
+            "processors.take_first_non_empty_line",
+            "processors.match_closest_option"
+        ]
     }
 
     base_args_mmlu_machine_learning = {
@@ -65,7 +85,11 @@ class ConfigParams:
         "source_choice_format": "{choice_numeral}. {choice_text}",
         "target_choice_format": "{choice_numeral}",
         "shuffle_choices": False,
-        "postprocessors": ["processors.first_character"]
+        "postprocessors": [
+            "processors.to_string_stripped",
+            "processors.take_first_non_empty_line",
+            "processors.match_closest_option"
+        ]
     }
 
     datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_mmlu_global_facts,
