@@ -23,3 +23,8 @@ template_20,cards.mmlu.global_facts,empty_system_format,0,10,100,0.370,0.370,acc
 template_21,cards.mmlu.global_facts,empty_system_format,0,10,100,0.230,0.230,accuracy,0.150,0.320,0.150,0.320,0.230,100
 template_22,cards.mmlu.global_facts,empty_system_format,0,10,100,0.320,0.320,accuracy,0.240,0.420,0.240,0.420,0.320,100
 template_23,cards.mmlu.global_facts,empty_system_format,0,10,100,0.260,0.260,accuracy,0.180,0.350,0.180,0.350,0.260,100
+template_24,cards.mmlu.global_facts,empty_system_format,0,10,100,0.270,0.270,accuracy,0.190,0.370,0.190,0.370,0.270,100
+template_25,cards.mmlu.global_facts,empty_system_format,0,10,100,0.260,0.260,accuracy,0.180,0.350,0.180,0.350,0.260,100
+template_26,cards.mmlu.global_facts,empty_system_format,0,10,100,0.280,0.280,accuracy,0.200,0.370,0.200,0.370,0.280,100
+template_27,cards.mmlu.global_facts,empty_system_format,0,10,100,0.250,0.250,accuracy,0.170,0.340,0.170,0.340,0.250,100
+template_28,cards.mmlu.global_facts,empty_system_format,0,10,100,0.400,0.400,accuracy,0.200,0.650,0.200,0.650,0.400,20
