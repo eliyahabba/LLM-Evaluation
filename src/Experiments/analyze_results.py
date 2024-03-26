@@ -41,6 +41,15 @@ class EvaluateModel:
         results = self.experiment['results']
         return results
 
+    def save_results_to_experiment_file(self, results: dict):
+        """
+        Save the results to the experiment file.
+        """
+        self.experiment['results']= results
+        with open(self.results_file, "w") as f:
+            json.dump(self.experiment, f)
+
+
     def evaluate(self, results: dict, llm_dataset: LLMDataset, save_to_file: bool = True) -> Union[None, dict]:
         """
         Calculate the scores of the model on the dataset.
@@ -50,6 +59,10 @@ class EvaluateModel:
             return None
         predictions, references, predictions_idx = self.get_predictions_and_references(results, llm_dataset)
         scores = metric.compute(predictions=predictions, references=references)
+        # add the scores to the results
+        for idx, result in enumerate(results[self.eval_on_value]):
+            result['Score'] = scores[idx]['score']['instance']['accuracy']
+        self.save_results_to_experiment_file(results)
         if save_to_file:
             self.save_scores(scores)
         scores_by_index = self.parser_predictions(scores, predictions_idx, len(llm_dataset.dataset[self.eval_on_value]))
@@ -166,7 +179,7 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
     llm_dataset_loader = DatasetLoader(card=experiment['card'], template=template,
                                        system_format=experiment['system_format'],
                                        num_demos=experiment['num_demos'],
-                                       demos_pool_size=experiment['demos_pool_size'],
+                                       demos_pool_size=experiment['demos_pool_size'] if "mmlu" not in experiment["card"] else None,
                                        max_instances=experiment['max_instances'],
                                        template_name=experiment['template_name'])
     llm_dataset = llm_dataset_loader.load()
@@ -215,7 +228,7 @@ if __name__ == "__main__":
                     for eval_on_value, results_df in summary_of_accuracy_results.items():
                         # sort the columns by the number of the template that in the columns name
                         results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])), axis=1)
-                        results_df.to_csv(shot / f"{eval_on_value}_accuracy_results.csv", index=False)
+                        results_df.to_csv(format_folder / f"{eval_on_value}_accuracy_results.csv", index=False)
     for file, error in zip(error_files, errors_msgs):
         print(error)
         print(file)
