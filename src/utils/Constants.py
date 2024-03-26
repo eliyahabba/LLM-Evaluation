@@ -7,22 +7,25 @@ class Constants:
         LLAMA_MODEL = "meta-llama/Llama-2-7b-chat"
         GEMMA_MODEL = "google/gemma-7b"
         PHI_MODEL = "microsoft/phi-2"
-        MODEL_NAMES = {"PHI" : PHI_MODEL, "MISTRAL" : MISTRAL_MODEL, "LLAMA" : LLAMA_MODEL, "GEMMA" : GEMMA_MODEL}
+        MODEL_NAMES = {"PHI": PHI_MODEL, "MISTRAL": MISTRAL_MODEL, "LLAMA": LLAMA_MODEL, "GEMMA": GEMMA_MODEL}
 
         LOAD_IN_4BIT = False
         LOAD_IN_8BIT = True
         TRUST_REMOTE_CODE = False
+
     class TemplatesGeneratorConstants:
         MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplates"
         MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_FOLDER_NAME
 
     class ExperimentConstants:
         TEMPLATES_RANGE = [0, 1]
-        RESULTS_WITHOUT_STRUCTURE_FOLDER_NAME = "results_without_structure"
-        RESULTS_FOLDER_NAME = "results"
-        RESULTS_WITHOUT_STRUCTURE_PATH = Path(__file__).parents[2] / RESULTS_WITHOUT_STRUCTURE_FOLDER_NAME
-        RESULTS_PATH = Path(__file__).parents[2] / RESULTS_FOLDER_NAME
-        RESULTS_PATHS = [RESULTS_WITHOUT_STRUCTURE_PATH, RESULTS_PATH]
+        MAIN_RESULTS_FOLDER_NAME = "results"
+        MAIN_RESULTS_PATH = Path(__file__).parents[2] / MAIN_RESULTS_FOLDER_NAME
+
+        STRUCTURED_INPUT_FOLDER = "not_structured_input"
+        NOT_STRUCTURED_INPUT_FOLDER = "structured_input"
+        STRUCTURED_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / STRUCTURED_INPUT_FOLDER
+        NOT_STRUCTURED_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / NOT_STRUCTURED_INPUT_FOLDER
 
         EMPTY_SYSTEM_FORMATS = "formats.empty"
         LLAMA_SYSTEM_FORMATS = "formats.llama"
