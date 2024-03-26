@@ -42,7 +42,7 @@ class ExperimentsResults:
 
 if __name__ == "__main__":
     # Load the model and the dataset
-    results_folder = ExperimentConstants.RESULTS_PATH
+    results_folder = ExperimentConstants.RESULTS_WITH_STRUCTURE_PATH
     eval_on = ExperimentConstants.EVALUATE_ON
 
     for dataset_folder in [file for file in results_folder.glob("*") if file.is_dir()]:
