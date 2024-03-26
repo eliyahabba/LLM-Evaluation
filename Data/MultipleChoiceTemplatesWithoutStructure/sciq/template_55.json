@@ -1,0 +1,15 @@
+{
+    "type": "multiple_choice_template",
+    "input_format": "Context: {context} Question: {question} Choices: {choices} Answer:",
+    "choices_field": "choices",
+    "target_field": "answer",
+    "choices_seperator": " or ",
+    "enumerator": "roman",
+    "source_choice_format": "{choice_numeral}. {choice_text}",
+    "target_choice_format": "{choice_numeral}. {choice_text}",
+    "postprocessors": [
+        "processors.to_string_stripped",
+        "processors.take_first_non_empty_line",
+        "processors.match_closest_option"
+    ]
+}
