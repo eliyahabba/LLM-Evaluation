@@ -191,7 +191,7 @@ if __name__ == "__main__":
             for shot in shots:
                 formats = [file for file in shot.glob("*") if file.is_dir()]
                 for format_folder in formats:
-                    results_files = [file for file in shot.glob("*.json")]
+                    results_files = [file for file in format_folder.glob("*.json")]
                     # results_files = [file for file in results_files if "template_2" in str(file)]
 
                     summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in eval_on}
