@@ -49,7 +49,7 @@ class TemplateGenerator:
         # create a df that contains the templates and their parameter
 
         columns = list(params.keys())
-        del columns[columns.index('shuffle_choices')]
+        # del columns[columns.index('shuffle_choices')]
         rows = []
         for i, template in tqdm(enumerate(templates)):
             row = []
