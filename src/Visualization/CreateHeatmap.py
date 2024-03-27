@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -100,4 +101,9 @@ class CreateHeatmap:
         # add the 'accuracy' columns from df to the metadata_df by the template_name
         metadata_df = metadata_df.join(df.set_index('template_name')['accuracy'], on='template_name')
         heatmap_df = metadata_df.pivot_table(index=axis_options[0], columns=axis_options[1], values='accuracy')
+        # add the average of the accuracy for each row and column
+        heatmap_df['Average'] = heatmap_df.mean(axis=1)
+        heatmap_df.loc['Average'] = heatmap_df.mean(axis=0)
+        # the last row and column cell should be empty
+        heatmap_df.loc['Average', 'Average'] = None
         return heatmap_df
