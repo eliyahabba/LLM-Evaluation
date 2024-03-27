@@ -20,7 +20,7 @@ class ConfigParams:
         "choices_seperator": "\n",
         "enumerator": "numbers",
         "source_choice_format": "{choice_numeral}. {choice_text}",
-        "target_choice_format": "{choice_numeral}",
+        "target_choice_format": "{choice_numeral}. {choice_text}",
         "shuffle_choices": False,
         "postprocessors": [
             "processors.to_string_stripped",
@@ -83,7 +83,7 @@ class ConfigParams:
         "choices_seperator": "\n",
         "enumerator": "numbers",
         "source_choice_format": "{choice_numeral}. {choice_text}",
-        "target_choice_format": "{choice_numeral}",
+        "target_choice_format": "{choice_numeral}. {choice_text}",
         "shuffle_choices": False,
         "postprocessors": [
             "processors.to_string_stripped",
