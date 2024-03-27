@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --mem=22g
+#SBATCH --mem=20g
 #SBATCH --time=1-0
 #SBATCH --gres=gpu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
@@ -20,4 +20,4 @@ cd $dir
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py  --model_name LLMProcessorConstants.LLAMA_MODEL  --card cards.sciq --system_format_index 1 --template_range $1 $2
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py  --model_name QWEN  --card cards.mmlu.global_facts --not_load_in_8bit  --template_range $1 $2
