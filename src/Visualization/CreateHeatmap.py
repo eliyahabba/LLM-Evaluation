@@ -64,7 +64,7 @@ class CreateHeatmap:
 
     def plot_heatmap(self, heatmap_df: pd.DataFrame):
         # create visualization for the heatmap with seaborn
-        fig = plt.figure(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(10, 6))
         # if the big size of the axis is the rows, we need to rotate the y axis
         if heatmap_df.shape[0] > heatmap_df.shape[1]:
             # rotate the matrix
@@ -73,6 +73,9 @@ class CreateHeatmap:
         g = sns.heatmap(heatmap_df, annot=True, cmap="YlGnBu", fmt='.2f', annot_kws={"fontsize": 16},
                         linewidths=2, linecolor='black',
                         square=True)
+        # add a black line to separate the last row and column
+        ax.axvline(x=heatmap_df.shape[1] - 1, color='black', linewidth=6)
+        ax.axhline(y=heatmap_df.shape[0] - 1, color='black', linewidth=6)
         g.set_yticklabels(g.get_yticklabels(), rotation=0, fontsize=14)
         g.set_xticklabels(g.get_xticklabels(), rotation=0, fontsize=14)
         # resize the name of the axis
