@@ -39,4 +39,7 @@ template_36,cards.race_all,empty_system_format,0,10,100,0.300,0.300,accuracy,0.2
 template_37,cards.race_all,empty_system_format,0,10,100,0.340,0.340,accuracy,0.250,0.440,0.250,0.440,0.340,100
 template_38,cards.race_all,empty_system_format,0,10,100,0.330,0.330,accuracy,0.240,0.430,0.240,0.430,0.330,100
 template_39,cards.race_all,empty_system_format,0,10,100,0.340,0.340,accuracy,0.250,0.430,0.250,0.430,0.340,100
-template_40,cards.race_all,empty_system_format,0,10,100,0.317,0.317,accuracy,0.200,0.450,0.200,0.450,0.317,60
+template_40,cards.race_all,empty_system_format,0,10,100,0.320,0.320,accuracy,0.231,0.430,0.231,0.430,0.320,100
+template_41,cards.race_all,empty_system_format,0,10,100,0.330,0.330,accuracy,0.250,0.421,0.250,0.421,0.330,100
+template_42,cards.race_all,empty_system_format,0,10,100,0.310,0.310,accuracy,0.220,0.405,0.220,0.405,0.310,100
+template_43,cards.race_all,empty_system_format,0,10,100,0.290,0.290,accuracy,0.210,0.380,0.210,0.380,0.290,100
