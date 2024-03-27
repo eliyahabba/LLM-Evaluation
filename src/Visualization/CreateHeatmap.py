@@ -1,8 +1,8 @@
-import seaborn as sns
 import sys
 from pathlib import Path
 
 import pandas as pd
+import seaborn as sns
 from matplotlib import pyplot as plt
 
 file_path = Path(__file__).parents[2]
@@ -62,18 +62,16 @@ class CreateHeatmap:
         self.plot_heatmap(heatmap_df)
 
     def plot_heatmap(self, heatmap_df: pd.DataFrame):
-        #create visualization for the heatmap with seaborn
+        # create visualization for the heatmap with seaborn
         fig = plt.figure(figsize=(10, 6))
         # if the big size of the axis is the rows, we need to rotate the y axis
         if heatmap_df.shape[0] > heatmap_df.shape[1]:
             # rotate the matrix
             heatmap_df = heatmap_df.T
 
-
-
         g = sns.heatmap(heatmap_df, annot=True, cmap="YlGnBu", fmt='.2f', annot_kws={"fontsize": 16},
-                    linewidths=2, linecolor='black',
-                    square=True)
+                        linewidths=2, linecolor='black',
+                        square=True)
         g.set_yticklabels(g.get_yticklabels(), rotation=0, fontsize=14)
         g.set_xticklabels(g.get_xticklabels(), rotation=0, fontsize=14)
         # resize the name of the axis
@@ -89,9 +87,7 @@ class CreateHeatmap:
         plt.tight_layout()
         st.pyplot(fig)
 
-
-
-    def generate_heatmap(self, metadata_df: pd.DataFrame , axis_options: list, selected_values: dict)-> pd.DataFrame:
+    def generate_heatmap(self, metadata_df: pd.DataFrame, axis_options: list, selected_values: dict) -> pd.DataFrame:
         # choose the relevant rows from the metadata_df
         for option, value in selected_values.items():
             metadata_df = metadata_df[metadata_df[option] == value]
@@ -105,4 +101,3 @@ class CreateHeatmap:
         metadata_df = metadata_df.join(df.set_index('template_name')['accuracy'], on='template_name')
         heatmap_df = metadata_df.pivot_table(index=axis_options[0], columns=axis_options[1], values='accuracy')
         return heatmap_df
-
