@@ -4,7 +4,7 @@ from pathlib import Path
 class Constants:
     class LLMProcessorConstants:
         MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
-        LLAMA_MODEL = "meta-llama/Llama-2-7b-chat"
+        LLAMA_MODEL = "meta-llama/Llama-2-7b-hf"
         GEMMA_MODEL = "google/gemma-7b"
         PHI_MODEL = "microsoft/phi-2"
         MODEL_NAMES = {"PHI": PHI_MODEL, "MISTRAL": MISTRAL_MODEL, "LLAMA": LLAMA_MODEL, "GEMMA": GEMMA_MODEL}
