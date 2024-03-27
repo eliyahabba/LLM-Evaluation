@@ -6,7 +6,7 @@
     "choices_seperator": " ",
     "enumerator": "capitals",
     "source_choice_format": "{choice_numeral}. {choice_text}",
-    "target_choice_format": "{choice_numeral}",
+    "target_choice_format": "{choice_numeral}. {choice_text}",
     "shuffle_choices": true,
     "postprocessors": [
         "processors.to_string_stripped",
