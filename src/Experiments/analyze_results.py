@@ -1,3 +1,4 @@
+import argparse
 import json
 from pathlib import Path
 from typing import Union
@@ -45,10 +46,9 @@ class EvaluateModel:
         """
         Save the results to the experiment file.
         """
-        self.experiment['results']= results
+        self.experiment['results'] = results
         with open(self.results_file, "w") as f:
             json.dump(self.experiment, f)
-
 
     def evaluate(self, results: dict, llm_dataset: LLMDataset, save_to_file: bool = True) -> Union[None, dict]:
         """
@@ -179,7 +179,8 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
     llm_dataset_loader = DatasetLoader(card=experiment['card'], template=template,
                                        system_format=experiment['system_format'],
                                        num_demos=experiment['num_demos'],
-                                       demos_pool_size=experiment['demos_pool_size'] if "mmlu" not in experiment["card"] else None,
+                                       demos_pool_size=experiment['demos_pool_size'] if "mmlu" not in experiment[
+                                           "card"] else None,
                                        max_instances=experiment['max_instances'],
                                        template_name=experiment['template_name'])
     llm_dataset = llm_dataset_loader.load()
@@ -189,14 +190,20 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
 
 if __name__ == "__main__":
     # Load the model and the dataset
-    results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
-    eval_on = ExperimentConstants.EVALUATE_ON
-    # eval_on = [ 'test', 'train']
-    models_names = [file for file in results_folder.glob("*") if file.is_dir()]
-    # datasets = [dataset for dataset in datasets if "race" in str(dataset)]
+    args = argparse.ArgumentParser()
+    args.add_argument("--model_index", type=int, default=None)
+    args.add_argument("--results_folder", type=str, default=ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH)
+    args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON)
+    args = args.parse_args()
+
+    models_names = [file for file in args.results_folder.glob("*") if file.is_dir()]
+    # models_names = [models_name for models_name in models_names if "Lla" in str(models_name)]
+    models_names = models_names if args.model_index is None else [models_names[args.model_index]]
     error_files, errors_msgs = [], []
     for model_name in models_names:
+        print("Models to evaluate: ", model_name)
         datasets = [file for file in model_name.glob("*") if file.is_dir()]
+        # datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
         for dataset_folder in datasets:
             shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
             # shots = [shot for shot in shots if "one" in str(shot)]
@@ -206,10 +213,11 @@ if __name__ == "__main__":
                 for format_folder in formats:
                     results_files = [file for file in format_folder.glob("*.json")]
                     # results_files = [file for file in results_files if "template_2" in str(file)]
+                    # results_files = results_files[:1]
 
-                    summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in eval_on}
+                    summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in args.eval_on}
                     for results_file in tqdm(results_files):
-                        for eval_on_value in eval_on:
+                        for eval_on_value in args.eval_on:
                             try:
                                 llm_dataset = load_dataset(results_file, loaded_datasets)
                                 eval_model = EvaluateModel(results_file, eval_on_value)
@@ -227,8 +235,12 @@ if __name__ == "__main__":
                                 continue
                     for eval_on_value, results_df in summary_of_accuracy_results.items():
                         # sort the columns by the number of the template that in the columns name
-                        results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])), axis=1)
+                        results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])),
+                                                        axis=1)
                         results_df.to_csv(format_folder / f"{eval_on_value}_accuracy_results.csv", index=False)
+                        # print the size of the results vs the number of the templates
+                        print(f"Results size: {results_df.shape[0]}")
+                        print(f"Number of templates: {results_df.shape[1]}")
     for file, error in zip(error_files, errors_msgs):
         print(error)
         print(file)
