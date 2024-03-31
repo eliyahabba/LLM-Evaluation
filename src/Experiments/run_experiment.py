@@ -113,7 +113,7 @@ class ExperimentRunner:
         """
         min_template, max_template = self.args.template_range
         llm_proc = LLMProcessor(self.args.model_name, self.args.not_load_in_4bit, self.args.not_load_in_8bit,
-                                self.args.trust_remote_code)
+                                self.args.trust_remote_code, self.args.return_token_type_ids)
         for template_num in range(min_template, max_template + 1):
             start = time.time()
             self.run_single_experiment(llm_proc, template_num)
@@ -148,7 +148,9 @@ def main():
                       help="True if the model should be loaded in 8-bit.")
     args.add_argument("--trust_remote_code", action="store_true", default=LLMProcessorConstants.TRUST_REMOTE_CODE,
                       help="True if the model should trust remote code.")
-
+    args.add_argument("--not_return_token_type_ids", action="store_false",
+                      default=LLMProcessorConstants.RETURN_TOKEN_TYPE_IDS,
+                      help="True if the model should not return token type ids.")
     args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
 
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
