@@ -20,4 +20,4 @@ cd $dir
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name MISTRAL --card cards.ai2_arc.arc_easy --template_range $1 $2
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name PHI --card cards.ai2_arc.arc_easy --template_range $1 $2 --not_load_in_8bit --trust_remote_code

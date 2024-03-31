@@ -20,4 +20,4 @@ cd $dir
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name GEMMA --card cards.race_all --template_range $1 $2
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name GEMMA --card cards.ai2_arc.arc_easy --template_range $1 $2
