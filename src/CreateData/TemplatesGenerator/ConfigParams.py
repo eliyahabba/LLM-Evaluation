@@ -32,7 +32,7 @@ class ConfigParams:
     }
 
     base_args_ai2_arc_easy = {
-        "input_format": "Context: [context] Question: [question] Choices: [choices] Answer: [answer]\nContext: {context} Question: {question} Choices: {choices} Answer:",
+        "input_format": "Topic: [topic] Question: [question] Choices: [choices] Answer: [answer]\nTopic: {topic} Question: {question} Choices: {choices} Answer:",
         "choices_field": "choices",
         "target_field": "answer",
         "choices_seperator": "\n",
@@ -78,9 +78,25 @@ class ConfigParams:
         ]
     }
 
+    base_args_hellaswag = {
+        "input_format": "Context: [context] Question: [question] Choices: [choices] Answer: [answer]\nContext: {context} Question: {question} Choices: {choices} Answer:",
+        "choices_field": "choices",
+        "target_field": "answer",
+        "choices_seperator": "\n",
+        "enumerator": "capitals",
+        "source_choice_format": "{choice_numeral}. {choice_text}",
+        "target_choice_format": "{choice_numeral}. {choice_text}",
+        "shuffle_choices": False,
+        "postprocessors": [
+            "processors.to_string_stripped",
+            "processors.take_first_non_empty_line",
+            "processors.match_closest_option"
+        ]
+    }
+
     datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_mmlu_global_facts,
-                          base_args_mmlu_machine_learning]
-    dataset_names = ["sciq", "race_all", "ai2_arc.arc_easy", "mmlu.global_facts", "mmlu.machine_learning"]
+                          base_args_mmlu_machine_learning, base_args_hellaswag]
+    dataset_names = ["sciq", "race_all", "ai2_arc.arc_easy", "mmlu.global_facts", "mmlu.machine_learning", "hellaswag"]
     dataset_names_to_templates = dict(zip(dataset_names, datasets_templates))
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman"],
