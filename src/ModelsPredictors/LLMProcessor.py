@@ -13,13 +13,14 @@ access_token = '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'
 
 class LLMProcessor:
     def __init__(self, model_name: str, load_in_4bit: bool = False, load_in_8bit: bool = False,
-                 trust_remote_code: bool = False):
+                 trust_remote_code: bool = False, return_token_type_ids: bool = True):
         # Define the pre-trained model and tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, token=access_token,
                                                        trust_remote_code=trust_remote_code)
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
                                                           load_in_8bit=load_in_8bit, token=access_token,
                                                           trust_remote_code=trust_remote_code)
+        self.return_token_type_ids = return_token_type_ids
 
     def tokenize_text(self, input_text: str) -> BatchEncoding:
         """
@@ -28,7 +29,7 @@ class LLMProcessor:
         @param input_text: Text to be tokenized.
         @return: Tokenized input text.
         """
-        return self.tokenizer(input_text, return_tensors="pt")
+        return self.tokenizer(input_text, return_tensors="pt", return_token_type_ids=self.return_token_type_ids)
 
     def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 5) -> dict:
         """
@@ -100,10 +101,10 @@ class LLMProcessor:
         """
         input_tokenized = self.tokenize_text(input_text)
         outputs = self.generate_text(input_tokenized, max_new_tokens)
-        transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
+        # transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
         generated_tokens = outputs.sequences[:, input_tokenized.input_ids.shape[1]:]
-        if is_print:
-            self.print_generated_tokens(generated_tokens, transition_scores)
+        # if is_print:
+        #     self.print_generated_tokens(generated_tokens, transition_scores)
         generated_tokens_decoded = self.decode_tokens(generated_tokens)
         if is_print:
             self.print_generated_tokens_decoded(generated_tokens_decoded)
@@ -121,7 +122,7 @@ class LLMProcessor:
 # Execute the main function
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
-    args.add_argument("--model_name", type=str, default=LLMProcessorConstants.MODEL_NAME)
+    args.add_argument("--model_name", type=str, default=LLMProcessorConstants.MISTRAL_MODEL)
     args.add_argument("--load_in_4bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_4BIT,
                       help="True if the model should be loaded in 4-bit.")
     args.add_argument("--load_in_8bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_8BIT,

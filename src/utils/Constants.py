@@ -16,6 +16,7 @@ class Constants:
         LOAD_IN_4BIT = False
         LOAD_IN_8BIT = True
         TRUST_REMOTE_CODE = False
+        RETURN_TOKEN_TYPE_IDS = True
 
     class TemplatesGeneratorConstants:
         MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplates"
