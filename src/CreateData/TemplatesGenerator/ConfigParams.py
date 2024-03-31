@@ -1,18 +1,4 @@
 class ConfigParams:
-    base_args_copa = {
-        "input_format": "The following are multiple choice questions (with answers)\n\nQuestion:"
-                        " {question}\nChoose the correct answer from {numerals}\nAnswers:\n{choices}\nAnswer:",
-        "choices_field": "choices",
-        "target_field": "answer",
-        "choices_seperator": "\n",
-        "enumerator": "numbers",
-        "postprocessors": [
-            "processors.to_string_stripped",
-            "processors.take_first_non_empty_line",
-            "processors.match_closest_option"
-        ]
-    }
-
     base_args_sciq = {
         "input_format": "Context: [context] Question: [question] Choices: [choices] Answer: [answer]\nContext: {context} Question: {question} Choices: {choices} Answer:",
         "choices_field": "choices",

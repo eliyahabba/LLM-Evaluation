@@ -7,9 +7,11 @@ class Constants:
         LLAMA_MODEL = "meta-llama/Llama-2-7b-chat-hf"
         GEMMA_MODEL = "google/gemma-7b-it"
         PHI_MODEL = "microsoft/phi-2"
-        QWEN_MODEL = "Qwen/Qwen1.5-7B-Chat"
+        QWEN_MODEL = "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8"
+        QWEN2_MODEL = "Qwen/Qwen-7B-Chat-Int8"
+        OLMO_MODEL = "allenai/OLMo-7B-Instruct"
         MODEL_NAMES = {"PHI": PHI_MODEL, "MISTRAL": MISTRAL_MODEL, "LLAMA": LLAMA_MODEL, "GEMMA": GEMMA_MODEL,
-                       "QWEN": QWEN_MODEL}
+                       "QWEN": QWEN_MODEL, "QWEN2": QWEN2_MODEL, "OLMO": OLMO_MODEL}
 
         LOAD_IN_4BIT = False
         LOAD_IN_8BIT = True
