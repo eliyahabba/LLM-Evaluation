@@ -42,3 +42,12 @@ class Utils:
         @return: The system format class
         """
         return ExperimentConstants.SYSTEM_FORMATS_NAMES[system_format]
+
+    @staticmethod
+    def get_access_token() -> str:
+        """
+        Get the access token.
+        @return:
+        """
+        with open(Path(__file__).parent / "access_token", "r") as file:
+            return file.readline().strip()

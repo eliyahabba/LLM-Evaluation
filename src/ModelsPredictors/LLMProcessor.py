@@ -6,10 +6,10 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers.tokenization_utils_base import BatchEncoding
 
 from src.utils.Constants import Constants
+from src.utils.Utils import Utils
 
 LLMProcessorConstants = Constants.LLMProcessorConstants
-access_token = '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'
-
+access_token = Utils.get_access_token()
 
 class LLMProcessor:
     def __init__(self, model_name: str, load_in_4bit: bool = False, load_in_8bit: bool = False,
@@ -20,6 +20,8 @@ class LLMProcessor:
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
                                                           load_in_8bit=load_in_8bit, token=access_token,
                                                           trust_remote_code=trust_remote_code)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(device)
         self.return_token_type_ids = return_token_type_ids
 
     def tokenize_text(self, input_text: str) -> BatchEncoding:
