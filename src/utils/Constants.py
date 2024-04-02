@@ -2,6 +2,19 @@ from pathlib import Path
 
 
 class Constants:
+    class DatasetsConstants:
+        # dataset_names = ["sciq", "race_all", "ai2_arc.arc_easy", "mmlu.global_facts", "mmlu.machine_learning", "hellaswag"]
+        SCIQ = "sciq"
+        RACE_ALL = "race_all"
+        AI2_ARC_ARC_EASY = "ai2_arc.arc_easy"
+        MMLU_GLOBAL_FACTS = "mmlu.global_facts"
+        MMLU_MACHINE_LEARNING = "mmlu.machine_learning"
+        HELLASWAG = "hellaswag"
+        DATASET_NAMES = [SCIQ, RACE_ALL, AI2_ARC_ARC_EASY, MMLU_GLOBAL_FACTS, MMLU_MACHINE_LEARNING, HELLASWAG]
+
+
+
+
     class LLMProcessorConstants:
         MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
         LLAMA_MODEL = "meta-llama/Llama-2-7b-chat-hf"

@@ -1,3 +1,8 @@
+from src.utils.Constants import Constants
+
+DatasetsConstants = Constants.DatasetsConstants
+
+
 class ConfigParams:
     base_args_sciq = {
         "input_format": "Context: [context] Question: [question] Choices: [choices] Answer: [answer]\nContext: {context} Question: {question} Choices: {choices} Answer:",
@@ -96,8 +101,8 @@ class ConfigParams:
 
     datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_mmlu_global_facts,
                           base_args_mmlu_machine_learning, base_args_hellaswag]
-    dataset_names = ["sciq", "race_all", "ai2_arc.arc_easy", "mmlu.global_facts", "mmlu.machine_learning", "hellaswag"]
-    dataset_names_to_templates = dict(zip(dataset_names, datasets_templates))
+    dataset_names_to_templates = dict(zip(DatasetsConstants.DATASET_NAMES, datasets_templates))
+
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman"],
         "choices_seperator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
