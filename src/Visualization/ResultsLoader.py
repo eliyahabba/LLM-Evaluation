@@ -106,7 +106,7 @@ class ResultsLoader:
         """
         folders_names = [file for file in folder_path.iterdir() if file.is_dir()]
         names_to_display = {f.name: f for f in folders_names}
-        # id mistarl in the name, the name of mistarl should be first
+        # id Mistral in the name, the name of Mistral should be first
         names_to_display = dict(sorted(names_to_display.items(), key=lambda x: ("Mistral" not in x[0],
         "not_structured" in x[0],
                                                                                 x[0].lower(), x[0])))
