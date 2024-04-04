@@ -30,7 +30,10 @@ class ChooseBestCombination:
 
         st.markdown("## Heatmap of the accuracy of the templates")
         st.markdown("""
-        Select the axes to use for calculating the best value - We will recommend a specific value for each of these axes.  \nAlso, for the other axes (the complement of the selected axes), we calculate the average value of the parameters.
+        To determine the optimal set of values for this model and dataset, 
+        please select the axes for calculating the best value.
+        For each selected axis, a specific value will be recommended.
+        For the axes you do not select, an average over all other possible choices will be calculated. 
         """)
 
         # Multiselect for axis options to get the best value
@@ -45,8 +48,9 @@ class ChooseBestCombination:
 
         Automatically updates the selection in case of changes.
         """
-        st.multiselect("Select axes for finding the best value "
-                       "(we find the best value for these axes):",
+        select_best_values_title = ("Select axes to determine best value "
+                                    "(we recommend the best value for these axes")
+        st.multiselect(select_best_values_title,
                        list(ConfigParams.override_options.keys()),
                        key="selected_best_value_axes",
                        on_change=self.update_average_value_axes)
@@ -57,12 +61,13 @@ class ChooseBestCombination:
 
         Automatically updates the selection in case of changes.
         """
-        st.multiselect(
-            "Select axes for average value (we calculate the average value for these axes"
-            " and not recommended on a specific value for these axes):",
-            list(ConfigParams.override_options.keys()),
-            key="selected_average_value_axes",
-            on_change=self.update_best_value_axes)
+        select_avg_values_title = ("Select Axes for which no specific value is recommended, "
+                                   "but an average over all possible choices will be calculated.  \n"
+                                   "*(The complement set of the selected axes)")
+        st.multiselect(select_avg_values_title,
+                       list(ConfigParams.override_options.keys()),
+                       key="selected_average_value_axes",
+                       on_change=self.update_best_value_axes)
 
     def update_average_value_axes(self) -> None:
         """
