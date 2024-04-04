@@ -16,7 +16,6 @@ from src.Visualization.CreateHeatmap import CreateHeatmap
 class VisualizeResults:
     def display_page(self):
         st.title("Templates Visualization")
-        st.title("Tmp")
         dataset_file_name, selected_shot_file_name = ResultsLoader.select_experiment_params()
         self.display_possible_templates_args()
 

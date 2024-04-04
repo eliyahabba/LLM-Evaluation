@@ -14,8 +14,8 @@ from streamlit.web import cli as stcli
 # "global.suppressWarning", "true",
 # "global.sharingMode", "off"]
 # add python path to the sys.path
-file_path = Path(__file__).parents[2]
-sys.path.append(str(file_path))
+# file_path = Path(__file__).parents[2]
+# sys.path.append(str(file_path))
 # add python path to the sys.path
 
 # os.environ['PYTHONPATH'] = '/cs/labs/gabis/eliyahabba/LLM-Evaluation/'
