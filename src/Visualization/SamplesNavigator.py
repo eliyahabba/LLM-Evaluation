@@ -1,10 +1,4 @@
-import sys
-from pathlib import Path
-
 import streamlit as st
-
-# file_path = Path(__file__).parents[3]
-# sys.path.append(str(file_path))
 
 from src.utils.Constants import Constants
 
@@ -36,4 +30,3 @@ class SamplesNavigator:
         # and then convert it to int
         sentence_number = int(st.session_state["selected_sentence"].split(" ")[1]) - 1
         st.session_state["file_index"] = sentence_number
-

@@ -1,19 +1,11 @@
-import sys
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import seaborn as sns
+import streamlit as st
 from matplotlib import pyplot as plt
 
-# file_path = Path(__file__).parents[2]
-# sys.path.append(str(file_path))
-
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
-from pathlib import Path
-
-import streamlit as st
-
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants

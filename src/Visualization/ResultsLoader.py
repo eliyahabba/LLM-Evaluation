@@ -32,7 +32,8 @@ class ResultsLoader:
                 st.sidebar.markdown(f"**{key}** : {value}")
 
     @staticmethod
-    def load_results_preds_gt_scores(results_file: Path, dataset_type: str) -> Tuple[List[str], List[str], List[str], List[str]]:
+    def load_results_preds_gt_scores(results_file: Path, dataset_type: str) -> Tuple[
+        List[str], List[str], List[str], List[str]]:
         """
         Load the results from the json file.
         @return: list of results
@@ -63,8 +64,9 @@ class ResultsLoader:
         datasets_names_to_display = dict(
             sorted(datasets_names_to_display.items(), key=lambda item: int(item[0].split("_")[1])))
         results_file = st.sidebar.selectbox("Select template file", list(datasets_names_to_display.keys()))
-        instances, preds, gt, scores = ResultsLoader.load_results_preds_gt_scores(datasets_names_to_display[results_file],
-                                                                                  dataset_type)
+        instances, preds, gt, scores = ResultsLoader.load_results_preds_gt_scores(
+            datasets_names_to_display[results_file],
+            dataset_type)
         # write on the center of the page
         st.markdown(f"#### Examples: prompt + prediction", unsafe_allow_html=True)
         if "file_index" not in st.session_state:
@@ -108,7 +110,7 @@ class ResultsLoader:
         names_to_display = {f.name: f for f in folders_names}
         # id Mistral in the name, the name of Mistral should be first
         names_to_display = dict(sorted(names_to_display.items(), key=lambda x: ("Mistral" not in x[0],
-        "not_structured" in x[0],
+                                                                                "not_structured" in x[0],
                                                                                 x[0].lower(), x[0])))
         results_file_name = st.sidebar.selectbox(text_to_display, list(names_to_display.keys()))
         selected_file_name = names_to_display[results_file_name]
