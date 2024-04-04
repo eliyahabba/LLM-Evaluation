@@ -4,9 +4,10 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-file_path = Path(__file__).parents[2]
-sys.path.append(str(file_path))
+# file_path = Path(__file__).parents[2]
+# sys.path.append(str(file_path))
 
+from src.Visualization.ChooseBestCombination import ChooseBestCombination
 from src.Visualization.ResultsLoader import ResultsLoader
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.Visualization.CreateHeatmap import CreateHeatmap
@@ -21,8 +22,8 @@ class VisualizeResults:
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
         result_file_name, result_file = ResultsLoader.select_result_file(result_files, "scores")
-
-        self.display_results(result_file)
+        with st.expander("The results of the model"):
+            self.display_results(result_file)
         self.display_heatmap(dataset_file_name, result_file)
         ResultsLoader.display_sample_examples(selected_shot_file_name, dataset_file_name, result_file_name)
 
@@ -56,8 +57,12 @@ class VisualizeResults:
                 st.markdown(f'<span style="color:{color}"><b>{v}</b></span>', unsafe_allow_html=True)
 
     def display_heatmap(self, dataset_file_name: str, result_file: Path):
-        create_heatmap = CreateHeatmap(dataset_file_name, result_file)
-        create_heatmap.create_heatmap()
+        choose_best_combination = ChooseBestCombination(dataset_file_name, result_file)
+        choose_best_combination.choose_best_combination()
+        # add a expander to the heatmap
+        with st.expander("Heatmap of the accuracy of the templates"):
+            create_heatmap = CreateHeatmap(dataset_file_name, result_file)
+            create_heatmap.create_heatmap()
 
 
 if __name__ == "__main__":

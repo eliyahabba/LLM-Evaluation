@@ -1,4 +1,5 @@
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -15,7 +16,11 @@ from streamlit.web import cli as stcli
 # add python path to the sys.path
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
+# add python path to the sys.path
 
+# os.environ['PYTHONPATH'] = '/cs/labs/gabis/eliyahabba/LLM-Evaluation/'
+# convert to relative path
+# os.environ['PYTHONPATH'] = os.path.relpath(os.environ['PYTHONPATH'], start=os.getcwd())
 if __name__ == '__main__':
     # use argparse to get the flags
     parser = argparse.ArgumentParser()

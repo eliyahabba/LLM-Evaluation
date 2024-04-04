@@ -3,8 +3,8 @@ from pathlib import Path
 
 import streamlit as st
 
-file_path = Path(__file__).parents[3]
-sys.path.append(str(file_path))
+# file_path = Path(__file__).parents[3]
+# sys.path.append(str(file_path))
 
 from src.utils.Constants import Constants
 
