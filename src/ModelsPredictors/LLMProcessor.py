@@ -20,8 +20,8 @@ class LLMProcessor:
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
                                                           load_in_8bit=load_in_8bit, token=access_token,
                                                           trust_remote_code=trust_remote_code)
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model.to(device)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
         self.return_token_type_ids = return_token_type_ids
 
     def tokenize_text(self, input_text: str) -> BatchEncoding:
@@ -31,7 +31,7 @@ class LLMProcessor:
         @param input_text: Text to be tokenized.
         @return: Tokenized input text.
         """
-        return self.tokenizer(input_text, return_tensors="pt", return_token_type_ids=self.return_token_type_ids)
+        return self.tokenizer(input_text, return_tensors="pt", return_token_type_ids=self.return_token_type_ids, padding=True).to(self.device)
 
     def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 5) -> dict:
         """
@@ -118,18 +118,23 @@ class LLMProcessor:
         """
         Predict the next word in the sequence.
         """
-        return self.generate_model_text(input_text, max_new_tokens)
+        return self.generate_model_text(input_text, max_new_tokens, is_print=True)
 
 
 # Execute the main function
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--model_name", type=str, default=LLMProcessorConstants.MISTRAL_MODEL)
-    args.add_argument("--load_in_4bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_4BIT,
+    args.add_argument("--not_load_in_4bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_4BIT,
                       help="True if the model should be loaded in 4-bit.")
-    args.add_argument("--load_in_8bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_8BIT,
+    args.add_argument("--not_load_in_8bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_8BIT,
                       help="True if the model should be loaded in 8-bit.")
+    args.add_argument("--trust_remote_code", action="store_true", default=LLMProcessorConstants.TRUST_REMOTE_CODE,
+                        help="True if the model should trust remote code.")
+    args.add_argument("--batch_size", type=int, default=2)
     args = args.parse_args()
     model_name = args.model_name
     llmp = LLMProcessor(model_name)
-    llmp.predict("please tell about the history of the world.", max_new_tokens=5)
+    sentences = ["please tell about the history of the world.",
+                 "please tell about the world cup history."]
+    llmp.predict(sentences, max_new_tokens=5)
