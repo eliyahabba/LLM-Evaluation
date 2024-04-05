@@ -172,8 +172,8 @@ def main():
     args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
     if args.card == Constants.DatasetsConstants.MMLU_GENERAL:
         # run on all the MMLU datasets with a loop
-        for card in Constants.DatasetsConstants.MMLU_DATASETS:
-            args.card = f"{Constants.DatasetsConstants.MMLU_GENERAL}.{card}"
+        for card in Constants.DatasetsConstants.MMLU_DATASETS_SAMPLE:
+            args.card = f"cards.{card}"
             runner = ExperimentRunner(args)
             runner.run_experiment()
     else:

@@ -105,9 +105,8 @@ class ConfigParams:
     datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_mmlu_global_facts,
                           base_args_mmlu_machine_learning, base_args_hellaswag]
     dataset_names_to_templates = dict(zip(DatasetsConstants.DATASET_NAMES, datasets_templates))
-    dataset_names_to_templates.update(
-        {DatasetsConstants.MMLU_DATASETS[i]: base_args_mmlu_global_facts
-         for i in random.sample(range(len(DatasetsConstants.MMLU_DATASETS)), 8)})
+    for i in random.sample(range(len(DatasetsConstants.MMLU_DATASETS)), 8):
+        dataset_names_to_templates[f"mmlu.{DatasetsConstants.MMLU_DATASETS[i]}"] = base_args_mmlu_machine_learning
 
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman"],
