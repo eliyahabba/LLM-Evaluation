@@ -31,7 +31,7 @@ class LLMProcessor:
         @param input_text: Text to be tokenized.
         @return: Tokenized input text.
         """
-        return self.tokenizer(input_text, return_tensors="pt", padding=True).to(self.device)
+        return self.tokenizer(input_text, return_tensors="pt", padding=True)
 
     def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 5) -> dict:
         """
@@ -102,6 +102,7 @@ class LLMProcessor:
         @return: The generated tokens decoded.
         """
         input_tokenized = self.tokenize_text(input_text)
+        input_tokenized.to(self.device)
         outputs = self.generate_text(input_tokenized, max_new_tokens)
         transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
         generated_tokens = outputs.sequences[:, input_tokenized.input_ids.shape[1]:]
