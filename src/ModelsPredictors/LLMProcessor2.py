@@ -152,7 +152,7 @@ if __name__ == "__main__":
     with torch.no_grad():
         outputs = model.generate(
             **model_inputs,
-            max_new_tokens=11,
+            # max_new_tokens=11,
             # return_dict_in_generate=True,
             # output_scores=True,
             # do_sample=False,
