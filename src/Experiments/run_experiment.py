@@ -10,7 +10,7 @@ from unitxt.templates import Template
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
 from src.ModelsPredictors.LLMPredictor import LLMPredictor
-from src.ModelsPredictors.LLMProcessor import LLMProcessor
+from src.ModelsPredictors.LLMProcessor2 import LLMProcessor
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 
