@@ -133,5 +133,5 @@ if __name__ == "__main__":
                       help="True if the model should not return token type ids.")
     args = args.parse_args()
     model_name = args.model_name
-    llmp = LLMProcessor(model_name)
+    llmp = LLMProcessor(model_name, load_in_4bit=False, load_in_8bit=True)
     llmp.predict("please tell about the history of the world.", max_new_tokens=5)
