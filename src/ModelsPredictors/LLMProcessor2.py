@@ -139,5 +139,7 @@ if __name__ == "__main__":
     args = args.parse_args()
     model_name = args.model_name
     llmp = LLMProcessor(model_name, load_in_4bit=False, load_in_8bit=True)
-    generated_tokens = llmp.predict("please tell about the history of the world.", max_new_tokens=15)
+    sentences = ["please tell about the history of the world.",
+                 "please tell about the world cup history."]
+    generated_tokens = llmp.predict(sentences, max_new_tokens=15)
     print(generated_tokens)
