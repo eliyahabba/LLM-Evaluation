@@ -11,11 +11,13 @@ from src.utils.Utils import Utils
 LLMProcessorConstants = Constants.LLMProcessorConstants
 access_token = Utils.get_access_token()
 
+
 class LLMProcessor:
-    def __init__(self, model_name: str, load_in_4bit: bool = False, load_in_8bit: bool = False,
+    def __init__(self, model_name: str,
+                 load_in_4bit: bool = False, load_in_8bit: bool = False,
                  trust_remote_code: bool = False, return_token_type_ids: bool = True):
         # Define the pre-trained model and tokenizer
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name, token=access_token,add_special_tokens=True,
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name, token=access_token, add_special_tokens=True,
                                                        trust_remote_code=trust_remote_code)
         if 'pad_token' not in self.tokenizer.special_tokens_map:
             self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
@@ -34,7 +36,8 @@ class LLMProcessor:
         @param input_text: Text to be tokenized.
         @return: Tokenized input text.
         """
-        return self.tokenizer(input_text, return_tensors="pt", return_token_type_ids=self.return_token_type_ids, padding=True).to(self.device)
+        return self.tokenizer(input_text, return_tensors="pt", return_token_type_ids=self.return_token_type_ids,
+                              padding=True).to(self.device)
 
     def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 5) -> dict:
         """
@@ -123,6 +126,7 @@ class LLMProcessor:
         """
         return self.generate_model_text(input_text, max_new_tokens, is_print=True)
 
+
 # Execute the main function
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
@@ -132,7 +136,9 @@ if __name__ == "__main__":
     args.add_argument("--not_load_in_8bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_8BIT,
                       help="True if the model should be loaded in 8-bit.")
     args.add_argument("--trust_remote_code", action="store_true", default=LLMProcessorConstants.TRUST_REMOTE_CODE,
-                        help="True if the model should trust remote code.")
+                      help="True if the model should trust remote code.")
+    args.add_argument("--not_return_token_type_ids", action="store_false", default=LLMProcessorConstants.RETURN_TOKEN_TYPE_IDS,
+                        help="True if the model should not return token type ids.")
     args.add_argument("--batch_size", type=int, default=2)
     args = args.parse_args()
     model_name = args.model_name
