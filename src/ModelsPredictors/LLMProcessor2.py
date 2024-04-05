@@ -160,6 +160,11 @@ if __name__ == "__main__":
     # generated_ids = model.generate(**model_inputs)
     print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
 
+
+    output_sequences = model.generate(**model_inputs, max_new_tokens=20)
+
+    print(tokenizer.batch_decode(output_sequences, skip_special_tokens=True))
+
     # llmp = LLMProcessor(model_name, load_in_4bit=False, load_in_8bit=True)
     # sentences = ["please tell about the history of the world.",
     #              "please tell about the world cup history."]
