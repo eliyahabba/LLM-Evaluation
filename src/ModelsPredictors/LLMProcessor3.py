@@ -46,14 +46,14 @@ class LLMProcessor:
         @param max_new_tokens: Maximum number of tokens to generate.
         @return: Generated text.
         """
-        with torch.no_grad():
-            outputs = self.model.generate(
-            **input_tokenized,
-            max_new_tokens=max_new_tokens,
-            # return_dict_in_generate=True,
-            # output_scores=True,
-            do_sample=False,
-        )
+        # with torch.no_grad():
+        outputs = self.model.generate(
+        **input_tokenized,
+        max_new_tokens=max_new_tokens,
+        # return_dict_in_generate=True,
+        # output_scores=True,
+        do_sample=False,
+    )
         return outputs
 
     def compute_transition_scores(self, sequences: torch.Tensor, scores: torch.Tensor) -> torch.Tensor:
