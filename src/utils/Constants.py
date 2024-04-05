@@ -33,10 +33,9 @@ class Constants:
                          'professional_medicine', 'professional_psychology', 'public_relations', 'security_studies',
                          'sociology',
                          'us_foreign_policy', 'virology', 'world_religions']
-        MMLU_DATASETS_SAMPLE = ['card.mmlu.college_chemistry', 'card.mmlu.high_school_government_and_politics',
-                                'card.mmlu.logical_fallacies', 'card.mmlu.high_school_macroeconomics',
-                                'card.mmlu.anatomy', 'card.mmlu.global_facts', 'card.mmlu.moral_scenarios',
-                                'card.mmlu.medical_genetics']
+        MMLU_DATASETS_SAMPLE = ['card.mmlu.anatomy', 'card.mmlu.college_computer_science',
+                                'card.mmlu.electrical_engineering', 'card.mmlu.elementary_mathematics',
+                                'card.mmlu.medical_genetics', 'card.mmlu.professional_accounting']
 
     class LLMProcessorConstants:
         MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
