@@ -1,4 +1,5 @@
 import argparse
+from typing import Union, List
 
 import numpy as np
 import torch
@@ -98,7 +99,8 @@ class LLMProcessor:
         print("The decoded generated tokens are:")
         print(generated_tokens_decoded)
 
-    def generate_model_text(self, input_text: str, max_new_tokens: int, is_print: bool = False) -> str:
+    def generate_model_text(self, input_text: Union[str, List[str]], max_new_tokens: int,
+                            is_print: bool = False) -> str:
         """
         Generate text using a pre-trained language model and print the results.
 
@@ -120,7 +122,7 @@ class LLMProcessor:
         generated_tokens_decoded = " ".join(generated_tokens_decoded)
         return generated_tokens_decoded
 
-    def predict(self, input_text: str, max_new_tokens: int):
+    def predict(self, input_text: Union[str, List[str]], max_new_tokens: int):
         """
         Predict the next word in the sequence.
         """
@@ -137,12 +139,14 @@ if __name__ == "__main__":
                       help="True if the model should be loaded in 8-bit.")
     args.add_argument("--trust_remote_code", action="store_true", default=LLMProcessorConstants.TRUST_REMOTE_CODE,
                       help="True if the model should trust remote code.")
-    args.add_argument("--not_return_token_type_ids", action="store_false", default=LLMProcessorConstants.RETURN_TOKEN_TYPE_IDS,
-                        help="True if the model should not return token type ids.")
+    args.add_argument("--not_return_token_type_ids", action="store_false",
+                      default=LLMProcessorConstants.RETURN_TOKEN_TYPE_IDS,
+                      help="True if the model should not return token type ids.")
     args.add_argument("--batch_size", type=int, default=2)
     args = args.parse_args()
     model_name = args.model_name
-    llmp = LLMProcessor(model_name)
+    llmp = LLMProcessor(model_name=model_name, load_in_4bit=args.not_load_in_4bit, load_in_8bit=args.not_load_in_8bit,
+                        trust_remote_code=args.trust_remote_code, return_token_type_ids=args.not_return_token_type_ids)
     sentences = ["please tell about the history of the world.",
                  "please tell about the world cup history."]
     llmp.predict(sentences, max_new_tokens=5)
