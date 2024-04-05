@@ -170,7 +170,7 @@ def main():
     args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
     # map between the model name to the real model name from the constants
     args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
-    if args.card.split("cards.") == Constants.DatasetsConstants.MMLU_GENERAL:
+    if args.card.split("cards.")[1] == Constants.DatasetsConstants.MMLU_GENERAL:
         # run on all the MMLU datasets with a loop
         for card in Constants.DatasetsConstants.MMLU_DATASETS_SAMPLE:
             args.card = f"cards.{card}"
