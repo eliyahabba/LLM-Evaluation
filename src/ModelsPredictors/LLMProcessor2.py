@@ -149,6 +149,14 @@ if __name__ == "__main__":
     model_inputs = tokenizer(
         ["A list of colors: red, blue", "Portugal is"], return_tensors="pt", padding=True
     ).to("cuda")
+    with torch.no_grad():
+        outputs = model.generate(
+            **model_inputs,
+            max_new_tokens=11,
+            # return_dict_in_generate=True,
+            # output_scores=True,
+            do_sample=False,
+        )
     generated_ids = model.generate(**model_inputs)
     print(tokenizer.batch_decode(generated_ids, skip_special_tokens=True))
 
