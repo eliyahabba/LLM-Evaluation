@@ -149,6 +149,9 @@ if __name__ == "__main__":
     model_inputs = tokenizer(
         ["A list of colors: red, blue", "Portugal is"], return_tensors="pt", padding=True
     ).to("cuda")
+
+    generated_ids = model.generate(**model_inputs)
+
     # with torch.no_grad():
     outputs = model.generate(
         **model_inputs
