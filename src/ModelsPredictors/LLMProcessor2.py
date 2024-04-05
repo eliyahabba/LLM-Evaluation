@@ -89,7 +89,7 @@ class LLMProcessor:
         print("The decoded generated tokens are:")
         print(generated_tokens_decoded)
 
-    def generate_model_text(self, input_text: str, max_new_tokens: int, is_print: bool = False) -> str:
+    def generate_model_text(self, input_text: str, max_new_tokens: int, is_print: bool = True) -> str:
         """
         Generate text using a pre-trained language model and print the results.
 
@@ -134,4 +134,5 @@ if __name__ == "__main__":
     args = args.parse_args()
     model_name = args.model_name
     llmp = LLMProcessor(model_name, load_in_4bit=False, load_in_8bit=True)
-    llmp.predict("please tell about the history of the world.", max_new_tokens=5)
+    generated_tokens = llmp.predict("please tell about the history of the world.", max_new_tokens=15)
+    print(generated_tokens)
