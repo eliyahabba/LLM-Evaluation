@@ -15,8 +15,11 @@ class LLMProcessor:
     def __init__(self, model_name: str, load_in_4bit: bool = False, load_in_8bit: bool = False,
                  trust_remote_code: bool = False, return_token_type_ids: bool = True):
         # Define the pre-trained model and tokenizer
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name, token=access_token,
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name, token=access_token,add_special_tokens=True,
                                                        trust_remote_code=trust_remote_code)
+        if 'pad_token' not in self.tokenizer.special_tokens_map:
+            self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
                                                           load_in_8bit=load_in_8bit, token=access_token,
                                                           trust_remote_code=trust_remote_code)
@@ -119,7 +122,6 @@ class LLMProcessor:
         Predict the next word in the sequence.
         """
         return self.generate_model_text(input_text, max_new_tokens, is_print=True)
-
 
 # Execute the main function
 if __name__ == "__main__":
