@@ -157,8 +157,8 @@ if __name__ == "__main__":
             # output_scores=True,
             do_sample=False,
         )
-    generated_ids = model.generate(**model_inputs)
-    print(tokenizer.batch_decode(generated_ids, skip_special_tokens=True))
+    # generated_ids = model.generate(**model_inputs)
+    print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
 
     # llmp = LLMProcessor(model_name, load_in_4bit=False, load_in_8bit=True)
     # sentences = ["please tell about the history of the world.",
