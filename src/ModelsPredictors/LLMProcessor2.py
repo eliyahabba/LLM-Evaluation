@@ -6,9 +6,11 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers.tokenization_utils_base import BatchEncoding
 
 from src.utils.Constants import Constants
+from src.utils.Utils import Utils
 
 LLMProcessorConstants = Constants.LLMProcessorConstants
-access_token = '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'
+
+access_token = Utils.get_access_token()
 
 
 class LLMProcessor:
@@ -20,7 +22,8 @@ class LLMProcessor:
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
                                                           load_in_8bit=load_in_8bit, token=access_token,
                                                           trust_remote_code=trust_remote_code)
-
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
     def tokenize_text(self, input_text: str) -> BatchEncoding:
         """
         Tokenize the input text.
@@ -28,7 +31,7 @@ class LLMProcessor:
         @param input_text: Text to be tokenized.
         @return: Tokenized input text.
         """
-        return self.tokenizer(input_text, return_tensors="pt")
+        return self.tokenizer(input_text, return_tensors="pt", padding=True).to(self.device)
 
     def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 5) -> dict:
         """
