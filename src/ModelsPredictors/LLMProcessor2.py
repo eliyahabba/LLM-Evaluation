@@ -121,7 +121,7 @@ class LLMProcessor:
 # Execute the main function
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
-    args.add_argument("--model_name", type=str, default=LLMProcessorConstants.MODEL_NAME)
+    args.add_argument("--model_name", type=str, default=LLMProcessorConstants.MISTRAL_MODEL)
     args.add_argument("--not_load_in_4bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_4BIT,
                       help="True if the model should be loaded in 4-bit.")
     args.add_argument("--not_load_in_8bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_8BIT,
