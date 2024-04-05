@@ -21,9 +21,10 @@ class LLMProcessor:
                                                        trust_remote_code=trust_remote_code)
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
                                                           load_in_8bit=load_in_8bit, token=access_token,
-                                                          trust_remote_code=trust_remote_code)
+                                                          trust_remote_code=trust_remote_code,
+                                                          device_map="auto")
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model.to(self.device)
+
     def tokenize_text(self, input_text: str) -> BatchEncoding:
         """
         Tokenize the input text.
@@ -102,7 +103,7 @@ class LLMProcessor:
         @return: The generated tokens decoded.
         """
         input_tokenized = self.tokenize_text(input_text)
-        input_tokenized.to(self.device)
+        # input_tokenized.to(self.device)
         outputs = self.generate_text(input_tokenized, max_new_tokens)
         transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
         generated_tokens = outputs.sequences[:, input_tokenized.input_ids.shape[1]:]
