@@ -65,22 +65,27 @@ class LLMPredictor:
 
         # run the model on the dataset and save the results in the file after each batch
         counter_idx = 0
-        for idx, instance in zip(filter_eval_set_indexes, filter_eval_set):
-            counter_idx += 1
-            input_text = instance["source"]
-            ground_truth = instance["target"]
+        for batch_start in range(0, len(filter_eval_set), self.batch_size):
+            batch_instances = filter_eval_set[batch_start:batch_start + self.batch_size]
+            batch_indexes = filter_eval_set_indexes[batch_start:batch_start + self.batch_size]
+
+            # Iterate over instances in the batch
+
+            counter_idx += self.batch_size
+            input_text = [batch_instance["source"] for batch_instance in batch_instances]
+            ground_truth = [batch_instance["target"] for batch_instance in batch_instances]
             result = self.llmp.predict(input_text, max_new_tokens)
-            loaded_idxs.append(idx)
-            loaded_input_texts.append(input_text)
-            loaded_ground_truths.append(ground_truth)
-            loaded_answers.append(result)
-            if counter_idx % self.batch_size == 0:
-                self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
-                                  loaded_ground_truths, loaded_data)
-                # save the remaining results if there are any
-        if counter_idx % self.batch_size != 0:
+            loaded_idxs.append(batch_indexes)
+            loaded_input_texts.extend(input_text)
+            loaded_ground_truths.extend(ground_truth)
+            loaded_answers.extend(result)
+            # if counter_idx % self.batch_size == 0:
             self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
                               loaded_ground_truths, loaded_data)
+                # save the remaining results if there are any
+        # if counter_idx % self.batch_size != 0:
+        #     self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
+        #                       loaded_ground_truths, loaded_data)
 
     def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list,
                         results_file_path: Path) -> None:

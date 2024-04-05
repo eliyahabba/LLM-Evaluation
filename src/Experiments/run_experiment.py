@@ -112,7 +112,8 @@ class ExperimentRunner:
         @return: The results of the experiment.
         """
         min_template, max_template = self.args.template_range
-        llm_proc = LLMProcessor(self.args.model_name, self.args.not_load_in_4bit, self.args.not_load_in_8bit,
+        llm_proc = LLMProcessor(self.args.model_name,
+                                self.args.not_load_in_4bit, self.args.not_load_in_8bit,
                                 self.args.trust_remote_code, self.args.not_return_token_type_ids)
         for template_num in range(min_template, max_template + 1):
             start = time.time()
@@ -134,7 +135,7 @@ class ExperimentRunner:
         entry_experiment = self.create_entry_experiment(template_name)
         results_file_path = self.save_results_to_json(entry_experiment, template_name, self.args.num_demos)
 
-        llm_pred = LLMPredictor(llm_proc)
+        llm_pred = LLMPredictor(llm_proc, batch_size=self.args.batch_size)
         llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
 
 
@@ -153,6 +154,7 @@ def main():
                       help="True if the model should not return token type ids.")
     args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
 
+    args.add_argument("--batch_size", type=int, default=ExperimentConstants.BATCH_SIZE, help="The batch size.")
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
     args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON,
                       help='The data types to evaluate the model on.')
@@ -168,8 +170,15 @@ def main():
     args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
     # map between the model name to the real model name from the constants
     args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
-    runner = ExperimentRunner(args)
-    runner.run_experiment()
+    if args.card == Constants.DatasetsConstants.MMLU_GENERAL:
+        # run on all the MMLU datasets with a loop
+        for card in Constants.DatasetsConstants.MMLU_DATASETS:
+            args.card = f"{Constants.DatasetsConstants.MMLU_GENERAL}.{card}"
+            runner = ExperimentRunner(args)
+            runner.run_experiment()
+    else:
+        runner = ExperimentRunner(args)
+        runner.run_experiment()
 
 
 if __name__ == "__main__":
