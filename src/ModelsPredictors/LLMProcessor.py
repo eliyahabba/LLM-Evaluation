@@ -24,10 +24,11 @@ class LLMProcessor:
             self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
+                                                          device_map="auto",
                                                           load_in_8bit=load_in_8bit, token=access_token,
                                                           trust_remote_code=trust_remote_code)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model.to(self.device)
+        # self.model.to(self.device)
         self.return_token_type_ids = return_token_type_ids
 
     def tokenize_text(self, input_text: str) -> BatchEncoding:
