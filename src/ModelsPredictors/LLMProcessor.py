@@ -39,7 +39,7 @@ class LLMProcessor:
         @return: Tokenized input text.
         """
         return self.tokenizer(input_text, return_tensors="pt", return_token_type_ids=self.return_token_type_ids,
-                              padding=True).to(self.device)
+                              padding=True)
 
     def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 5) -> dict:
         """
