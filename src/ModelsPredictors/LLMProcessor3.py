@@ -48,8 +48,8 @@ class LLMProcessor:
             outputs = self.model.generate(
             **input_tokenized,
             max_new_tokens=max_new_tokens,
-            return_dict_in_generate=True,
-            output_scores=True,
+            # return_dict_in_generate=True,
+            # output_scores=True,
             do_sample=False,
         )
         return outputs
