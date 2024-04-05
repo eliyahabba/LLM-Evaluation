@@ -44,7 +44,8 @@ class LLMProcessor:
         @param max_new_tokens: Maximum number of tokens to generate.
         @return: Generated text.
         """
-        outputs = self.model.generate(
+        with torch.no_grad():
+            outputs = self.model.generate(
             **input_tokenized,
             max_new_tokens=max_new_tokens,
             return_dict_in_generate=True,
