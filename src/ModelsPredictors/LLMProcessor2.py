@@ -141,8 +141,19 @@ if __name__ == "__main__":
                       help="True if the model should not return token type ids.")
     args = args.parse_args()
     model_name = args.model_name
-    llmp = LLMProcessor(model_name, load_in_4bit=False, load_in_8bit=True)
-    sentences = ["please tell about the history of the world.",
-                 "please tell about the world cup history."]
-    generated_tokens = llmp.predict(sentences, max_new_tokens=15)
-    print(generated_tokens)
+
+    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", load_in_4bit=True)
+
+    tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left")
+    tokenizer.pad_token = tokenizer.eos_token  # Most LLMs don't have a pad token by default
+    model_inputs = tokenizer(
+        ["A list of colors: red, blue", "Portugal is"], return_tensors="pt", padding=True
+    ).to("cuda")
+    generated_ids = model.generate(**model_inputs)
+    print(tokenizer.batch_decode(generated_ids, skip_special_tokens=True))
+
+    # llmp = LLMProcessor(model_name, load_in_4bit=False, load_in_8bit=True)
+    # sentences = ["please tell about the history of the world.",
+    #              "please tell about the world cup history."]
+    # generated_tokens = llmp.predict(sentences, max_new_tokens=15)
+    # print(generated_tokens)
