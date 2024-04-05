@@ -19,6 +19,8 @@ class LLMProcessor:
         # Define the pre-trained model and tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, token=access_token,
                                                        trust_remote_code=trust_remote_code)
+        if 'pad_token' not in self.tokenizer.special_tokens_map:
+            self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
         self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
                                                           load_in_8bit=load_in_8bit, token=access_token,
                                                           trust_remote_code=trust_remote_code,
