@@ -120,9 +120,8 @@ class EvaluateModel:
         """
         Write the evaluation scores to a CSV file.
         """
-        card_name = scores_df['card'].values[0]
         folder_path = self.results_file.parent
-        file_path = folder_path / f"{card_name}_scores_{self.eval_on_value}_data.csv"
+        file_path = folder_path / f"performance_summary_{self.eval_on_value}_data.csv"
         if not file_path.exists():
             scores_df.to_csv(file_path)
         else:
@@ -237,7 +236,7 @@ if __name__ == "__main__":
                         # sort the columns by the number of the template that in the columns name
                         results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])),
                                                         axis=1)
-                        results_df.to_csv(format_folder / f"{eval_on_value}_accuracy_results.csv", index=False)
+                        results_df.to_csv(format_folder / f"comparison_matrix_{eval_on_value}_data.csv", index=False)
                         # print the size of the results vs the number of the templates
                         print(f"Results size: {results_df.shape[0]}")
                         print(f"Number of templates: {results_df.shape[1]}")
