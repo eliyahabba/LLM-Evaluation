@@ -1,0 +1,3 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,groups_mean_score,number_of_instances
+template_0,cards.sciq,empty_system_format,0,10,100,0.960,0.960,accuracy,0.960,50
+template_28,cards.sciq,empty_system_format,0,10,100,1.000,1.000,accuracy,1.000,20
