@@ -51,3 +51,12 @@ class Utils:
         """
         with open(Path(__file__).parent / "access_token", "r") as file:
             return file.readline().strip()
+
+    @staticmethod
+    def get_model_name(model_name) -> str:
+        """
+        Get the model name from the full and official model name.
+        @param model_name: The full and official model name.
+        @return: The model name.
+        """
+        return model_name.split('/')[-1]
