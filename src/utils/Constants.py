@@ -3,7 +3,6 @@ from pathlib import Path
 
 class Constants:
     class DatasetsConstants:
-        # dataset_names = ["sciq", "race_all", "ai2_arc.arc_easy", "mmlu.global_facts", "mmlu.machine_learning", "hellaswag"]
         SCIQ = "sciq"
         RACE_ALL = "race_all"
         AI2_ARC_ARC_EASY = "ai2_arc.arc_easy"
@@ -83,3 +82,6 @@ class Constants:
         DEMOS_POOL_SIZE = 10
 
         BATCH_SIZE = 10
+
+    class McNemarTestConstants:
+        ALPHA = 0.05
