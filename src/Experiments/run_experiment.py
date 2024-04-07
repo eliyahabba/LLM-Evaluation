@@ -10,7 +10,7 @@ from unitxt.templates import Template
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
 from src.ModelsPredictors.LLMPredictor import LLMPredictor
-from src.ModelsPredictors.LLMProcessor2 import LLMProcessor
+from src.ModelsPredictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 
@@ -113,9 +113,11 @@ class ExperimentRunner:
         @return: The results of the experiment.
         """
         min_template, max_template = self.args.template_range
-        llm_proc = LLMProcessor(self.args.model_name,
-                                self.args.not_load_in_4bit, self.args.not_load_in_8bit,
-                                self.args.trust_remote_code, self.args.not_return_token_type_ids)
+        llm_proc = LLMProcessor(model_name=self.args.model_name,
+                                load_in_4bit=self.args.not_load_in_4bit,
+                                load_in_8bit=self.args.not_load_in_8bit,
+                                trust_remote_code=self.args.trust_remote_code,
+                                return_token_type_ids=self.args.not_return_token_type_ids)
         for template_num in range(min_template, max_template + 1):
             start = time.time()
             self.run_single_experiment(llm_proc, template_num)
@@ -171,7 +173,7 @@ def main():
     args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
     # map between the model name to the real model name from the constants
     args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
-    if args.card.split("cards.")[1] == Constants.DatasetsConstants.MMLU_GENERAL:
+    if Utils.get_card_name(args.card) == Constants.DatasetsConstants.MMLU_GENERAL:
         # run on all the MMLU datasets with a loop
         for card in Constants.DatasetsConstants.MMLU_DATASETS_SAMPLE:
             args.card = f"cards.{card}"

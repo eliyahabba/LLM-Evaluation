@@ -18,17 +18,18 @@ class LLMProcessor:
                  load_in_4bit: bool = False, load_in_8bit: bool = False,
                  trust_remote_code: bool = False, return_token_type_ids: bool = True):
         # Define the pre-trained model and tokenizer
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name, token=access_token, add_special_tokens=True,
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name,
+                                                       token=access_token,
+                                                       padding_side="left",
                                                        trust_remote_code=trust_remote_code)
-        if 'pad_token' not in self.tokenizer.special_tokens_map:
-            self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
-
-        self.model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit=load_in_4bit,
+        self.tokenizer.pad_token = '[PAD]'  # Most LLMs don't have a pad token by default
+        self.model = AutoModelForCausalLM.from_pretrained(model_name,
+                                                          load_in_4bit=load_in_4bit,
+                                                          load_in_8bit=load_in_8bit,
                                                           device_map="auto",
-                                                          load_in_8bit=load_in_8bit, token=access_token,
+                                                          token=access_token,
                                                           trust_remote_code=trust_remote_code)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        # self.model.to(self.device)
         self.return_token_type_ids = return_token_type_ids
 
     def tokenize_text(self, input_text: str) -> BatchEncoding:
@@ -39,7 +40,7 @@ class LLMProcessor:
         @return: Tokenized input text.
         """
         return self.tokenizer(input_text, return_tensors="pt", return_token_type_ids=self.return_token_type_ids,
-                              padding=True)
+                              padding=True).to(self.device)
 
     def generate_text(self, input_tokenized: BatchEncoding, max_new_tokens: int = 5) -> dict:
         """
@@ -77,13 +78,15 @@ class LLMProcessor:
         """
         return self.tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
 
-    def print_generated_tokens(self, generated_tokens, transition_scores):
+    def print_generated_tokens(self, generated_tokens: torch.Tensor, transition_scores: torch.Tensor) -> None:
         """
         Print generated tokens with their scores and probabilities.
 
         @param generated_tokens: Generated token sequences.
         @param transition_scores: Transition scores associated with generated tokens.
         """
+        generated_tokens = generated_tokens.cpu()
+        transition_scores = transition_scores.cpu()
         print("The generated tokens with their scores and probabilities are:")
         print("| token | token string | logits | probability")
         for tok, score in zip(generated_tokens[0], transition_scores[0]):
@@ -91,7 +94,7 @@ class LLMProcessor:
                 f"| {tok:5d} | {self.tokenizer.decode(tok):8s} | {score.numpy():.4f} | {np.exp(score.numpy()):.2%}"
             )
 
-    def print_generated_tokens_decoded(self, generated_tokens_decoded):
+    def print_generated_tokens_decoded(self, generated_tokens_decoded: List[str]) -> None:
         """
         Print decoded generated tokens.
 
@@ -112,22 +115,19 @@ class LLMProcessor:
         """
         input_tokenized = self.tokenize_text(input_text)
         outputs = self.generate_text(input_tokenized, max_new_tokens)
-        # transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
         generated_tokens = outputs.sequences[:, input_tokenized.input_ids.shape[1]:]
-        # if is_print:
-        #     self.print_generated_tokens(generated_tokens, transition_scores)
         generated_tokens_decoded = self.decode_tokens(generated_tokens)
         if is_print:
+            transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
+            self.print_generated_tokens(generated_tokens, transition_scores)
             self.print_generated_tokens_decoded(generated_tokens_decoded)
-        # covnert the list to string
-        generated_tokens_decoded = " ".join(generated_tokens_decoded)
         return generated_tokens_decoded
 
-    def predict(self, input_text: Union[str, List[str]], max_new_tokens: int):
+    def predict(self, input_text: Union[str, List[str]], max_new_tokens: int, is_print: bool = False) -> str:
         """
         Predict the next word in the sequence.
         """
-        return self.generate_model_text(input_text, max_new_tokens, is_print=True)
+        return self.generate_model_text(input_text, max_new_tokens, is_print=is_print)
 
 
 # Execute the main function
@@ -143,11 +143,11 @@ if __name__ == "__main__":
     args.add_argument("--not_return_token_type_ids", action="store_false",
                       default=LLMProcessorConstants.RETURN_TOKEN_TYPE_IDS,
                       help="True if the model should not return token type ids.")
-    args.add_argument("--batch_size", type=int, default=2)
+    args.add_argument("--batch_size", type=int, default=10)
     args = args.parse_args()
     model_name = args.model_name
     llmp = LLMProcessor(model_name=model_name, load_in_4bit=args.not_load_in_4bit, load_in_8bit=args.not_load_in_8bit,
                         trust_remote_code=args.trust_remote_code, return_token_type_ids=args.not_return_token_type_ids)
     sentences = ["please tell about the history of the world.",
                  "please tell about the world cup history."]
-    llmp.predict(sentences, max_new_tokens=5)
+    print(llmp.predict(sentences, max_new_tokens=5, is_print=True))
