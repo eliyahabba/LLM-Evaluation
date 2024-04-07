@@ -15,7 +15,7 @@ class HistogramOfSamples:
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
-        result_file_name, result_file = ResultsLoader.select_result_file(result_files, "accuracy")
+        result_file_name, result_file = ResultsLoader.select_result_file(result_files, "comparison_matrix")
 
         df = self.display_samples_prediction_accuracy(result_file)
         self.plot_histogram(df)

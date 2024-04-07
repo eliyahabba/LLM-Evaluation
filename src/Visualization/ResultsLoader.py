@@ -131,10 +131,10 @@ class ResultsLoader:
         return selected_dataset_file.name, selected_system_format
 
     @staticmethod
-    def select_result_file(result_files, results_type_name="scores"):
-        train_file = [f for f in result_files if "train" in f.name and results_type_name in f.name]
+    def select_result_file(result_files, results_type_name="performance_summary"):
+        train_file = [f for f in result_files if "train" in f.name and f.name.startswith(results_type_name)]
         assert len(train_file) <= 1, f"More than one train file found in the folder {train_file[0].parent}"
-        test_file = [f for f in result_files if "test" in f.name and results_type_name in f.name]
+        test_file = [f for f in result_files if "test" in f.name and f.name.startswith(results_type_name)]
         assert len(test_file) <= 1, f"More than one test file found in the folder {test_file[0].parent}"
         result_files_to_display = {}
         if train_file:

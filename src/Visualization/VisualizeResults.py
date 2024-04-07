@@ -17,7 +17,7 @@ class VisualizeResults:
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
-        result_file_name, result_file = ResultsLoader.select_result_file(result_files, "scores")
+        result_file_name, result_file = ResultsLoader.select_result_file(result_files, "performance_summary")
         with st.expander("The results of the model"):
             self.display_results(result_file)
         self.display_heatmap(dataset_file_name, result_file)
