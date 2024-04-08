@@ -1,0 +1,1 @@
+{"card": "cards.mmlu.anatomy", "template_name": "template_27", "model_name": "allenai/OLMo-7B-Instruct", "system_format": "empty_system_format", "max_instances": 100, "num_demos": 0, "demos_pool_size": 10, "results": {}}
