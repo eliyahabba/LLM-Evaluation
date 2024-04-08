@@ -218,9 +218,11 @@ if __name__ == "__main__":
                     for results_file in tqdm(results_files):
                         for eval_on_value in args.eval_on:
                             try:
-                                llm_dataset = load_dataset(results_file, loaded_datasets)
                                 eval_model = EvaluateModel(results_file, eval_on_value)
                                 results = eval_model.load_results_from_experiment_file()
+                                if all(['Score' in result for result in results[eval_on_value]]):
+                                    continue
+                                llm_dataset = load_dataset(results_file, loaded_datasets)
                                 scores_by_index = eval_model.evaluate(results, llm_dataset)
                                 if scores_by_index is not None:
                                     scores_by_index_series = pd.Series(scores_by_index, name=results_file.stem)
