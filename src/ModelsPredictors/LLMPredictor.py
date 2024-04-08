@@ -10,10 +10,12 @@ from src.CreateData.DatasetLoader import DatasetLoader
 from src.CreateData.LLMDataset import LLMDataset
 from src.ModelsPredictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
+from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
+LLMProcessorConstants = Constants.LLMProcessorConstants
 
 
 class LLMPredictor:
@@ -38,7 +40,6 @@ class LLMPredictor:
         max_new_tokens = max([len(instance["target"].split()) for instance in eval_set])
         max_new_tokens = max(max_new_tokens, 12)
         max_new_tokens = min(max_new_tokens, 25)
-
 
         eval_set_indexes = list(range(len(eval_set)))
         filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_set, eval_value, eval_set_indexes,
@@ -82,7 +83,7 @@ class LLMPredictor:
             # if counter_idx % self.batch_size == 0:
             self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
                               loaded_ground_truths, loaded_data)
-                # save the remaining results if there are any
+            # save the remaining results if there are any
         # if counter_idx % self.batch_size != 0:
         #     self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
         #                       loaded_ground_truths, loaded_data)
@@ -180,7 +181,8 @@ class LLMPredictor:
 # Execute the main function
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
-    args.add_argument("--model_name", type=str, default="mistralai/Mistral-7B-Instruct-v0.2")
+    args = ReadLLMParams.read_llm_params(args)
+
     args.add_argument("--card", type=str)
     args.add_argument("--system_format", type=str, default="unitxt")
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)

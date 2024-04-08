@@ -12,6 +12,7 @@ from src.CreateData.DatasetLoader import DatasetLoader
 from src.ModelsPredictors.LLMPredictor import LLMPredictor
 from src.ModelsPredictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
+from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -144,19 +145,10 @@ class ExperimentRunner:
 
 def main():
     args = argparse.ArgumentParser()
-    args.add_argument("--card", type=str, default="cards.sciq")
-    args.add_argument("--model_name", type=str, default=LLMProcessorConstants.PHI_MODEL)
-    args.add_argument("--not_load_in_4bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_4BIT,
-                      help="True if the model should be loaded in 4-bit.")
-    args.add_argument("--not_load_in_8bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_8BIT,
-                      help="True if the model should be loaded in 8-bit.")
-    args.add_argument("--trust_remote_code", action="store_true", default=LLMProcessorConstants.TRUST_REMOTE_CODE,
-                      help="True if the model should trust remote code.")
-    args.add_argument("--not_return_token_type_ids", action="store_false",
-                      default=LLMProcessorConstants.RETURN_TOKEN_TYPE_IDS,
-                      help="True if the model should not return token type ids.")
-    args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
+    args = ReadLLMParams.read_llm_params(args)
 
+    args.add_argument("--card", type=str, default="cards.sciq")
+    args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
     args.add_argument("--batch_size", type=int, default=ExperimentConstants.BATCH_SIZE, help="The batch size.")
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
     args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON,
