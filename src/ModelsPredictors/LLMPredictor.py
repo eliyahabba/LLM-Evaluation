@@ -28,7 +28,7 @@ class LLMPredictor:
         self.llmp = llmp
         self.batch_size = batch_size
 
-    def predict_on_single_dataset(self, eval_set, eval_value: str, results_file_path: Path) -> None:
+    def predict_on_single_dataset(self, eval_dataset, eval_value: str, results_file_path: Path) -> None:
         """
         Predict the model on a single dataset.
 
@@ -37,18 +37,17 @@ class LLMPredictor:
 
         """
         # find the max_new_tokens parameter from the eval_set (the maximum number of tokens in the target)
-        max_new_tokens = max([len(instance["target"].split()) for instance in eval_set])
+        max_new_tokens = max([len(instance["target"].split()) for instance in eval_dataset])
         max_new_tokens = max(max_new_tokens, 12)
         max_new_tokens = min(max_new_tokens, 25)
 
-        eval_set_indexes = list(range(len(eval_set)))
-        filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_set, eval_value, eval_set_indexes,
+        eval_set_indexes = list(range(len(eval_dataset)))
+        filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_dataset, eval_value, eval_set_indexes,
                                                                                results_file_path)
         # print in red the number of instances that were already predicted and will be skipped
-        print(colored(f"{len(eval_set)} instances were already predicted and will be skipped.", "red"))
+        print(colored(f"{len(eval_dataset)} instances were already predicted and will be skipped.", "red"))
         # print in green the number of instances that will be predicted
         print(colored(f"{len(filter_eval_set)} instances will be predicted.", "green"))
-
         loaded_data = self.load_results_file(results_file_path)
         # each result is a dictionary with the keys: 'idx', 'input_text', 'result', 'ground_truth'.
         # create a list of the indexes of the instances that were already predicted
@@ -76,7 +75,7 @@ class LLMPredictor:
             input_text = [batch_instance["source"] for batch_instance in batch_instances]
             ground_truth = [batch_instance["target"] for batch_instance in batch_instances]
             result = self.llmp.predict(input_text, max_new_tokens)
-            loaded_idxs.append(batch_indexes)
+            loaded_idxs.extend(batch_indexes)
             loaded_input_texts.extend(input_text)
             loaded_ground_truths.extend(ground_truth)
             loaded_answers.extend(result)
@@ -151,27 +150,28 @@ class LLMPredictor:
         entries = sorted(entries, key=lambda x: x["Index"])
         return entries
 
-    def filter_saved_instances(self, eval_set: list, eval_value: str, eval_set_indexes: list,
+    def filter_saved_instances(self, eval_dataset: list, eval_value: str, eval_dataset_indexes: list,
                                results_file_path: Path) -> Tuple[list, list]:
         """
         Filter the instances that have already been saved in the results file.
-        @param eval_set: The evaluation set.
+        @param eval_dataset: The evaluation set.
         @param eval_value: The evaluation set name.
-        @param eval_set_indexes: The indices of the instances in the evaluation set.
+        @param eval_dataset_indexes: The indices of the instances in the evaluation set.
         @param results_file_path: The name of the file to save the results in.
         @return:
         """
 
         data = self.load_results_file(results_file_path)
         if eval_value not in data['results']:
-            return eval_set, eval_set_indexes
-        results = data['results'][eval_value]
-        indexes = [entry["Index"] for entry in results]
+            indexes = []
+        else:
+            results = data['results'][eval_value]
+            indexes = [entry["Index"] for entry in results]
 
         # filter the eval set and the indexes
         filter_eval_set = []
         filter_eval_set_indexes = []
-        for idx, instance in zip(eval_set_indexes, eval_set):
+        for idx, instance in zip(eval_dataset_indexes, eval_dataset):
             if idx not in indexes:
                 filter_eval_set.append(instance)
                 filter_eval_set_indexes.append(idx)
