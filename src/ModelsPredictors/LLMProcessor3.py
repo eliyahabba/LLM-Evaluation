@@ -50,7 +50,7 @@ class LLMProcessor:
         outputs = self.model.generate(
         **input_tokenized,
         max_new_tokens=max_new_tokens,
-        # return_dict_in_generate=True,
+        return_dict_in_generate=True,
         # output_scores=True,
         do_sample=False,
     )
@@ -110,10 +110,10 @@ class LLMProcessor:
         input_tokenized = self.tokenize_text(input_text)
         # input_tokenized.to(self.device)
         outputs = self.generate_text(input_tokenized, max_new_tokens)
-        transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
+        # transition_scores = self.compute_transition_scores(outputs.sequences, outputs.scores)
         generated_tokens = outputs.sequences[:, input_tokenized.input_ids.shape[1]:]
-        if is_print:
-            self.print_generated_tokens(generated_tokens, transition_scores)
+        # if is_print:
+        #     self.print_generated_tokens(generated_tokens, transition_scores)
         generated_tokens_decoded = self.decode_tokens(generated_tokens)
         if is_print:
             self.print_generated_tokens_decoded(generated_tokens_decoded)

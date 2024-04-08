@@ -142,7 +142,7 @@ if __name__ == "__main__":
     args = args.parse_args()
     model_name = args.model_name
 
-    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", load_in_4bit=True)
+    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", load_in_8bit=True, token=access_token)
 
     tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left")
     tokenizer.pad_token = tokenizer.eos_token  # Most LLMs don't have a pad token by default
@@ -154,17 +154,14 @@ if __name__ == "__main__":
 
     # with torch.no_grad():
     outputs = model.generate(
-        **model_inputs
-        # max_new_tokens=20,
-        # return_dict_in_generate=True,
+        **model_inputs,
+        max_new_tokens=5,
+        return_dict_in_generate=True,
         # output_scores=True,
         # do_sample=False,
     )
-    # generated_ids = model.generate(**model_inputs)
-    output_sequences = model.generate(**model_inputs, max_new_tokens=20)
-
     print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
-
+    # generated_ids = model.generate(**model_inputs)
 
     output_sequences = model.generate(**model_inputs, max_new_tokens=20)
 

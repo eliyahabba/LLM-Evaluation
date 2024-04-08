@@ -23,7 +23,7 @@ class LLMProcessor:
                                                        token=access_token,
                                                        padding_side="left",
                                                        trust_remote_code=trust_remote_code)
-        self.tokenizer.pad_token = '[PAD]'  # Most LLMs don't have a pad token by default
+        self.tokenizer.pad_token = self.tokenizer.eos_token  # Most LLMs don't have a pad token by default
         self.model = AutoModelForCausalLM.from_pretrained(model_name,
                                                           load_in_4bit=load_in_4bit,
                                                           load_in_8bit=load_in_8bit,
