@@ -6,7 +6,11 @@ import streamlit as st
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.Visualization.ChooseBestCombination import ChooseBestCombination
 from src.Visualization.CreateHeatmap import CreateHeatmap
+from src.Visualization.PerformAnalysis import PerformAnalysis
 from src.Visualization.ResultsLoader import ResultsLoader
+from src.utils.Constants import Constants
+
+ResultConstants = Constants.ResultConstants
 
 
 class VisualizeResults:
@@ -17,7 +21,8 @@ class VisualizeResults:
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
-        result_file_name, result_file = ResultsLoader.select_result_file(result_files, "performance_summary")
+        result_file_name, result_file = ResultsLoader.select_result_file(result_files,
+                                                                         ResultConstants.PERFORMANCE_SUMMARY)
         with st.expander("The results of the model"):
             self.display_results(result_file)
         self.display_heatmap(dataset_file_name, result_file)
@@ -54,7 +59,12 @@ class VisualizeResults:
 
     def display_heatmap(self, dataset_file_name: str, result_file: Path):
         choose_best_combination = ChooseBestCombination(dataset_file_name, result_file)
-        choose_best_combination.choose_best_combination()
+        grouped_metadata_df, best_row = choose_best_combination.choose_best_combination()
+        choose_best_combination.write_best_combination(best_row)
+
+        perform_analysis = PerformAnalysis(grouped_metadata_df, best_row)
+        perform_analysis.calculate_mcnemar_test()
+        perform_analysis.calculate_cochrans_q_test()
         # add a expander to the heatmap
         with st.expander("Heatmap of the accuracy of the templates"):
             create_heatmap = CreateHeatmap(dataset_file_name, result_file)

@@ -6,6 +6,9 @@ import pandas as pd
 import streamlit as st
 
 from src.Visualization.ResultsLoader import ResultsLoader
+from src.utils.Constants import Constants
+
+ResultConstants = Constants.ResultConstants
 
 
 class HistogramOfSamples:
@@ -15,7 +18,8 @@ class HistogramOfSamples:
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
-        result_file_name, result_file = ResultsLoader.select_result_file(result_files, "comparison_matrix")
+        result_file_name, result_file = ResultsLoader.select_result_file(result_files,
+                                                                         ResultConstants.COMPARISON_MATRIX)
 
         df = self.display_samples_prediction_accuracy(result_file)
         self.plot_histogram(df)
