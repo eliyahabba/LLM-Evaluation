@@ -7,6 +7,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers.tokenization_utils_base import BatchEncoding
 
 from src.utils.Constants import Constants
+from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils
 
 LLMProcessorConstants = Constants.LLMProcessorConstants
@@ -133,16 +134,7 @@ class LLMProcessor:
 # Execute the main function
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
-    args.add_argument("--model_name", type=str, default=LLMProcessorConstants.MISTRAL_MODEL)
-    args.add_argument("--not_load_in_4bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_4BIT,
-                      help="True if the model should be loaded in 4-bit.")
-    args.add_argument("--not_load_in_8bit", action="store_false", default=LLMProcessorConstants.LOAD_IN_8BIT,
-                      help="True if the model should be loaded in 8-bit.")
-    args.add_argument("--trust_remote_code", action="store_true", default=LLMProcessorConstants.TRUST_REMOTE_CODE,
-                      help="True if the model should trust remote code.")
-    args.add_argument("--not_return_token_type_ids", action="store_false",
-                      default=LLMProcessorConstants.RETURN_TOKEN_TYPE_IDS,
-                      help="True if the model should not return token type ids.")
+    args = ReadLLMParams.read_llm_params(args)
     args.add_argument("--batch_size", type=int, default=2)
     args = args.parse_args()
     model_name = args.model_name
