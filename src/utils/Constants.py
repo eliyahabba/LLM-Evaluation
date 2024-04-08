@@ -32,9 +32,10 @@ class Constants:
                          'professional_medicine', 'professional_psychology', 'public_relations', 'security_studies',
                          'sociology',
                          'us_foreign_policy', 'virology', 'world_religions']
-        MMLU_DATASETS_SAMPLE = ['card.mmlu.anatomy', 'card.mmlu.college_computer_science',
-                                'card.mmlu.electrical_engineering', 'card.mmlu.elementary_mathematics',
-                                'card.mmlu.medical_genetics', 'card.mmlu.professional_accounting']
+        MMLU_DATASETS_SAMPLE = ['mmlu.anatomy', 'mmlu.college_computer_science',
+                                'mmlu.electrical_engineering', 'mmlu.elementary_mathematics',
+                                'mmlu.global_facts', 'mmlu.machine_learning',
+                                'mmlu.medical_genetics', 'mmlu.professional_accounting']
 
     class LLMProcessorConstants:
         MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
@@ -81,7 +82,7 @@ class Constants:
         NUM_DEMOS = 0
         DEMOS_POOL_SIZE = 10
 
-        BATCH_SIZE = 10
+        BATCH_SIZE = 2
 
     class McNemarTestConstants:
         ALPHA = 0.05
