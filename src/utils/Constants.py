@@ -6,11 +6,8 @@ class Constants:
         SCIQ = "sciq"
         RACE_ALL = "race_all"
         AI2_ARC_ARC_EASY = "ai2_arc.arc_easy"
-        MMLU_GLOBAL_FACTS = "mmlu.global_facts"
-        MMLU_MACHINE_LEARNING = "mmlu.machine_learning"
         MMLU_GENERAL = "mmlu"
         HELLASWAG = "hellaswag"
-        DATASET_NAMES = [SCIQ, RACE_ALL, AI2_ARC_ARC_EASY, MMLU_GLOBAL_FACTS, MMLU_MACHINE_LEARNING, HELLASWAG]
         MMLU_DATASETS = ['abstract_algebra', 'anatomy', 'astronomy', 'business_ethics', 'clinical_knowledge',
                          'college_biology',
                          'college_chemistry', 'college_computer_science', 'college_mathematics', 'college_medicine',
@@ -36,6 +33,7 @@ class Constants:
                                 'mmlu.electrical_engineering', 'mmlu.elementary_mathematics',
                                 'mmlu.global_facts', 'mmlu.machine_learning',
                                 'mmlu.medical_genetics', 'mmlu.professional_accounting']
+        DATASET_NAMES = [SCIQ, RACE_ALL, AI2_ARC_ARC_EASY]+MMLU_DATASETS
 
     class LLMProcessorConstants:
         MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
@@ -47,7 +45,8 @@ class Constants:
         QWEN2_MODEL = "Qwen/Qwen-7B-Chat-Int8"
         QWEN3_MODEL = "Qwen/Qwen1.5-MoE-A2.7B"
         MODEL_NAMES = {"PHI": PHI_MODEL, "MISTRAL": MISTRAL_MODEL, "LLAMA": LLAMA_MODEL, "GEMMA": GEMMA_MODEL,
-                       "OLMO": OLMO_MODEL, "QWEN": QWEN_MODEL, "QWEN2": QWEN2_MODEL, "QWEN3": QWEN3_MODEL}
+                       "OLMO": OLMO_MODEL}
+        OLD_MODEL = {"QWEN": QWEN_MODEL, "QWEN2": QWEN2_MODEL, "QWEN3": QWEN3_MODEL}
 
         LOAD_IN_4BIT = False
         LOAD_IN_8BIT = True
@@ -86,3 +85,7 @@ class Constants:
 
     class McNemarTestConstants:
         ALPHA = 0.05
+
+    class ResultConstants:
+        COMPARISON_MATRIX = "comparison_matrix"
+        PERFORMANCE_SUMMARY = "performance_summary"
