@@ -119,7 +119,7 @@ class ExperimentRunner:
                                 load_in_8bit=self.args.not_load_in_8bit,
                                 trust_remote_code=self.args.trust_remote_code,
                                 return_token_type_ids=self.args.not_return_token_type_ids)
-        for template_num in range(min_template, max_template + 1):
+        for template_num in range(min_template, max_template):
             start = time.time()
             self.run_single_experiment(llm_proc, template_num)
             end = time.time()
@@ -178,4 +178,8 @@ def main():
 
 if __name__ == "__main__":
     # measure the time of the experiment
+    start = time.time()
     main()
+    end = time.time()
+    # print the time of the experiment in minutes (blue color)
+    print(colored(f"Total time of the experiment: {round((end - start) / 60, 2)} minutes", "blue"))
