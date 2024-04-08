@@ -238,7 +238,14 @@ if __name__ == "__main__":
                         # sort the columns by the number of the template that in the columns name
                         results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])),
                                                         axis=1)
-                        results_df.to_csv(format_folder / f"comparison_matrix_{eval_on_value}_data.csv", index=False)
+                        comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
+                        if comparison_matrix_file.exists():
+                            comparison_matrix = pd.read_csv(comparison_matrix_file)
+                            # add from comparison matrix only the new columns that are not in the results_df
+                            comparison_matrix = comparison_matrix[
+                                [col for col in comparison_matrix.columns if col not in results_df.columns]]
+                            results_df = pd.concat([results_df, comparison_matrix], axis=1)
+                        results_df.to_csv(comparison_matrix_file, index=False)
                         # print the size of the results vs the number of the templates
                         print(f"Results size: {results_df.shape[0]}")
                         print(f"Number of templates: {results_df.shape[1]}")
