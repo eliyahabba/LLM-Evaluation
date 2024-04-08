@@ -124,9 +124,14 @@ class ChooseBestCombination:
         df = pd.read_csv(self.result_file)
         # add the 'accuracy' columns from df to the metadata_df by the template_name
         metadata_df = metadata_df.join(df.set_index('template_name')['accuracy'], on='template_name')
-        grouped_metadata_df = metadata_df.groupby(st.session_state['selected_best_value_axes'])[
-            'accuracy'].mean().rename(
-            'accuracy').reset_index()
+        if st.session_state['selected_best_value_axes']:
+            # group by the selected axes and calculate the mean of the accuracy
+            grouped_metadata_df = metadata_df.groupby(st.session_state['selected_best_value_axes'])[
+                'accuracy'].mean().rename(
+                'accuracy').reset_index()
+        else:
+            # if no axes are selected, take the mean of the accuracy
+            grouped_metadata_df = pd.DataFrame({'accuracy': [metadata_df['accuracy'].mean()]})
         # take the best row
         best_row = grouped_metadata_df.loc[grouped_metadata_df['accuracy'].idxmax()]
         return best_row
