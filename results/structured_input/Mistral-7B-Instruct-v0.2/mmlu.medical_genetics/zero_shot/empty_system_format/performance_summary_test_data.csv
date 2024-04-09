@@ -43,7 +43,9 @@ template_40,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.530,0.530
 template_41,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.570,0.570,accuracy,0.471,0.670,0.471,0.670,0.570,100
 template_42,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.600,0.600,accuracy,0.500,0.700,0.500,0.700,0.600,100
 template_43,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.560,0.560,accuracy,0.470,0.660,0.470,0.660,0.560,100
-template_44,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.500,0.500,accuracy,0.354,0.646,0.354,0.646,0.500,48
+template_44,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.600,0.600,accuracy,0.500,0.690,0.500,0.690,0.600,100
+template_45,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.580,0.580,accuracy,0.490,0.680,0.490,0.680,0.580,100
+template_46,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.610,0.610,accuracy,0.510,0.707,0.510,0.707,0.610,100
 template_47,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.630,0.630,accuracy,0.530,0.724,0.530,0.724,0.630,100
 template_48,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.640,0.640,accuracy,0.550,0.730,0.550,0.730,0.640,100
 template_49,cards.mmlu.medical_genetics,empty_system_format,0,10,100,0.640,0.640,accuracy,0.540,0.720,0.540,0.720,0.640,100
