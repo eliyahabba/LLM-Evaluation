@@ -3,7 +3,7 @@
     "input_format": "Topic: [topic] Question: [question] Choices: [choices] Answer: [answer]\nTopic: {topic} Question: {question} Choices: {choices} Answer:",
     "choices_field": "choices",
     "target_field": "answer",
-    "choices_seperator": " ",
+    "choices_separator": " ",
     "enumerator": "lowercase",
     "source_choice_format": "{choice_numeral}. {choice_text}",
     "target_choice_format": "{choice_numeral}. {choice_text}",

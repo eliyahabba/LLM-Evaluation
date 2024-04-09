@@ -1,4 +1,4 @@
-template_name,enumerator,choices_seperator,shuffle_choices
+template_name,enumerator,choices_separator,shuffle_choices
 template_0,capitals,\s,False
 template_1,capitals,\s,True
 template_2,capitals,\n,False
