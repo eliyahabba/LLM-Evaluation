@@ -53,3 +53,5 @@ template_50,cards.mmlu.anatomy,empty_system_format,0,10,100,0.340,0.340,accuracy
 template_51,cards.mmlu.anatomy,empty_system_format,0,10,100,0.310,0.310,accuracy,0.230,0.410,0.230,0.410,0.310,100
 template_52,cards.mmlu.anatomy,empty_system_format,0,10,100,0.400,0.400,accuracy,0.310,0.510,0.310,0.510,0.400,100
 template_53,cards.mmlu.anatomy,empty_system_format,0,10,100,0.330,0.330,accuracy,0.250,0.430,0.250,0.430,0.330,100
+template_54,cards.mmlu.anatomy,empty_system_format,0,10,100,0.360,0.360,accuracy,0.270,0.460,0.270,0.460,0.360,100
+template_55,cards.mmlu.anatomy,empty_system_format,0,10,100,0.280,0.280,accuracy,0.200,0.390,0.200,0.390,0.280,100
