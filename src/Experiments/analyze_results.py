@@ -195,7 +195,8 @@ if __name__ == "__main__":
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON)
     args = args.parse_args()
 
-    models_names = sorted([file for file in args.results_folder.glob("*") if file.is_dir()], key=lambda x: x.name.lower())
+    models_names = sorted([file for file in args.results_folder.glob("*") if file.is_dir()],
+                          key=lambda x: x.name.lower())
     # models_names = [models_name for models_name in models_names if "Lla" in str(models_name)]
     models_names = models_names if args.model_index is None else [models_names[args.model_index]]
     error_files, errors_msgs = [], []
@@ -222,7 +223,10 @@ if __name__ == "__main__":
                             try:
                                 eval_model = EvaluateModel(results_file, eval_on_value)
                                 results = eval_model.load_results_from_experiment_file()
-                                if comparison_matrix_file.exists() and all(['Score' in result for result in results[eval_on_value]]) and len(results[eval_on_value])==100:
+                                if comparison_matrix_file.exists() and \
+                                        not pd.read_csv(comparison_matrix_file).isna().any().any() and \
+                                        all(['Score' in result for result in results[eval_on_value]]) and \
+                                        len(results[eval_on_value]) == 100:
                                     continue
                                 llm_dataset = load_dataset(results_file, loaded_datasets)
                                 scores_by_index = eval_model.evaluate(results, llm_dataset)
