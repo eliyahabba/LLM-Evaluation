@@ -1,15 +1,11 @@
-import argparse
 import itertools
 
-import numpy as np
 import pandas as pd
 import statsmodels
 from statsmodels.stats.contingency_tables import cochrans_q
 from statsmodels.stats.contingency_tables import mcnemar
-from tqdm import tqdm
 
 from src.utils.Constants import Constants
-from src.utils.Utils import Utils
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
@@ -22,7 +18,8 @@ SHOT = "zero_shot"
 FORMAT = "empty_system_format"
 TRAIN_OR_TEST_TYPE = "test"
 
-class McNemarTestFromTable:
+
+class CompareSeriesBinaryDataFromTable:
     """
     Class to perform McNemar test on the contingency_table provided as a contingency table.
     """
@@ -39,7 +36,7 @@ class McNemarTestFromTable:
         """
         # take all the pairs of columns and for each pair, create a contingency table
         column_pairs = itertools.combinations(results.columns, 2)
-    
+
         df = pd.DataFrame(columns=results.columns)
         # add rows index with the same index as the columns
         for col in results.columns:
@@ -50,18 +47,14 @@ class McNemarTestFromTable:
             contingency_table = pd.crosstab(results[column1], results[column2])
             # Perform McNemar test
             result = mcnemar(contingency_table)
-            df.at[column1, column2] = f"{result.statistic}, {result.pvalue}"
-            df.at[column2, column1] = f"{result.statistic}, {result.pvalue}"
-    
-        # if result.pvalue < McNemarTestConstants.ALPHA:
-        #     # print(f"contingency_table for {column1} and {column2} are significantly different.")
-        #     # print("McNemar Test Statistic:", result.statistic)
-        #     # print("McNemar Test P-value:", result.pvalue)
-        #     test_contingency_table.append((column1, column2, result.statistic, result.pvalue))
+            df.at[column1, column2] = f"{result.statistic:.2f}, {result.pvalue:.2f}"
+            df.at[column2, column1] = f"{result.statistic:.2f}, {result.pvalue:.2f}"
+        # add to the empty cell above the index column the the strgin "statistic, pvalue"
+        df.index.name = "statistic, pvalue"
         return df
 
     @staticmethod
-    def perform_cochrans_q_test_from_table(results: pd.DataFrame)->statsmodels.stats.contingency_tables:
+    def perform_cochrans_q_test_from_table(results: pd.DataFrame) -> statsmodels.stats.contingency_tables:
         """
         Perform Cochran's Q test on the given contingency table.
         @param contingency_table: Contingency table containing the contingency_table

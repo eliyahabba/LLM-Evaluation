@@ -21,11 +21,15 @@ class VisualizeResults:
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
-        result_file_name, result_file = ResultsLoader.select_result_file(result_files,
-                                                                         ResultConstants.PERFORMANCE_SUMMARY)
+        result_file_name, performance_summary_path = ResultsLoader.select_result_file(result_files,
+                                                                                      ResultConstants.
+                                                                                      PERFORMANCE_SUMMARY)
+        comparison_matrix_path = \
+        [result_file for result_file in result_files if ResultConstants.COMPARISON_MATRIX in result_file.name][0]
         with st.expander("The results of the model"):
-            self.display_results(result_file)
-        self.display_heatmap(dataset_file_name, result_file)
+            self.display_results(performance_summary_path)
+        self.select_and_display_best_combination(dataset_file_name, performance_summary_path, comparison_matrix_path)
+        self.display_heatmap(dataset_file_name, performance_summary_path)
         ResultsLoader.display_sample_examples(selected_shot_file_name, dataset_file_name, result_file_name)
 
     def display_results(self, results_file: Path):
@@ -57,17 +61,20 @@ class VisualizeResults:
                             unsafe_allow_html=True)
                 st.markdown(f'<span style="color:{color}"><b>{v}</b></span>', unsafe_allow_html=True)
 
-    def display_heatmap(self, dataset_file_name: str, result_file: Path):
-        choose_best_combination = ChooseBestCombination(dataset_file_name, result_file)
+    def select_and_display_best_combination(self, dataset_file_name: str, performance_summary_path: Path,
+                                            comparison_matrix_path: Path):
+        choose_best_combination = ChooseBestCombination(dataset_file_name, performance_summary_path)
         grouped_metadata_df, best_row = choose_best_combination.choose_best_combination()
         choose_best_combination.write_best_combination(best_row)
 
-        perform_analysis = PerformAnalysis(grouped_metadata_df, best_row)
-        perform_analysis.calculate_mcnemar_test()
+        perform_analysis = PerformAnalysis(comparison_matrix_path, grouped_metadata_df, best_row)
         perform_analysis.calculate_cochrans_q_test()
+        perform_analysis.calculate_mcnemar_test(best_row)
+
+    def display_heatmap(self, dataset_file_name: str, performance_summary_path: Path):
         # add a expander to the heatmap
         with st.expander("Heatmap of the accuracy of the templates"):
-            create_heatmap = CreateHeatmap(dataset_file_name, result_file)
+            create_heatmap = CreateHeatmap(dataset_file_name, performance_summary_path)
             create_heatmap.create_heatmap()
 
 
