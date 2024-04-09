@@ -1,6 +1,6 @@
 import argparse
 import sys
-
+from pathlib import Path
 from streamlit.web import cli as stcli
 
 # TODO: use theses flags to run the app if there will be problems with the streamlit cli
@@ -12,8 +12,8 @@ from streamlit.web import cli as stcli
 # "global.suppressWarning", "true",
 # "global.sharingMode", "off"]
 # add python path to the sys.path
-# file_path = Path(__file__).parents[2]
-# sys.path.append(str(file_path))
+file_path = Path(__file__).parents[2]
+sys.path.append(str(file_path))
 # add python path to the sys.path
 
 if __name__ == '__main__':
