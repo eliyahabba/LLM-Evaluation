@@ -8,7 +8,6 @@ from src.utils.Constants import Constants
 ExperimentConstants = Constants.ExperimentConstants
 
 
-
 class ExperimentsResultsFolder:
     def __init__(self, eval_on: str):
         self.eval_on = eval_on
@@ -40,6 +39,7 @@ class ExperimentsResultsFolder:
 
         return result_counter
 
+
 def check_results_files(format_folder):
     results_files = list([file for file in format_folder.glob("*.json")])
     sorted_file_paths = sorted(results_files, key=lambda x: int(x.name.split("_")[-1].split(".")[0]))
@@ -55,14 +55,23 @@ def check_results_files(format_folder):
             print(f"Error in {results_file}: {e}")
             continue
 
+
 def check_comparison_matrix(format_folder: Path, eval_value: str):
-    df = pd.read_csv(format_folder/ f"comparison_matrix_{eval_value}_data.csv")
+    if not format_folder.exists():
+        print(f"{format_folder} does not exist")
+    try:
+        df = pd.read_csv(format_folder / f"comparison_matrix_{eval_value}_data.csv")
+    except Exception as e:
+        print(f"Error in {format_folder}: {e}")
+        return
+
     # read the columns of the dataframe
     columns = df.columns
     # for each column in the dataframe, if the value in the columns is less than 100 or contains NaN, print the column
     for column in columns:
         if df[column].isnull().values.any() or len(df[column]) < 100:
             print(f"{format_folder} in {column}: Missing {df[column].isnull().sum()} values")
+
 
 if __name__ == "__main__":
     # Load the model and the dataset
