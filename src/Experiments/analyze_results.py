@@ -195,13 +195,13 @@ if __name__ == "__main__":
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON)
     args = args.parse_args()
 
-    models_names = [file for file in args.results_folder.glob("*") if file.is_dir()]
+    models_names = sorted([file for file in args.results_folder.glob("*") if file.is_dir()], key=lambda x: x.name.lower())
     # models_names = [models_name for models_name in models_names if "Lla" in str(models_name)]
     models_names = models_names if args.model_index is None else [models_names[args.model_index]]
     error_files, errors_msgs = [], []
     for model_name in models_names:
         print("Models to evaluate: ", model_name)
-        datasets = [file for file in model_name.glob("*") if file.is_dir()]
+        datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
         # datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
         for dataset_folder in datasets:
             shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
@@ -210,7 +210,8 @@ if __name__ == "__main__":
             for shot in shots:
                 formats = [file for file in shot.glob("*") if file.is_dir()]
                 for format_folder in formats:
-                    results_files = [file for file in format_folder.glob("*.json")]
+                    results_files = sorted([file for file in format_folder.glob("*.json")],
+                                           key=lambda x: int(x.name.split(".json")[0].split("_")[-1]))
                     # results_files = [file for file in results_files if "template_2" in str(file)]
                     # results_files = results_files[:1]
 
@@ -220,7 +221,7 @@ if __name__ == "__main__":
                             try:
                                 eval_model = EvaluateModel(results_file, eval_on_value)
                                 results = eval_model.load_results_from_experiment_file()
-                                if all(['Score' in result for result in results[eval_on_value]]):
+                                if all(['Score' in result for result in results[eval_on_value]]) and len(results[eval_on_value])==100:
                                     continue
                                 llm_dataset = load_dataset(results_file, loaded_datasets)
                                 scores_by_index = eval_model.evaluate(results, llm_dataset)
