@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Tuple
 
 import pandas as pd
 import streamlit as st
@@ -11,16 +12,16 @@ ExperimentConstants = Constants.ExperimentConstants
 
 
 class ChooseBestCombination:
-    def __init__(self, dataset_file_name: str, result_file: Path):
+    def __init__(self, dataset_file_name: str, performance_summary_path: Path):
         self.dataset_file_name = dataset_file_name
-        self.result_file = result_file
+        self.performance_summary_path = performance_summary_path
         self.override_options = ConfigParams.override_options
         if 'selected_best_value_axes' not in st.session_state:
             st.session_state['selected_best_value_axes'] = list(self.override_options.keys())
         if 'selected_average_value_axes' not in st.session_state:
             st.session_state['selected_average_value_axes'] = []
 
-    def select_causal_factors(self):
+    def select_causal_axes(self):
         """
         Creates multiselect widgets for selecting axis options.
 
@@ -89,7 +90,7 @@ class ChooseBestCombination:
         st.session_state['selected_best_value_axes'] = \
             list(set(self.override_options.keys()) - set(st.session_state['selected_average_value_axes']))
 
-    def choose_best_combination(self) -> pd.Series:
+    def choose_best_combination(self) -> Tuple[pd.DataFrame, pd.Series]:
         """
         Choose the best combination of the values of the axes.
         @return: The best combination of the values of the axes.
@@ -97,9 +98,17 @@ class ChooseBestCombination:
         templates_path = TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH
         metadata_file = templates_path / self.dataset_file_name / "templates_metadata.csv"
         metadata_df = pd.read_csv(metadata_file, index_col='template_name')
-        self.select_causal_factors()
-        best_row = self.calculate_set_of_caused_factors(metadata_df)
+        self.select_causal_axes()
+        grouped_metadata_df = self.get_grouped_metadata_df(metadata_df)
+        best_row = self.get_best_row(grouped_metadata_df)
+        return grouped_metadata_df, best_row
 
+    def write_best_combination(self, best_row: pd.Series) -> None:
+        """
+        Write the best combination of the values of the axes to a file.
+        @param best_row: The best combination of the values of the axes.
+        @return: None
+        """
         st.markdown("#### The best set of caused factors:")
         red_color = "#FF5733"
         colors = ['blue', 'green', 'purple']
@@ -118,20 +127,32 @@ class ChooseBestCombination:
                      f" <strong>{selected_average_value_axes_str}</strong>) " if selected_average_value_axes_str else "") \
                     + f"contribute to the **accuracy** <strong style='color:{red_color}'>{accuracy}</strong>")
         st.markdown(acc_text, unsafe_allow_html=True)
-        return best_row
 
-    def calculate_set_of_caused_factors(self, metadata_df):
-        df = pd.read_csv(self.result_file)
+    def get_grouped_metadata_df(self, metadata_df):
+        df = pd.read_csv(self.performance_summary_path)
         # add the 'accuracy' columns from df to the metadata_df by the template_name
         metadata_df = metadata_df.join(df.set_index('template_name')['accuracy'], on='template_name')
         if st.session_state['selected_best_value_axes']:
             # group by the selected axes and calculate the mean of the accuracy
             grouped_metadata_df = metadata_df.groupby(st.session_state['selected_best_value_axes'])[
                 'accuracy'].mean().rename(
-                'accuracy').reset_index()
+                'accuracy')
+            index_lists = metadata_df.groupby(st.session_state['selected_best_value_axes']).apply(lambda x: list(x.index)).rename('template_name')
+            grouped_metadata_with_index = grouped_metadata_df.to_frame().join(index_lists.to_frame()).reset_index()
         else:
             # if no axes are selected, take the mean of the accuracy
-            grouped_metadata_df = pd.DataFrame({'accuracy': [metadata_df['accuracy'].mean()]})
-        # take the best row
+            grouped_metadata = {'accuracy': [metadata_df['accuracy'].mean()]}
+            index_lists = metadata_df.index.tolist()
+            grouped_metadata.update({'template_name': [index_lists]})
+            grouped_metadata_with_index = pd.DataFrame(grouped_metadata)
+        return grouped_metadata_with_index
+
+
+    def get_best_row(self, grouped_metadata_df):
         best_row = grouped_metadata_df.loc[grouped_metadata_df['accuracy'].idxmax()]
+        return best_row
+
+    def find_set_of_caused_factors(self, metadata_df):
+        grouped_metadata_df = self.get_grouped_metadata_df(metadata_df)
+        best_row = self.get_best_row(grouped_metadata_df)
         return best_row
