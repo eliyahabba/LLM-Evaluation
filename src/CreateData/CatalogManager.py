@@ -63,7 +63,7 @@ if __name__ == "__main__":
         input_format="The following are multiple choice questions (with answers) about {topic}"
                      ".\n\nQuestion: {question}\nChoose from {numerals}\nAnswers:\n{choices}\nAnswer:",
         target_field="answer",
-        choices_seperator="\n",
+        choices_separator="\n",
         add_numerals_as_field="numerals",
         postprocessors=["processors.first_character"],
     )

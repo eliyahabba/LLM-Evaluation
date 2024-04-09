@@ -43,8 +43,8 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
         metadata_df = generator.create_metadata_from_templates(created_templates, params=override_options)
 
         # replace the spaces and new lines with the escape character
-        metadata_df['choices_seperator'] = metadata_df['choices_seperator'].replace(' ', '\\s')
-        metadata_df['choices_seperator'] = metadata_df['choices_seperator'].replace('\n', '\\n')
+        metadata_df['choices_separator'] = metadata_df['choices_separator'].replace(' ', '\\s')
+        metadata_df['choices_separator'] = metadata_df['choices_separator'].replace('\n', '\\n')
         # replace the enumerator values with their names
         # convert the enumerator to string to be able to replace the values with their names
         metadata_df['enumerator'] = metadata_df['enumerator'].astype(str)
