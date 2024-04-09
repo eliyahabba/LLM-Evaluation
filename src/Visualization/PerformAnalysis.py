@@ -60,6 +60,7 @@ class PerformAnalysis:
         result.index = result.index.map(lambda x: f"best set: {x}" if x == best_templates_name else x)
         result.columns = result.columns.map(lambda x: f"best set {x}" if x == best_templates_name else x)
         with st.expander("McNemar Test Results"):
+            st.markdown("The row / column that corresponds to the best template is marked with 'best'.")
             st.write(result)
 
     def calculate_cochrans_q_test(self) -> None:
