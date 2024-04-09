@@ -216,12 +216,13 @@ if __name__ == "__main__":
                     # results_files = results_files[:1]
 
                     summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in args.eval_on}
-                    for results_file in tqdm(results_files):
-                        for eval_on_value in args.eval_on:
+                    for eval_on_value in args.eval_on:
+                        comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
+                        for results_file in tqdm(results_files):
                             try:
                                 eval_model = EvaluateModel(results_file, eval_on_value)
                                 results = eval_model.load_results_from_experiment_file()
-                                if all(['Score' in result for result in results[eval_on_value]]) and len(results[eval_on_value])==100:
+                                if comparison_matrix_file.exists() and all(['Score' in result for result in results[eval_on_value]]) and len(results[eval_on_value])==100:
                                     continue
                                 llm_dataset = load_dataset(results_file, loaded_datasets)
                                 scores_by_index = eval_model.evaluate(results, llm_dataset)
