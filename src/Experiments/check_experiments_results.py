@@ -3,9 +3,11 @@ from pathlib import Path
 
 import pandas as pd
 
+from src.Analysis.ModelDatasetRunner import ModelDatasetRunner
 from src.utils.Constants import Constants
 
 ExperimentConstants = Constants.ExperimentConstants
+ResultConstants = Constants.ResultConstants
 
 
 class ExperimentsResultsFolder:
@@ -60,7 +62,7 @@ def check_comparison_matrix(format_folder: Path, eval_value: str):
     if not format_folder.exists():
         print(f"{format_folder} does not exist")
     try:
-        df = pd.read_csv(format_folder / f"comparison_matrix_{eval_value}_data.csv")
+        df = pd.read_csv(format_folder / f"{ResultConstants.COMPARISON_MATRIX}_{eval_value}_data.csv")
     except Exception as e:
         print(f"Error in {format_folder}: {e}")
         return
@@ -77,14 +79,5 @@ if __name__ == "__main__":
     # Load the model and the dataset
     results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
     eval_on = ExperimentConstants.EVALUATE_ON
-    models_names = sorted([file for file in results_folder.glob("*") if file.is_dir()], key=lambda x: x.name.lower())
-    for model_name in models_names:
-        datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
-        for dataset_folder in datasets:
-            shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
-            for shot in shots:
-                formats = [file for file in shot.glob("*") if file.is_dir()]
-                for format_folder in formats:
-                    for eval_value in eval_on:
-                        check_comparison_matrix(format_folder, eval_value)
-                    # check_results_files(format_folder)
+    model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
+    model_dataset_runner.run_function_on_all_models_and_datasets(check_comparison_matrix)
