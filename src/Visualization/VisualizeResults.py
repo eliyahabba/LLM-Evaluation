@@ -76,8 +76,8 @@ class VisualizeResults:
         select_axes.write_best_combination(best_row)
 
         perform_analysis = PerformDisplayAnalysis(comparison_matrix_path, grouped_metadata_df, best_row)
-        perform_analysis.calculate_cochrans_q_test()
-        perform_analysis.calculate_mcnemar_test(best_row)
+        perform_analysis.display_cochrans_q_test()
+        perform_analysis.display_mcnemar_test(best_row)
 
     def display_heatmap(self, dataset_file_name: str, performance_summary_path: Path):
         # add a expander to the heatmap
