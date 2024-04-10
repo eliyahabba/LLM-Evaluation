@@ -11,9 +11,9 @@ ExperimentConstants = Constants.ExperimentConstants
 
 
 class PerformAnalysis:
-    def __init__(self, performance_summary_path: Path, grouped_metadata_df: pd.DataFrame, best_row: pd.Series):
-        self.performance_summary_path = performance_summary_path
-        self.performance_summary_df = pd.read_csv(self.performance_summary_path)
+    def __init__(self, comparison_matrix_path: Path, grouped_metadata_df: pd.DataFrame, best_row: pd.Series):
+        self.comparison_matrix_path = comparison_matrix_path
+        self.performance_summary_df = pd.read_csv(self.comparison_matrix_path)
         self.grouped_metadata_df = grouped_metadata_df
         self.best_row = best_row
 
@@ -47,7 +47,7 @@ class PerformAnalysis:
     def process_data_for_mcnemar_test(self) -> pd.DataFrame:
         return self.group_performance_summary_by_template()
 
-    def calculate_mcnemar_test(self, best_row: pd.Series) -> None:
+    def calculate_mcnemar_test(self, best_row: pd.Series) -> pd.DataFrame:
         """
         Calculates the McNemar test for the given model and dataset.
         """
@@ -59,18 +59,13 @@ class PerformAnalysis:
         # add "best" to the row and column that corresponds to the best template
         result.index = result.index.map(lambda x: f"best set: {x}" if x == best_templates_name else x)
         result.columns = result.columns.map(lambda x: f"best set {x}" if x == best_templates_name else x)
-        with st.expander("McNemar Test Results"):
-            st.markdown("The row / column that corresponds to the best template is marked with 'best'.")
-            st.write(result)
+        return result
 
-    def calculate_cochrans_q_test(self) -> None:
+    def calculate_cochrans_q_test(self):
         """
         Calculates the Cochran's Q test for the given model and dataset.
         @return:
         """
         cochrans_q_df = self.process_data_for_cochrans_q_test()
         result = CompareSeriesBinaryDataFromTable.perform_cochrans_q_test_from_table(cochrans_q_df)
-
-        with st.expander("Cochran's Q Test Results"):
-            st.write("Statistic:", f"{result.statistic:.2f}")
-            st.write(f"P-value:{result.pvalue:.2f}")
+        return result

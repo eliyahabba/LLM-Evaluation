@@ -11,7 +11,7 @@ sys.path.append(str(file_path))
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.Visualization.ChooseBestCombination import ChooseBestCombination
 from src.Visualization.CreateHeatmap import CreateHeatmap
-from src.Visualization.PerformAnalysis import PerformAnalysis
+from src.Visualization.PerformDisplayAnalysis import PerformDisplayAnalysis
 from src.Visualization.ResultsLoader import ResultsLoader
 from src.utils.Constants import Constants
 
@@ -75,7 +75,7 @@ class VisualizeResults:
         grouped_metadata_df, best_row = choose_best_combination.choose_best_combination()
         select_axes.write_best_combination(best_row)
 
-        perform_analysis = PerformAnalysis(comparison_matrix_path, grouped_metadata_df, best_row)
+        perform_analysis = PerformDisplayAnalysis(comparison_matrix_path, grouped_metadata_df, best_row)
         perform_analysis.calculate_cochrans_q_test()
         perform_analysis.calculate_mcnemar_test(best_row)
 
