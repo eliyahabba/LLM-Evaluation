@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import pandas as pd
-import streamlit as st
 
 from src.Analysis.StatisticalTests.CompareSeriesBinaryDataFromTable import CompareSeriesBinaryDataFromTable
 from src.utils.Constants import Constants
@@ -54,7 +53,7 @@ class PerformAnalysis:
         mcnemar_df = self.process_data_for_mcnemar_test()
         result = CompareSeriesBinaryDataFromTable.perform_mcnemar_test_from_table(mcnemar_df)
         best_templates_numbers = ",".join([(x.split('template_')[1]) for x in best_row.template_name])
-        best_templates_name = f"{'templates ' if len(best_row.template_name)>1 else 'template_'}{best_templates_numbers}"
+        best_templates_name = f"{'templates ' if len(best_row.template_name) > 1 else 'template_'}{best_templates_numbers}"
 
         # add "best" to the row and column that corresponds to the best template
         result.index = result.index.map(lambda x: f"best set: {x}" if x == best_templates_name else x)

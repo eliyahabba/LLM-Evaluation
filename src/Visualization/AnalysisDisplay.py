@@ -3,14 +3,14 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from src.Visualization.PerformAnalysis import PerformAnalysis
+from src.Analysis.PerformAnalysis import PerformAnalysis
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 
 
-class PerformDisplayAnalysis:
+class AnalysisDisplay:
     def __init__(self, comparison_matrix_path: Path, grouped_metadata_df: pd.DataFrame, best_row: pd.Series):
         self.comparison_matrix_path = comparison_matrix_path
         self.performance_summary_df = pd.read_csv(self.comparison_matrix_path)
