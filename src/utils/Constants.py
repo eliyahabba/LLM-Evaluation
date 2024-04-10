@@ -89,3 +89,4 @@ class Constants:
     class ResultConstants:
         COMPARISON_MATRIX = "comparison_matrix"
         PERFORMANCE_SUMMARY = "performance_summary"
+        BEST_COMBINATIONS = "best_combinations"
