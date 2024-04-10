@@ -20,5 +20,6 @@ class BestCombinationsDisplayer:
         # write the table
         st.write(self.best_combinations)
 
+
 if __name__ == "__main__":
     BestCombinationsDisplayer().display()
