@@ -1,0 +1,59 @@
+model,dataset,enumerator,choices_separator,shuffle_choices,accuracy,template_name,statistic,pvalue
+gemma-7b-it,ai2_arc.arc_easy,lowercase,; ,True,0.58,['template_21'],133.27,0.00
+gemma-7b-it,mmlu.anatomy,lowercase, OR ,False,0.47,['template_24'],95.24,0.00
+gemma-7b-it,mmlu.college_computer_science,roman, or ,False,0.4,['template_54'],32.84,0.48
+gemma-7b-it,mmlu.electrical_engineering,lowercase, OR ,False,0.46,['template_24'],112.26,0.00
+gemma-7b-it,mmlu.elementary_mathematics,numbers,\n,True,0.45,['template_31'],139.88,0.00
+gemma-7b-it,mmlu.global_facts,roman,", ",False,0.38,['template_46'],93.48,0.00
+gemma-7b-it,mmlu.machine_learning,lowercase,; ,False,0.42,['template_20'],138.43,0.00
+gemma-7b-it,mmlu.medical_genetics,lowercase,\n,True,0.44,['template_17'],162.62,0.00
+gemma-7b-it,mmlu.professional_accounting,capitals,\n,False,0.42,['template_2'],39.36,0.94
+gemma-7b-it,race_all,capitals,", ",False,0.43,['template_4'],114.11,0.00
+gemma-7b-it,sciq,lowercase,\n,False,0.74,['template_16'],,
+Llama-2-7b-chat-hf,ai2_arc.arc_easy,numbers,", ",False,0.52,['template_32'],187.95,0.00
+Llama-2-7b-chat-hf,mmlu.anatomy,numbers,\s,False,0.48,['template_28'],183.98,0.00
+Llama-2-7b-chat-hf,mmlu.college_computer_science,capitals, OR ,False,0.31,['template_10'],65.00,0.17
+Llama-2-7b-chat-hf,mmlu.electrical_engineering,numbers, or ,False,0.35,['template_40'],62.29,0.23
+Llama-2-7b-chat-hf,mmlu.elementary_mathematics,numbers, | ,False,0.32,['template_36'],45.09,0.83
+Llama-2-7b-chat-hf,mmlu.global_facts,numbers,\n,False,0.36,['template_30'],57.28,0.39
+Llama-2-7b-chat-hf,mmlu.machine_learning,roman, | ,True,0.39,['template_51'],66.53,0.14
+Llama-2-7b-chat-hf,mmlu.medical_genetics,roman,\n,True,0.42,['template_45'],49.37,0.69
+Llama-2-7b-chat-hf,mmlu.professional_accounting,numbers, OR ,True,0.37,['template_39'],57.81,0.37
+Llama-2-7b-chat-hf,race_all,numbers,", ",False,0.62,['template_32'],156.41,0.00
+Llama-2-7b-chat-hf,sciq,numbers, OR ,True,0.72,['template_39'],243.76,0.00
+Mistral-7B-Instruct-v0.2,ai2_arc.arc_easy,capitals, OR ,False,0.91,['template_10'],111.51,0.00
+Mistral-7B-Instruct-v0.2,mmlu.anatomy,roman, OR ,True,0.58,['template_53'],99.95,0.00
+Mistral-7B-Instruct-v0.2,mmlu.college_computer_science,numbers, | ,False,0.46,['template_36'],76.43,0.03
+Mistral-7B-Instruct-v0.2,mmlu.electrical_engineering,roman,; ,False,0.51,['template_48'],73.22,0.05
+Mistral-7B-Instruct-v0.2,mmlu.elementary_mathematics,numbers, OR ,True,0.45,['template_39'],41.69,0.91
+Mistral-7B-Instruct-v0.2,mmlu.global_facts,numbers,\s,False,0.41,['template_28'],83.28,0.01
+Mistral-7B-Instruct-v0.2,mmlu.machine_learning,lowercase, | ,False,0.49,['template_22'],67.26,0.12
+Mistral-7B-Instruct-v0.2,mmlu.medical_genetics,lowercase, OR ,True,0.66,['template_25'],54.17,0.51
+Mistral-7B-Instruct-v0.2,mmlu.professional_accounting,numbers,", ",False,0.46,['template_32'],33.25,0.99
+Mistral-7B-Instruct-v0.2,race_all,numbers, OR ,True,0.81,['template_39'],74.76,0.04
+Mistral-7B-Instruct-v0.2,sciq,roman, | ,False,0.97,['template_50'],166.91,0.00
+OLMo-7B-Instruct,ai2_arc.arc_easy,roman,\n,False,0.81,['template_44'],112.14,0.00
+OLMo-7B-Instruct,mmlu.anatomy,lowercase,\n,True,0.49,['template_17'],75.68,0.03
+OLMo-7B-Instruct,mmlu.college_computer_science,capitals,; ,True,0.36,['template_7'],32.98,0.99
+OLMo-7B-Instruct,mmlu.electrical_engineering,roman,; ,True,0.4,['template_49'],61.82,0.25
+OLMo-7B-Instruct,mmlu.elementary_mathematics,lowercase, OR ,False,0.35,['template_24'],52.05,0.59
+OLMo-7B-Instruct,mmlu.global_facts,numbers,\s,True,0.35,['template_29'],64.70,0.17
+OLMo-7B-Instruct,mmlu.machine_learning,capitals,", ",True,0.43,['template_5'],74.96,0.04
+OLMo-7B-Instruct,mmlu.medical_genetics,numbers,\n,True,0.52,['template_31'],89.68,0.00
+OLMo-7B-Instruct,mmlu.professional_accounting,roman,", ",False,0.43,['template_46'],77.61,0.02
+OLMo-7B-Instruct,race_all,capitals,\n,False,0.75,['template_2'],134.23,0.00
+OLMo-7B-Instruct,sciq,capitals,\n,True,0.93,['template_3'],172.89,0.00
+phi-2,ai2_arc.arc_easy,numbers, OR ,False,0.3,['template_38'],143.16,0.00
+phi-2,mmlu.anatomy,lowercase,\n,True,0.3,['template_17'],29.93,1.00
+phi-2,mmlu.college_computer_science,capitals,; ,False,0.32,['template_6'],39.92,0.94
+phi-2,mmlu.electrical_engineering,lowercase, or ,False,0.31,['template_26'],34.31,0.99
+phi-2,mmlu.elementary_mathematics,numbers,", ",True,0.31,['template_33'],46.37,0.79
+phi-2,mmlu.global_facts,numbers, OR ,False,0.35,['template_38'],298.99,0.00
+phi-2,mmlu.machine_learning,numbers, OR ,False,0.25,['template_38'],46.52,0.79
+phi-2,mmlu.medical_genetics,lowercase,\n,True,0.32,['template_17'],30.01,1.00
+phi-2,mmlu.professional_accounting,capitals, OR ,False,0.3,['template_10'],50.63,0.64
+phi-2,race_all,capitals,\n,True,0.62,['template_3'],190.26,0.00
+phi-2,sciq,capitals, OR ,False,0.97,['template_10'],343.42,0.00
+Qwen1.5-7B-Chat,race_all,numbers,\s,False,0.95,['template_28'],,
+Qwen1.5-7B-Chat,sciq,numbers,\s,False,1.0,['template_28'],,
+Qwen1.5-MoE-A2.7B,sciq,roman,\n,True,0.94,['template_45'],106.93,0.00
