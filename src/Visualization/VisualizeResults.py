@@ -3,6 +3,9 @@ from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+
+from src.Visualization.SelectAxes import SelectAxes
+
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
@@ -27,7 +30,7 @@ class VisualizeResults:
                                                                                       ResultConstants.
                                                                                       PERFORMANCE_SUMMARY)
         comparison_matrix_path = \
-        [result_file for result_file in result_files if ResultConstants.COMPARISON_MATRIX in result_file.name][0]
+            [result_file for result_file in result_files if ResultConstants.COMPARISON_MATRIX in result_file.name][0]
         with st.expander("The results of the model"):
             self.display_results(performance_summary_path)
         self.select_and_display_best_combination(dataset_file_name, performance_summary_path, comparison_matrix_path)
@@ -65,9 +68,12 @@ class VisualizeResults:
 
     def select_and_display_best_combination(self, dataset_file_name: str, performance_summary_path: Path,
                                             comparison_matrix_path: Path):
-        choose_best_combination = ChooseBestCombination(dataset_file_name, performance_summary_path)
+        select_axes = SelectAxes()
+        selected_best_value_axes = select_axes.select_causal_axes()
+        choose_best_combination = ChooseBestCombination(dataset_file_name, performance_summary_path,
+                                                        selected_best_value_axes)
         grouped_metadata_df, best_row = choose_best_combination.choose_best_combination()
-        choose_best_combination.write_best_combination(best_row)
+        select_axes.write_best_combination(best_row)
 
         perform_analysis = PerformAnalysis(comparison_matrix_path, grouped_metadata_df, best_row)
         perform_analysis.calculate_cochrans_q_test()
