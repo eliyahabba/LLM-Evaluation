@@ -13,7 +13,7 @@
         "Instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: You bought a limousine for $98,000 and are planning to rent it for weddings, ceremonies and parties at $245 per hour. If you estimate the car will be hired for 2 hours a day on average, with daily costs at about $50, what is the estimated yearly yield on your investment if you work all year round, i.e. every day of the year, including any festivities and weekends? Choices: A. 1.64%\nB. 164%\nC. 183%\nD. 0.45% Answer:\n",
         "Result": "The answer is B.\n\n**Explanation:**\n\nThe annual income from renting the limousine is $245 per hour,",
         "GroundTruth": "B. 164%",
-        "Score": 1.0
+        "Score": 0.0
       },
       {
         "Index": 1,
@@ -97,7 +97,7 @@
         "Instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Which of the following is an element of a CPA firm's quality control policies and procedures applicable to the firm's accounting and auditing practice? Choices: A. Risk analysis.\nB. Information processing.\nC. Engagement performance.\nD. Safeguarding of assets. Answer:\n",
         "Result": "A\n\nThe answer is A. Risk analysis is an element of a CPA firm's quality control policies and procedures applicable to",
         "GroundTruth": "C. Engagement performance.",
-        "Score": 0.0
+        "Score": 1.0
       },
       {
         "Index": 13,
@@ -237,7 +237,7 @@
         "Instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Swift Co. has identified three operating segments that may require separate disclosure in Swift's general purpose financial statements for the year ended December 31 year 2. Information for year 2 follows: Segment (in thousands) A B C Total Reported revenue $ 42 $ 121 $ 14 $ 177 Reported profit(loss) $ 12 $ 65 $ (3) $ 74 Assets $ 470 $ 800 $ 80 $ 1350 Which of Swift's segments are required to be separately disclosed in its December 31 year 2 financial statements? Choices: A. B and C only.\nB. A B and C.\nC. A and C only.\nD. A and B only. Answer:\n",
         "Result": "The answer is B.\n\nThe Company has identified three operating segments that may require separate disclosure in its general purpose financial statements for",
         "GroundTruth": "D. A and B only.",
-        "Score": 1.0
+        "Score": 0.0
       },
       {
         "Index": 33,
@@ -307,7 +307,7 @@
         "Instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Brown cosigned Royal's $50000 note to State Bank. If Royal is later adjudicated mentally incompetent what would be Brown's liability on the note? Choices: A. Liable to pay State only if State first seeks payment from Royal.\nB. Not liable to pay State unless Brown was a compensated surety.\nC. Liable to pay State on the due date of the note.\nD. Not liable to pay State because Royal's incompetency discharges Royal as a surety. Answer:\n",
         "Result": "The answer is A.\n\nThe question is about a cosigned note and the liability of the cosigner when the principal becomes",
         "GroundTruth": "C. Liable to pay State on the due date of the note.",
-        "Score": 1.0
+        "Score": 0.0
       },
       {
         "Index": 43,
@@ -363,7 +363,7 @@
         "Instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Order the following (risk, return) pairs from least to most favourable, assuming the perspective of a rational and risk-averse investor: (2,2),(2,3) and (4,2). Risk is measured in standard deviations and return in percentage. HINT: Imagine a scatter diagram with standard deviation on the x-axis and return on the y-axis. Choices: A. (2,2),(4,2),(2,3)\nB. (4,2),(2,2),(2,3)\nC. (2,3),(2,2),(4,2)\nD. (2,2),(2,3),(4,2) Answer:\n",
         "Result": "The answer is A.\n\n**Explanation:**\nA rational and risk-averse investor would prefer a portfolio with less risk",
         "GroundTruth": "B. (4,2),(2,2),(2,3)",
-        "Score": 0.0
+        "Score": 1.0
       },
       {
         "Index": 51,
