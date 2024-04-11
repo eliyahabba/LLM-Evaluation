@@ -5,19 +5,6 @@ import statsmodels
 from statsmodels.stats.contingency_tables import cochrans_q
 from statsmodels.stats.contingency_tables import mcnemar
 
-from src.utils.Constants import Constants
-
-TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
-ExperimentConstants = Constants.ExperimentConstants
-LLMProcessorConstants = Constants.LLMProcessorConstants
-DatasetsConstants = Constants.DatasetsConstants
-McNemarTestConstants = Constants.McNemarTestConstants
-ResultConstants = Constants.ResultConstants
-contingency_table_FOLDER = "structured_input"
-SHOT = "zero_shot"
-FORMAT = "empty_system_format"
-TRAIN_OR_TEST_TYPE = "test"
-
 
 class CompareSeriesBinaryDataFromTable:
     """

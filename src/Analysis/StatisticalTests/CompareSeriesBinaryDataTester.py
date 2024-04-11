@@ -7,7 +7,6 @@ from src.Analysis.StatisticalTests.CompareSeriesBinaryDataFromTable import Compa
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 
-TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
 DatasetsConstants = Constants.DatasetsConstants
@@ -59,12 +58,6 @@ class CompareSeriesBinaryDataTester:
         @param results2: Results from model 2
         """
         df = CompareSeriesBinaryDataFromTable.perform_mcnemar_test_from_table(results)
-
-        # if result.pvalue < McNemarTestConstants.ALPHA:
-        #     # print(f"Results for {column1} and {column2} are significantly different.")
-        #     # print("McNemar Test Statistic:", result.statistic)
-        #     # print("McNemar Test P-value:", result.pvalue)
-        #     test_results.append((column1, column2, result.statistic, result.pvalue))
         return df
 
     def save_mcnemar_resuls(self, df):
