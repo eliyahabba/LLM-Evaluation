@@ -1,15 +1,12 @@
 import argparse
 from pathlib import Path
 
-import matplotlib
 import pandas as pd
 from sklearn.cluster import KMeans
 from tqdm import tqdm
 
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
-
-matplotlib.use('TkAgg')
 
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
@@ -24,7 +21,7 @@ FORMAT = "empty_system_format"
 TRAIN_OR_TEST_TYPE = "test"
 
 
-class Clustering:
+class KmeansClustering:
     def __init__(self, k, model: str, dataset: str, eval_value: str,
                  main_results_folder: str = MAIN_RESULTS_PATH):
         self.centroids = None
@@ -81,19 +78,29 @@ class Clustering:
             results.to_csv(file_path)
 
 
-class PerformClustering:
-    def __init__(self, k_min_index, k_max_index):
+class PerformKmeansClustering:
+    def __init__(self, k_min_index: int, k_max_index: int) -> None:
         self.k_min_index = k_min_index
         self.k_max_index = k_max_index
 
-    def run_clustering_for_range(self, model, dataset):
+    def run_clustering_for_range(self, model: str, dataset: str) -> None:
+        """
+        Run the clustering for the specified model and dataset.
+        @param model: The model to be used for the clustering.
+        @param dataset: The dataset to be used for the clustering.
+        @return: None
+        """
         for k in range(self.k_min_index, self.k_max_index):
-            clustering = Clustering(k, model, dataset, eval_value=TRAIN_OR_TEST_TYPE)
+            clustering = KmeansClustering(k, model, dataset, eval_value=TRAIN_OR_TEST_TYPE)
             clustering.load_results()
             results = clustering.fit()
             clustering.save_results(results)
 
-    def run_clustering_for_all(self):
+    def run_clustering_for_all(self) -> None:
+        """
+        Run the clustering for all the models and datasets.
+        @return: None
+        """
         for model_key, model_name in tqdm(sorted(LLMProcessorConstants.MODEL_NAMES.items())):
             model = Utils.get_model_name(model_name)
             for dataset in sorted(DatasetsConstants.DATASET_NAMES):
@@ -117,5 +124,5 @@ if __name__ == "__main__":
                       help="The maximum number of clusters.")
     args = args.parse_args()
 
-    clustering = PerformClustering(args.k_min_index, args.k_max_index)
+    clustering = PerformKmeansClustering(args.k_min_index, args.k_max_index)
     clustering.run_clustering_for_all()
