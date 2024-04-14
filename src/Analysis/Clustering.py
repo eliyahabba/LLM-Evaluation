@@ -86,18 +86,22 @@ class PerformClustering:
         self.k_min_index = k_min_index
         self.k_max_index = k_max_index
 
-    def run(self, model, dataset):
+    def run_clustering_for_range(self, model, dataset):
         for k in range(self.k_min_index, self.k_max_index):
             clustering = Clustering(k, model, dataset, eval_value=TRAIN_OR_TEST_TYPE)
             clustering.load_results()
             results = clustering.fit()
             clustering.save_results(results)
 
-    def run_all(self):
+    def run_clustering_for_all(self):
         for model_key, model_name in tqdm(sorted(LLMProcessorConstants.MODEL_NAMES.items())):
             model = Utils.get_model_name(model_name)
             for dataset in tqdm(sorted(DatasetsConstants.DATASET_NAMES)):
-                self.run(model, dataset)
+                try:
+                    self.run_clustering_for_range(model, dataset)
+                except Exception as e:
+                    print(f"Error: {e} for model: {model} and dataset: {dataset}")
+                    continue
 
 
 if __name__ == "__main__":
@@ -114,4 +118,4 @@ if __name__ == "__main__":
     args = args.parse_args()
 
     clustering = PerformClustering(args.k_min_index, args.k_max_index)
-    clustering.run_all()
+    clustering.run_clustering_for_all()
