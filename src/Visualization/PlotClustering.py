@@ -4,21 +4,33 @@ import streamlit as st
 
 
 class PlotClustering:
-    def __init__(self, data: pd.DataFrame, x: str, y: str, z: str, cluster: str):
+    def __init__(self, data: pd.DataFrame, x: str, y: str, z: str, cluster: str) -> None:
+        """
+        Initializes the PlotClustering object.
+        @param data: the data to plot
+        @param x: the x-axis column
+        @param y: the y-axis column
+        @param z: the z-axis column
+        @param cluster: the cluster column
+        """
         self.data = data
         self.x = x
         self.y = y
         self.z = z
         self.cluster = cluster
 
-    def create_fig(self):
+    def create_fig(self) -> px.scatter_3d:
+        """
+        Create the 3D scatter plot figure
+        @return: the 3D scatter plot figure
+        """
         self.data[self.cluster] = self.data[self.cluster].astype(str)
 
         fig = px.scatter_3d(
             self.data,
-            x="enumerator",
-            y="choices_separator",
-            z="shuffle_choices",
+            x=self.x,
+            y=self.y,
+            z=self.z,
             color=self.cluster,
             # hover_name = "country",
             # log_x = True,
@@ -26,7 +38,11 @@ class PlotClustering:
         )
         return fig
 
-    def plot_cluster(self):
+    def plot_cluster(self) -> None:
+        """
+        Plot the clusters of the data
+        @return: None
+        """
         fig = self.create_fig()
         tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
         with tab1:

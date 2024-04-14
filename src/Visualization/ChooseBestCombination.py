@@ -3,7 +3,6 @@ from typing import Tuple
 
 import pandas as pd
 
-from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
