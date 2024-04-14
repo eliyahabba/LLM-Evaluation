@@ -96,7 +96,7 @@ class PerformClustering:
     def run_clustering_for_all(self):
         for model_key, model_name in tqdm(sorted(LLMProcessorConstants.MODEL_NAMES.items())):
             model = Utils.get_model_name(model_name)
-            for dataset in tqdm(sorted(DatasetsConstants.DATASET_NAMES)):
+            for dataset in sorted(DatasetsConstants.DATASET_NAMES):
                 try:
                     self.run_clustering_for_range(model, dataset)
                 except Exception as e:

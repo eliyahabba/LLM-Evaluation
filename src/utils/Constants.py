@@ -34,6 +34,7 @@ class Constants:
                                 'mmlu.global_facts', 'mmlu.machine_learning',
                                 'mmlu.medical_genetics', 'mmlu.professional_accounting']
         DATASET_NAMES = [SCIQ, RACE_ALL, AI2_ARC_ARC_EASY]
+        DATASET_NAMES.extend(MMLU_DATASETS_SAMPLE)
 
     class LLMProcessorConstants:
         MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
