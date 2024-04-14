@@ -1,17 +1,16 @@
 import argparse
-from pathlib import Path
 
 import pandas as pd
 from sklearn.cluster import KMeans
 from tqdm import tqdm
 
+from src.Clustering.Clustering import Clustering
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
 DatasetsConstants = Constants.DatasetsConstants
-ResultConstants = Constants.ResultConstants
 ClusteringConstants = Constants.ClusteringConstants
 
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
@@ -21,61 +20,30 @@ FORMAT = "empty_system_format"
 TRAIN_OR_TEST_TYPE = "test"
 
 
-class KmeansClustering:
+class KmeansClustering(Clustering):
     def __init__(self, k, model: str, dataset: str, eval_value: str,
                  main_results_folder: str = MAIN_RESULTS_PATH):
-        self.centroids = None
-        self.labels = None
-        self.data = None
-        self.results_df = None
-        self.main_results_folder = main_results_folder
-        self.results_folder = f"{main_results_folder}/{RESULTS_FOLDER}/{model}/{dataset}/{SHOT}/{FORMAT}"
+        super().__init__(model, dataset, eval_value, main_results_folder)
         self.k = k
-        self.eval_value = eval_value
-        self.kmeans = KMeans(n_clusters=k)
-
-    def load_results(self) -> None:
-        """
-        Load the results from the specified path.
-        @param eval_value:
-        @return:
-        """
-        file_name = f"{ResultConstants.COMPARISON_MATRIX}_{self.eval_value}_data.csv"
-        file_path = f"{self.results_folder}/{file_name}"
-        self.results_df = pd.read_csv(file_path)
-        self.data = self.results_df.to_numpy()
-        # transpose the data, so that the templates are the rows and the features are the columns
-        self.data = self.data.T
+        self.kmeans = None
 
     def fit(self):
+        self.kmeans = KMeans(n_clusters=self.k)
         self.kmeans.fit(self.data)
         self.labels = self.kmeans.labels_
-        self.centroids = self.kmeans.cluster_centers_
         # Format results as a DataFrame
-        columns = list(map(lambda x: x.split("experiment_")[1], self.results_df.columns.values))
-        results = pd.DataFrame([self.labels],
-                               columns=columns, index=[f"K={self.k}"]).T
-        results.index.name = "template_name"
-        results.reset_index(inplace=True, drop=False)
+        results = self.create_results_file(index_name=f"K={self.k}")
         return results
 
-    def save_results(self, results):
-        file_path = Path(f"{self.results_folder}/{ResultConstants.CLUSTERING_RESULTS}_{self.eval_value}_data.csv")
-        # if the file already exists, read the file, and append the new results (if they don't already exist,
-        # if they do, update them)
-        if file_path.exists():
-            existing_results = pd.read_csv(file_path, index_col=0)
-            # check if there is column with the same name as the new results Cluster column
-            if f"K={self.k}" in existing_results.columns:
-                # update the results
-                existing_results[f"K={self.k}"] = results[f"K={self.k}"]
-                updated_results = existing_results
-            else:
-                # concat on all the columns
-                updated_results = pd.merge(existing_results, results, on='template_name', how='inner')
-                updated_results.to_csv(file_path)
-        else:
-            results.to_csv(file_path)
+    def save_labels(self, results: pd.DataFrame) -> None:
+        """
+        Save the results to the specified path.
+        @param results: The results to be saved.
+        @return: None
+        """
+        column_name = f"K={self.k}"
+        file_path = self.get_result_output_path("Kmeans")
+        self.save_results(results, file_path, column_name)
 
 
 class PerformKmeansClustering:
@@ -91,10 +59,10 @@ class PerformKmeansClustering:
         @return: None
         """
         for k in range(self.k_min_index, self.k_max_index):
-            clustering = KmeansClustering(k, model, dataset, eval_value=TRAIN_OR_TEST_TYPE)
-            clustering.load_results()
-            results = clustering.fit()
-            clustering.save_results(results)
+            kmeans_clustering = KmeansClustering(k, model, dataset, eval_value=TRAIN_OR_TEST_TYPE)
+            kmeans_clustering.load_comparison_matrix()
+            results = kmeans_clustering.fit()
+            kmeans_clustering.save_labels(results)
 
     def run_clustering_for_all(self) -> None:
         """
@@ -124,5 +92,5 @@ if __name__ == "__main__":
                       help="The maximum number of clusters.")
     args = args.parse_args()
 
-    clustering = PerformKmeansClustering(args.k_min_index, args.k_max_index)
-    clustering.run_clustering_for_all()
+    perform_kmeans_clustering = PerformKmeansClustering(args.k_min_index, args.k_max_index)
+    perform_kmeans_clustering.run_clustering_for_all()

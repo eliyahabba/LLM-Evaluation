@@ -98,3 +98,6 @@ class Constants:
     class ClusteringConstants:
         K_MIN_INDEX = 2
         K_MAX_INDEX = 10
+
+        MIN_CLUSTER_SIZE = 3
+        MIN_SAMPLES = None
