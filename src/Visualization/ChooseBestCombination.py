@@ -22,7 +22,7 @@ class ChooseBestCombination:
         @return: The best combination of the values of the axes.
         """
         templates_path = TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH
-        metadata_file = templates_path / self.dataset_file_name / "templates_metadata.csv"
+        metadata_file = templates_path / self.dataset_file_name / TemplatesGeneratorConstants.TEMPLATES_METADATA
         metadata_df = pd.read_csv(metadata_file, index_col='template_name')
         grouped_metadata_df = self.get_grouped_metadata_df(metadata_df=metadata_df)
         best_row = self.get_best_row(grouped_metadata_df)
