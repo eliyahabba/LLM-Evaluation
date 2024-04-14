@@ -70,7 +70,7 @@ class ClusteringDisplayer:
     def plot_clusters(self, data: pd.DataFrame) -> None:
         """
         Plot the clusters of the data
-        @param data: the data to plot
+        @param data: The data to plot
         @return: None
         """
         # select the cluster column
@@ -89,8 +89,13 @@ class ClusteringDisplayer:
         x, y, z = selected_axis
         # delete data with negative k_cluster value
         data = data[data[k_cluster] >= 0]
-        plot_clustering = PlotClustering(data, x=x, y=y, z=z, cluster=k_cluster)
+        # take the only index that start with "template" and not others like "generated"
+        template_data = data[data.index.str.startswith("template")]
+        plot_clustering = PlotClustering(template_data, x=x, y=y, z=z, cluster=k_cluster)
         plot_clustering.plot_cluster()
+        if data.index[-1].startswith("Distortions"):
+            # plot the elbow method with the distortions
+            plot_clustering.plot_elbow_method(data, cluster_columns)
 
     def merge_data(self, clustering_data: pd.DataFrame, metadata_df: pd.DataFrame) -> pd.DataFrame:
         """
