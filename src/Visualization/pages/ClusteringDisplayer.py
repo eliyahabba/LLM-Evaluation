@@ -75,6 +75,8 @@ class ClusteringDisplayer:
         """
         # select the cluster column
         cluster_columns = [col for col in data.columns if (col not in ConfigParams.override_options.keys())]
+        # convert all the cluster columns to int
+        data[cluster_columns] = data[cluster_columns].astype(int)
         k_cluster = st.selectbox("Select the cluster column", cluster_columns)
         # select the row that corresponds to the selected cluster
         # take the other columns as the axis columns (all columns except the cluster_columns)
@@ -91,6 +93,8 @@ class ClusteringDisplayer:
         data = data[data[k_cluster] >= 0]
         # take the only index that start with "template" and not others like "generated"
         template_data = data[data.index.str.startswith("template")]
+        # sort the df by the cluster column values
+        template_data = template_data.sort_values(by=k_cluster)
         plot_clustering = PlotClustering(template_data, x=x, y=y, z=z, cluster=k_cluster)
         plot_clustering.plot_cluster()
         if data.index[-1].startswith("Distortions"):
