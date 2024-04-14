@@ -190,7 +190,7 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
 if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
-    args.add_argument("--model_index", type=int, default=None)
+    args.add_argument("--model_index", type=int, default=0)
     args.add_argument("--results_folder", type=str, default=ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH)
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON)
     args = args.parse_args()
@@ -225,6 +225,7 @@ if __name__ == "__main__":
                                 results = eval_model.load_results_from_experiment_file()
                                 if comparison_matrix_file.exists() and \
                                         not pd.read_csv(comparison_matrix_file).isna().any().any() and \
+                                        len(results_files)==pd.read_csv(comparison_matrix_file).shape[0] and \
                                         all(['Score' in result for result in results[eval_on_value]]) and \
                                         len(results[eval_on_value]) == 100:
                                     continue
