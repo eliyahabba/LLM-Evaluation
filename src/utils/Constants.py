@@ -58,6 +58,8 @@ class Constants:
         MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplates"
         MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_FOLDER_NAME
 
+        TEMPLATES_METADATA = "templates_metadata.csv"
+
     class ExperimentConstants:
         TEMPLATES_RANGE = [0, 1]
         MAIN_RESULTS_FOLDER_NAME = "results"
@@ -90,3 +92,8 @@ class Constants:
         COMPARISON_MATRIX = "comparison_matrix"
         PERFORMANCE_SUMMARY = "performance_summary"
         BEST_COMBINATIONS = "best_combinations"
+        CLUSTERING_RESULTS = "clustering_results"
+
+    class ClusteringConstants:
+        K_MIN_INDEX = 2
+        K_MAX_INDEX = 10
