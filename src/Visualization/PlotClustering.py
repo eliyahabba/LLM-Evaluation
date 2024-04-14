@@ -45,7 +45,17 @@ class PlotClustering:
         @return: None
         """
         fig = self.create_fig()
-        st.plotly_chart(fig, theme="streamlit", use_container_width=True)
+        tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
+        with tab1:
+            # Use the Streamlit theme.
+            # This is the default. So you can also omit the theme argument.
+            st.plotly_chart(fig, theme="streamlit", use_container_width=True)
+        with tab2:
+            # Use the native Plotly theme.
+            st.plotly_chart(fig, theme=None, use_container_width=True)
+
+        fig = self.create_fig()
+        st.plotly_chart(fig, theme=None, use_container_width=True)
 
     def plot_elbow_method(self, data: pd.DataFrame, cluster_columns: list) -> None:
         """
