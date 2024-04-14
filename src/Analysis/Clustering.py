@@ -1,83 +1,117 @@
-import numpy as np
-
 import argparse
+from pathlib import Path
 
+import matplotlib
 import pandas as pd
 from sklearn.cluster import KMeans
 from tqdm import tqdm
 
-from src.Analysis.StatisticalTests.CompareSeriesBinaryDataFromTable import CompareSeriesBinaryDataFromTable
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
-import matplotlib
+
 matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
+
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
 DatasetsConstants = Constants.DatasetsConstants
-McNemarTestConstants = Constants.McNemarTestConstants
 ResultConstants = Constants.ResultConstants
+ClusteringConstants = Constants.ClusteringConstants
+
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 RESULTS_FOLDER = "structured_input"
 SHOT = "zero_shot"
 FORMAT = "empty_system_format"
 TRAIN_OR_TEST_TYPE = "test"
 
+
 class Clustering:
-    def __init__(self, k, model: str, dataset: str, main_results_folder: str = MAIN_RESULTS_PATH):
+    def __init__(self, k, model: str, dataset: str, eval_value: str,
+                 main_results_folder: str = MAIN_RESULTS_PATH):
+        self.centroids = None
+        self.labels = None
+        self.data = None
+        self.results_df = None
         self.main_results_folder = main_results_folder
         self.results_folder = f"{main_results_folder}/{RESULTS_FOLDER}/{model}/{dataset}/{SHOT}/{FORMAT}"
         self.k = k
+        self.eval_value = eval_value
         self.kmeans = KMeans(n_clusters=k)
 
-    def load_results(self, eval_value: str = TRAIN_OR_TEST_TYPE) -> pd.DataFrame:
+    def load_results(self) -> pd.DataFrame:
         """
         Load the results from the specified path.
         @param eval_value:
         @return:
         """
-        file_name = f"{ResultConstants.COMPARISON_MATRIX}_{eval_value}_data.csv"
+        file_name = f"{ResultConstants.COMPARISON_MATRIX}_{self.eval_value}_data.csv"
         file_path = f"{self.results_folder}/{file_name}"
         self.results_df = pd.read_csv(file_path)
         self.data = self.results_df.to_numpy()
-
+        # transpose the data, so that the templates are the rows and the features are the columns
+        self.data = self.data.T
 
     def fit(self):
         self.kmeans.fit(self.data)
         self.labels = self.kmeans.labels_
         self.centroids = self.kmeans.cluster_centers_
         # Format results as a DataFrame
-        results = pd.DataFrame([self.results_df.index,self.labels, self.centroids]).T
+        columns = list(map(lambda x: x.split("experiment_")[1], self.results_df.columns.values))
+        results = pd.DataFrame([self.labels],
+                               columns=columns, index=[f"K={self.k}"]).T
+        results.index.name = "template_name"
+        results.reset_index(inplace=True, drop=False)
+        return results
+
+    def save_results(self, results):
+        file_path = Path(f"{self.results_folder}/{ResultConstants.CLUSTERING_RESULTS}_{self.eval_value}_data.csv")
+        # if the file already exists, read the file, and append the new results (if they don't already exist,
+        # if they do, update them)
+        if file_path.exists():
+            existing_results = pd.read_csv(file_path, index_col=0)
+            # check if there is column with the same name as the new results Cluster column
+            if f"K={self.k}" in existing_results.columns:
+                # update the results
+                existing_results[f"K={self.k}"] = results[f"K={self.k}"]
+                updated_results = existing_results
+            else:
+                # concat on all the columns
+                updated_results = pd.merge(existing_results, results, on='template_name', how='inner')
+                updated_results.to_csv(file_path)
+        else:
+            results.to_csv(file_path)
 
 
-    def plot(self):
-        plt.scatter(self.data[:, 0], self.data[:, 1], c=self.labels, s=50, cmap='viridis')
-        plt.scatter(self.centroids[:, 0], self.centroids[:, 1], c='red', s=200, alpha=0.5)
-        # add a legend
-        plt.legend(['Data', 'Centroids'], loc='upper left')
-        plt.show()
+class PerformClustering:
+    def __init__(self, k_min_index, k_max_index):
+        self.k_min_index = k_min_index
+        self.k_max_index = k_max_index
 
-def cluster_dataset(k, model, dataset):
-    clustering = Clustering(k, model, dataset)
-    clustering.load_results()
-    clustering.fit()
-    clustering.plot()
+    def run(self, model, dataset):
+        for k in range(self.k_min_index, self.k_max_index):
+            clustering = Clustering(k, model, dataset, eval_value=TRAIN_OR_TEST_TYPE)
+            clustering.load_results()
+            results = clustering.fit()
+            clustering.save_results(results)
 
-def run_all(k=2):
-    for model_key, model_name in tqdm(LLMProcessorConstants.MODEL_NAMES.items()):
-        model = Utils.get_model_name(model_name)
-        for dataset in tqdm(DatasetsConstants.DATASET_NAMES):
-            cluster_dataset(k, model, dataset)
-            break
+    def run_all(self):
+        for model_key, model_name in tqdm(sorted(LLMProcessorConstants.MODEL_NAMES.items())):
+            model = Utils.get_model_name(model_name)
+            for dataset in tqdm(sorted(DatasetsConstants.DATASET_NAMES)):
+                self.run(model, dataset)
+
 
 if __name__ == "__main__":
-    run_all()
-    # exit()
     # Load the model and the dataset
     args = argparse.ArgumentParser()
     args.add_argument("--model", type=str, choices=LLMProcessorConstants.MODEL_NAMES.keys(),
                       default=list(LLMProcessorConstants.MODEL_NAMES.keys())[1])
     args.add_argument("--dataset", type=str, choices=DatasetsConstants.DATASET_NAMES,
                       default=DatasetsConstants.DATASET_NAMES[0])
+    args.add_argument("--k_min_index", type=int, default=ClusteringConstants.K_MIN_INDEX,
+                      help="The minimum number of clusters.")
+    args.add_argument("--k_max_index", type=int, default=ClusteringConstants.K_MAX_INDEX,
+                      help="The maximum number of clusters.")
     args = args.parse_args()
 
+    clustering = PerformClustering(args.k_min_index, args.k_max_index)
+    clustering.run_all()
