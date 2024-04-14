@@ -37,7 +37,7 @@ class Clustering:
         self.eval_value = eval_value
         self.kmeans = KMeans(n_clusters=k)
 
-    def load_results(self) -> pd.DataFrame:
+    def load_results(self) -> None:
         """
         Load the results from the specified path.
         @param eval_value:
