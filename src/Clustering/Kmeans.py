@@ -33,6 +33,8 @@ class KmeansClustering(Clustering):
         self.labels = self.kmeans.labels_
         # Format results as a DataFrame
         results = self.create_results_file(index_name=f"K={self.k}")
+        # add the distortions to the results
+        results = self.add_distortions(results)
         return results
 
     def save_labels(self, results: pd.DataFrame) -> None:
@@ -44,6 +46,22 @@ class KmeansClustering(Clustering):
         column_name = f"K={self.k}"
         file_path = self.get_result_output_path("Kmeans")
         self.save_results(results, file_path, column_name)
+
+    def add_distortions(self, results: pd.DataFrame) -> pd.DataFrame:
+        """
+        Add the distortions to the results.
+        @param results: The results to which the distortions will be added.
+        @return: The results with the distortions added.
+        """
+        distortions = self.kmeans.inertia_
+        # rount distortions to 2 decimal places
+        distortions = round(distortions, 2)
+        # add new row to the results with the distortions at the template_name column
+        row = pd.DataFrame([["Distortions", distortions]], columns=results.columns.values.tolist())
+        results = pd.concat([results, row])
+        results.reset_index(drop=True, inplace=True)
+        return results
+
 
 
 class PerformKmeansClustering:

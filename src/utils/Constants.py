@@ -101,3 +101,5 @@ class Constants:
 
         MIN_CLUSTER_SIZE = 3
         MIN_SAMPLES = None
+
+        CLUSTERING_METHODS = ["kmeans", "hdbscan"]

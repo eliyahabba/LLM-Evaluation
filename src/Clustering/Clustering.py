@@ -75,6 +75,10 @@ class Clustering:
             else:
                 # concat on all the columns
                 updated_results = pd.merge(existing_results, results, on='template_name', how='inner')
+            # sort the columns
+            updated_results = updated_results.reindex(sorted(updated_results.columns), axis=1)
+            # out the "template_name" column as the first column
+            updated_results = updated_results[["template_name"] + [col for col in updated_results.columns if col != "template_name"]]
             updated_results.to_csv(file_path)
         else:
             results.to_csv(file_path)

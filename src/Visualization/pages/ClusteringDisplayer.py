@@ -10,6 +10,7 @@ from src.utils.Constants import Constants
 
 ResultConstants = Constants.ResultConstants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
+ClusteringConstants = Constants.ClusteringConstants
 
 
 class ClusteringDisplayer:
@@ -29,10 +30,19 @@ class ClusteringDisplayer:
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
-        result_file_name, result_file = ResultsLoader.select_result_file(result_files,
-                                                                         ResultConstants.CLUSTERING_RESULTS)
 
-        clustering_data = self.read_clustering_results_data(result_file)
+        clustering_files = [f for f in result_files if ResultConstants.CLUSTERING_RESULTS in f.name]
+        clustering_methods = ClusteringConstants.CLUSTERING_METHODS
+        # map between the clustering results file name and the CLUSTERING_METHODS name from Constants, so we can
+        # display the clustering method name in the select box and get the file name from the map
+        clustering_files_map = {i: [f for f in clustering_files if i in f.name.lower()][0] for i in
+                                clustering_methods}
+
+        clustering_method_name = st.selectbox("Select the clustering method to visualize",
+                                              key="clustering_method",
+                                              options=list(clustering_files_map.keys()))
+        clustering_file = clustering_files_map[clustering_method_name]
+        clustering_data = self.read_clustering_results_data(clustering_file)
         metadata_df = self.read_metadata()
         merged_df = self.merge_data(clustering_data, metadata_df)
         self.plot_clusters(merged_df)
@@ -64,7 +74,7 @@ class ClusteringDisplayer:
         @return: None
         """
         # select the cluster column
-        cluster_columns = [col for col in data.columns if 'K=' in col]
+        cluster_columns = [col for col in data.columns if (col not in ConfigParams.override_options.keys())]
         k_cluster = st.selectbox("Select the cluster column", cluster_columns)
         # select the row that corresponds to the selected cluster
         # take the other columns as the axis columns (all columns except the cluster_columns)
@@ -72,11 +82,13 @@ class ClusteringDisplayer:
 
         select_axis_title = "Select 3 columns to plot the clusters"
         selected_axis = st.multiselect(select_axis_title,
-                                       list(self.override_options.keys()),
+                                       axis_columns,
                                        default=list(self.override_options.keys())[:3],
                                        max_selections=3,
                                        key="selected_columns")
         x, y, z = selected_axis
+        # delete data with negative k_cluster value
+        data = data[data[k_cluster] >= 0]
         plot_clustering = PlotClustering(data, x=x, y=y, z=z, cluster=k_cluster)
         plot_clustering.plot_cluster()
 
