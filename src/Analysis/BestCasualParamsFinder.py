@@ -40,7 +40,7 @@ class BestCasualParamsFinder:
 
     def find_stats_test(self, grouped_metadata_df: pd.DataFrame, best_row: pd.Series):
         perform_analysis = PerformAnalysis(self.comparison_matrix_path, grouped_metadata_df, best_row)
-        return perform_analysis.calculate_cochrans_q_test()
+        return perform_analysis.calculate_cochrans_q_test(None)
 
     @staticmethod
     def find_best_casual_params(format_folder: Path, eval_value: str):
