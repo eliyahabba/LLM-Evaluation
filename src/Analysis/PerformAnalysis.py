@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Union
 
 import pandas as pd
 
@@ -16,14 +17,15 @@ class PerformAnalysis:
         self.grouped_metadata_df = grouped_metadata_df
         self.best_row = best_row
 
-    def group_performance_summary_by_template(self, top_k: int) -> pd.DataFrame:
+    def group_performance_summary_by_template(self, top_k: Union[int, None]) -> pd.DataFrame:
         """
         Groups the performance summary by the template name.
         @param top_k: The number of top results to compare.
         """
         # take the columns from self.performance_summary_df and group them by the rows in
         # templater column of self.grouped_metadata_df
-        best_k_groups = self.grouped_metadata_df['accuracy'].nlargest(top_k).index
+        best_k_groups = self.grouped_metadata_df['accuracy'].nlargest(top_k).index if top_k else (
+            self.grouped_metadata_df)['accuracy'].index
         best_grouped_metadata_df = self.grouped_metadata_df.loc[best_k_groups]
         groups = best_grouped_metadata_df['template_name'].values.tolist()
         # The columns in the performance_summary_df are in the format 'experiment_1', 'experiment_2', etc, so we need to
@@ -47,7 +49,7 @@ class PerformAnalysis:
             performance_summary_df = performance_summary_df[groups]
         return performance_summary_df
 
-    def process_data_for_cochrans_q_test(self, top_k: int) -> pd.DataFrame:
+    def process_data_for_cochrans_q_test(self, top_k: Union[int, None]) -> pd.DataFrame:
         """
         Processes the data for the Cochran's Q test.
         @param top_k: The number of top results to compare.
@@ -82,7 +84,7 @@ class PerformAnalysis:
         result.columns = result.columns.map(lambda x: f"best set {x}" if x == best_templates_name else x)
         return result
 
-    def calculate_cochrans_q_test(self, top_k: int) -> pd.DataFrame:
+    def calculate_cochrans_q_test(self, top_k: Union[int, None]) -> pd.DataFrame:
         """
         Calculates the Cochran's Q test for the given model and dataset.
         @top_k: The number of top results to compare.
