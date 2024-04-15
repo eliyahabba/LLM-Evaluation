@@ -27,7 +27,11 @@ class ModelDatasetRunner:
                     formats = [file for file in shot.glob("*") if file.is_dir()]
                     for format_folder in formats:
                         for eval_value in eval_on:
-                            processing_function(format_folder, eval_value)
+                            try:
+                                processing_function(format_folder, eval_value)
+                            except Exception as e:
+                                print(f"Error in {model_name.name}/{dataset_folder.name}/{shot.name}/"
+                                      f"{format_folder.name} for {eval_value}: {e}")
 
 
 # Example usage:
