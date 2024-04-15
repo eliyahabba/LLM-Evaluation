@@ -9,7 +9,7 @@ gemma-7b-it,mmlu.machine_learning,lowercase,; ,False,0.42,['template_20'],138.43
 gemma-7b-it,mmlu.medical_genetics,lowercase,\n,True,0.44,['template_17'],162.62,0.00
 gemma-7b-it,mmlu.professional_accounting,capitals,\n,False,0.42,['template_2'],39.36,0.94
 gemma-7b-it,race_all,capitals,", ",False,0.43,['template_4'],114.11,0.00
-gemma-7b-it,sciq,lowercase,\n,False,0.74,['template_16'],,
+gemma-7b-it,sciq,lowercase,\n,False,0.74,['template_16'],618.98,0.00
 Llama-2-7b-chat-hf,ai2_arc.arc_easy,numbers,", ",False,0.52,['template_32'],187.95,0.00
 Llama-2-7b-chat-hf,mmlu.anatomy,numbers,\s,False,0.48,['template_28'],183.98,0.00
 Llama-2-7b-chat-hf,mmlu.college_computer_science,capitals, OR ,False,0.31,['template_10'],65.00,0.17
