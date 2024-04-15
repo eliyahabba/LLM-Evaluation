@@ -16,13 +16,18 @@ class AnalysisDisplay:
         self.performance_summary_df = pd.read_csv(self.comparison_matrix_path)
         self.grouped_metadata_df = grouped_metadata_df
         self.best_row = best_row
+        self.top_k = self.select_top_k()
+
+    def select_top_k(self):
+        top_k = st.number_input("Select the top K templates (by accuracy) to compare", min_value=1, value=5)
+        return top_k
 
     def display_mcnemar_test(self, best_row: pd.Series) -> None:
         """
         Calculates the McNemar test for the given model and dataset.
         """
         perform_analysis = PerformAnalysis(self.comparison_matrix_path, self.grouped_metadata_df, self.best_row)
-        result = perform_analysis.calculate_mcnemar_test(best_row)
+        result = perform_analysis.calculate_mcnemar_test(best_row, self.top_k)
         with st.expander("McNemar Test Results"):
             st.markdown("The row / column that corresponds to the best template is marked with 'best'.")
             st.write(result)
@@ -30,10 +35,10 @@ class AnalysisDisplay:
     def display_cochrans_q_test(self) -> None:
         """
         Calculates the Cochran's Q test for the given model and dataset.
-        @return:
+        @return: None
         """
         perform_analysis = PerformAnalysis(self.comparison_matrix_path, self.grouped_metadata_df, self.best_row)
-        result = perform_analysis.calculate_cochrans_q_test()
+        result = perform_analysis.calculate_cochrans_q_test(self.top_k)
         with st.expander("Cochran's Q Test Results"):
             st.write("Statistic:", f"{result.statistic:.2f}")
             st.write(f"P-value:{result.pvalue:.2f}")

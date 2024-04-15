@@ -75,6 +75,7 @@ class VisualizeResults:
         select_axes.write_best_combination(best_row)
 
         perform_analysis = AnalysisDisplay(comparison_matrix_path, grouped_metadata_df, best_row)
+        # ask the uset tpo select the top K results that hw want to compare
         perform_analysis.display_cochrans_q_test()
         perform_analysis.display_mcnemar_test(best_row)
 
