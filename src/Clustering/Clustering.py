@@ -7,7 +7,7 @@ from src.utils.Constants import Constants
 
 ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
-
+ClusteringConstants = Constants.ClusteringConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 RESULTS_FOLDER = "structured_input"
 SHOT = "zero_shot"
@@ -16,14 +16,16 @@ FORMAT = "empty_system_format"
 
 class Clustering:
     def __init__(self, model: str, dataset: str, eval_value: str,
+                 random_state: int = ClusteringConstants.RANDOM_STATE,
                  main_results_folder: str = MAIN_RESULTS_PATH):
         self.labels = None
         self.data = None
         self.comparison_matrix_df = None
 
-        self.main_results_folder = main_results_folder
         self.results_folder = f"{main_results_folder}/{RESULTS_FOLDER}/{model}/{dataset}/{SHOT}/{FORMAT}"
         self.eval_value = eval_value
+        self.random_state = random_state
+        self.main_results_folder = main_results_folder
 
     def create_results_file(self, index_name=str) -> pd.DataFrame:
         # Format results as a DataFrame

@@ -96,6 +96,8 @@ class Constants:
         CLUSTERING_RESULTS = "clustering_results"
 
     class ClusteringConstants:
+        RANDOM_STATE = 0
+
         K_MIN_INDEX = 2
         K_MAX_INDEX = 10
 

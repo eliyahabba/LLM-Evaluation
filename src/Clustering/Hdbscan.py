@@ -21,7 +21,7 @@ class Hdbscan(Clustering):
     def __init__(self, model: str, dataset: str, eval_value: str,
                  main_results_folder: str = MAIN_RESULTS_PATH,
                  min_cluster_size=5, min_samples=None):
-        super().__init__(model, dataset, eval_value, main_results_folder)
+        super().__init__(model=model, dataset=dataset, eval_value=eval_value, main_results_folder=main_results_folder)
 
         self.clusterer = None
         self.min_cluster_size = min_cluster_size
