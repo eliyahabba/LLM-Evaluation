@@ -4,10 +4,9 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from src.Visualization.SelectAxes import SelectAxes
-
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
+from src.Visualization.SelectAxes import SelectAxes
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.Visualization.ChooseBestCombination import ChooseBestCombination
 from src.Visualization.CreateHeatmap import CreateHeatmap
