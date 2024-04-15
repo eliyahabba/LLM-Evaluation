@@ -32,12 +32,15 @@ class CompareSeriesBinaryDataFromTable:
         # create this to be the index of the dataframe
         for column1, column2 in column_pairs:
             contingency_table = pd.crosstab(results[column1], results[column2])
+            # column1 is the 0 axis and column2 is the 1 axis (i.e. column1 is the row and column2 is the column)
             # Perform McNemar test
             result = mcnemar(contingency_table)
-            df.at[column1, column2] = f"{result.statistic:.2f}, {result.pvalue:.2f}"
-            df.at[column2, column1] = f"{result.statistic:.2f}, {result.pvalue:.2f}"
-        # add to the empty cell above the index column the the strgin "statistic, pvalue"
-        df.index.name = "statistic, pvalue"
+            column1_is_better_then_column2 = None if contingency_table.at[1.0, 0.0] == contingency_table.at[
+                0.0, 1.0] else contingency_table.at[1.0, 0.0] > contingency_table.at[0.0, 1.0]
+            df.at[column1, column2] = f"{result.statistic:.2f}, {result.pvalue:.2f}, {column1_is_better_then_column2}"
+            df.at[column2, column1] = f"{result.statistic:.2f}, {result.pvalue:.2f}, {not column1_is_better_then_column2}"
+        # add to the empty cell above the index column the string "statistic, pvalue"
+        df.index.name = "statistic, pvalue, row is better than column"
         return df
 
     @staticmethod
