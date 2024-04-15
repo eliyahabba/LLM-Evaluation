@@ -16,7 +16,7 @@ class PerformAnalysis:
         self.grouped_metadata_df = grouped_metadata_df
         self.best_row = best_row
 
-    def group_performance_summary_by_template(self, top_k:int) -> pd.DataFrame:
+    def group_performance_summary_by_template(self, top_k: int) -> pd.DataFrame:
         """
         Groups the performance summary by the template name.
         @param top_k: The number of top results to compare.
@@ -47,7 +47,7 @@ class PerformAnalysis:
             performance_summary_df = performance_summary_df[groups]
         return performance_summary_df
 
-    def process_data_for_cochrans_q_test(self, top_k:int) -> pd.DataFrame:
+    def process_data_for_cochrans_q_test(self, top_k: int) -> pd.DataFrame:
         """
         Processes the data for the Cochran's Q test.
         @param top_k: The number of top results to compare.
@@ -55,7 +55,7 @@ class PerformAnalysis:
         """
         return self.group_performance_summary_by_template(top_k)
 
-    def process_data_for_mcnemar_test(self, top_k:int) -> pd.DataFrame:
+    def process_data_for_mcnemar_test(self, top_k: int) -> pd.DataFrame:
         """
         Processes the data for the McNemar test.
         @param top_k: The number of top results to compare.
@@ -63,9 +63,14 @@ class PerformAnalysis:
         """
         return self.group_performance_summary_by_template(top_k)
 
-    def calculate_mcnemar_test(self, best_row: pd.Series, top_k:int) -> pd.DataFrame:
+    def calculate_mcnemar_test(self, best_row: pd.Series, top_k: int) -> pd.DataFrame:
         """
         Calculates the McNemar test for the given model and dataset.
+
+        @param best_row: The best row.
+        @param top_k: The number of top results to compare.
+
+        @return: The result of the McNemar test.
         """
         mcnemar_df = self.process_data_for_mcnemar_test(top_k)
         result = CompareSeriesBinaryDataFromTable.perform_mcnemar_test_from_table(mcnemar_df)
@@ -82,7 +87,7 @@ class PerformAnalysis:
         Calculates the Cochran's Q test for the given model and dataset.
         @top_k: The number of top results to compare.
 
-        @return:
+        @return: The result of the Cochran's Q test.
         """
         cochrans_q_df = self.process_data_for_cochrans_q_test(top_k)
         result = CompareSeriesBinaryDataFromTable.perform_cochrans_q_test_from_table(cochrans_q_df)

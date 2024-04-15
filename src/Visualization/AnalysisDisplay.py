@@ -18,13 +18,20 @@ class AnalysisDisplay:
         self.best_row = best_row
         self.top_k = self.select_top_k()
 
-    def select_top_k(self):
+    def select_top_k(self) -> int:
+        """
+        Select the top K templates to compare.
+        @return: The top K templates to compare.
+        """
         top_k = st.number_input("Select the top K templates (by accuracy) to compare", min_value=1, value=5)
         return top_k
 
     def display_mcnemar_test(self, best_row: pd.Series) -> None:
         """
         Calculates the McNemar test for the given model and dataset.
+        @param best_row: The best row.
+
+        @return: None
         """
         perform_analysis = PerformAnalysis(self.comparison_matrix_path, self.grouped_metadata_df, self.best_row)
         result = perform_analysis.calculate_mcnemar_test(best_row, self.top_k)
