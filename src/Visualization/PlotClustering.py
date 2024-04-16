@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -36,6 +37,22 @@ class PlotClustering:
             # hover_name = "country",
             # log_x = True,
             # size_max = 60,
+            width=600,
+            height=600,
+        )
+        # Resize the labels
+        fig.update_layout(scene=dict(
+            xaxis=dict(title=dict(font=dict(size=16))),
+            yaxis=dict(title=dict(font=dict(size=16))),
+            zaxis=dict(title=dict(font=dict(size=16)))
+        )
+        # Resize the ticks
+        )
+        fig.update_layout(scene=dict(
+            xaxis=dict(tickfont=dict(size=13)),
+            yaxis=dict(tickfont=dict(size=13)),
+            zaxis=dict(tickfont=dict(size=13))
+        )
         )
         return fig
 
@@ -67,12 +84,12 @@ class PlotClustering:
         data = data[cluster_columns]
         distortions = data.iloc[-1].values
         # plot the elbow method, the distortions
-        fig = plt.figure()
-        plt.plot(range(len(distortions)), distortions, marker='o')
+        fig = plt.figure(figsize=(10, 5))
+        plt.plot(np.arange(len(distortions)), distortions, marker='o')
         plt.xlabel('Number of clusters')
         plt.ylabel('Distortion')
         plt.title('The Elbow Method showing the optimal k')
-        plt.xticks(range(len(distortions)), cluster_columns)
+        plt.xticks(np.arange(len(distortions)), cluster_columns)
         st.pyplot(fig)
 
 

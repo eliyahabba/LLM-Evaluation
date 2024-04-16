@@ -114,4 +114,3 @@ class ClusteringDisplayer:
 
 if __name__ == "__main__":
     ClusteringDisplayer().display_page()
-#         # Plotting the histogram
