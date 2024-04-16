@@ -46,8 +46,8 @@ class PlotClustering:
             yaxis=dict(title=dict(font=dict(size=16))),
             zaxis=dict(title=dict(font=dict(size=16)))
         )
-        # Resize the ticks
         )
+        # Resize the ticks
         fig.update_layout(scene=dict(
             xaxis=dict(tickfont=dict(size=13)),
             yaxis=dict(tickfont=dict(size=13)),
