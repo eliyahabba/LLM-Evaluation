@@ -29,7 +29,9 @@ class Constants:
                          'professional_medicine', 'professional_psychology', 'public_relations', 'security_studies',
                          'sociology',
                          'us_foreign_policy', 'virology', 'world_religions']
-        MMLU_DATASETS_SAMPLE = ['mmlu.anatomy', 'mmlu.college_computer_science',
+        MMLU_DATASETS_SAMPLE = ['mmlu.abstract_algebra',
+                                'mmlu.college_biology',
+                                'mmlu.college_computer_science',
                                 'mmlu.electrical_engineering', 'mmlu.elementary_mathematics',
                                 'mmlu.global_facts', 'mmlu.machine_learning',
                                 'mmlu.medical_genetics', 'mmlu.professional_accounting']
@@ -104,4 +106,4 @@ class Constants:
         MIN_CLUSTER_SIZE = 3
         MIN_SAMPLES = None
 
-        CLUSTERING_METHODS = ["kmeans", "hdbscan"]
+        CLUSTERING_METHODS = ["kmeans", "hdbscan", "spectral"]
