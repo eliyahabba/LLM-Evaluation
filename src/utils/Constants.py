@@ -30,8 +30,23 @@ class Constants:
                          'sociology',
                          'us_foreign_policy', 'virology', 'world_religions']
         MMLU_DATASETS_SAMPLE = ['mmlu.abstract_algebra',
+                                'mmlu.anatomy',
+                                'mmlu.astronomy',
+                                'mmlu.business_ethics'
+                                'mmlu.clinical_knowledge',
+
                                 'mmlu.college_biology',
                                 'mmlu.college_computer_science',
+
+                                'mmlu.college_chemistry',
+                                'mmlu.college_mathematics', 'mmlu.college_medicine',
+                                'mmlu.college_physics',
+                                'mmlu.computer_security', 'mmlu.conceptual_physics', 'mmlu.econometrics',
+                                'mmlu.formal_logic', 'mmlu.high_school_biology', 'mmlu.high_school_chemistry',
+                                'mmlu.high_school_computer_science',
+                                'mmlu.high_school_european_history'
+                                
+                                
                                 'mmlu.electrical_engineering', 'mmlu.elementary_mathematics',
                                 'mmlu.global_facts', 'mmlu.machine_learning',
                                 'mmlu.medical_genetics', 'mmlu.professional_accounting']
