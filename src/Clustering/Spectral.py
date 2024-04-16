@@ -41,7 +41,7 @@ class Spectral(Clustering):
         @return: None
         """
         column_name = f"K={self.k}"
-        file_path = self.get_result_output_path("spectral_clustering")
+        file_path = self.get_result_output_path("spectral")
         self.save_results(results, file_path, column_name)
 
 
