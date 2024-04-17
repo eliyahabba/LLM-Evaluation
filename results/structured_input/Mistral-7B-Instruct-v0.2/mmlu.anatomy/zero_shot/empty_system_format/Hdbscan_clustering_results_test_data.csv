@@ -13,7 +13,7 @@
 11,template_11,0,0
 12,template_12,1,1
 13,template_13,0,0
-14,template_14,1,-1
+14,template_14,1,1
 15,template_15,0,0
 16,template_16,1,1
 17,template_17,0,0
@@ -39,7 +39,7 @@
 37,template_37,0,0
 38,template_38,3,2
 39,template_39,0,0
-40,template_40,2,2
+40,template_40,2,-1
 41,template_41,0,0
 42,template_42,-1,-1
 43,template_43,0,0
@@ -47,7 +47,7 @@
 45,template_45,0,0
 46,template_46,1,1
 47,template_47,0,0
-48,template_48,1,-1
+48,template_48,1,2
 49,template_49,0,0
 50,template_50,1,1
 51,template_51,0,0
