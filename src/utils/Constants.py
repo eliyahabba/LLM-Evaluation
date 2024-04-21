@@ -44,9 +44,27 @@ class Constants:
                                 'mmlu.computer_security', 'mmlu.conceptual_physics', 'mmlu.econometrics',
                                 'mmlu.formal_logic', 'mmlu.high_school_biology', 'mmlu.high_school_chemistry',
                                 'mmlu.high_school_computer_science',
-                                'mmlu.high_school_european_history'
-                                
-                                
+                                'mmlu.high_school_european_history',
+
+                                'mmlu.high_school_geography', 'mmlu.high_school_government_and_politics',
+                                'mmlu.high_school_macroeconomics', 'mmlu.high_school_mathematics', 'mmlu.high_school_microeconomics',
+                                'mmlu.high_school_physics',
+
+                                'mmlu.high_school_psychology', 'mmlu.high_school_statistics', 'mmlu.high_school_us_history',
+                                'mmlu.high_school_world_history',
+                                'mmlu.human_aging', 'mmlu.human_sexuality', 'mmlu.international_law', 'mmlu.jurisprudence', 'mmlu.logical_fallacies',
+
+
+                                'mmlu.machine_learning', 'mmlu.management', 'mmlu.marketing', 'mmlu.medical_genetics', 'mmlu.miscellaneous',
+                                'mmlu.moral_disputes',
+                                'mmlu.moral_scenarios', 'mmlu.nutrition', 'mmlu.philosophy', 'mmlu.prehistory', 'mmlu.professional_accounting',
+
+                                'mmlu.professional_law',
+                                'mmlu.professional_medicine', 'mmlu.professional_psychology', 'mmlu.public_relations', 'mmlu.security_studies',
+                                'mmlu.sociology',
+                                'mmlu.us_foreign_policy', 'mmlu.virology', 'mmlu.world_religions',
+
+
                                 'mmlu.electrical_engineering', 'mmlu.elementary_mathematics',
                                 'mmlu.global_facts', 'mmlu.machine_learning',
                                 'mmlu.medical_genetics', 'mmlu.professional_accounting']
