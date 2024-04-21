@@ -21,4 +21,4 @@ cd $dir
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name OLMO --card $1 --template_range $2 $3
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name OLMO --card $1 --template_range $2 $3 --trust_remote_code --not_return_token_type_ids
