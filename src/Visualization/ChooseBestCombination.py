@@ -3,11 +3,12 @@ from typing import Tuple
 
 import pandas as pd
 
+from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
-
+ResultConstants = Constants.ResultConstants
 
 class ChooseBestCombination:
     def __init__(self, dataset_file_name: str, performance_summary_path: Path, selected_best_value_axes: list):
@@ -15,7 +16,8 @@ class ChooseBestCombination:
         self.performance_summary_path = performance_summary_path
         self.selected_best_value_axes = selected_best_value_axes
 
-    def choose_best_combination(self) -> Tuple[pd.DataFrame, pd.Series]:
+    def choose_best_combination(self, is_choose_across_axes: bool = False
+                                ) -> Tuple[pd.DataFrame, pd.Series]:
         """
         Choose the best combination of the values of the axes.
         @return: The best combination of the values of the axes.
@@ -24,7 +26,10 @@ class ChooseBestCombination:
         metadata_file = templates_path / self.dataset_file_name / TemplatesGeneratorConstants.TEMPLATES_METADATA
         metadata_df = pd.read_csv(metadata_file, index_col='template_name')
         grouped_metadata_df = self.get_grouped_metadata_df(metadata_df=metadata_df)
-        best_row = self.get_best_row(grouped_metadata_df)
+        if is_choose_across_axes:
+            best_row = self.choose_across_axes(grouped_metadata_df)
+        else:
+            best_row = self.get_best_row(grouped_metadata_df)
         return grouped_metadata_df, best_row
 
     def get_grouped_metadata_df(self, metadata_df: pd.DataFrame) -> pd.DataFrame:
@@ -49,4 +54,23 @@ class ChooseBestCombination:
 
     def get_best_row(self, grouped_metadata_df):
         best_row = grouped_metadata_df.loc[grouped_metadata_df['accuracy'].idxmax()]
+        return best_row
+
+    def choose_across_axes(self, metadata_df: pd.DataFrame) -> pd.Series:
+        """
+        Choose the best value for each axis separately -
+        for each axis, choose the value with the highest accuracy *across* all the others values of the others axes.
+        @param metadata_df: the metadata dataframe
+        @return: the best row with the best values for each axis (the accuracy is NaN)
+        """
+        axises = list(metadata_df.columns.tolist() & ConfigParams.override_options.keys())
+        best_values = {}
+        for axis in axises:
+            avg_values = metadata_df.groupby(axis)[ResultConstants.ACCURACY_COLUMN].mean()
+            # choose the value with the highest accuracy
+            best_value = avg_values.idxmax()
+            best_values[axis] = best_value
+        best_row = pd.Series(best_values)
+        # add accuracy column with NaN value to best_row
+        best_row[ResultConstants.ACCURACY_COLUMN] = None
         return best_row
