@@ -2,7 +2,7 @@ import random
 
 random.seed(42)
 from src.utils.Constants import Constants
-
+from src.utils.MMLUConstants import MMLUConstants
 DatasetsConstants = Constants.DatasetsConstants
 
 
@@ -104,7 +104,7 @@ class ConfigParams:
 
     datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_hellaswag]
     dataset_names_to_templates = dict(zip(DatasetsConstants.DATASET_NAMES, datasets_templates))
-    for mmlu_dataset in DatasetsConstants.MMLU_DATASETS_SAMPLE:
+    for mmlu_dataset in MMLUConstants.MMLU_DATASETS_SAMPLE:
         dataset_names_to_templates[f"{mmlu_dataset}"] = base_args_mmlu_machine_learning
 
     override_options = {

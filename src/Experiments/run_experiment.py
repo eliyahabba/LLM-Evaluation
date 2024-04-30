@@ -12,6 +12,7 @@ from src.CreateData.DatasetLoader import DatasetLoader
 from src.ModelsPredictors.LLMPredictor import LLMPredictor
 from src.ModelsPredictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
+from src.utils.MMLUConstants import MMLUConstants
 from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils
 
@@ -167,7 +168,7 @@ def main():
     args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
     if Utils.get_card_name(args.card) == Constants.DatasetsConstants.MMLU_GENERAL:
         # run on all the MMLU datasets with a loop
-        for card in Constants.DatasetsConstants.MMLU_DATASETS_SAMPLE:
+        for card in MMLUConstants.MMLU_DATASETS_SAMPLE:
             args.card = f"cards.{card}"
             runner = ExperimentRunner(args)
             runner.run_experiment()

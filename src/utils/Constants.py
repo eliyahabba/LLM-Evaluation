@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from src.utils.MMLUConstants import MMLUConstants
+
 
 class Constants:
     class DatasetsConstants:
@@ -8,68 +10,47 @@ class Constants:
         AI2_ARC_ARC_EASY = "ai2_arc.arc_easy"
         MMLU_GENERAL = "mmlu"
         HELLASWAG = "hellaswag"
-        MMLU_DATASETS = ['abstract_algebra', 'anatomy', 'astronomy', 'business_ethics', 'clinical_knowledge',
-                         'college_biology',
-                         'college_chemistry', 'college_computer_science', 'college_mathematics', 'college_medicine',
-                         'college_physics',
-                         'computer_security', 'conceptual_physics', 'econometrics', 'electrical_engineering',
-                         'elementary_mathematics',
-                         'formal_logic', 'global_facts', 'high_school_biology', 'high_school_chemistry',
-                         'high_school_computer_science',
-                         'high_school_european_history', 'high_school_geography', 'high_school_government_and_politics',
-                         'high_school_macroeconomics', 'high_school_mathematics', 'high_school_microeconomics',
-                         'high_school_physics',
-                         'high_school_psychology', 'high_school_statistics', 'high_school_us_history',
-                         'high_school_world_history',
-                         'human_aging', 'human_sexuality', 'international_law', 'jurisprudence', 'logical_fallacies',
-                         'machine_learning', 'management', 'marketing', 'medical_genetics', 'miscellaneous',
-                         'moral_disputes',
-                         'moral_scenarios', 'nutrition', 'philosophy', 'prehistory', 'professional_accounting',
-                         'professional_law',
-                         'professional_medicine', 'professional_psychology', 'public_relations', 'security_studies',
-                         'sociology',
-                         'us_foreign_policy', 'virology', 'world_religions']
-        MMLU_DATASETS_SAMPLE = ['mmlu.abstract_algebra',
-                                'mmlu.anatomy',
-                                'mmlu.astronomy',
-                                'mmlu.business_ethics'
-                                'mmlu.clinical_knowledge',
-
-                                'mmlu.college_biology',
-                                'mmlu.college_computer_science',
-
-                                'mmlu.college_chemistry',
-                                'mmlu.college_mathematics', 'mmlu.college_medicine',
-                                'mmlu.college_physics',
-                                'mmlu.computer_security', 'mmlu.conceptual_physics', 'mmlu.econometrics',
-                                'mmlu.formal_logic', 'mmlu.high_school_biology', 'mmlu.high_school_chemistry',
-                                'mmlu.high_school_computer_science',
-                                'mmlu.high_school_european_history',
-
-                                'mmlu.high_school_geography', 'mmlu.high_school_government_and_politics',
-                                'mmlu.high_school_macroeconomics', 'mmlu.high_school_mathematics', 'mmlu.high_school_microeconomics',
-                                'mmlu.high_school_physics',
-
-                                'mmlu.high_school_psychology', 'mmlu.high_school_statistics', 'mmlu.high_school_us_history',
-                                'mmlu.high_school_world_history',
-                                'mmlu.human_aging', 'mmlu.human_sexuality', 'mmlu.international_law', 'mmlu.jurisprudence', 'mmlu.logical_fallacies',
-
-
-                                'mmlu.machine_learning', 'mmlu.management', 'mmlu.marketing', 'mmlu.medical_genetics', 'mmlu.miscellaneous',
-                                'mmlu.moral_disputes',
-                                'mmlu.moral_scenarios', 'mmlu.nutrition', 'mmlu.philosophy', 'mmlu.prehistory', 'mmlu.professional_accounting',
-
-                                'mmlu.professional_law',
-                                'mmlu.professional_medicine', 'mmlu.professional_psychology', 'mmlu.public_relations', 'mmlu.security_studies',
-                                'mmlu.sociology',
-                                'mmlu.us_foreign_policy', 'mmlu.virology', 'mmlu.world_religions',
-
-
-                                'mmlu.electrical_engineering', 'mmlu.elementary_mathematics',
-                                'mmlu.global_facts', 'mmlu.machine_learning',
-                                'mmlu.medical_genetics', 'mmlu.professional_accounting']
+        # MMLU_DATASETS_SAMPLE = ['mmlu.abstract_algebra',
+        #                         'mmlu.anatomy',
+        #                         'mmlu.astronomy',
+        #                         'mmlu.business_ethics'
+        #                         'mmlu.clinical_knowledge',
+        #
+        #                         'mmlu.college_biology',
+        #                         'mmlu.college_computer_science',
+        #
+        #                         'mmlu.college_chemistry',
+        #                         'mmlu.college_mathematics', 'mmlu.college_medicine',
+        #                         'mmlu.college_physics',
+        #                         'mmlu.computer_security', 'mmlu.conceptual_physics', 'mmlu.econometrics',
+        #                         'mmlu.formal_logic', 'mmlu.high_school_biology', 'mmlu.high_school_chemistry',
+        #                         'mmlu.high_school_computer_science',
+        #                         'mmlu.high_school_european_history',
+        #
+        #                         'mmlu.high_school_geography', 'mmlu.high_school_government_and_politics',
+        #                         'mmlu.high_school_macroeconomics', 'mmlu.high_school_mathematics', 'mmlu.high_school_microeconomics',
+        #                         'mmlu.high_school_physics',
+        #
+        #                         'mmlu.high_school_psychology', 'mmlu.high_school_statistics', 'mmlu.high_school_us_history',
+        #                         'mmlu.high_school_world_history',
+        #                         'mmlu.human_aging', 'mmlu.human_sexuality', 'mmlu.international_law', 'mmlu.jurisprudence', 'mmlu.logical_fallacies',
+        #
+        #
+        #                         'mmlu.machine_learning', 'mmlu.management', 'mmlu.marketing', 'mmlu.medical_genetics', 'mmlu.miscellaneous',
+        #                         'mmlu.moral_disputes',
+        #                         'mmlu.moral_scenarios', 'mmlu.nutrition', 'mmlu.philosophy', 'mmlu.prehistory', 'mmlu.professional_accounting',
+        #
+        #                         'mmlu.professional_law',
+        #                         'mmlu.professional_medicine', 'mmlu.professional_psychology', 'mmlu.public_relations', 'mmlu.security_studies',
+        #                         'mmlu.sociology',
+        #                         'mmlu.us_foreign_policy', 'mmlu.virology', 'mmlu.world_religions',
+        #
+        #
+        #                         'mmlu.electrical_engineering', 'mmlu.elementary_mathematics',
+        #                         'mmlu.global_facts', 'mmlu.machine_learning',
+        #                         'mmlu.medical_genetics', 'mmlu.professional_accounting']
         DATASET_NAMES = [SCIQ, RACE_ALL, AI2_ARC_ARC_EASY]
-        DATASET_NAMES.extend(MMLU_DATASETS_SAMPLE)
+        DATASET_NAMES.extend(MMLUConstants.MMLU_DATASETS_SAMPLE)
 
     class LLMProcessorConstants:
         MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
@@ -130,6 +111,9 @@ class Constants:
         BEST_COMBINATIONS = "best_combinations"
         CLUSTERING_RESULTS = "clustering_results"
 
+        ACCURACY_COLUMN = "accuracy"
+        CHOOSE_ACROSS_AXES = True
+        NOT_CHOOSE_ACROSS_AXES = False
     class ClusteringConstants:
         RANDOM_STATE = 0
 
