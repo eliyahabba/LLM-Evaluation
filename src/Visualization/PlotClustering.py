@@ -92,6 +92,18 @@ class PlotClustering:
         plt.xticks(np.arange(len(distortions)), cluster_columns)
         st.pyplot(fig)
 
+    def display_results_table(self, data, k_cluster) -> None:
+        # remove all the other columns that strat with k= and keep only the selected cluster
+        k_columns = [col for col in data.columns if col.startswith("K=")]
+        col_to_remove = [col for col in k_columns if col != k_cluster]
+        data = data.drop(col_to_remove, axis=1)
+        # order the columns such that "accuracy" is the first column and the K_cluster is the second column
+        columns_order = ['accuracy', k_cluster]
+        other_columns = [col for col in data.columns if col not in columns_order]
+        columns_order.extend(other_columns)
+        data = data[columns_order]
+        st.write(data)
+
 
 if __name__ == "__main__":
     data = pd.read_csv("data/cluster_data.csv")
