@@ -66,4 +66,13 @@ class MMLUConstants:
             "other (business, health, misc.)": ["other", "business", "health"],
         }
 
+        SUBCATEGORIES_TO_CATEGORIES = {
+            subcategory: category for category, subcategories in CATEGORIES.items()
+            for subcategory in subcategories
+        }
+
+        SAMPLES_TO_SUBCATEGORIES = {
+            sample[0]: category for category, sample in SUBCATEGORIES.items()
+        }
+
         MMLU_DATASETS_SAMPLE = [f'mmlu.{mmlu_dataset}' for mmlu_dataset in SUBCATEGORIES.keys()]
