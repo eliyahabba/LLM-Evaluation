@@ -1,6 +1,11 @@
+import sys
+from pathlib import Path
+
 import pandas as pd
 import streamlit as st
 from sklearn.model_selection import train_test_split
+file_path = Path(__file__).parents[3]
+sys.path.append(str(file_path))
 
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.utils.Constants import Constants

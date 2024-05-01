@@ -4,6 +4,14 @@ import streamlit as st
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 import random
+import sys
+from pathlib import Path
+
+import pandas as pd
+import streamlit as st
+from sklearn.model_selection import train_test_split
+file_path = Path(__file__).parents[3]
+sys.path.append(str(file_path))
 
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.utils.Constants import Constants
@@ -81,7 +89,7 @@ class BestCombinationsDisplayer:
                 axis_values_counts = dict(sorted(axis_values_counts.items()))
                 unique_values = list(axis_values_counts.keys())
                 value_indices = [unique_values.index(value) for value in values]
-                if isinstance(unique_values[0],bool):
+                if isinstance(unique_values[0], bool):
                     unique_values = [str(unique_value) for unique_value in unique_values]
 
                 # Create bins such that each value falls into its own bin

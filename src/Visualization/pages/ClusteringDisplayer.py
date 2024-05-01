@@ -2,6 +2,14 @@ from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+import sys
+from pathlib import Path
+
+import pandas as pd
+import streamlit as st
+from sklearn.model_selection import train_test_split
+file_path = Path(__file__).parents[3]
+sys.path.append(str(file_path))
 
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.Visualization.PlotClustering import PlotClustering
@@ -30,6 +38,15 @@ class ClusteringDisplayer:
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
+        result_file_name, performance_summary_path = ResultsLoader.select_result_file(result_files,
+                                                                                      ResultConstants.
+                                                                                      PERFORMANCE_SUMMARY)
+        performance_summary_df  = pd.read_csv(performance_summary_path)
+        cols_to_remove = ['card', 'system_format', 'score', 'score_name']
+        columns_order = ['template_name', 'number_of_instances', 'accuracy', 'accuracy_ci_low', 'accuracy_ci_high',
+                         'score_ci_low', 'score_ci_high', 'groups_mean_score']
+        performance_summary_df = performance_summary_df.drop(cols_to_remove, axis=1)
+        performance_summary_df = performance_summary_df[columns_order]
 
         clustering_files = [f for f in result_files if ResultConstants.CLUSTERING_RESULTS in f.name]
         clustering_methods = ClusteringConstants.CLUSTERING_METHODS
@@ -45,7 +62,12 @@ class ClusteringDisplayer:
         clustering_data = self.read_clustering_results_data(clustering_file)
         metadata_df = self.read_metadata()
         merged_df = self.merge_data(clustering_data, metadata_df)
-        self.plot_clusters(merged_df)
+        # add to performance_summary_df the k columns form merged_df when usinf the index
+        performance_summary_df.set_index('template_name', inplace=True)
+        merged_df_k_columns = merged_df.filter(regex='K=\d+')
+
+        performance_summary_df2 = pd.concat([merged_df_k_columns, performance_summary_df], axis=1)
+        self.plot_clusters(merged_df, performance_summary_df2)
 
     def read_clustering_results_data(self, results_file: Path) -> pd.DataFrame:
         """
@@ -67,7 +89,7 @@ class ClusteringDisplayer:
         metadata_df = pd.read_csv(metadata_file, index_col='template_name')
         return metadata_df
 
-    def plot_clusters(self, data: pd.DataFrame) -> None:
+    def plot_clusters(self, data: pd.DataFrame, performance_summary_df2) -> None:
         """
         Plot the clusters of the data
         @param data: The data to plot
@@ -97,6 +119,9 @@ class ClusteringDisplayer:
         # template_data = template_data.sort_values(by=k_cluster)
         plot_clustering = PlotClustering(template_data, x=x, y=y, z=z, cluster=k_cluster)
         plot_clustering.plot_cluster()
+        plot_clustering.display_results_table(performance_summary_df2, k_cluster)
+
+
         if data.index[-1].startswith("Distortions"):
             # plot the elbow method with the distortions
             plot_clustering.plot_elbow_method(data, cluster_columns)
