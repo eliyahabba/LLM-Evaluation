@@ -1,0 +1,115 @@
+model,dataset,enumerator,choices_separator,shuffle_choices,accuracy,template_name,statistic,pvalue
+gemma-7b-it,ai2_arc.arc_easy,lowercase,", ",True,,['template_21'],133.27,0.00
+gemma-7b-it,mmlu.anatomy,lowercase,\n,False,,['template_24'],95.24,0.00
+gemma-7b-it,mmlu.college_computer_science,numbers, OR ,False,,['template_54'],32.84,0.48
+gemma-7b-it,mmlu.electrical_engineering,lowercase, OR ,False,,['template_24'],112.26,0.00
+gemma-7b-it,mmlu.elementary_mathematics,numbers,\n,False,,['template_31'],139.88,0.00
+gemma-7b-it,mmlu.global_facts,roman, or ,False,,['template_46'],93.48,0.00
+gemma-7b-it,mmlu.machine_learning,lowercase,; ,True,,['template_20'],138.43,0.00
+gemma-7b-it,mmlu.medical_genetics,lowercase, or ,False,,['template_17'],162.62,0.00
+gemma-7b-it,mmlu.professional_accounting,lowercase, OR ,False,,['template_2'],39.36,0.94
+gemma-7b-it,race_all,lowercase, OR ,False,,['template_4'],114.11,0.00
+gemma-7b-it,sciq,lowercase,\n,False,,['template_16'],618.98,0.00
+Llama-2-7b-chat-hf,ai2_arc.arc_easy,numbers,", ",False,,['template_32'],187.95,0.00
+Llama-2-7b-chat-hf,mmlu.anatomy,numbers,\n,False,,['template_28'],183.98,0.00
+Llama-2-7b-chat-hf,mmlu.college_computer_science,numbers,; ,True,,['template_10'],65.00,0.17
+Llama-2-7b-chat-hf,mmlu.electrical_engineering,roman,\n,False,,['template_40'],62.29,0.23
+Llama-2-7b-chat-hf,mmlu.elementary_mathematics,roman,\n,False,,['template_36'],45.09,0.83
+Llama-2-7b-chat-hf,mmlu.global_facts,numbers, OR ,False,,['template_30'],57.28,0.39
+Llama-2-7b-chat-hf,mmlu.machine_learning,numbers,; ,True,,['template_51'],66.53,0.14
+Llama-2-7b-chat-hf,mmlu.medical_genetics,numbers,\n,True,,['template_45'],49.37,0.69
+Llama-2-7b-chat-hf,mmlu.professional_accounting,numbers,\s,False,,['template_39'],57.81,0.37
+Llama-2-7b-chat-hf,race_all,numbers,\n,False,,['template_32'],156.41,0.00
+Llama-2-7b-chat-hf,sciq,numbers,", ",True,,['template_39'],243.76,0.00
+Mistral-7B-Instruct-v0.2,ai2_arc.arc_easy,lowercase, | ,False,,['template_10'],111.51,0.00
+Mistral-7B-Instruct-v0.2,mmlu.anatomy,roman,\n,True,,['template_53'],99.95,0.00
+Mistral-7B-Instruct-v0.2,mmlu.college_computer_science,numbers,\s,False,,['template_36'],76.43,0.03
+Mistral-7B-Instruct-v0.2,mmlu.electrical_engineering,lowercase,\n,False,,['template_48'],73.22,0.05
+Mistral-7B-Instruct-v0.2,mmlu.elementary_mathematics,roman,", ",False,,['template_39'],41.69,0.91
+Mistral-7B-Instruct-v0.2,mmlu.global_facts,roman,\n,False,,['template_28'],83.28,0.01
+Mistral-7B-Instruct-v0.2,mmlu.machine_learning,lowercase,\n,False,,['template_22'],67.26,0.12
+Mistral-7B-Instruct-v0.2,mmlu.medical_genetics,roman,; ,True,,['template_25'],54.17,0.51
+Mistral-7B-Instruct-v0.2,mmlu.professional_accounting,numbers,", ",True,,['template_32'],33.25,0.99
+Mistral-7B-Instruct-v0.2,race_all,numbers, OR ,False,,['template_39'],74.76,0.04
+Mistral-7B-Instruct-v0.2,sciq,roman, | ,False,,['template_50'],166.91,0.00
+OLMo-7B-Instruct,ai2_arc.arc_easy,capitals,\n,False,,['template_44'],112.14,0.00
+OLMo-7B-Instruct,mmlu.anatomy,lowercase,\n,False,,['template_17'],75.68,0.03
+OLMo-7B-Instruct,mmlu.college_computer_science,numbers,\s,True,,['template_7'],32.98,0.99
+OLMo-7B-Instruct,mmlu.electrical_engineering,capitals,\n,True,,['template_49'],61.82,0.25
+OLMo-7B-Instruct,mmlu.elementary_mathematics,lowercase,\n,False,,['template_24'],52.05,0.59
+OLMo-7B-Instruct,mmlu.global_facts,roman,\n,True,,['template_29'],64.70,0.17
+OLMo-7B-Instruct,mmlu.machine_learning,capitals,\n,True,,['template_5'],74.96,0.04
+OLMo-7B-Instruct,mmlu.medical_genetics,capitals,\n,True,,['template_31'],89.68,0.00
+OLMo-7B-Instruct,mmlu.professional_accounting,roman,; ,False,,['template_46'],77.61,0.02
+OLMo-7B-Instruct,race_all,lowercase,\n,False,,['template_2'],134.23,0.00
+OLMo-7B-Instruct,sciq,lowercase,\n,False,,['template_3'],172.89,0.00
+phi-2,ai2_arc.arc_easy,capitals,\n,False,,['template_38'],143.16,0.00
+phi-2,mmlu.anatomy,roman,\n,False,,['template_17'],29.93,1.00
+phi-2,mmlu.college_computer_science,capitals,; ,False,,['template_6'],39.92,0.94
+phi-2,mmlu.electrical_engineering,lowercase, | ,False,,['template_26'],34.31,0.99
+phi-2,mmlu.elementary_mathematics,numbers, | ,True,,['template_33'],46.37,0.79
+phi-2,mmlu.global_facts,roman,", ",False,,['template_38'],298.99,0.00
+phi-2,mmlu.machine_learning,capitals, or ,False,,['template_38'],46.52,0.79
+phi-2,mmlu.medical_genetics,lowercase,\n,False,,['template_17'],30.01,1.00
+phi-2,mmlu.professional_accounting,capitals, OR ,True,,['template_10'],50.63,0.64
+phi-2,race_all,lowercase,\n,True,,['template_3'],190.26,0.00
+phi-2,sciq,capitals, OR ,True,,['template_10'],343.42,0.00
+Qwen1.5-7B-Chat,race_all,numbers,\s,False,0.95,['template_28'],,
+Qwen1.5-7B-Chat,sciq,numbers,\s,False,1.0,['template_28'],,
+Qwen1.5-MoE-A2.7B,sciq,roman,\n,True,0.94,['template_45'],106.93,0.00
+gemma-7b-it,mmlu.abstract_algebra,numbers,", ",True,,,,
+gemma-7b-it,mmlu.astronomy,lowercase,\n,True,,,,
+gemma-7b-it,mmlu.business_ethics,lowercase, or ,True,,,,
+gemma-7b-it,mmlu.clinical_knowledge,lowercase,\n,True,,,,
+gemma-7b-it,mmlu.college_biology,lowercase,\n,False,,,,
+gemma-7b-it,mmlu.college_chemistry,lowercase, OR ,True,,,,
+gemma-7b-it,mmlu.college_mathematics,numbers, or ,True,,,,
+gemma-7b-it,mmlu.college_physics,numbers, OR ,True,,,,
+gemma-7b-it,mmlu.computer_security,lowercase,\n,False,,,,
+gemma-7b-it,mmlu.conceptual_physics,roman, OR ,False,,,,
+gemma-7b-it,mmlu.econometrics,roman,\n,False,,,,
+gemma-7b-it,mmlu.formal_logic,lowercase,\n,False,,,,
+gemma-7b-it,mmlu.high_school_biology,lowercase,", ",False,,,,
+gemma-7b-it,mmlu.high_school_chemistry,lowercase,\n,False,,,,
+gemma-7b-it,mmlu.high_school_computer_science,lowercase,\n,True,,,,
+Llama-2-7b-chat-hf,mmlu.abstract_algebra,roman, | ,True,,,,
+Llama-2-7b-chat-hf,mmlu.business_ethics,numbers,; ,True,,,,
+Llama-2-7b-chat-hf,mmlu.clinical_knowledge,numbers,; ,False,,,,
+Llama-2-7b-chat-hf,mmlu.college_chemistry,capitals,\n,True,,,,
+Llama-2-7b-chat-hf,mmlu.college_mathematics,numbers, or ,True,,,,
+Llama-2-7b-chat-hf,mmlu.college_medicine,numbers, | ,True,,,,
+Llama-2-7b-chat-hf,mmlu.college_physics,capitals,\n,True,,,,
+Llama-2-7b-chat-hf,mmlu.computer_security,numbers,; ,False,,,,
+Llama-2-7b-chat-hf,mmlu.conceptual_physics,roman,", ",False,,,,
+Llama-2-7b-chat-hf,mmlu.econometrics,numbers, or ,False,,,,
+Llama-2-7b-chat-hf,mmlu.formal_logic,capitals,", ",True,,,,
+Llama-2-7b-chat-hf,mmlu.high_school_biology,numbers,\s,True,,,,
+Llama-2-7b-chat-hf,mmlu.high_school_chemistry,capitals,; ,True,,,,
+Llama-2-7b-chat-hf,mmlu.high_school_computer_science,numbers,; ,True,,,,
+Mistral-7B-Instruct-v0.2,mmlu.business_ethics,lowercase,\n,False,,,,
+Mistral-7B-Instruct-v0.2,mmlu.clinical_knowledge,lowercase,\n,True,,,,
+Mistral-7B-Instruct-v0.2,mmlu.college_chemistry,capitals, | ,False,,,,
+Mistral-7B-Instruct-v0.2,mmlu.college_mathematics,lowercase, | ,True,,,,
+Mistral-7B-Instruct-v0.2,mmlu.college_medicine,lowercase, or ,False,,,,
+Mistral-7B-Instruct-v0.2,mmlu.college_physics,roman,\n,True,,,,
+Mistral-7B-Instruct-v0.2,mmlu.computer_security,numbers, or ,False,,,,
+Mistral-7B-Instruct-v0.2,mmlu.conceptual_physics,capitals, OR ,False,,,,
+Mistral-7B-Instruct-v0.2,mmlu.econometrics,numbers,\n,False,,,,
+Mistral-7B-Instruct-v0.2,mmlu.formal_logic,lowercase,\s,False,,,,
+Mistral-7B-Instruct-v0.2,mmlu.high_school_biology,lowercase, or ,True,,,,
+Mistral-7B-Instruct-v0.2,mmlu.high_school_chemistry,lowercase,; ,True,,,,
+Mistral-7B-Instruct-v0.2,mmlu.high_school_computer_science,roman,; ,False,,,,
+phi-2,mmlu.abstract_algebra,roman,\n,False,,,,
+phi-2,mmlu.business_ethics,roman,\n,False,,,,
+phi-2,mmlu.clinical_knowledge,capitals,", ",True,,,,
+phi-2,mmlu.college_chemistry,numbers,", ",True,,,,
+phi-2,mmlu.college_mathematics,numbers, or ,True,,,,
+phi-2,mmlu.college_medicine,numbers, or ,True,,,,
+phi-2,mmlu.college_physics,numbers, | ,True,,,,
+phi-2,mmlu.computer_security,lowercase, or ,True,,,,
+phi-2,mmlu.conceptual_physics,roman,\n,True,,,,
+phi-2,mmlu.econometrics,capitals, or ,False,,,,
+phi-2,mmlu.formal_logic,numbers, OR ,False,,,,
+phi-2,mmlu.high_school_biology,capitals, | ,False,,,,
+phi-2,mmlu.high_school_chemistry,lowercase,", ",False,,,,
+phi-2,mmlu.high_school_computer_science,lowercase,\n,True,,,,
