@@ -11,9 +11,6 @@ ResultConstants = Constants.ResultConstants
 file_path = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH / f"{ResultConstants.BEST_COMBINATIONS}.csv"
 
 
-def split_to_train_and_test(model_data, random_state):
-    train_test_split(model_data, test_size=0.2, random_state=random_state)
-
 
 class BestCombinationsDisplayer:
     def __init__(self):
@@ -61,7 +58,7 @@ class BestCombinationsDisplayer:
                      key=f"regenerate_{model_data.iloc[0]['model']}_{model_data.iloc[0]['dataset']}"):
             import random
             random_state = random.randint(0, 100)
-        train_data, test_data = split_to_train_and_test(model_data, random_state)
+        train_data, test_data = train_test_split(model_data, random_state)
 
         # Calculate the mean best parameters from the first part of the dataset
         best_results = {}
