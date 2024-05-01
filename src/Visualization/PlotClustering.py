@@ -1,3 +1,4 @@
+import seaborn as sns  # For a larger set of predefined colors
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -102,7 +103,38 @@ class PlotClustering:
         other_columns = [col for col in data.columns if col not in columns_order]
         columns_order.extend(other_columns)
         data = data[columns_order]
-        st.write(data)
+        # def color_survived(val):
+        #     color = 'red' if val == 0 else 'yellow' if val == 1 else 'green'
+        #     return f'background-color: {color}'
+        # 
+        # st.table(data.sort_values([k_cluster], ascending=False)
+        #          .style.applymap(color_survived, subset=[k_cluster]))
+        # unique_clusters = data[k_cluster].nunique()
+        # palette = sns.color_palette("hsv", unique_clusters)  # "hsv" is just one option, you can choose others
+        # color_map = {k: f"background-color: {sns.utils.rgb2hex(color)}" for k, color in
+        #              zip(data[k_cluster].unique(), palette)}
+        import matplotlib.colors as mcolors  # Correct module for color conversion
+
+        unique_clusters = data[k_cluster].nunique()
+        palette = sns.color_palette("hsv", unique_clusters)  # "hsv" is just one option, you can choose others
+        color_map = {k: f"background-color: {mcolors.rgb2hex(color)}" for k, color in
+                     zip(data[k_cluster].unique(), palette)}
+
+        def color_survived(row):
+            # Apply the mapped color to the entire row based on 'k_cluster'
+            return [color_map[row[k_cluster]] for _ in row]
+
+        def color_survived(row):
+            # Apply the mapped color to the entire row based on 'k_cluster'
+            return [color_map[row[k_cluster]] for _ in row]
+        # Sort the DataFrame by k_cluster values
+        sorted_data = data.sort_values(by=["accuracy"], ascending=False)
+
+        # Apply the styling
+        styled_data = sorted_data.style.apply(color_survived, axis=1)
+
+        # Display the styled table in Streamlit
+        st.write(styled_data)
 
 
 if __name__ == "__main__":
