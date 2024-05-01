@@ -28,14 +28,16 @@ class BestCasualParamsFinder:
         self.comparison_matrix_path = comparison_matrix_path
         self.selected_best_value_axes = selected_best_value_axes
 
-    def get_best_row_and_grouped_metadata_df(self) -> Tuple[pd.DataFrame, pd.Series]:
+    def get_best_row_and_grouped_metadata_df(self, is_choose_across_axes: bool =
+                ResultConstants.NOT_CHOOSE_ACROSS_AXES) -> Tuple[pd.DataFrame, pd.Series]:
         """
         Get the best row and the grouped metadata dataframe.
         @return:
         """
         choose_best_combination = ChooseBestCombination(self.dataset_file_name, self.performance_summary_path,
                                                         self.selected_best_value_axes)
-        grouped_metadata_df, best_row = choose_best_combination.choose_best_combination()
+        grouped_metadata_df, best_row = choose_best_combination.choose_best_combination(
+            is_choose_across_axes=is_choose_across_axes)
         return grouped_metadata_df, best_row
 
     def find_stats_test(self, grouped_metadata_df: pd.DataFrame, best_row: pd.Series):
@@ -43,7 +45,8 @@ class BestCasualParamsFinder:
         return perform_analysis.calculate_cochrans_q_test(None)
 
     @staticmethod
-    def find_best_casual_params(format_folder: Path, eval_value: str):
+    def find_best_casual_params(format_folder: Path, eval_value: str, is_choose_across_axes: bool =
+                                ResultConstants.NOT_CHOOSE_ACROSS_AXES):
         """
         Find the best row in the performance_summary_df.
         """
@@ -54,11 +57,13 @@ class BestCasualParamsFinder:
         perform_analysis_runner = BestCasualParamsFinder(dataset_file_name, performance_summary_path,
                                                          comparison_matrix_path,
                                                          selected_best_value_axes)
-        grouped_metadata_df, best_row = perform_analysis_runner.get_best_row_and_grouped_metadata_df()
+        grouped_metadata_df, best_row = perform_analysis_runner.get_best_row_and_grouped_metadata_df(
+            is_choose_across_axes=is_choose_across_axes
+        )
         result = perform_analysis_runner.find_stats_test(grouped_metadata_df, best_row)
         # add to the best_row the result.stats and result.pvalue
-        stats_values = pd.Series({'statistic': f'{result.statistic:.2f}', 'pvalue': f'{result.pvalue:.2f}'})
-        best_row = pd.concat([best_row, stats_values])
+        # stats_values = pd.Series({'statistic': f'{result.statistic:.2f}', 'pvalue': f'{result.pvalue:.2f}'})
+        # best_row = pd.concat([best_row, stats_values])
         if file_path.exists():
             best_combinations_df = pd.read_csv(file_path, dtype=str)
         else:
@@ -96,4 +101,5 @@ if __name__ == "__main__":
     results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
     eval_on = ExperimentConstants.EVALUATE_ON
     model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
-    model_dataset_runner.run_function_on_all_models_and_datasets(BestCasualParamsFinder.find_best_casual_params)
+    model_dataset_runner.run_function_on_all_models_and_datasets(BestCasualParamsFinder.find_best_casual_params,
+                                                                 ResultConstants.CHOOSE_ACROSS_AXES)
