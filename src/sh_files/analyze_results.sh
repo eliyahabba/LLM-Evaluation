@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --mem=2g
 #SBATCH -c4
-#SBATCH --time=0-1
+#SBATCH --time=0-3
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 
