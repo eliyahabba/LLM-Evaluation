@@ -13,6 +13,19 @@ ExperimentConstants = Constants.ExperimentConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
 
+class FilesFilter:
+    def __init__(self, filter_name: str):
+        self.filter_name = filter_name
+
+    def get_files_by_name(self, files: List[Path]) -> List[Path]:
+        """
+        Filter the datasets by the name.
+        @param files: the files to filter
+        @return: the filtered datasets
+        """
+        return [file for file in files if self.filter_name in file.name]
+
+
 class ResultsLoader:
     @staticmethod
     def load_template(results_file, dataset_file_name):
@@ -98,15 +111,19 @@ class ResultsLoader:
         ResultsLoader.load_template(results_file, dataset_file_name)
 
     @staticmethod
-    def get_folder_selections_options(folder_path: Path, text_to_display: str) -> Path:
+    def get_folder_selections_options(folder_path: Path, text_to_display: str,
+                                      files_filter: FilesFilter = None) -> Path:
         """
         Get the folder selection options. The user can select the folder to visualize.
         @param folder_path: the path to the folder
         @param text_to_display: the text to display in the sidebar
+        @param files_filter: the filter to apply on the files
 
         @return: the selected folder name
         """
         folders_names = [file for file in folder_path.iterdir() if file.is_dir()]
+        if files_filter is not None:
+            folders_names = files_filter.get_files_by_name(folders_names)
         names_to_display = {f.name: f for f in folders_names}
         # id Mistral in the name, the name of Mistral should be first
         names_to_display = dict(sorted(names_to_display.items(), key=lambda x: ("Mistral" not in x[0],
@@ -122,8 +139,10 @@ class ResultsLoader:
                                                                             "Select results folder to visualize")
         selected_model_file = ResultsLoader.get_folder_selections_options(selected_results_file,
                                                                           "Select model to visualize")
+        filter_files = FilesFilter("mmlu")
         selected_dataset_file = ResultsLoader.get_folder_selections_options(selected_model_file,
-                                                                            "Select dataset to visualize")
+                                                                            "Select dataset to visualize",
+                                                                            filter_files)
         selected_shot_file = ResultsLoader.get_folder_selections_options(selected_dataset_file,
                                                                          "Select shot to visualize")
         selected_system_format = ResultsLoader.get_folder_selections_options(selected_shot_file,
