@@ -48,4 +48,4 @@ template_45,cards.mmlu.high_school_chemistry,empty_system_format,0,10,100,0.300,
 template_46,cards.mmlu.high_school_chemistry,empty_system_format,0,10,100,0.310,0.310,accuracy,0.220,0.410,0.220,0.410,0.310,100
 template_47,cards.mmlu.high_school_chemistry,empty_system_format,0,10,100,0.190,0.190,accuracy,0.120,0.280,0.120,0.280,0.190,100
 template_48,cards.mmlu.high_school_chemistry,empty_system_format,0,10,100,0.240,0.240,accuracy,0.160,0.340,0.160,0.340,0.240,100
-template_49,cards.mmlu.high_school_chemistry,empty_system_format,0,10,100,0.328,0.328,accuracy,0.224,0.448,0.224,0.448,0.328,58
+template_49,cards.mmlu.high_school_chemistry,empty_system_format,0,10,100,0.290,0.290,accuracy,0.210,0.380,0.210,0.380,0.290,100
