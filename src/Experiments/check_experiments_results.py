@@ -58,7 +58,7 @@ def check_results_files(format_folder):
             continue
 
 
-def check_comparison_matrix(format_folder: Path, eval_value: str):
+def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict = None):
     if not format_folder.exists():
         print(f"{format_folder} does not exist")
     try:

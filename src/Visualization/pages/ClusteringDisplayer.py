@@ -1,13 +1,9 @@
-from pathlib import Path
-
-import pandas as pd
-import streamlit as st
 import sys
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
-from sklearn.model_selection import train_test_split
+
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
@@ -53,7 +49,7 @@ class ClusteringDisplayer:
         # map between the clustering results file name and the CLUSTERING_METHODS name from Constants, so we can
         # display the clustering method name in the select box and get the file name from the map
         clustering_files_map = {i: [f for f in clustering_files if i in f.name.lower()][0] for i in
-                                clustering_methods}
+                                clustering_methods if [f for f in clustering_files if i in f.name.lower()]}
 
         clustering_method_name = st.selectbox("Select the clustering method to visualize",
                                               key="clustering_method",
@@ -97,7 +93,7 @@ class ClusteringDisplayer:
         """
         # select the cluster column
         cluster_columns = [col for col in data.columns if (col not in ConfigParams.override_options.keys())]
-        # convert all the cluster columns to int
+        # convert all the cluster columns to int (all the Not Nan values are integers)
         data[cluster_columns] = data[cluster_columns].astype(int)
         k_cluster = st.selectbox("Select the cluster column", cluster_columns)
         # select the row that corresponds to the selected cluster
@@ -121,7 +117,7 @@ class ClusteringDisplayer:
         plot_clustering.plot_cluster()
         plot_clustering.display_results_table(performance_summary_df2, k_cluster)
 
-
+        # check if the last index starts with "Distortions" to plot the elbow method (Kmeans)
         if data.index[-1].startswith("Distortions"):
             # plot the elbow method with the distortions
             plot_clustering.plot_elbow_method(data, cluster_columns)
