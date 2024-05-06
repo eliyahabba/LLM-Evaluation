@@ -17,7 +17,7 @@ class ChooseBestCombination:
         self.performance_summary_path = performance_summary_path
         self.selected_best_value_axes = selected_best_value_axes
 
-    def choose_best_combination(self, is_choose_across_axes: bool = False
+    def choose_best_combination(self, is_choose_across_axes: bool = False, exclude_templates: list = None,
                                 ) -> Tuple[pd.DataFrame, pd.Series]:
         """
         Choose the best combination of the values of the axes.
@@ -26,15 +26,22 @@ class ChooseBestCombination:
         templates_path = TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH
         metadata_file = templates_path / self.dataset_file_name / TemplatesGeneratorConstants.TEMPLATES_METADATA
         metadata_df = pd.read_csv(metadata_file, index_col='template_name')
-        grouped_metadata_df = self.get_grouped_metadata_df(metadata_df=metadata_df)
+        grouped_metadata_df = self.get_grouped_metadata_df(metadata_df=metadata_df, exclude_templates=exclude_templates)
         if is_choose_across_axes:
             best_row = self.choose_across_axes(grouped_metadata_df)
         else:
             best_row = self.get_best_row(grouped_metadata_df)
         return grouped_metadata_df, best_row
 
-    def get_grouped_metadata_df(self, metadata_df: pd.DataFrame) -> pd.DataFrame:
+    def get_grouped_metadata_df(self, metadata_df: pd.DataFrame, exclude_templates: list = None) -> pd.DataFrame:
+        """
+        Get the grouped metadata dataframe.
+        @param metadata_df: The metadata dataframe.
+        @param exclude_templates: List of templates names to exclude.
+        @return:
+        """
         df = pd.read_csv(self.performance_summary_path)
+        df = df[~df['template_name'].isin(exclude_templates)] if exclude_templates else df
         # add the 'accuracy' columns from df to the metadata_df by the template_name
         metadata_df = metadata_df.join(df.set_index('template_name')['accuracy'], on='template_name')
         if self.selected_best_value_axes:
