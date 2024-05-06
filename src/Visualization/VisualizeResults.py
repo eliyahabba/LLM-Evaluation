@@ -80,7 +80,7 @@ class VisualizeResults:
         perform_analysis.display_mcnemar_test(best_row)
 
     def display_heatmap(self, dataset_file_name: str, performance_summary_path: Path):
-        # add a expander to the heatmap
+        # add an expander to the heatmap
         with st.expander("Heatmap of the accuracy of the templates"):
             create_heatmap = CreateHeatmap(dataset_file_name, performance_summary_path)
             create_heatmap.create_heatmap()
