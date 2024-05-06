@@ -10,6 +10,7 @@ TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
 
+
 class ChooseBestCombination:
     def __init__(self, dataset_file_name: str, performance_summary_path: Path, selected_best_value_axes: list):
         self.dataset_file_name = dataset_file_name
@@ -50,6 +51,8 @@ class ChooseBestCombination:
             index_lists = metadata_df.index.tolist()
             grouped_metadata.update({'template_name': [index_lists]})
             grouped_metadata_with_index = pd.DataFrame(grouped_metadata)
+        # remove rows that accuracy is NaN
+        grouped_metadata_with_index = grouped_metadata_with_index.dropna(subset=['accuracy'])
         return grouped_metadata_with_index
 
     def get_best_row(self, grouped_metadata_df):
@@ -63,9 +66,9 @@ class ChooseBestCombination:
         @param metadata_df: the metadata dataframe
         @return: the best row with the best values for each axis (the accuracy is NaN)
         """
-        axises = list(metadata_df.columns.tolist() & ConfigParams.override_options.keys())
+        axes = list(metadata_df.columns.tolist() & ConfigParams.override_options.keys())
         best_values = {}
-        for axis in axises:
+        for axis in axes:
             avg_values = metadata_df.groupby(axis)[ResultConstants.ACCURACY_COLUMN].mean()
             # choose the value with the highest accuracy
             best_value = avg_values.idxmax()
