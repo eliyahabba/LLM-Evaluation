@@ -114,6 +114,7 @@ class Constants:
         ACCURACY_COLUMN = "accuracy"
         CHOOSE_ACROSS_AXES = True
         NOT_CHOOSE_ACROSS_AXES = False
+
     class ClusteringConstants:
         RANDOM_STATE = 0
 
@@ -124,3 +125,8 @@ class Constants:
         MIN_SAMPLES = None
 
         CLUSTERING_METHODS = ["kmeans", "hdbscan", "spectral"]
+
+    class BestCombinationsConstants:
+        DATASET = "dataset"
+        MODEL = "model"
+        TOP_N = 5
