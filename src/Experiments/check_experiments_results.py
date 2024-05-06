@@ -85,7 +85,7 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
             continue
     if exs_numbers:
         min_exs = min(exs_numbers)
-        max_exs = max(exs_numbers)
+        max_exs = max(exs_numbers) + 1
         print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {min_exs} {max_exs};")
 
 
@@ -109,6 +109,7 @@ def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict =
         if gold_column not in columns:
             print(f"{format_folder} does not contain {gold_column}")
 
+
 if __name__ == "__main__":
     # Load the model and the dataset
     results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
@@ -116,4 +117,3 @@ if __name__ == "__main__":
     model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
     # model_dataset_runner.run_function_on_all_models_and_datasets(check_comparison_matrix)
     model_dataset_runner.run_function_on_all_models_and_datasets(print_future_experiments)
-
