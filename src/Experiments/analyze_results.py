@@ -225,7 +225,7 @@ if __name__ == "__main__":
                                 results = eval_model.load_results_from_experiment_file()
                                 if comparison_matrix_file.exists() and \
                                         not pd.read_csv(comparison_matrix_file).isna().any().any() and \
-                                        len(results_files) == pd.read_csv(comparison_matrix_file).shape[0] and \
+                                        len(results_files) == pd.read_csv(comparison_matrix_file).shape[1] and \
                                         all(['Score' in result for result in results[eval_on_value]]) and \
                                         len(results[eval_on_value]) == 100:
                                     continue
