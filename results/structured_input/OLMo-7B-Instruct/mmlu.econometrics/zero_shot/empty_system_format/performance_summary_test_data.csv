@@ -17,6 +17,12 @@ template_14,cards.mmlu.econometrics,empty_system_format,0,10,100,0.190,0.190,acc
 template_15,cards.mmlu.econometrics,empty_system_format,0,10,100,0.240,0.240,accuracy,0.160,0.330,0.160,0.330,0.240,100
 template_16,cards.mmlu.econometrics,empty_system_format,0,10,100,0.260,0.260,accuracy,0.190,0.360,0.190,0.360,0.260,100
 template_17,cards.mmlu.econometrics,empty_system_format,0,10,100,0.290,0.290,accuracy,0.210,0.390,0.210,0.390,0.290,100
+template_18,cards.mmlu.econometrics,empty_system_format,0,10,100,0.230,0.230,accuracy,0.160,0.314,0.160,0.314,0.230,100
+template_19,cards.mmlu.econometrics,empty_system_format,0,10,100,0.240,0.240,accuracy,0.160,0.330,0.160,0.330,0.240,100
+template_20,cards.mmlu.econometrics,empty_system_format,0,10,100,0.210,0.210,accuracy,0.140,0.300,0.140,0.300,0.210,100
+template_21,cards.mmlu.econometrics,empty_system_format,0,10,100,0.230,0.230,accuracy,0.150,0.330,0.150,0.330,0.230,100
+template_22,cards.mmlu.econometrics,empty_system_format,0,10,100,0.210,0.210,accuracy,0.140,0.293,0.140,0.293,0.210,100
+template_23,cards.mmlu.econometrics,empty_system_format,0,10,100,0.296,0.296,accuracy,0.185,0.426,0.185,0.426,0.296,54
 template_28,cards.mmlu.econometrics,empty_system_format,0,10,100,0.190,0.190,accuracy,0.120,0.270,0.120,0.270,0.190,100
 template_29,cards.mmlu.econometrics,empty_system_format,0,10,100,0.230,0.230,accuracy,0.156,0.320,0.156,0.320,0.230,100
 template_30,cards.mmlu.econometrics,empty_system_format,0,10,100,0.390,0.390,accuracy,0.297,0.500,0.297,0.500,0.390,100
