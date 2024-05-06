@@ -5,9 +5,9 @@ from typing import Tuple
 import pandas as pd
 
 from src.Analysis.ModelDatasetRunner import ModelDatasetRunner
+from src.Analysis.PerformAnalysis import PerformAnalysis
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.Visualization.ChooseBestCombination import ChooseBestCombination
-from src.Analysis.PerformAnalysis import PerformAnalysis
 from src.utils.Constants import Constants
 
 ExperimentConstants = Constants.ExperimentConstants
@@ -28,8 +28,9 @@ class BestCasualParamsFinder:
         self.comparison_matrix_path = comparison_matrix_path
         self.selected_best_value_axes = selected_best_value_axes
 
-    def get_best_row_and_grouped_metadata_df(self, is_choose_across_axes: bool =
-                ResultConstants.NOT_CHOOSE_ACROSS_AXES) -> Tuple[pd.DataFrame, pd.Series]:
+    def get_best_row_and_grouped_metadata_df(self,
+                                             is_choose_across_axes: bool = ResultConstants.NOT_CHOOSE_ACROSS_AXES) -> \
+            Tuple[pd.DataFrame, pd.Series]:
         """
         Get the best row and the grouped metadata dataframe.
         @return:
@@ -45,8 +46,8 @@ class BestCasualParamsFinder:
         return perform_analysis.calculate_cochrans_q_test(None)
 
     @staticmethod
-    def find_best_casual_params(format_folder: Path, eval_value: str, is_choose_across_axes: bool =
-                                ResultConstants.NOT_CHOOSE_ACROSS_AXES):
+    def find_best_casual_params(format_folder: Path, eval_value: str,
+                                is_choose_across_axes: bool = ResultConstants.NOT_CHOOSE_ACROSS_AXES) -> None:
         """
         Find the best row in the performance_summary_df.
         """
@@ -85,9 +86,10 @@ class BestCasualParamsFinder:
                     best_combinations_df.at[id, key] = value
             else:
                 # add the new row to the DataFrame (not use append)
-                best_combinations_df = pd.concat([best_combinations_df, pd.DataFrame(data, columns=columns)], ignore_index=True)
+                best_combinations_df = pd.concat([best_combinations_df, pd.DataFrame(data, columns=columns)],
+                                                 ignore_index=True)
+        best_combinations_df.sort_values(by="model", inplace=True, ignore_index=True)
         best_combinations_df.to_csv(file_path, index=False)
-        return best_row
 
 
 if __name__ == "__main__":
