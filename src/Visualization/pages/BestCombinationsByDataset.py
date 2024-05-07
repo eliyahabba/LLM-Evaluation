@@ -135,10 +135,10 @@ class BestCombinationsDisplayer:
             # check if there is None in min_group.values()
             if None not in min_group.values():
                 st.markdown(f"**Min Group:** {min_group}")
-            if None not in max_group.values():
                 self.check_group_of_conf(min_group, model, cur_data.dataset.values)
-            st.markdown(f"**Max Group:** {max_group}")
-            self.check_group_of_conf(max_group, model, cur_data.dataset.values)
+            if None not in max_group.values():
+                st.markdown(f"**Max Group:** {max_group}")
+                self.check_group_of_conf(max_group, model, cur_data.dataset.values)
             # add empty line
             st.write("")
             if display_histograms:
