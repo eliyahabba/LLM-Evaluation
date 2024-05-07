@@ -1,10 +1,12 @@
 import sys
+from collections import Counter
 from pathlib import Path
+from typing import List
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
-from matplotlib import pyplot as plt
 
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
@@ -16,7 +18,7 @@ from src.utils.MMLUConstants import MMLUConstants
 ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
 BestCombinationsConstants = Constants.BestCombinationsConstants
-
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 BEST_COMBINATIONS_PATH = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH / f"{ResultConstants.BEST_COMBINATIONS}.csv"
 
 MMLU_SUBCATEGORIES = MMLUConstants.SUBCATEGORIES
@@ -31,6 +33,7 @@ class BestCombinationsDisplayer:
         @param file_path: Path to the CSV file containing the best combinations.
         @param override_options: Dictionary containing options to override histograms.
         """
+        self.file_path: Path = file_path
         self.best_combinations: pd.DataFrame = pd.read_csv(file_path)
         self._filter_best_combinations()
         self.override_options: dict = override_options
@@ -68,7 +71,22 @@ class BestCombinationsDisplayer:
                 MMLU_CATEGORIES[MMLU_SUBCATEGORIES[x.split(MMLUConstants.MMLU_CARDS_PREFIX)[1]][0]] if x.startswith(
                     MMLUConstants.MMLU_CARDS_PREFIX) else 'None'))
 
-    def _plot_histograms(self, cur_data: pd.DataFrame, group: str) -> list[plt.Figure]:
+    def _create_histogram(self, axis, axis_values, cur_data: pd.DataFrame) -> dict:
+        values = cur_data[axis].values
+        axis_values_counts = {value: np.sum(values == value) for value in axis_values}
+        axis_values_counts = dict(sorted(axis_values_counts.items()))
+        return axis_values_counts
+
+    def _create_figure(self, hists: dict) -> list:
+        figs = []
+        for axis, axis_values_counts in hists.items():
+            fig = plt.figure()
+            plt.bar(list(axis_values_counts.keys()), list(axis_values_counts.values()))
+            plt.title(f"{axis} histogram")
+            figs.append(fig)
+        return figs
+
+    def _plot_histograms(self, cur_data: pd.DataFrame, group: str) -> dict:
         """
         Plots histograms for each axis based on the current data.
 
@@ -76,7 +94,7 @@ class BestCombinationsDisplayer:
         @param group: The group identifier for which to plot histograms.
         @return: List of matplotlib Figures with histograms.
         """
-        figs = []
+        hists = {}
         for axis in self.override_options.keys():
             axis_values = self.override_options[axis]
             for i in range(len(axis_values)):
@@ -84,27 +102,11 @@ class BestCombinationsDisplayer:
                     axis_values[i] = '\\n'
                 if axis_values[i] == ' ':
                     axis_values[i] = '\\s'
+            hists[axis] = self._create_histogram(axis, axis_values, cur_data)
+        return hists
 
-            fig = plt.figure()
-            values = cur_data[axis].values
-
-            axis_values_counts = {value: np.sum(values == value) for value in axis_values}
-            axis_values_counts = dict(sorted(axis_values_counts.items()))
-            unique_values = list(axis_values_counts.keys())
-            value_indices = [unique_values.index(value) for value in values]
-            if isinstance(unique_values[0], bool):
-                unique_values = [str(unique_value) for unique_value in unique_values]
-
-            bins = np.arange(len(unique_values) + 1) - 0.5
-
-            plt.hist(value_indices, bins=bins, alpha=0.75, rwidth=0.8)
-            bin_centers = np.arange(len(unique_values))
-            plt.xticks(bin_centers, labels=unique_values)
-            plt.title(f"{axis} histogram")
-            figs.append(fig)
-        return figs
-
-    def evaluate_by_model_or_dataset(self, model_or_dataset_key: str, model_data: pd.DataFrame,
+    def evaluate_by_model_or_dataset(self, model_or_dataset_key: str, model: str, model_data: pd.DataFrame,
+                                     display_histograms: bool = False,
                                      split_option: str = None) -> None:
         """
         Evaluates data by the specified key (model or dataset) and splits if required.
@@ -125,12 +127,27 @@ class BestCombinationsDisplayer:
             model_datas = [model_data]
 
         for group, cur_data in model_datas.items():
-            figs = self._plot_histograms(cur_data, group)
-            st.write(f"Group: {group}, Number of samples: {len(cur_data)}")
-            cols = st.columns(len(figs))
-            for i, fig in enumerate(figs):
-                with cols[i]:
-                    st.pyplot(fig)
+            hists = self._plot_histograms(cur_data, group)
+            min_group, max_group = self.calculate_min_max_configurations(hists)
+            # wrtie with the name of the group blue color
+            st.markdown(f'<span style="color:blue">{group}</span>', unsafe_allow_html=True)
+
+            # check if there is None in min_group.values()
+            if None not in min_group.values():
+                st.markdown(f"**Min Group:** {min_group}")
+            if None not in max_group.values():
+                self.check_group_of_conf(min_group, model, cur_data.dataset.values)
+            st.markdown(f"**Max Group:** {max_group}")
+            self.check_group_of_conf(max_group, model, cur_data.dataset.values)
+            # add empty line
+            st.write("")
+            if display_histograms:
+                figs = self._create_figure(hists)
+                st.write(f"Group: {group}, Number of samples: {len(cur_data)}")
+                cols = st.columns(len(figs))
+                for i, fig in enumerate(figs):
+                    with cols[i]:
+                        st.pyplot(fig)
 
     def evaluate(self) -> None:
         """
@@ -139,6 +156,7 @@ class BestCombinationsDisplayer:
         Displays the best combinations and allows the user to split by model or dataset.
         """
         st.title("Evaluation")
+        display_histograms = st.checkbox("Display histograms")
         st.subheader("The table displays the evaluation of the best combinations of each model")
         models = self.best_combinations[BestCombinationsConstants.MODEL].unique()
 
@@ -147,7 +165,106 @@ class BestCombinationsDisplayer:
         model_data = model_data.sort_values(by=BestCombinationsConstants.DATASET).reset_index(drop=True)
         self.display_best_combinations(model_data)
         split_option = st.selectbox("Split the dataset to train and test by:", MMLUConstants.SPLIT_OPTIONS)
-        self.evaluate_by_model_or_dataset("model", model_data, split_option)
+        self.evaluate_by_model_or_dataset("model", model, model_data, display_histograms, split_option)
+
+    def calculate_min_max_configurations(self, hists: dict):
+        """
+        Calculates the minimum and maximum configurations for each axis based on the histograms.
+        @param hists:
+        @return:
+        """
+        min_results = {}
+        max_results = {}
+        for axis, data in hists.items():
+            max_value = max(data.values())
+            min_value = min(data.values())
+
+            # Check for ties in max and min values
+            max_keys = [k for k, v in data.items() if v == max_value]
+            min_keys = [k for k, v in data.items() if v == min_value]
+
+            # Decide what to append based on whether there are ties
+            if len(max_keys) == 1:
+                best_selection = max_keys[0]
+            else:
+                best_selection = None  # More than one key has the max value or all values are equal
+
+            if len(min_keys) == 1:
+                worst_selection = min_keys[0]
+            else:
+                worst_selection = None  # More than one key has the min value or all values are equal
+
+            min_results[axis] = worst_selection
+            max_results[axis] = best_selection
+
+        return min_results, max_results
+
+    def read_group_of_templates(self, model, template_name, datasets: List[str]) -> dict:
+        datasets_to_groups = {}
+        for dataset in datasets:
+            template_groups = self.read_group_of_template(model, dataset)
+            template_groups = template_groups[['statistic, pvalue, row is better than column', 'group']]
+            # change the value of the cell in the 'statistic, pvalue, row is better than column' if it is contains "best set:" rmpve
+            # it and save the name of the template itself
+            template_groups['statistic, pvalue, row is better than column'] = template_groups[
+                'statistic, pvalue, row is better than column'].map(
+                lambda x: x.replace("best set: ", "") if "best set: " in x else x)
+            # change the index of the dataframe to be the name of the template
+            result = template_groups.set_index('statistic, pvalue, row is better than column')
+            # take the index of the row equals to the template_name
+            chosen_row = result.loc[template_name]
+            chosen_group = chosen_row[ResultConstants.GROUP]
+            datasets_to_groups[dataset] = chosen_group
+        return datasets_to_groups
+
+
+
+    def read_group_of_template(self, model, dataset):
+        results_folder = self.file_path.parent
+        groups_path = results_folder / model / dataset / \
+                      Path(ResultConstants.ZERO_SHOT) / \
+                      Path(ResultConstants.EMPTY_SYSTEM_FORMAT) / \
+                      Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
+        template_groups = pd.read_csv(groups_path)
+        return template_groups
+
+    def check_group_of_conf(self, conf: dict, model: str, datasets: List[str]) -> None:
+        """
+        Checks the group of the configuration.
+        @param conf:
+        @param model:
+        @param group:
+        @return:
+        """
+        # 1. need to read metadata templates to get the template of the this confiuration
+        # 2. need to read the file of the groups of templates, and find the group of this template, that is the group of the configuration
+        templates_path = TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH
+        metadata_file = templates_path / TemplatesGeneratorConstants.TEMPLATES_METADATA
+        templates_metadata = pd.read_csv(metadata_file, index_col='template_name')
+
+        templates_metadata_mask = templates_metadata.apply(
+            lambda x: all([x[key] == value for key, value in conf.items()]), axis=1)
+        template = templates_metadata[templates_metadata_mask]
+        if len(template) == 0:
+            return 'None'
+        template_name = template.index[0]
+
+        datasets_to_groups = self.read_group_of_templates(model, template_name, datasets=datasets)
+        # calculate the statistics of the groups (how many times each group appears)
+
+        groups = list(datasets_to_groups.values())
+        groups_statistics = Counter(groups)
+        # calculate the percentage of the groups in the len of the datasets
+        groups_percentage = {group: count / len(datasets) for group, count in groups_statistics.items()}
+        # sort the groups by the percentage
+        groups_percentage = dict(sorted(groups_percentage.items(), key=lambda item: item[1], reverse=True))
+        # print the groups and the percentage tp streamlit
+        # st.write(f"Groups of the configuration: {conf}")
+        for group, percentage in groups_percentage.items():
+            st.write(f"Group: {group}, Percentage: {percentage:.2f}")
+
+
+
 
 
 if __name__ == "__main__":

@@ -110,10 +110,16 @@ class Constants:
         PERFORMANCE_SUMMARY = "performance_summary"
         BEST_COMBINATIONS = "best_combinations"
         CLUSTERING_RESULTS = "clustering_results"
+        GROUPED_LEADERBOARD = "grouped_leaderboard"
 
         ACCURACY_COLUMN = "accuracy"
         CHOOSE_ACROSS_AXES = True
         NOT_CHOOSE_ACROSS_AXES = False
+
+        ZERO_SHOT = "zero_shot"
+        EMPTY_SYSTEM_FORMAT = "empty_system_format"
+
+        GROUP = "group"
 
     class ClusteringConstants:
         RANDOM_STATE = 0
@@ -130,3 +136,4 @@ class Constants:
         DATASET = "dataset"
         MODEL = "model"
         TOP_N = 5
+        TEMPLATE = "template"
