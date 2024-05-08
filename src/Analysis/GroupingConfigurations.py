@@ -76,17 +76,27 @@ class GroupingConfigurations:
             if best_row_template in exclude_templates:
                 del exclude_templates[exclude_templates.index(best_row_template)]
             exclude_templates.append(best_row.template_name[0])
-            if i != 0:
-                # remove the "best set: " from the template name in the df
-                def process_index(index):
-                    """Process each index value to retain only the relevant part."""
-                    return [x.split(' ')[2] if 'best set: ' in x else x for x in index]
+            def process_index(index):
+                """Process each index value to retain only the relevant part."""
+                return [x.split(' ')[2] if 'best set: ' in x else x for x in index]
 
+            if i != -1:
+                # remove the "best set: " from the template name in the df
                 results.index = pd.Index(process_index(results.index))
                 # remove the
             if 'group' not in origin_results.columns:
                 origin_results['group'] = None
+            index_name = origin_results.index.name
+            origin_results.index = pd.Index(process_index(origin_results.index))
+            origin_results.index.name = index_name
+
             origin_results.loc[results.index, 'group'] = results['group']
+            # take the template column, every row is list, and flatten it
+            grouped_metadata_df['template_name'] = grouped_metadata_df['template_name'].apply(lambda x: x[0])
+            grouped_metadata_df.set_index('template_name', inplace=True)
+            grouped_metadata_df.index = pd.Index(process_index(grouped_metadata_df.index))
+
+            origin_results.loc[grouped_metadata_df.index, 'accuracy'] = grouped_metadata_df['accuracy']
             if len(exclude_templates) >= 56:
                 break
         return origin_results
@@ -103,7 +113,7 @@ class GroupingConfigurations:
         dataset_file_name = format_folder.parents[1].name
 
         grouped_result_file = format_folder / f"{ResultConstants.GROUPED_LEADERBOARD}.csv"
-        if not grouped_result_file.exists():
+        if not grouped_result_file.exists() or True:
             grouped_metadata_df = GroupingConfigurations.select_and_display_best_combination(dataset_file_name,
                                                                                              performance_summary_path,
                                                                                              comparison_matrix_path)
