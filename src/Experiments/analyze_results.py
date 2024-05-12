@@ -180,7 +180,7 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
                                        num_demos=experiment['num_demos'],
                                        demos_pool_size=experiment['demos_pool_size'] if "mmlu" not in experiment[
                                            "card"] else None,
-                                       max_instances=experiment['max_instances'],
+                                       max_instances=max(max([index['Index'] for index in experiment['results'][key]]) for key in experiment['results'])+1,
                                        template_name=experiment['template_name'])
     llm_dataset = llm_dataset_loader.load()
     loaded_datasets[template_hash] = llm_dataset
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     for model_name in models_names:
         print("Models to evaluate: ", model_name)
         datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
-        # datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
+        datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
         for dataset_folder in datasets:
             shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
             # shots = [shot for shot in shots if "one" in str(shot)]
@@ -229,8 +229,8 @@ if __name__ == "__main__":
                                         comparison_df = pd.read_csv(comparison_matrix_file)
                                         if results_file_number in comparison_df.columns and \
                                                 not comparison_df[results_file_number].isna().any() and \
-                                                all(['Score' in result for result in results[eval_on_value]]) and \
-                                                len(results[eval_on_value]) == 100:
+                                                all(['Score' in result for result in results[eval_on_value]]):
+                                                # and  len(results[eval_on_value]) == 100:
                                             # len(results_files) == pd.read_csv(comparison_matrix_file).shape[1] and \
                                             continue
                                     except pd.errors.EmptyDataError:
