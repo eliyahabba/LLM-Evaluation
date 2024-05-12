@@ -36,7 +36,7 @@ template_33,cards.mmlu.college_medicine,empty_system_format,0,10,100,0.450,0.450
 template_34,cards.mmlu.college_medicine,empty_system_format,0,10,100,0.340,0.340,accuracy,0.260,0.440,0.260,0.440,0.340,100
 template_35,cards.mmlu.college_medicine,empty_system_format,0,10,100,0.450,0.450,accuracy,0.350,0.550,0.350,0.550,0.450,100
 template_36,cards.mmlu.college_medicine,empty_system_format,0,10,100,0.350,0.350,accuracy,0.270,0.450,0.270,0.450,0.350,100
-template_37,cards.mmlu.college_medicine,empty_system_format,0,10,100,0.430,0.430,accuracy,0.330,0.520,0.330,0.520,0.430,100
+template_37,cards.mmlu.college_medicine,empty_system_format,0,10,100,0.444,0.444,accuracy,0.370,0.519,0.370,0.519,0.444,162
 template_38,cards.mmlu.college_medicine,empty_system_format,0,10,100,0.350,0.350,accuracy,0.270,0.450,0.270,0.450,0.350,100
 template_39,cards.mmlu.college_medicine,empty_system_format,0,10,100,0.420,0.420,accuracy,0.320,0.520,0.320,0.520,0.420,100
 template_40,cards.mmlu.college_medicine,empty_system_format,0,10,100,0.350,0.350,accuracy,0.270,0.450,0.270,0.450,0.350,100

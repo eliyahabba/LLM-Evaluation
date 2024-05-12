@@ -9,7 +9,7 @@ template_6,cards.mmlu.high_school_geography,empty_system_format,0,10,100,0.410,0
 template_7,cards.mmlu.high_school_geography,empty_system_format,0,10,100,0.490,0.490,accuracy,0.390,0.590,0.390,0.590,0.490,100
 template_8,cards.mmlu.high_school_geography,empty_system_format,0,10,100,0.500,0.500,accuracy,0.400,0.590,0.400,0.590,0.500,100
 template_9,cards.mmlu.high_school_geography,empty_system_format,0,10,100,0.510,0.510,accuracy,0.410,0.600,0.410,0.600,0.510,100
-template_10,cards.mmlu.high_school_geography,empty_system_format,0,10,100,0.410,0.410,accuracy,0.300,0.500,0.300,0.500,0.410,100
+template_10,cards.mmlu.high_school_geography,empty_system_format,0,10,100,0.420,0.420,accuracy,0.351,0.494,0.351,0.494,0.420,174
 template_11,cards.mmlu.high_school_geography,empty_system_format,0,10,100,0.460,0.460,accuracy,0.360,0.560,0.360,0.560,0.460,100
 template_12,cards.mmlu.high_school_geography,empty_system_format,0,10,100,0.440,0.440,accuracy,0.340,0.538,0.340,0.538,0.440,100
 template_13,cards.mmlu.high_school_geography,empty_system_format,0,10,100,0.490,0.490,accuracy,0.390,0.590,0.390,0.590,0.490,100
