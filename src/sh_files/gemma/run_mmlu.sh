@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --mem=22g
-#SBATCH --time=2-0
+#SBATCH --time=3:0:0
 #SBATCH --gres=gpu:1,vmem:14g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
