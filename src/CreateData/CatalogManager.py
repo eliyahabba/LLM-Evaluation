@@ -64,7 +64,7 @@ if __name__ == "__main__":
                      ".\n\nQuestion: {question}\nChoose from {numerals}\nAnswers:\n{choices}\nAnswer:",
         target_field="answer",
         choices_separator="\n",
-        add_numerals_as_field="numerals",
+        enumerator="numerals",
         postprocessors=["processors.first_character"],
     )
 

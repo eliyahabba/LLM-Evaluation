@@ -8,6 +8,9 @@ from src.utils.Constants import Constants
 
 ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
+
+mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
 
 
 class ExperimentsResultsFolder:
@@ -65,6 +68,10 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
     experiments_results = ExperimentsResultsFolder(eval_on)
     model_name = sorted_file_paths[0].parents[3].name.split("-")[0].lower()
     dataset_name = sorted_file_paths[0].parents[2].name
+    if "mmlu" not in dataset_name:
+        return
+    mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
+    dataset_size = mmlu_dataset_sizes[mmlu_dataset_sizes["Category"] == dataset_name.split("mmlu.")[1]]
     exs_numbers = []
     all_files_names = [f"experiment_template_{i}" for i in range(0, 56)]
     sorted_file_names = [file.name.split(".json")[0] for file in sorted_file_paths]
@@ -77,7 +84,8 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
             results_counter = experiments_results.count_results(results_file)
             # if one of the values of results_counter < 100 then print the results_counter
             exs = int(results_file.name.split("experiment_template_")[1].split(".")[0])
-            if any([value < 100 for value in results_counter.values()]):
+            if any([results_counter[key] < dataset_size.iloc[0].to_dict()[key] for key
+                    in results_counter.keys()]):
                 exs_numbers.append(exs)
                 # print(f"sbatch {model_name} /run_mmlu.sh cards.{dataset_name} 0 56")
         except Exception as e:
@@ -87,6 +95,7 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
         min_exs = min(exs_numbers)
         max_exs = max(exs_numbers) + 1
         print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {min_exs} {max_exs};")
+    # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {56};")
 
 
 def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict = None):
@@ -113,7 +122,7 @@ def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict =
 if __name__ == "__main__":
     # Load the model and the dataset
     results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
-    eval_on = ExperimentConstants.EVALUATE_ON
+    eval_on = ExperimentConstants.EVALUATE_ON_INFERENCE
     model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
     # model_dataset_runner.run_function_on_all_models_and_datasets(check_comparison_matrix)
     model_dataset_runner.run_function_on_all_models_and_datasets(print_future_experiments)

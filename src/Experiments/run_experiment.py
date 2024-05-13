@@ -100,8 +100,12 @@ class ExperimentRunner:
                 for key in data:
                     if key != "results":
                         if data[key] != entry_experiment[key]:
-                            raise ValueError(f"The metadata of the experiment in {results_file_path} "
-                                             f"is different from the one in the current experiment.")
+                            if key == "max_instances":
+                                print(f"max_instances in the current experiment: {entry_experiment[key]}")
+                                print(f"max_instances in the previous experiment: {data[key]}")
+                            else:
+                                raise ValueError(f"The metadata of the experiment in {results_file_path} "
+                                                 f"is different from the one in the current experiment.")
                 # print blue message
             print(colored(f"Results already exist in {results_file_path}", "blue"))
             return results_file_path
@@ -152,7 +156,7 @@ def main():
     args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
     args.add_argument("--batch_size", type=int, default=ExperimentConstants.BATCH_SIZE, help="The batch size.")
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
-    args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON,
+    args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON_INFERENCE,
                       help='The data types to evaluate the model on.')
     args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
     args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
@@ -166,15 +170,8 @@ def main():
     args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
     # map between the model name to the real model name from the constants
     args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
-    if Utils.get_card_name(args.card) == Constants.DatasetsConstants.MMLU_GENERAL:
-        # run on all the MMLU datasets with a loop
-        for card in MMLUConstants.MMLU_DATASETS_SAMPLE:
-            args.card = f"cards.{card}"
-            runner = ExperimentRunner(args)
-            runner.run_experiment()
-    else:
-        runner = ExperimentRunner(args)
-        runner.run_experiment()
+    runner = ExperimentRunner(args)
+    runner.run_experiment()
 
 
 if __name__ == "__main__":

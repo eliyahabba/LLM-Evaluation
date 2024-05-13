@@ -8,47 +8,7 @@ class Constants:
         SCIQ = "sciq"
         RACE_ALL = "race_all"
         AI2_ARC_ARC_EASY = "ai2_arc.arc_easy"
-        MMLU_GENERAL = "mmlu"
         HELLASWAG = "hellaswag"
-        # MMLU_DATASETS_SAMPLE = ['mmlu.abstract_algebra',
-        #                         'mmlu.anatomy',
-        #                         'mmlu.astronomy',
-        #                         'mmlu.business_ethics'
-        #                         'mmlu.clinical_knowledge',
-        #
-        #                         'mmlu.college_biology',
-        #                         'mmlu.college_computer_science',
-        #
-        #                         'mmlu.college_chemistry',
-        #                         'mmlu.college_mathematics', 'mmlu.college_medicine',
-        #                         'mmlu.college_physics',
-        #                         'mmlu.computer_security', 'mmlu.conceptual_physics', 'mmlu.econometrics',
-        #                         'mmlu.formal_logic', 'mmlu.high_school_biology', 'mmlu.high_school_chemistry',
-        #                         'mmlu.high_school_computer_science',
-        #                         'mmlu.high_school_european_history',
-        #
-        #                         'mmlu.high_school_geography', 'mmlu.high_school_government_and_politics',
-        #                         'mmlu.high_school_macroeconomics', 'mmlu.high_school_mathematics', 'mmlu.high_school_microeconomics',
-        #                         'mmlu.high_school_physics',
-        #
-        #                         'mmlu.high_school_psychology', 'mmlu.high_school_statistics', 'mmlu.high_school_us_history',
-        #                         'mmlu.high_school_world_history',
-        #                         'mmlu.human_aging', 'mmlu.human_sexuality', 'mmlu.international_law', 'mmlu.jurisprudence', 'mmlu.logical_fallacies',
-        #
-        #
-        #                         'mmlu.machine_learning', 'mmlu.management', 'mmlu.marketing', 'mmlu.medical_genetics', 'mmlu.miscellaneous',
-        #                         'mmlu.moral_disputes',
-        #                         'mmlu.moral_scenarios', 'mmlu.nutrition', 'mmlu.philosophy', 'mmlu.prehistory', 'mmlu.professional_accounting',
-        #
-        #                         'mmlu.professional_law',
-        #                         'mmlu.professional_medicine', 'mmlu.professional_psychology', 'mmlu.public_relations', 'mmlu.security_studies',
-        #                         'mmlu.sociology',
-        #                         'mmlu.us_foreign_policy', 'mmlu.virology', 'mmlu.world_religions',
-        #
-        #
-        #                         'mmlu.electrical_engineering', 'mmlu.elementary_mathematics',
-        #                         'mmlu.global_facts', 'mmlu.machine_learning',
-        #                         'mmlu.medical_genetics', 'mmlu.professional_accounting']
         DATASET_NAMES = [SCIQ, RACE_ALL, AI2_ARC_ARC_EASY]
         DATASET_NAMES.extend(MMLUConstants.MMLU_DATASETS_SAMPLE)
 
@@ -74,8 +34,9 @@ class Constants:
     class TemplatesGeneratorConstants:
         MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplates"
         MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_FOLDER_NAME
-
+        DATA_PATH = Path(__file__).parents[2] / "Data"
         TEMPLATES_METADATA = "templates_metadata.csv"
+        MMLU_DATASET_SIZES_PATH = DATA_PATH / "mmlu_datasets_sizes.csv"
 
     class ExperimentConstants:
         TEMPLATES_RANGE = [0, 1]
@@ -95,7 +56,8 @@ class Constants:
         SYSTEM_FORMAT_INDEX = 0
 
         MAX_INSTANCES = 1000
-        EVALUATE_ON = ['test']
+        EVALUATE_ON_INFERENCE = ['validation', 'test']
+        EVALUATE_ON_ANALYZE = ['test']
         TEMPLATE_NUM = 0
         NUM_DEMOS = 0
         DEMOS_POOL_SIZE = 10

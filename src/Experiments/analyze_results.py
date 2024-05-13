@@ -192,7 +192,7 @@ if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--model_index", type=int, default=0)
     args.add_argument("--results_folder", type=str, default=ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH)
-    args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON)
+    args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
     args = args.parse_args()
 
     models_names = sorted([file for file in args.results_folder.glob("*") if file.is_dir()],
@@ -200,11 +200,13 @@ if __name__ == "__main__":
     # models_names = [models_name for models_name in models_names if "Lla" in str(models_name)]
     models_names = models_names if args.model_index is None else [models_names[args.model_index]]
     error_files, errors_msgs = [], []
+    mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
     for model_name in models_names:
         print("Models to evaluate: ", model_name)
         datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
         datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
         for dataset_folder in datasets:
+            mmlu_dataset_sizes = mmlu_dataset_sizes[mmlu_dataset_sizes["dataset"] == dataset_folder.name.split("mmlu.")[1]]
             shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
             # shots = [shot for shot in shots if "one" in str(shot)]
             loaded_datasets = {}
@@ -218,6 +220,8 @@ if __name__ == "__main__":
 
                     summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in args.eval_on}
                     for eval_on_value in args.eval_on:
+                        size = mmlu_dataset_sizes.iloc[0][eval_on_value]
+
                         comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
                         for results_file in tqdm(results_files):
                             try:
@@ -229,6 +233,7 @@ if __name__ == "__main__":
                                         comparison_df = pd.read_csv(comparison_matrix_file)
                                         if results_file_number in comparison_df.columns and \
                                                 not comparison_df[results_file_number].isna().any() and \
+                                                size == comparison_df[results_file_number].iloc[0] and \
                                                 all(['Score' in result for result in results[eval_on_value]]):
                                                 # and  len(results[eval_on_value]) == 100:
                                             # len(results_files) == pd.read_csv(comparison_matrix_file).shape[1] and \
