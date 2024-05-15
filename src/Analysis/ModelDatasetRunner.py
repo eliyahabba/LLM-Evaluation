@@ -19,9 +19,9 @@ class ModelDatasetRunner:
                                                 ) -> None:
         results_folder = Path(self.structured_input_folder_path)
         eval_on = self.evaluate_on
-        models_names = sorted([file for file in results_folder.glob("*") if file.is_dir()],
-                              key=lambda x: x.name.lower())
-        for model_name in models_names:
+        models_names = sorted([model.split('/')[1] for model in LLMProcessorConstants.MODEL_NAMES.values()])
+        models_folders = [Path(results_folder / model_name) for model_name in models_names]
+        for model_name in models_folders:
             datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
             for dataset_folder in datasets:
                 shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
@@ -47,7 +47,7 @@ def check_results_files(folder, eval_value):
 
 if __name__ == "__main__":
     results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
-    eval_on = ExperimentConstants.EVALUATE_ON
+    eval_on = ExperimentConstants.EVALUATE_ON_INFERENCE
     runner = ModelDatasetRunner(results_folder, eval_on)
     runner.run_function_on_all_models_and_datasets(check_comparison_matrix)
     runner.run_function_on_all_models_and_datasets(check_results_files)
