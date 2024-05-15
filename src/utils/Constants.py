@@ -15,13 +15,16 @@ class Constants:
     class LLMProcessorConstants:
         MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
         LLAMA_MODEL = "meta-llama/Llama-2-7b-chat-hf"
+        LLAMA13B_MODEL = "meta-llama/Llama-2-13b-chat-hf"
         GEMMA_MODEL = "google/gemma-7b-it"
         PHI_MODEL = "microsoft/phi-2"
         OLMO_MODEL = "allenai/OLMo-7B-Instruct"
         QWEN_MODEL = "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8"
         QWEN2_MODEL = "Qwen/Qwen-7B-Chat-Int8"
         QWEN3_MODEL = "Qwen/Qwen1.5-MoE-A2.7B"
-        MODEL_NAMES = {"PHI": PHI_MODEL, "MISTRAL": MISTRAL_MODEL, "LLAMA": LLAMA_MODEL, "GEMMA": GEMMA_MODEL,
+        MODEL_NAMES = {"MISTRAL": MISTRAL_MODEL, "LLAMA": LLAMA_MODEL,
+                        "LLAMA13B": LLAMA13B_MODEL,
+                       "GEMMA": GEMMA_MODEL,
                        "OLMO": OLMO_MODEL}
         OLD_MODEL = {"QWEN": QWEN_MODEL, "QWEN2": QWEN2_MODEL, "QWEN3": QWEN3_MODEL}
 
