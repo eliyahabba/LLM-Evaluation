@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List, Tuple
 
 from termcolor import colored
+from tqdm import tqdm
 
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
@@ -65,7 +66,7 @@ class LLMPredictor:
 
         # run the model on the dataset and save the results in the file after each batch
         counter_idx = 0
-        for batch_start in range(0, len(filter_eval_set), self.batch_size):
+        for batch_start in tqdm(range(0, len(filter_eval_set), self.batch_size)):
             batch_instances = filter_eval_set[batch_start:batch_start + self.batch_size]
             batch_indexes = filter_eval_set_indexes[batch_start:batch_start + self.batch_size]
 
