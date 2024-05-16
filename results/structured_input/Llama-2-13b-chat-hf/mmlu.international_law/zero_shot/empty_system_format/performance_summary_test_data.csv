@@ -43,4 +43,15 @@ template_40,cards.mmlu.international_law,empty_system_format,0,10,1000,0.645,0.6
 template_41,cards.mmlu.international_law,empty_system_format,0,10,1000,0.545,0.545,accuracy,0.455,0.628,0.455,0.628,0.545,121
 template_42,cards.mmlu.international_law,empty_system_format,0,10,1000,0.380,0.380,accuracy,0.298,0.471,0.298,0.471,0.380,121
 template_43,cards.mmlu.international_law,empty_system_format,0,10,1000,0.430,0.430,accuracy,0.347,0.521,0.347,0.521,0.430,121
-template_44,cards.mmlu.international_law,empty_system_format,0,10,1000,0.534,0.534,accuracy,0.432,0.636,0.432,0.636,0.534,88
+template_44,cards.mmlu.international_law,empty_system_format,0,10,1000,0.570,0.570,accuracy,0.479,0.653,0.479,0.653,0.570,121
+template_45,cards.mmlu.international_law,empty_system_format,0,10,1000,0.620,0.620,accuracy,0.521,0.702,0.521,0.702,0.620,121
+template_46,cards.mmlu.international_law,empty_system_format,0,10,1000,0.455,0.455,accuracy,0.372,0.537,0.372,0.537,0.455,121
+template_47,cards.mmlu.international_law,empty_system_format,0,10,1000,0.488,0.488,accuracy,0.392,0.562,0.392,0.562,0.488,121
+template_48,cards.mmlu.international_law,empty_system_format,0,10,1000,0.570,0.570,accuracy,0.479,0.653,0.479,0.653,0.570,121
+template_49,cards.mmlu.international_law,empty_system_format,0,10,1000,0.529,0.529,accuracy,0.438,0.612,0.438,0.612,0.529,121
+template_50,cards.mmlu.international_law,empty_system_format,0,10,1000,0.562,0.562,accuracy,0.463,0.645,0.463,0.645,0.562,121
+template_51,cards.mmlu.international_law,empty_system_format,0,10,1000,0.570,0.570,accuracy,0.479,0.653,0.479,0.653,0.570,121
+template_52,cards.mmlu.international_law,empty_system_format,0,10,1000,0.545,0.545,accuracy,0.455,0.628,0.455,0.628,0.545,121
+template_53,cards.mmlu.international_law,empty_system_format,0,10,1000,0.529,0.529,accuracy,0.430,0.603,0.430,0.603,0.529,121
+template_54,cards.mmlu.international_law,empty_system_format,0,10,1000,0.430,0.430,accuracy,0.339,0.515,0.339,0.515,0.430,121
+template_55,cards.mmlu.international_law,empty_system_format,0,10,1000,0.430,0.430,accuracy,0.339,0.521,0.339,0.521,0.430,121

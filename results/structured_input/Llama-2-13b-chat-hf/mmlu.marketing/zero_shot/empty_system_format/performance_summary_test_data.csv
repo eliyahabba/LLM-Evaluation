@@ -23,3 +23,16 @@ template_20,cards.mmlu.marketing,empty_system_format,0,10,1000,0.581,0.581,accur
 template_21,cards.mmlu.marketing,empty_system_format,0,10,1000,0.577,0.577,accuracy,0.517,0.639,0.517,0.639,0.577,234
 template_22,cards.mmlu.marketing,empty_system_format,0,10,1000,0.556,0.556,accuracy,0.496,0.620,0.496,0.620,0.556,234
 template_23,cards.mmlu.marketing,empty_system_format,0,10,1000,0.560,0.560,accuracy,0.500,0.620,0.500,0.620,0.560,234
+template_24,cards.mmlu.marketing,empty_system_format,0,10,1000,0.491,0.491,accuracy,0.423,0.556,0.423,0.556,0.491,234
+template_25,cards.mmlu.marketing,empty_system_format,0,10,1000,0.513,0.513,accuracy,0.444,0.571,0.444,0.571,0.513,234
+template_26,cards.mmlu.marketing,empty_system_format,0,10,1000,0.491,0.491,accuracy,0.427,0.556,0.427,0.556,0.491,234
+template_27,cards.mmlu.marketing,empty_system_format,0,10,1000,0.547,0.547,accuracy,0.479,0.603,0.479,0.603,0.547,234
+template_28,cards.mmlu.marketing,empty_system_format,0,10,1000,0.752,0.752,accuracy,0.697,0.808,0.697,0.808,0.752,234
+template_29,cards.mmlu.marketing,empty_system_format,0,10,1000,0.782,0.782,accuracy,0.726,0.829,0.726,0.829,0.782,234
+template_30,cards.mmlu.marketing,empty_system_format,0,10,1000,0.675,0.675,accuracy,0.605,0.727,0.605,0.727,0.675,234
+template_31,cards.mmlu.marketing,empty_system_format,0,10,1000,0.697,0.697,accuracy,0.632,0.752,0.632,0.752,0.697,234
+template_32,cards.mmlu.marketing,empty_system_format,0,10,1000,0.714,0.714,accuracy,0.650,0.765,0.650,0.765,0.714,234
+template_33,cards.mmlu.marketing,empty_system_format,0,10,1000,0.739,0.739,accuracy,0.675,0.791,0.675,0.791,0.739,234
+template_34,cards.mmlu.marketing,empty_system_format,0,10,1000,0.722,0.722,accuracy,0.662,0.774,0.662,0.774,0.722,234
+template_35,cards.mmlu.marketing,empty_system_format,0,10,1000,0.731,0.731,accuracy,0.671,0.778,0.671,0.778,0.731,234
+template_36,cards.mmlu.marketing,empty_system_format,0,10,1000,0.755,0.755,accuracy,0.664,0.840,0.664,0.840,0.755,94
