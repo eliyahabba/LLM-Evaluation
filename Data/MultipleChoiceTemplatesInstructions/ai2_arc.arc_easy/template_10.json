@@ -1,0 +1,16 @@
+{
+    "type": "multiple_choice_template",
+    "input_format": "Topic: [topic] Question: [question] Choices: [choices] Answer: [answer]\nTopic: {topic} Question: {question} Choices: {choices} Answer:",
+    "choices_field": "choices",
+    "target_field": "answer",
+    "choices_separator": " OR ",
+    "enumerator": "capitals",
+    "source_choice_format": "{choice_numeral}. {choice_text}",
+    "target_choice_format": "{choice_numeral}. {choice_text}",
+    "shuffle_choices": false,
+    "postprocessors": [
+        "processors.to_string_stripped",
+        "processors.take_first_non_empty_line",
+        "processors.match_closest_option"
+    ]
+}
