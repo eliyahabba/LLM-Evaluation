@@ -38,8 +38,8 @@ template_35,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.420,0.420,a
 template_36,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.450,0.450,accuracy,0.370,0.550,0.370,0.550,0.450,100
 template_37,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.420,0.420,accuracy,0.320,0.520,0.320,0.520,0.420,100
 template_38,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.450,0.450,accuracy,0.360,0.550,0.360,0.550,0.450,100
-template_39,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.400,0.400,accuracy,0.267,0.517,0.267,0.517,0.400,60
-template_40,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.400,0.400,accuracy,0.100,0.700,0.100,0.700,0.400,10
+template_39,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.360,0.360,accuracy,0.262,0.450,0.262,0.450,0.360,100
+template_40,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.467,0.467,accuracy,0.370,0.576,0.370,0.576,0.467,92
 template_41,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.500,0.500,accuracy,0.200,0.800,0.200,0.800,0.500,10
 template_42,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.300,0.300,accuracy,0.100,0.700,0.100,0.700,0.300,10
 template_43,cards.mmlu.business_ethics,empty_system_format,0,10,10,0.400,0.400,accuracy,0.100,0.700,0.100,0.700,0.400,10

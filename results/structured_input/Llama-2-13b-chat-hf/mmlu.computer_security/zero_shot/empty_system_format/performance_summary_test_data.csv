@@ -42,4 +42,16 @@ template_39,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.480,0.4
 template_40,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.470,0.470,accuracy,0.380,0.570,0.380,0.570,0.470,100
 template_41,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.480,0.480,accuracy,0.390,0.580,0.390,0.580,0.480,100
 template_42,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.410,0.410,accuracy,0.316,0.510,0.316,0.510,0.410,100
-template_43,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.450,0.450,accuracy,0.300,0.625,0.300,0.625,0.450,40
+template_43,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.490,0.490,accuracy,0.390,0.580,0.390,0.580,0.490,100
+template_44,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.440,0.440,accuracy,0.340,0.540,0.340,0.540,0.440,100
+template_45,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.440,0.440,accuracy,0.350,0.530,0.350,0.530,0.440,100
+template_46,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.530,0.530,accuracy,0.430,0.630,0.430,0.630,0.530,100
+template_47,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.460,0.460,accuracy,0.360,0.560,0.360,0.560,0.460,100
+template_48,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.590,0.590,accuracy,0.490,0.690,0.490,0.690,0.590,100
+template_49,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.520,0.520,accuracy,0.410,0.610,0.410,0.610,0.520,100
+template_50,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.550,0.550,accuracy,0.440,0.640,0.440,0.640,0.550,100
+template_51,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.540,0.540,accuracy,0.440,0.630,0.440,0.630,0.540,100
+template_52,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.470,0.470,accuracy,0.370,0.570,0.370,0.570,0.470,100
+template_53,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.480,0.480,accuracy,0.390,0.580,0.390,0.580,0.480,100
+template_54,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.470,0.470,accuracy,0.380,0.570,0.380,0.570,0.470,100
+template_55,cards.mmlu.computer_security,empty_system_format,0,10,1000,0.390,0.390,accuracy,0.310,0.490,0.310,0.490,0.390,100
