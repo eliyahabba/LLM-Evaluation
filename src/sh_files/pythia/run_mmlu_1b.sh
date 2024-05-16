@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --mem=20g
-#SBATCH --time=5:0:0
-#SBATCH --gres=gpu:1,vmem:12g
+#SBATCH --mem=10g
+#SBATCH --time=3:0:0
+#SBATCH --gres=gpu:1,vmem:8g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
@@ -20,4 +20,4 @@ cd $dir
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name MISTRAL --card $1 --template_range $2 $3
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name PYTHIA_1B --card $1 --template_range $2 $3  --not_load_in_8bit
