@@ -67,6 +67,11 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
 
     experiments_results = ExperimentsResultsFolder(eval_on)
     model_name = sorted_file_paths[0].parents[3].name.split("-")[0].lower()
+    if "llama" in model_name:
+        # check if it 7B o3 13B or 70B and add the correct model name
+        params_num = sorted_file_paths[0].parents[3].name.split("-")[2].lower()
+        assert "b" in params_num
+        model_name = f"{model_name}{params_num.split('b')[0]}"
     dataset_name = sorted_file_paths[0].parents[2].name
     if "mmlu" not in dataset_name:
         return
@@ -94,7 +99,9 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
     if exs_numbers:
         min_exs = min(exs_numbers)
         max_exs = max(exs_numbers) + 1
-        print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {min_exs} {max_exs};")
+        print(f"sbatch --output='{model_name}_{dataset_name.split('mmlu.')[1]}_{min_exs}_{max_exs}' "
+              f"{model_name}/run_mmlu.sh cards.{dataset_name} {min_exs} {max_exs}"
+              f" ;")
     # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {56};")
 
 
