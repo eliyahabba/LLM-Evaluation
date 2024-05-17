@@ -100,6 +100,7 @@ class Constants:
         EMPTY_SYSTEM_FORMAT = "empty_system_format"
 
         GROUP = "group"
+        TEMPLATE_NAME = "template_name"
 
     class ClusteringConstants:
         RANDOM_STATE = 0

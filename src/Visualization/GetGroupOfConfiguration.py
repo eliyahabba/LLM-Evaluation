@@ -11,9 +11,8 @@ ResultConstants = Constants.ResultConstants
 
 
 class GetGroupOfConfiguration:
-    def __init__(self, results_folder, model):
-        self.results_folder = results_folder
-        self.model = model
+    def __init__(self, model_results_path):
+        self.model_results_path = model_results_path
 
     def read_group_of_templates(self, template_name, datasets: List[str]) -> list:
         datasets_to_groups = {}
@@ -35,15 +34,15 @@ class GetGroupOfConfiguration:
 
             # count the percentage of the group in the dataset
             group_percentage = round(dataset_configurations_groups[
-                                         dataset_configurations_groups[ResultConstants.GROUP] == chosen_group].shape[
-                                         0] / \
-                                     dataset_configurations_groups.shape[0], 2)
+                                     dataset_configurations_groups[ResultConstants.GROUP] == chosen_group].shape[0] / \
+                                     dataset_configurations_groups.shape[0]
+                                     , 2)
             datasets_to_groups[dataset] = chosen_group, group_percentage
 
         return list(datasets_to_groups.values())
 
     def read_group_of_template(self, dataset):
-        groups_path = self.results_folder / self.model / dataset / \
+        groups_path = self.model_results_path / dataset / \
                       Path(ResultConstants.ZERO_SHOT) / \
                       Path(ResultConstants.EMPTY_SYSTEM_FORMAT) / \
                       Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
