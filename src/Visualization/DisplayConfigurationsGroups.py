@@ -14,11 +14,11 @@ ResultConstants = Constants.ResultConstants
 
 
 class DisplayConfigurationsGroups:
-    def __init__(self, results_folder, templates_metadata):
-        self.results_folder = results_folder
+    def __init__(self, model_results_path, templates_metadata):
+        self.model_results_path = model_results_path
         self.templates_metadata = templates_metadata
 
-    def check_the_group_of_conf(self, configuration: dict, model: str, datasets: List[str]) -> None:
+    def check_the_group_of_conf(self, configuration: dict, datasets: List[str]) -> None:
         """
         Checks the group of the configuration.
         @param configuration:
@@ -38,7 +38,7 @@ class DisplayConfigurationsGroups:
                 lambda x: all([x[key] == value for key, value in combination.items()]), axis=1)
 
             chosen_template_name = self.templates_metadata[templates_metadata_mask].index[0]
-            get_group_of_configuration = GetGroupOfConfiguration(self.results_folder, model)
+            get_group_of_configuration = GetGroupOfConfiguration(self.model_results_path)
             chosen_groups_with_percentages = get_group_of_configuration.read_group_of_templates(chosen_template_name,
                                                                                                 datasets=datasets)
             # calculate the statistics of the groups (how many times each group appears)

@@ -120,8 +120,8 @@ class ExperimentRunner:
         """
         min_template, max_template = self.args.template_range
         llm_proc = LLMProcessor(model_name=self.args.model_name,
-                                load_in_4bit=self.args.not_load_in_4bit,
-                                load_in_8bit=self.args.not_load_in_8bit,
+                                load_in_4bit=self.args.load_in_4bit,
+                                load_in_8bit=self.args.load_in_8bit,
                                 trust_remote_code=self.args.trust_remote_code,
                                 return_token_type_ids=self.args.not_return_token_type_ids)
         for template_num in range(min_template, max_template):
@@ -148,6 +148,21 @@ class ExperimentRunner:
         llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
 
 
+def parser_bit_precision(args: argparse.Namespace) -> Tuple[bool, bool]:
+    # Resolve conflicts and decide final settings
+    if args.load_in_4bit:
+        load_in_4bit = True
+        load_in_8bit = False
+    elif args.load_in_8bit:
+        load_in_4bit = False
+        load_in_8bit = True
+    else:
+        load_in_4bit = False
+        load_in_8bit = False
+
+    return load_in_4bit, load_in_8bit
+
+
 def main():
     args = argparse.ArgumentParser()
     args = ReadLLMParams.read_llm_params(args)
@@ -166,6 +181,9 @@ def main():
                       help="Specify the range of templates to run the experiment on (e.g., 1 10).")
     # add param
     args = args.parse_args()
+    # check if load_in_4bit or not_load_in_4bit
+    args.load_in_4bit, args.load_in_8bit = parser_bit_precision(args)
+
     # add the syte  format to the args
     args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
     # map between the model name to the real model name from the constants

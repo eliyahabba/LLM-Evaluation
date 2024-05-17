@@ -7,11 +7,10 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from src.Visualization.DisplayConfigurationsGroups import DisplayConfigurationsGroups
-
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
+from src.Visualization.DisplayConfigurationsGroups import DisplayConfigurationsGroups
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.utils.Constants import Constants
 from src.utils.MMLUConstants import MMLUConstants
@@ -34,6 +33,7 @@ class BestCombinationsDisplayer:
         @param file_path: Path to the CSV file containing the best combinations.
         @param override_options: Dictionary containing options to override histograms.
         """
+        self.model_results_path = None
         self.file_path: Path = file_path
         self.results_folder = self.file_path.parent
         self.override_options: dict = override_options
@@ -92,7 +92,7 @@ class BestCombinationsDisplayer:
             figs.append(fig)
         return figs
 
-    def _plot_histograms(self, cur_data: pd.DataFrame) -> dict:
+    def _create_histograms_plots(self, cur_data: pd.DataFrame) -> dict:
         """
         Plots histograms for each axis based on the current data.
 
@@ -136,7 +136,7 @@ class BestCombinationsDisplayer:
 
         return group_or_top_k, top_k
 
-    def evaluate_the_model(self, model: str, model_data: pd.DataFrame,
+    def evaluate_the_model(self, model_data: pd.DataFrame,
                            display_histograms: bool = False,
                            split_option: str = None) -> None:
         """
@@ -147,17 +147,18 @@ class BestCombinationsDisplayer:
         """
         model_data_splitted = self.split_data_by_option(model_data, split_option)
         group_or_top_k, top_k = self.choose_group_or_top_k()
+        display_configurations_groups = DisplayConfigurationsGroups(self.model_results_path, self.templates_metadata)
 
         for group_name, cur_data in model_data_splitted.items():
             # read the df of the current group
             dataset_names = cur_data.dataset.values
-            datasets_of_the_current_group = self.get_datasets_of_the_current_group(model, group_or_top_k, top_k,
+            datasets_of_the_current_group = self.get_datasets_of_the_current_group(group_or_top_k, top_k,
                                                                                    dataset_names)
             # concatenate the dfs to new df
             best_templates_of_cur_group = [df.index.values.tolist() for df in datasets_of_the_current_group]
             # map between the name of template and configuration
             selected_configurations_df = self.convert_templates_names_to_conf_values(best_templates_of_cur_group)
-            configurations_counter = self._plot_histograms(selected_configurations_df)
+            configurations_counter = self._create_histograms_plots(selected_configurations_df)
             st.markdown(f'<span style="font-size: 20px; color:blue">{group_name}</span>', unsafe_allow_html=True)
 
             if display_histograms:
@@ -165,9 +166,7 @@ class BestCombinationsDisplayer:
 
             most_common_configuration = self.calculate_most_common_configurations(configurations_counter)
             st.markdown(f'<span style="font-size: 17px;">**Best configurations**</span>', unsafe_allow_html=True)
-            display_configurations_groups = DisplayConfigurationsGroups(self.results_folder, self.templates_metadata)
-            display_configurations_groups.check_the_group_of_conf(most_common_configuration, model,
-                                                                  cur_data.dataset.values)
+            display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values)
             # add empty line
             st.write("")
 
@@ -190,13 +189,14 @@ class BestCombinationsDisplayer:
         models = self.best_combinations[BestCombinationsConstants.MODEL].unique()
 
         model = st.selectbox("Choose a model", models)
+        self.model_results_path = self.results_folder / model
         model_data = self.best_combinations[self.best_combinations[BestCombinationsConstants.MODEL] == model]
         model_data = model_data.sort_values(by=BestCombinationsConstants.DATASET).reset_index(drop=True)
         self._add_mmlu_columns(model_data)
 
         split_option = st.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
 
-        self.evaluate_the_model(model, model_data, display_histograms, split_option)
+        self.evaluate_the_model(model_data, display_histograms, split_option)
 
     def calculate_most_common_configurations(self, hists: dict):
         """
@@ -213,12 +213,11 @@ class BestCombinationsDisplayer:
 
         return max_results
 
-    def get_datasets_of_the_current_group(self, model: str, group_or_top_k: str, top_k: int, dataset_names: List[str]):
+    def get_datasets_of_the_current_group(self, group_or_top_k: str, top_k: int, dataset_names: List[str]):
         dfs = []
 
         for dataset_name in dataset_names:
-            results_folder = self.file_path.parent
-            groups_path = results_folder / model / dataset_name / \
+            groups_path = self.model_results_path / dataset_name / \
                           Path(ResultConstants.ZERO_SHOT) / \
                           Path(ResultConstants.EMPTY_SYSTEM_FORMAT) / \
                           Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
