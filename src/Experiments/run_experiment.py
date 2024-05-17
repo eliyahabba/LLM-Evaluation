@@ -12,7 +12,6 @@ from src.CreateData.DatasetLoader import DatasetLoader
 from src.ModelsPredictors.LLMPredictor import LLMPredictor
 from src.ModelsPredictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
-from src.utils.MMLUConstants import MMLUConstants
 from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils
 
@@ -30,14 +29,15 @@ class ExperimentRunner:
     def __init__(self, args):
         self.args = args
 
-    def load_template(self, template_num: int) -> Tuple[str, Template]:
+    def load_template(self, template_num: int, multiple_choice_path) -> \
+    Tuple[str, Template]:
         """
         Loads the template from the specified path.
         @return: The template
         """
         template_name = Utils.get_template_name(template_num)
         catalog_manager = CatalogManager(
-            Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH, self.args.card))
+            Utils.get_card_path(multiple_choice_path, self.args.card))
         template = catalog_manager.load_from_catalog(template_name)
         return template_name, template
 
@@ -132,7 +132,7 @@ class ExperimentRunner:
             print(colored(f"Time of the experiment: {round((end - start) / 60, 2)} minutes", "blue"))
 
     def run_single_experiment(self, llm_proc: LLMProcessor, template_num: int) -> None:
-        template_name, template = self.load_template(template_num)
+        template_name, template = self.load_template(template_num, multiple_choice_path=self.args.multiple_choice_path)
         llm_dataset_loader = DatasetLoader(card=self.args.card,
                                            template=template,
                                            system_format=self.args.system_format,
@@ -170,6 +170,7 @@ def main():
     args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
     # map between the model name to the real model name from the constants
     args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
+    args.multiple_choice_path = TemplatesGeneratorConstants.DATA_PATH / Path(args.multiple_choice_name)
     runner = ExperimentRunner(args)
     runner.run_experiment()
 
