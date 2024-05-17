@@ -49,3 +49,5 @@ template_46,cards.mmlu.prehistory,empty_system_format,0,10,1000,0.512,0.512,accu
 template_47,cards.mmlu.prehistory,empty_system_format,0,10,1000,0.485,0.485,accuracy,0.429,0.537,0.429,0.537,0.485,324
 template_48,cards.mmlu.prehistory,empty_system_format,0,10,1000,0.503,0.503,accuracy,0.451,0.559,0.451,0.559,0.503,324
 template_49,cards.mmlu.prehistory,empty_system_format,0,10,1000,0.504,0.504,accuracy,0.448,0.567,0.448,0.567,0.504,270
+template_54,cards.mmlu.prehistory,empty_system_format,0,10,1600,0.466,0.466,accuracy,0.416,0.528,0.416,0.528,0.466,324
+template_55,cards.mmlu.prehistory,empty_system_format,0,10,1600,0.448,0.448,accuracy,0.394,0.500,0.394,0.500,0.448,324
