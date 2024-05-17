@@ -33,7 +33,7 @@ class DatasetLoader:
             template=self.template,
             format=system_format,
             num_demos=self.num_demos,
-            demos_pool_size=self.demos_pool_size,
+            demos_pool_size=self.demos_pool_size if "mmlu" not in self.card else None,
             max_train_instances=self.max_instances,
             max_validation_instances=self.max_instances,
             max_test_instances=self.max_instances,

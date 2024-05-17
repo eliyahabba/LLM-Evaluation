@@ -97,11 +97,12 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
             print(f"Error in {results_file}: {e}")
             continue
     if exs_numbers:
-        min_exs = min(exs_numbers)
+        min_exs = min(exs_numbers)+5
         max_exs = max(exs_numbers) + 1
-        print(f"sbatch --output='{model_name}_{dataset_name.split('mmlu.')[1]}_{min_exs}_{max_exs}' "
-              f"{model_name}/run_mmlu.sh cards.{dataset_name} {min_exs} {max_exs}"
-              f" ;")
+        # range(min_exs, max_exs, 10)
+        for i in range(min_exs, max_exs, 10):
+            print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {min(56,i + 10)}"
+                  f" ;")
     # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {56};")
 
 

@@ -3,7 +3,16 @@ import random
 random.seed(42)
 from src.utils.Constants import Constants
 from src.utils.MMLUConstants import MMLUConstants
+
 DatasetsConstants = Constants.DatasetsConstants
+
+
+def get_mmlu_instructions(topic: str) -> str:
+    return f"The following are multiple choice questions (with answers) about {topic}.\n"
+
+
+def get_structured_mmlu_instructions() -> str:
+    return f"Question: [question] Choices: [choices] Answer: [answer]\n"
 
 
 class ConfigParams:
@@ -54,8 +63,9 @@ class ConfigParams:
             "processors.match_closest_option"
         ]
     }
-    base_args_mmlu_global_facts = {
-        "input_format": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {question} Choices: {choices} Answer:",
+
+    base_args_mmlu_structured = {
+        "input_format": get_structured_mmlu_instructions() + "Question: {question} Choices: {choices} Answer:",
         "choices_field": "choices",
         "target_field": "answer",
         "choices_separator": "\n",
@@ -70,8 +80,9 @@ class ConfigParams:
         ]
     }
 
-    base_args_mmlu_machine_learning = {
-        "input_format": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {question} Choices: {choices} Answer:",
+    base_args_mmlu_instructions = {
+        "input_format": "The following are multiple choice questions (with answers) about {topic}.\n"
+                        + "Question: {question} Answers: {choices}\nAnswer:\n",
         "choices_field": "choices",
         "target_field": "answer",
         "choices_separator": "\n",
@@ -105,7 +116,7 @@ class ConfigParams:
     datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_hellaswag]
     dataset_names_to_templates = dict(zip(DatasetsConstants.DATASET_NAMES, datasets_templates))
     for mmlu_dataset in MMLUConstants.MMLU_DATASETS_SAMPLE:
-        dataset_names_to_templates[f"{mmlu_dataset}"] = base_args_mmlu_machine_learning
+        dataset_names_to_templates[f"{mmlu_dataset}"] = base_args_mmlu_instructions
 
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman"],

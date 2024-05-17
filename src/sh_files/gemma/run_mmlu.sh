@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --mem=22g
-#SBATCH --time=3:0:0
-#SBATCH --gres=gpu:1,vmem:14g
+#SBATCH --mem=26g
+#SBATCH --time=6:0:0
+#SBATCH --gres=gpu:1,vmem:22g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08

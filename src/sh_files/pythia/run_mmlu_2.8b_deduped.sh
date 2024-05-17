@@ -19,4 +19,4 @@ cd $dir
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name PYTHIA_2_8B_DEDUPED --card $1 --template_range $2 $3 --not_load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name PYTHIA_2_8B_DEDUPED --card $1 --template_range $2 $3 --not_load_in_8bit  --multiple_choice_name MultipleChoiceTemplatesInstructions
