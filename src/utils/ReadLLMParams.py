@@ -3,7 +3,7 @@ import argparse
 from src.utils.Constants import Constants
 
 LLMProcessorConstants = Constants.LLMProcessorConstants
-
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 class ReadLLMParams:
     @staticmethod
@@ -18,4 +18,7 @@ class ReadLLMParams:
         args.add_argument("--not_return_token_type_ids", action="store_false",
                           default=LLMProcessorConstants.RETURN_TOKEN_TYPE_IDS,
                           help="True if the model should not return token type ids.")
+        args.add_argument("--multiple_choice_name", type=str,
+                          default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_FOLDER_NAME,
+                          help="Name of the multiple choice folder.")
         return args
