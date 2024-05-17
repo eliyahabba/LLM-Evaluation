@@ -14,9 +14,13 @@ class Constants:
 
     class LLMProcessorConstants:
         MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
-        LLAMA_MODEL = "meta-llama/Llama-2-7b-chat-hf"
+        LLAMA7B_MODEL = "meta-llama/Llama-2-7b-chat-hf"
         LLAMA13B_MODEL = "meta-llama/Llama-2-13b-chat-hf"
         LLAMA70B_MODEL = "meta-llama/Llama-2-70b-chat-hf"
+
+        LLAMA3_8B_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
+
+
         GEMMA_MODEL = "google/gemma-7b-it"
         PHI_MODEL = "microsoft/phi-2"
         OLMO_MODEL = "allenai/OLMo-7B-Instruct"
@@ -35,9 +39,10 @@ class Constants:
                             "PYTHIA_2_8B": PYTHIA_2_8B_MODEL, "PYTHIA_2_8B_DEDUPED": PYTHIA_2_8B_MODEL_DEDUPED,
                             "PYTHIA_6_9B": PYTHIA_6_9B_MODEL, "PYTHIA_6_9B_DEDUPED": PYTHIA_6_9B_MODEL_DEDUPED}
 
-        MODEL_NAMES = {"MISTRAL": MISTRAL_MODEL, "LLAMA": LLAMA_MODEL,
+        MODEL_NAMES = {"MISTRAL": MISTRAL_MODEL, "LLAMA7B": LLAMA7B_MODEL,
                         "LLAMA13B": LLAMA13B_MODEL,
                         "LLAMA70B": LLAMA70B_MODEL,
+                        "LLAMA3_8B": LLAMA3_8B_MODEL,
                        "GEMMA": GEMMA_MODEL,
                        "OLMO": OLMO_MODEL}
         MODEL_NAMES.update(PYTHIA_MODELS)
