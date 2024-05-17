@@ -51,6 +51,7 @@ class Constants:
 
     class TemplatesGeneratorConstants:
         MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplates"
+        MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME = "MultipleChoiceTemplatesInstructions"
         MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_FOLDER_NAME
         DATA_PATH = Path(__file__).parents[2] / "Data"
         TEMPLATES_METADATA = "templates_metadata.csv"
