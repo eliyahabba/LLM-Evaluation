@@ -101,7 +101,7 @@ if __name__ == "__main__":
     args = args.parse_args()
     # Load the model and the dataset
     results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
-    eval_on = ExperimentConstants.EVALUATE_ON
+    eval_on = ExperimentConstants.EVALUATE_ON_ANALYZE
     model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
     model_dataset_runner.run_function_on_all_models_and_datasets(BestCasualParamsFinder.find_best_casual_params,
                                                                  ResultConstants.CHOOSE_ACROSS_AXES)

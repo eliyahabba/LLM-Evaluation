@@ -19,7 +19,7 @@ class ModelDatasetRunner:
                                                 ) -> None:
         results_folder = Path(self.structured_input_folder_path)
         eval_on = self.evaluate_on
-        models_names = sorted([model.split('/')[1] for model in LLMProcessorConstants.MODEL_NAMES.values()])
+        models_names = [model.split('/')[1] for model in LLMProcessorConstants.MODEL_NAMES.values()]
         models_folders = [Path(results_folder / model_name) for model_name in models_names]
         for model_name in models_folders:
             datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
