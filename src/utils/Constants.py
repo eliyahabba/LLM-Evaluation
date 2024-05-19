@@ -20,7 +20,6 @@ class Constants:
 
         LLAMA3_8B_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
 
-
         GEMMA_MODEL = "google/gemma-7b-it"
         PHI_MODEL = "microsoft/phi-2"
         OLMO_MODEL = "allenai/OLMo-7B-Instruct"
@@ -36,16 +35,18 @@ class Constants:
         PYTHIA_6_9B_MODEL_DEDUPED = "EleutherAI/pythia-6.9b-deduped"
 
         PYTHIA_MODELS = {"PYTHIA_1B": PYTHIA_1B_MODEL, "PYTHIA_1B_DEDUPED": PYTHIA_1B_MODEL_DEDUPED,
-                            "PYTHIA_2_8B": PYTHIA_2_8B_MODEL, "PYTHIA_2_8B_DEDUPED": PYTHIA_2_8B_MODEL_DEDUPED,
-                            "PYTHIA_6_9B": PYTHIA_6_9B_MODEL, "PYTHIA_6_9B_DEDUPED": PYTHIA_6_9B_MODEL_DEDUPED}
+                         "PYTHIA_2_8B": PYTHIA_2_8B_MODEL, "PYTHIA_2_8B_DEDUPED": PYTHIA_2_8B_MODEL_DEDUPED,
+                         "PYTHIA_6_9B": PYTHIA_6_9B_MODEL, "PYTHIA_6_9B_DEDUPED": PYTHIA_6_9B_MODEL_DEDUPED}
 
-        MODEL_NAMES = {"MISTRAL": MISTRAL_MODEL, "LLAMA7B": LLAMA7B_MODEL,
-                        "LLAMA13B": LLAMA13B_MODEL,
-                        "LLAMA70B": LLAMA70B_MODEL,
-                        "LLAMA3_8B": LLAMA3_8B_MODEL,
-                       "GEMMA": GEMMA_MODEL,
-                       "OLMO": OLMO_MODEL}
+        BASE_MODEL_NAMES = {"MISTRAL": MISTRAL_MODEL, "LLAMA7B": LLAMA7B_MODEL,
+                            "LLAMA13B": LLAMA13B_MODEL,
+                            "LLAMA70B": LLAMA70B_MODEL,
+                            "LLAMA3_8B": LLAMA3_8B_MODEL,
+                            "GEMMA": GEMMA_MODEL,
+                            "OLMO": OLMO_MODEL}
+        MODEL_NAMES = BASE_MODEL_NAMES
         MODEL_NAMES.update(PYTHIA_MODELS)
+
         OLD_MODEL = {"QWEN": QWEN_MODEL, "QWEN2": QWEN2_MODEL, "QWEN3": QWEN3_MODEL}
 
         LOAD_IN_4BIT = False
@@ -55,7 +56,7 @@ class Constants:
         BATCH_SIZE = 10
 
     class TemplatesGeneratorConstants:
-        MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplates"
+        MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplatesStructured"
         MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME = "MultipleChoiceTemplatesInstructions"
         MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_FOLDER_NAME
         DATA_PATH = Path(__file__).parents[2] / "Data"
@@ -69,8 +70,10 @@ class Constants:
 
         STRUCTURED_INPUT_FOLDER = "structured_input"
         NOT_STRUCTURED_INPUT_FOLDER = "not_structured_input"
-        STRUCTURED_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / STRUCTURED_INPUT_FOLDER
-        NOT_STRUCTURED_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / NOT_STRUCTURED_INPUT_FOLDER
+        MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplatesStructured"
+        MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME = "MultipleChoiceTemplatesInstructions"
+        STRUCTURED_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / MULTIPLE_CHOICE_FOLDER_NAME
+        INSTRUCTIONS_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME
 
         EMPTY_SYSTEM_FORMATS = "formats.empty"
         LLAMA_SYSTEM_FORMATS = "formats.llama"
