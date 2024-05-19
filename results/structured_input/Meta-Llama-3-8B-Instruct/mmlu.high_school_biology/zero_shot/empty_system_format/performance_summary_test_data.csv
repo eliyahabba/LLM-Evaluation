@@ -46,4 +46,7 @@ template_48,cards.mmlu.high_school_biology,empty_system_format,0,10,1600,0.532,0
 template_49,cards.mmlu.high_school_biology,empty_system_format,0,10,1600,0.506,0.506,accuracy,0.452,0.565,0.452,0.565,0.506,310
 template_50,cards.mmlu.high_school_biology,empty_system_format,0,10,1600,0.548,0.548,accuracy,0.498,0.603,0.498,0.603,0.548,310
 template_51,cards.mmlu.high_school_biology,empty_system_format,0,10,1600,0.558,0.558,accuracy,0.503,0.610,0.503,0.610,0.558,310
-template_52,cards.mmlu.high_school_biology,empty_system_format,0,10,1600,0.511,0.511,accuracy,0.441,0.586,0.441,0.586,0.511,186
+template_52,cards.mmlu.high_school_biology,empty_system_format,0,10,1600,0.542,0.542,accuracy,0.487,0.594,0.487,0.594,0.542,310
+template_53,cards.mmlu.high_school_biology,empty_system_format,0,10,1600,0.584,0.584,accuracy,0.526,0.639,0.526,0.639,0.584,310
+template_54,cards.mmlu.high_school_biology,empty_system_format,0,10,1600,0.565,0.565,accuracy,0.505,0.616,0.505,0.616,0.565,310
+template_55,cards.mmlu.high_school_biology,empty_system_format,0,10,1600,0.561,0.561,accuracy,0.506,0.616,0.506,0.616,0.561,310
