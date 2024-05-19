@@ -335,6 +335,8 @@ class BestCombinationsDisplayer:
                           Path(ResultConstants.ZERO_SHOT) / \
                           Path(ResultConstants.EMPTY_SYSTEM_FORMAT) / \
                           Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
+            if not Path(groups_path).exists():
+                continue
             template_groups_df = pd.read_csv(groups_path)
             if group_or_top_k == 'First group':
                 groups = template_groups_df['group'].values
