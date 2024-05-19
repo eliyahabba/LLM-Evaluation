@@ -1,0 +1,3 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,groups_mean_score,number_of_instances
+template_0,cards.mmlu.prehistory,empty_system_format,0,10,1600,0.529,0.529,accuracy,0.353,0.676,0.353,0.676,0.529,34
+template_29,cards.mmlu.prehistory,empty_system_format,0,10,1600,0.625,0.625,accuracy,0.250,0.875,0.250,0.875,0.625,8
