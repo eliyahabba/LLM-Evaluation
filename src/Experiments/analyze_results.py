@@ -196,7 +196,7 @@ if __name__ == "__main__":
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
     args = args.parse_args()
 
-    models_names = sorted([model.split('/')[1] for model in LLMProcessorConstants.MODEL_NAMES.values()])
+    models_names = [model.split('/')[1] for model in LLMProcessorConstants.BASE_MODEL_NAMES.values()]
     models_folders = [Path(args.results_folder / model_name) for model_name in models_names]
 
     # models_names = [models_name for models_name in models_names if "Lla" in str(models_name)]
@@ -236,7 +236,7 @@ if __name__ == "__main__":
                                         comparison_df = pd.read_csv(comparison_matrix_file)
                                         if results_file_number in comparison_df.columns and \
                                                 not comparison_df[results_file_number].isna().any() and \
-                                                size == comparison_df[results_file_number].iloc[0] and \
+                                                size == comparison_df[results_file_number].shape[0] and \
                                                 all(['Score' in result for result in results[eval_on_value]]):
                                                 # and  len(results[eval_on_value]) == 100:
                                             # len(results_files) == pd.read_csv(comparison_matrix_file).shape[1] and \
