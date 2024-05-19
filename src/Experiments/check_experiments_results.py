@@ -97,14 +97,19 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
             print(f"Error in {results_file}: {e}")
             continue
     if exs_numbers:
-        min_exs = min(exs_numbers)+5
+        min_exs = min(exs_numbers)
         max_exs = max(exs_numbers) + 1
         # range(min_exs, max_exs, 10)
         for i in range(min_exs, max_exs, 10):
-            print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {min(56,i + 10)}"
-                  f" ;")
-    # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {56};")
+            end = i + 10 if i + 10 < max(exs_numbers) else max(exs_numbers)
+            # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {min(56,end)}"
+            #      f" ;")
+        # for i in exs_numbers:
+        #     print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {i + 1}"
+        #           f" ;")
 
+    print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {28};")
+    print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {28} {56};")
 
 def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict = None):
     if not format_folder.exists():
