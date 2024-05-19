@@ -30,11 +30,11 @@ template_27,cards.mmlu.astronomy,empty_system_format,0,10,10,0.447,0.447,accurac
 template_28,cards.mmlu.astronomy,empty_system_format,0,10,10,0.507,0.507,accuracy,0.428,0.586,0.428,0.586,0.507,152
 template_29,cards.mmlu.astronomy,empty_system_format,0,10,10,0.526,0.526,accuracy,0.448,0.605,0.448,0.605,0.526,152
 template_30,cards.mmlu.astronomy,empty_system_format,0,10,10,0.520,0.520,accuracy,0.441,0.599,0.441,0.599,0.520,152
-template_31,cards.mmlu.astronomy,empty_system_format,0,10,10,0.590,0.590,accuracy,0.474,0.705,0.474,0.705,0.590,78
-template_32,cards.mmlu.astronomy,empty_system_format,0,10,10,0.400,0.400,accuracy,0.100,0.700,0.100,0.700,0.400,10
-template_33,cards.mmlu.astronomy,empty_system_format,0,10,10,0.549,0.549,accuracy,0.472,0.641,0.472,0.641,0.549,142
-template_34,cards.mmlu.astronomy,empty_system_format,0,10,10,0.500,0.500,accuracy,0.200,0.800,0.200,0.800,0.500,10
-template_35,cards.mmlu.astronomy,empty_system_format,0,10,10,0.700,0.700,accuracy,0.400,0.900,0.400,0.900,0.700,10
+template_31,cards.mmlu.astronomy,empty_system_format,0,10,10,0.546,0.546,accuracy,0.467,0.625,0.467,0.625,0.546,152
+template_32,cards.mmlu.astronomy,empty_system_format,0,10,10,0.500,0.500,accuracy,0.421,0.579,0.421,0.579,0.500,152
+template_33,cards.mmlu.astronomy,empty_system_format,0,10,10,0.546,0.546,accuracy,0.474,0.625,0.474,0.625,0.546,152
+template_34,cards.mmlu.astronomy,empty_system_format,0,10,10,0.520,0.520,accuracy,0.441,0.599,0.441,0.599,0.520,152
+template_35,cards.mmlu.astronomy,empty_system_format,0,10,10,0.553,0.553,accuracy,0.467,0.632,0.467,0.632,0.553,152
 template_36,cards.mmlu.astronomy,empty_system_format,0,10,10,0.493,0.493,accuracy,0.414,0.566,0.414,0.566,0.493,152
 template_37,cards.mmlu.astronomy,empty_system_format,0,10,10,0.553,0.553,accuracy,0.474,0.632,0.474,0.632,0.553,152
 template_38,cards.mmlu.astronomy,empty_system_format,0,10,10,0.500,0.500,accuracy,0.428,0.579,0.428,0.579,0.500,152

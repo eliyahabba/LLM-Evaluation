@@ -34,10 +34,10 @@ template_31,cards.mmlu.moral_disputes,empty_system_format,0,10,1000,0.419,0.419,
 template_32,cards.mmlu.moral_disputes,empty_system_format,0,10,1600,0.442,0.442,accuracy,0.393,0.494,0.393,0.494,0.442,346
 template_33,cards.mmlu.moral_disputes,empty_system_format,0,10,1600,0.442,0.442,accuracy,0.393,0.494,0.393,0.494,0.442,346
 template_34,cards.mmlu.moral_disputes,empty_system_format,0,10,1600,0.474,0.474,accuracy,0.422,0.526,0.422,0.526,0.474,346
-template_35,cards.mmlu.moral_disputes,empty_system_format,0,10,1600,0.441,0.441,accuracy,0.382,0.496,0.382,0.496,0.441,256
+template_35,cards.mmlu.moral_disputes,empty_system_format,0,10,1600,0.439,0.439,accuracy,0.387,0.494,0.387,0.494,0.439,346
 template_36,cards.mmlu.moral_disputes,empty_system_format,0,10,1000,0.465,0.465,accuracy,0.410,0.514,0.410,0.514,0.465,346
 template_37,cards.mmlu.moral_disputes,empty_system_format,0,10,1000,0.419,0.419,accuracy,0.370,0.473,0.370,0.473,0.419,346
-template_38,cards.mmlu.moral_disputes,empty_system_format,0,10,1000,0.444,0.444,accuracy,0.373,0.528,0.373,0.528,0.444,142
+template_38,cards.mmlu.moral_disputes,empty_system_format,0,10,1000,0.439,0.439,accuracy,0.384,0.488,0.384,0.488,0.439,346
 template_39,cards.mmlu.moral_disputes,empty_system_format,0,10,1600,0.393,0.393,accuracy,0.341,0.442,0.341,0.442,0.393,346
 template_40,cards.mmlu.moral_disputes,empty_system_format,0,10,1600,0.488,0.488,accuracy,0.439,0.543,0.439,0.543,0.488,346
 template_41,cards.mmlu.moral_disputes,empty_system_format,0,10,1600,0.393,0.393,accuracy,0.341,0.442,0.341,0.442,0.393,346
