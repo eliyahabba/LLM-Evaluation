@@ -13,7 +13,10 @@ class Constants:
         DATASET_NAMES.extend(MMLUConstants.MMLU_DATASETS_SAMPLE)
 
     class LLMProcessorConstants:
-        MISTRAL_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
+        MISTRAL_V1_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
+        MISTRAL_V2_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
+        MISTRAL_V3_MODEL = "mistralai/Mistral-7B-Instruct-v0.3"
+
         LLAMA7B_MODEL = "meta-llama/Llama-2-7b-chat-hf"
         LLAMA13B_MODEL = "meta-llama/Llama-2-13b-chat-hf"
         LLAMA70B_MODEL = "meta-llama/Llama-2-70b-chat-hf"
@@ -38,7 +41,8 @@ class Constants:
                          "PYTHIA_2_8B": PYTHIA_2_8B_MODEL, "PYTHIA_2_8B_DEDUPED": PYTHIA_2_8B_MODEL_DEDUPED,
                          "PYTHIA_6_9B": PYTHIA_6_9B_MODEL, "PYTHIA_6_9B_DEDUPED": PYTHIA_6_9B_MODEL_DEDUPED}
 
-        BASE_MODEL_NAMES = {"MISTRAL": MISTRAL_MODEL, "LLAMA7B": LLAMA7B_MODEL,
+        BASE_MODEL_NAMES = {"MISTRAL_V1": MISTRAL_V1_MODEL, "MISTRAL_V2": MISTRAL_V2_MODEL,
+                            "MISTRAL_V3": MISTRAL_V3_MODEL, "LLAMA7B": LLAMA7B_MODEL,
                             "LLAMA13B": LLAMA13B_MODEL,
                             "LLAMA70B": LLAMA70B_MODEL,
                             "LLAMA3_8B": LLAMA3_8B_MODEL,
