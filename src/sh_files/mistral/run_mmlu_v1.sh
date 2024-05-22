@@ -1,10 +1,11 @@
 #!/bin/bash
 #SBATCH --mem=20g
 #SBATCH --time=6:0:0
-#SBATCH --gres=gpu:1,vmem:24g
+#SBATCH --gres=gpu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
+#SBATCH --killable
 
 
 export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
