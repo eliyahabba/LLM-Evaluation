@@ -38,12 +38,22 @@ class Constants:
         PYTHIA_6_9B_MODEL = "EleutherAI/pythia-6.9b"
         PYTHIA_6_9B_MODEL_DEDUPED = "EleutherAI/pythia-6.9b-deduped"
 
+
+        PHI3_MEDIUM_MODEL = "microsoft/Phi-3-medium-4k-instruct"
+        PHI3_SMALL_MODEL = "microsoft/Phi-3-small-8k-instruct"
+        PHI3_MINI_MODEL = "microsoft/Phi-3-mini-4k-instruct"
+
         PYTHIA_MODELS = {"PYTHIA_1B": PYTHIA_1B_MODEL, "PYTHIA_1B_DEDUPED": PYTHIA_1B_MODEL_DEDUPED,
                          "PYTHIA_2_8B": PYTHIA_2_8B_MODEL, "PYTHIA_2_8B_DEDUPED": PYTHIA_2_8B_MODEL_DEDUPED,
                          "PYTHIA_6_9B": PYTHIA_6_9B_MODEL, "PYTHIA_6_9B_DEDUPED": PYTHIA_6_9B_MODEL_DEDUPED}
 
-        BASE_MODEL_NAMES = {"MISTRAL_V1": MISTRAL_V1_MODEL, "MISTRAL_V2": MISTRAL_V2_MODEL,
-                            "MISTRAL_V3": MISTRAL_V3_MODEL, "LLAMA7B": LLAMA7B_MODEL,
+        BASE_MODEL_NAMES = { "PHI_MINI": PHI3_MINI_MODEL,
+                             "PHI_SMALL": PHI3_SMALL_MODEL,
+                             "PHI_MEDIUM": PHI3_MEDIUM_MODEL,
+                            "MISTRAL_V1": MISTRAL_V1_MODEL,
+                            "MISTRAL_V2": MISTRAL_V2_MODEL,
+                            "MISTRAL_V3": MISTRAL_V3_MODEL,
+                            "LLAMA7B": LLAMA7B_MODEL,
                             "LLAMA13B": LLAMA13B_MODEL,
                             "LLAMA70B": LLAMA70B_MODEL,
                             "LLAMA3_8B": LLAMA3_8B_MODEL,
