@@ -10,7 +10,14 @@ template_7,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.252,0.
 template_8,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.344,0.344,accuracy,0.272,0.424,0.272,0.424,0.344,151
 template_9,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.278,0.278,accuracy,0.212,0.351,0.212,0.351,0.278,151
 template_10,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.285,0.285,accuracy,0.219,0.364,0.219,0.364,0.285,151
-template_11,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.333,0.333,accuracy,0.167,0.542,0.167,0.542,0.333,24
+template_11,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.305,0.305,accuracy,0.238,0.377,0.238,0.377,,151
+template_12,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.338,0.338,accuracy,0.272,0.417,0.272,0.417,,151
+template_13,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.291,0.291,accuracy,0.225,0.364,0.225,0.364,,151
+template_14,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.364,0.364,accuracy,0.291,0.444,0.291,0.444,,151
+template_15,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.344,0.344,accuracy,0.272,0.424,0.272,0.424,,151
+template_16,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.397,0.397,accuracy,0.325,0.477,0.325,0.477,,151
+template_17,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.364,0.364,accuracy,0.291,0.444,0.291,0.444,,151
+template_18,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.331,0.331,accuracy,0.258,0.409,0.258,0.409,,151
 template_19,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.318,0.318,accuracy,0.252,0.397,0.252,0.397,0.318,151
 template_20,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.424,0.424,accuracy,0.351,0.514,0.351,0.514,0.424,151
 template_21,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.331,0.331,accuracy,0.258,0.404,0.258,0.404,0.331,151
@@ -25,7 +32,10 @@ template_29,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.351,0
 template_30,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.371,0.371,accuracy,0.298,0.457,0.298,0.457,0.371,151
 template_31,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.364,0.364,accuracy,0.276,0.437,0.276,0.437,0.364,151
 template_32,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.371,0.371,accuracy,0.298,0.450,0.298,0.450,0.371,151
-template_33,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.378,0.378,accuracy,0.276,0.469,0.276,0.469,0.378,98
+template_33,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.404,0.404,accuracy,0.325,0.477,0.325,0.477,,151
+template_34,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.404,0.404,accuracy,0.320,0.483,0.320,0.483,,151
+template_35,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.364,0.364,accuracy,0.291,0.440,0.291,0.440,,151
+template_36,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.411,0.411,accuracy,0.325,0.483,0.325,0.483,,151
 template_37,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.344,0.344,accuracy,0.272,0.424,0.272,0.424,0.344,151
 template_38,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.325,0.325,accuracy,0.252,0.404,0.252,0.404,0.325,151
 template_39,cards.mmlu.high_school_physics,empty_system_format,0,10,1600,0.325,0.325,accuracy,0.252,0.404,0.252,0.404,0.325,151
