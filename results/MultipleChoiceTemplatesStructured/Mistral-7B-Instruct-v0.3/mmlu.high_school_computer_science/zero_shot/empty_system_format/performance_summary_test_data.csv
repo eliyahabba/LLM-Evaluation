@@ -52,3 +52,4 @@ template_49,cards.mmlu.high_school_computer_science,empty_system_format,0,10,160
 template_50,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.590,0.590,accuracy,0.490,0.680,0.490,0.680,100
 template_51,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.620,0.620,accuracy,0.520,0.710,0.520,0.710,100
 template_52,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.570,0.570,accuracy,0.470,0.650,0.470,0.650,100
+template_53,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.588,0.588,accuracy,0.475,0.688,0.475,0.688,80
