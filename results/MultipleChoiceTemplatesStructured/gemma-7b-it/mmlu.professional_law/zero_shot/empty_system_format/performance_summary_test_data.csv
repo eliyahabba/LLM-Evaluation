@@ -4,11 +4,11 @@ template_1,cards.mmlu.professional_law,empty_system_format,0,10,100,0.248,0.248,
 template_2,cards.mmlu.professional_law,empty_system_format,0,10,100,0.261,0.261,accuracy,0.239,0.284,0.239,0.284,0.261,1534
 template_3,cards.mmlu.professional_law,empty_system_format,0,10,100,0.261,0.261,accuracy,0.241,0.283,0.241,0.283,0.261,1534
 template_4,cards.mmlu.professional_law,empty_system_format,0,10,100,0.250,0.250,accuracy,0.229,0.272,0.229,0.272,0.250,1534
-template_5,cards.mmlu.professional_law,empty_system_format,0,10,100,0.252,0.252,accuracy,0.230,0.277,0.230,0.277,0.252,1330
-template_6,cards.mmlu.professional_law,empty_system_format,0,10,100,0.243,0.243,accuracy,0.216,0.270,0.216,0.270,0.243,1000
-template_7,cards.mmlu.professional_law,empty_system_format,0,10,100,0.245,0.245,accuracy,0.220,0.273,0.220,0.273,0.245,1000
-template_8,cards.mmlu.professional_law,empty_system_format,0,10,100,0.244,0.244,accuracy,0.219,0.274,0.219,0.274,0.244,1000
-template_9,cards.mmlu.professional_law,empty_system_format,0,10,100,0.244,0.244,accuracy,0.218,0.271,0.218,0.271,0.244,1000
+template_5,cards.mmlu.professional_law,empty_system_format,0,10,100,0.253,0.253,accuracy,0.234,0.277,0.234,0.277,,1534
+template_6,cards.mmlu.professional_law,empty_system_format,0,10,100,0.246,0.246,accuracy,0.227,0.270,0.227,0.270,,1534
+template_7,cards.mmlu.professional_law,empty_system_format,0,10,100,0.248,0.248,accuracy,0.229,0.273,0.229,0.273,,1534
+template_8,cards.mmlu.professional_law,empty_system_format,0,10,100,0.250,0.250,accuracy,0.230,0.274,0.230,0.274,,1534
+template_9,cards.mmlu.professional_law,empty_system_format,0,10,100,0.248,0.248,accuracy,0.229,0.272,0.229,0.272,,1534
 template_10,cards.mmlu.professional_law,empty_system_format,0,10,100,0.244,0.244,accuracy,0.225,0.268,0.225,0.268,0.244,1534
 template_11,cards.mmlu.professional_law,empty_system_format,0,10,100,0.248,0.248,accuracy,0.228,0.271,0.228,0.271,0.248,1534
 template_12,cards.mmlu.professional_law,empty_system_format,0,10,100,0.250,0.250,accuracy,0.230,0.273,0.230,0.273,0.250,1534
