@@ -1,3 +1,4 @@
+from enum import Enum
 from pathlib import Path
 
 from src.utils.MMLUConstants import MMLUConstants
@@ -131,3 +132,7 @@ class Constants:
         MODEL = "model"
         TOP_N = 5
         TEMPLATE = "template"
+
+    class BestOrWorst(Enum):
+        BEST = "best"
+        WORST = "worst"
