@@ -94,7 +94,7 @@ class Constants:
         NUM_DEMOS = 0
         DEMOS_POOL_SIZE = 10
 
-        BATCH_SIZE = 2
+        BATCH_SIZE = 10
 
     class McNemarTestConstants:
         ALPHA = 0.05
