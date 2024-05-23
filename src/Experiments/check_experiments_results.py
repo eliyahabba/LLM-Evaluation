@@ -97,19 +97,16 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
             print(f"Error in {results_file}: {e}")
             continue
     if exs_numbers:
-        min_exs = min(exs_numbers)
-        max_exs = max(exs_numbers) + 1
-        # range(min_exs, max_exs, 10)
-        for i in range(min_exs, max_exs, 10):
-            end = i + 10 if i + 10 < max(exs_numbers) else max(exs_numbers)
-            # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {min(56,end)}"
-            #      f" ;")
+        sorted(exs_numbers)
+        # create groups of 10 experiments but I need the last pair to be the last experiment (his paor will be 56)
+        pairs = [(exs_numbers[i], exs_numbers[i + 10]) for i in range(0, len(exs_numbers), 10) if i + 10 < len(exs_numbers)]
+        pairs.append((exs_numbers[-1], 56))
+        for i, end in pairs:
+            print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {end};")
         # for i in exs_numbers:
         #     print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {i + 1}"
         #           f" ;")
 
-    print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {28};")
-    print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {28} {56};")
 
 def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict = None):
     if not format_folder.exists():
