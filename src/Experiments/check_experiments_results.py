@@ -72,6 +72,12 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
         params_num = sorted_file_paths[0].parents[3].name.split("-")[2].lower()
         assert "b" in params_num
         model_name = f"{model_name}{params_num.split('b')[0]}"
+    if "phi" in model_name:
+        params_num = sorted_file_paths[0].parents[3].name.split("-")[2].lower()
+        model_name = f"{model_name}{params_num}"
+
+    if "meta" in model_name:
+        model_name = "llama3_8"
     dataset_name = sorted_file_paths[0].parents[2].name
     if "mmlu" not in dataset_name:
         return
