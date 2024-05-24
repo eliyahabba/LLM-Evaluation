@@ -20,7 +20,6 @@ class ModelDatasetRunner:
         results_folder = Path(self.structured_input_folder_path)
         eval_on = self.evaluate_on
         models_names = [model.split('/')[1] for model in LLMProcessorConstants.MODEL_NAMES.values()]
-        models_names = models_names[4:5]
 
         models_folders = [Path(results_folder / model_name) for model_name in models_names]
         for model_name in models_folders:
