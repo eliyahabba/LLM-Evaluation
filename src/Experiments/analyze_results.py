@@ -192,10 +192,10 @@ if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
     args.add_argument("--model_index", type=int, default=0)
-    args.add_argument("--results_folder", type=str, default=ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH)
+    args.add_argument("--results_folder", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
     args = args.parse_args()
-
+    args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
     models_names = [model.split('/')[1] for model in LLMProcessorConstants.BASE_MODEL_NAMES.values()]
     models_folders = [Path(args.results_folder / model_name) for model_name in models_names]
 
