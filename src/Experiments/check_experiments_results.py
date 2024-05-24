@@ -67,6 +67,7 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
 
     experiments_results = ExperimentsResultsFolder(eval_on)
     model_name = sorted_file_paths[0].parents[3].name.split("-")[0].lower()
+    print(f"Model {sorted_file_paths[0].parents[3].name}")
     if "llama" in model_name:
         # check if it 7B o3 13B or 70B and add the correct model name
         params_num = sorted_file_paths[0].parents[3].name.split("-")[2].lower()
@@ -110,9 +111,10 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
         pairs.append((exs_numbers[-1], 56))
         for i, end in pairs:
             print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {end};")
-    print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {28};")
-    print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {28} {56};")
-
+    # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {28};")
+    # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {28} {56};")
+    print(" ")
+    print(" ")
 
 def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict = None):
     if not format_folder.exists():
