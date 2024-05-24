@@ -150,7 +150,10 @@ class ExperimentRunner:
 
 def parser_bit_precision(args: argparse.Namespace) -> Tuple[bool, bool]:
     # Resolve conflicts and decide final settings
-    if args.load_in_4bit:
+    if args.not_load_in_8bit and args.not_load_in_4bit:
+        load_in_4bit = False
+        load_in_8bit = False
+    elif args.load_in_4bit:
         load_in_4bit = True
         load_in_8bit = False
     elif args.load_in_8bit:
