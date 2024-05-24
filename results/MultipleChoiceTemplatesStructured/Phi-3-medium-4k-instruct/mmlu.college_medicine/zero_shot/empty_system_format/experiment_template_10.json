@@ -1,0 +1,1 @@
+{"card": "cards.mmlu.college_medicine", "template_name": "template_10", "model_name": "microsoft/Phi-3-medium-4k-instruct", "system_format": "empty_system_format", "max_instances": 1600, "num_demos": 0, "demos_pool_size": 10, "results": {}}

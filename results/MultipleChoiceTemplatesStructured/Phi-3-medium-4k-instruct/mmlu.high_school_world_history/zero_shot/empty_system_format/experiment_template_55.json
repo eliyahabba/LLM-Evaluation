@@ -1,0 +1,1 @@
+{"card": "cards.mmlu.high_school_world_history", "template_name": "template_55", "model_name": "microsoft/Phi-3-medium-4k-instruct", "system_format": "empty_system_format", "max_instances": 1600, "num_demos": 0, "demos_pool_size": 10, "results": {}}
