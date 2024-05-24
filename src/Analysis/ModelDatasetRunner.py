@@ -23,6 +23,7 @@ class ModelDatasetRunner:
 
         models_folders = [Path(results_folder / model_name) for model_name in models_names]
         for model_name in models_folders:
+            print(f"Model {model_name.name}")
             datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
             for dataset_folder in datasets:
                 shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
@@ -36,7 +37,7 @@ class ModelDatasetRunner:
                                 print(f"Error in {model_name.name}/{dataset_folder.name}/{shot.name}/"
                                       f"{format_folder.name} for {eval_value}: {e}")
 
-
+            print("\n")
 # Example usage:
 def check_comparison_matrix(folder, eval_value):
     print(f"Checking comparison matrix in {folder} for {eval_value}")
