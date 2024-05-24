@@ -18,7 +18,6 @@ from src.utils.Utils import Utils
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
-# RESULTS_PATH = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
 
 
 class ExperimentRunner:
