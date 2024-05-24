@@ -110,9 +110,8 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
         pairs.append((exs_numbers[-1], 56))
         for i, end in pairs:
             print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {end};")
-        # for i in exs_numbers:
-        #     print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {i + 1}"
-        #           f" ;")
+    print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {28};")
+    print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {28} {56};")
 
 
 def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict = None):
@@ -138,7 +137,7 @@ def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict =
 
 if __name__ == "__main__":
     # Load the model and the dataset
-    results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
+    results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     eval_on = ExperimentConstants.EVALUATE_ON_ANALYZE
     model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
     # model_dataset_runner.run_function_on_all_models_and_datasets(check_comparison_matrix)
