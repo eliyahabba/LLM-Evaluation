@@ -3,3 +3,8 @@ template_0,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600
 template_1,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.400,0.400,accuracy,0.200,0.650,0.200,0.650,20
 template_21,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.250,0.250,accuracy,0.100,0.500,0.100,0.500,20
 template_28,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.250,0.250,accuracy,0.100,0.500,0.100,0.500,20
+template_42,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.260,0.260,accuracy,0.190,0.350,0.190,0.350,100
+template_43,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.230,0.230,accuracy,0.160,0.320,0.160,0.320,100
+template_44,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.270,0.270,accuracy,0.200,0.370,0.200,0.370,100
+template_45,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.260,0.260,accuracy,0.190,0.350,0.190,0.350,100
+template_46,cards.mmlu.high_school_computer_science,empty_system_format,0,10,1600,0.230,0.230,accuracy,0.160,0.320,0.160,0.320,100
