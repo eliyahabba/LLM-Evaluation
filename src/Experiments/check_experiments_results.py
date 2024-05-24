@@ -103,9 +103,9 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
             print(f"Error in {results_file}: {e}")
             continue
     if exs_numbers:
-        sorted(exs_numbers)
+        exs_numbers = sorted(exs_numbers)
         # create groups of 10 experiments but I need the last pair to be the last experiment (his paor will be 56)
-        pairs = [(exs_numbers[i], exs_numbers[i + 10]) for i in range(0, len(exs_numbers), 10) if i + 10 < len(exs_numbers)]
+        pairs = [(exs_numbers[i], exs_numbers[i + 10]) for i in range(0, len(exs_numbers), 10)]
         pairs.append((exs_numbers[-1], 56))
         for i, end in pairs:
             print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {end};")
