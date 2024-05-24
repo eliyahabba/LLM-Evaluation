@@ -18,7 +18,7 @@ from src.utils.Utils import Utils
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
-RESULTS_PATH = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
+# RESULTS_PATH = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
 
 
 class ExperimentRunner:
@@ -74,7 +74,7 @@ class ExperimentRunner:
         num_of_shot_icl = f"{num_of_shot_str}_shot"
 
         system_foramt_name = ExperimentConstants.SYSTEM_FORMATS_NAMES[self.args.system_format]
-        results_file_path = (RESULTS_PATH /
+        results_file_path = (self.args.results_path /
                              Utils.get_model_name(self.args.model_name) /
                              Utils.get_card_name(self.args.card) /
                              num_of_shot_icl /
@@ -192,6 +192,7 @@ def main():
     # map between the model name to the real model name from the constants
     args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
     args.multiple_choice_path = TemplatesGeneratorConstants.DATA_PATH / Path(args.multiple_choice_name)
+    args.results_path = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.multiple_choice_name)
     runner = ExperimentRunner(args)
     runner.run_experiment()
 

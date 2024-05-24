@@ -71,9 +71,9 @@ class Constants:
         BATCH_SIZE = 10
 
     class TemplatesGeneratorConstants:
-        MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplatesStructured"
+        MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME = "MultipleChoiceTemplatesStructured"
         MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME = "MultipleChoiceTemplatesInstructions"
-        MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_FOLDER_NAME
+        MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME
         DATA_PATH = Path(__file__).parents[2] / "Data"
         TEMPLATES_METADATA = "templates_metadata.csv"
         MMLU_DATASET_SIZES_PATH = DATA_PATH / "mmlu_datasets_sizes.csv"
@@ -83,12 +83,12 @@ class Constants:
         MAIN_RESULTS_FOLDER_NAME = "results"
         MAIN_RESULTS_PATH = Path(__file__).parents[2] / MAIN_RESULTS_FOLDER_NAME
 
-        STRUCTURED_INPUT_FOLDER = "structured_input"
-        NOT_STRUCTURED_INPUT_FOLDER = "not_structured_input"
-        MULTIPLE_CHOICE_FOLDER_NAME = "MultipleChoiceTemplatesStructured"
-        MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME = "MultipleChoiceTemplatesInstructions"
-        STRUCTURED_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / MULTIPLE_CHOICE_FOLDER_NAME
-        INSTRUCTIONS_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME
+        # STRUCTURED_INPUT_FOLDER = "structured_input"
+        # NOT_STRUCTURED_INPUT_FOLDER = "not_structured_input"
+        # MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME = "MultipleChoiceTemplatesStructured"
+        # MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME = "MultipleChoiceTemplatesInstructions"
+        # STRUCTURED_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME
+        # INSTRUCTIONS_INPUT_FOLDER_PATH = MAIN_RESULTS_PATH / MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME
 
         EMPTY_SYSTEM_FORMATS = "formats.empty"
         LLAMA_SYSTEM_FORMATS = "formats.llama"
