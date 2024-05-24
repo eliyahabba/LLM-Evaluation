@@ -26,7 +26,7 @@ template_23,cards.mmlu.conceptual_physics,empty_system_format,0,10,1600,0.477,0.
 template_24,cards.mmlu.conceptual_physics,empty_system_format,0,10,1600,0.536,0.536,accuracy,0.468,0.596,0.468,0.596,235
 template_25,cards.mmlu.conceptual_physics,empty_system_format,0,10,1600,0.494,0.494,accuracy,0.434,0.557,0.434,0.557,235
 template_26,cards.mmlu.conceptual_physics,empty_system_format,0,10,1600,0.523,0.523,accuracy,0.455,0.583,0.455,0.583,235
-template_27,cards.mmlu.conceptual_physics,empty_system_format,0,10,1600,0.508,0.508,accuracy,0.415,0.600,0.415,0.600,130
+template_27,cards.mmlu.conceptual_physics,empty_system_format,0,10,1600,0.519,0.519,accuracy,0.460,0.579,0.460,0.579,235
 template_28,cards.mmlu.conceptual_physics,empty_system_format,0,10,1600,0.591,0.591,accuracy,0.528,0.655,0.528,0.655,235
 template_29,cards.mmlu.conceptual_physics,empty_system_format,0,10,1600,0.587,0.587,accuracy,0.532,0.647,0.532,0.647,235
 template_30,cards.mmlu.conceptual_physics,empty_system_format,0,10,1600,0.345,0.345,accuracy,0.292,0.409,0.292,0.409,235
