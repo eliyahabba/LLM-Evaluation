@@ -18,6 +18,8 @@ class GetGroupOfConfiguration:
         datasets_to_groups = {}
         for dataset in datasets:
             dataset_configurations_groups = self.read_group_of_template(dataset)
+            if dataset_configurations_groups is None:
+                continue
             dataset_configurations_groups = dataset_configurations_groups[
                 ['statistic, pvalue, row is better than column', 'group']]
             # change the value of the cell in the 'statistic, pvalue, row is better than column' if it is contains "best set:" rmpve
@@ -46,5 +48,7 @@ class GetGroupOfConfiguration:
                       Path(ResultConstants.ZERO_SHOT) / \
                       Path(ResultConstants.EMPTY_SYSTEM_FORMAT) / \
                       Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
-        template_groups = pd.read_csv(groups_path)
-        return template_groups
+        if groups_path.exists():
+            template_groups = pd.read_csv(groups_path)
+            return template_groups
+        return None

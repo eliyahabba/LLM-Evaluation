@@ -18,14 +18,16 @@ class DisplayConfigurationsGroups:
         self.model_results_path = model_results_path
         self.templates_metadata = templates_metadata
 
-    def check_the_group_of_conf(self, configuration: dict, datasets: List[str]) -> None:
+    def check_the_group_of_conf(self, configuration: dict, datasets: List[str], num_of_expected_datasets: int, num_od_actual_datasets: int) -> None:
         """
         Checks the group of the configuration.
         @param configuration:
-        @param model:
+        @param datasets:
+        @param num_of_expected_datasets:
+        @param num_od_actual_datasets:
         @return:
         """
-
+        st.markdown(f"Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets")
         # 1. need to read metadata templates to get the template of the this confiuration
         # 2. need to read the file of the groups of templates, and find the group of this template, that is the group of the configuration
 

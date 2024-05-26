@@ -170,7 +170,10 @@ class FindCombinations:
 
             st.markdown(f'<span style="font-size: 17px;">**{self.best_or_worst.value} configurations**</span>',
                         unsafe_allow_html=True)
-            display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values)
+            num_of_expected_datasets = len(dataset_names)
+            num_od_actual_datasets = len(datasets_of_the_current_group)
+            display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values,
+                                                                  num_of_expected_datasets, num_od_actual_datasets)
             # add empty line
             st.write("")
 
@@ -225,6 +228,8 @@ class FindCombinations:
                           Path(ResultConstants.ZERO_SHOT) / \
                           Path(ResultConstants.EMPTY_SYSTEM_FORMAT) / \
                           Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
+            if not groups_path.exists():
+                continue
             template_groups_df = pd.read_csv(groups_path)
 
             reverse_and_ascending = False if self.best_or_worst == BestOrWorst.BEST else True
