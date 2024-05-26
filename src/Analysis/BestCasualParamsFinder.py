@@ -88,7 +88,7 @@ class BestCasualParamsFinder:
                 # add the new row to the DataFrame (not use append)
                 best_combinations_df = pd.concat([best_combinations_df, pd.DataFrame(data, columns=columns)],
                                                  ignore_index=True)
-        best_combinations_df.sort_values(by="model", inplace=True, ignore_index=True)
+        best_combinations_df.sort_values(by=["model", "dataset"], inplace=True, ignore_index=True)
         best_combinations_df.to_csv(best_file_path, index=False)
 
 
