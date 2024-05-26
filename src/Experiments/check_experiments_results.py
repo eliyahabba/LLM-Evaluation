@@ -105,9 +105,11 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
     if exs_numbers:
         exs_numbers = sorted(exs_numbers)
         # create groups of 10 experiments but I need the last pair to be the last experiment (his paor will be 56)
-        pairs = [(exs_numbers[i], exs_numbers[i + 10]) for i in range(0, len(exs_numbers), 10) if
-                    i + 10 < len(exs_numbers)]
-        pairs.append((exs_numbers[-1], 56))
+        pairs = [(exs_numbers[i], exs_numbers[i + 9]) for i in range(0, len(exs_numbers), 10) if
+                    i + 9 < len(exs_numbers)]
+        # take the last part of the array that is less from 10, and add the last experiment to the last pair
+        last_pare_ex = [] if len(exs_numbers) % 10 == 0 else exs_numbers[-(len(exs_numbers) % 10):]
+        pairs.append((last_pare_ex[0], last_pare_ex[-1]+1))
         for i, end in pairs:
             print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {end};")
     # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {28};")
@@ -136,8 +138,8 @@ def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict =
 
 if __name__ == "__main__":
     # Load the model and the dataset
-    results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME)
+    results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     eval_on = ExperimentConstants.EVALUATE_ON_ANALYZE
     model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
     # model_dataset_runner.run_function_on_all_models_and_datasets(check_comparison_matrix)
