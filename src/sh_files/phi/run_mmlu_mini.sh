@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --mem=20g
+#SBATCH --mem=10g
 #SBATCH --time=4-0
-#SBATCH --gres=gpu:1,vmem:8g
+#SBATCH --gres=gpu:1,vmem:22g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=gsm-03,gsm-04

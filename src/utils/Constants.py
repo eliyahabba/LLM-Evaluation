@@ -24,7 +24,8 @@ class Constants:
 
         LLAMA3_8B_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
 
-        GEMMA_MODEL = "google/gemma-7b-it"
+        GEMMA_7B_MODEL = "google/gemma-7b-it"
+        GEMMA_2B_MODEL = "google/gemma-2b-it"
         PHI_MODEL = "microsoft/phi-2"
         OLMO_MODEL = "allenai/OLMo-7B-Instruct"
         QWEN_MODEL = "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8"
@@ -57,7 +58,8 @@ class Constants:
                             "LLAMA13B": LLAMA13B_MODEL,
                             "LLAMA70B": LLAMA70B_MODEL,
                             "LLAMA3_8B": LLAMA3_8B_MODEL,
-                            "GEMMA": GEMMA_MODEL,
+                            "GEMMA_7B": GEMMA_7B_MODEL,
+                            "GEMMA_2B": GEMMA_2B_MODEL,
                             "OLMO": OLMO_MODEL}
         MODEL_NAMES = BASE_MODEL_NAMES
         MODEL_NAMES.update(PYTHIA_MODELS)
