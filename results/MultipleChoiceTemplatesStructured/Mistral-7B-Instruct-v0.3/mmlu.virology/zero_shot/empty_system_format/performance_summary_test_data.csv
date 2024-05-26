@@ -53,4 +53,5 @@ template_50,cards.mmlu.virology,empty_system_format,0,10,1600,0.446,0.446,accura
 template_51,cards.mmlu.virology,empty_system_format,0,10,1600,0.422,0.422,accuracy,0.349,0.494,0.349,0.494,166
 template_52,cards.mmlu.virology,empty_system_format,0,10,1600,0.452,0.452,accuracy,0.373,0.524,0.373,0.524,166
 template_53,cards.mmlu.virology,empty_system_format,0,10,1600,0.434,0.434,accuracy,0.361,0.506,0.361,0.506,166
-template_54,cards.mmlu.virology,empty_system_format,0,10,1600,0.457,0.457,accuracy,0.304,0.609,0.304,0.609,46
+template_54,cards.mmlu.virology,empty_system_format,0,10,1600,0.434,0.434,accuracy,0.355,0.506,0.355,0.506,166
+template_55,cards.mmlu.virology,empty_system_format,0,10,1600,0.410,0.410,accuracy,0.343,0.488,0.343,0.488,166
