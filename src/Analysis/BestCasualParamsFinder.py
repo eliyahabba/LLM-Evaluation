@@ -13,9 +13,7 @@ from src.utils.Constants import Constants
 ExperimentConstants = Constants.ExperimentConstants
 DatasetsConstants = Constants.DatasetsConstants
 ResultConstants = Constants.ResultConstants
-
-file_path = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH / f"{ResultConstants.BEST_COMBINATIONS}.csv"
-
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 class BestCasualParamsFinder:
     def __init__(self,
@@ -47,7 +45,8 @@ class BestCasualParamsFinder:
 
     @staticmethod
     def find_best_casual_params(format_folder: Path, eval_value: str,
-                                is_choose_across_axes: bool = ResultConstants.NOT_CHOOSE_ACROSS_AXES) -> None:
+                                is_choose_across_axes: bool = ResultConstants.NOT_CHOOSE_ACROSS_AXES,
+                                best_file_path:Path = None) -> None:
         """
         Find the best row in the performance_summary_df.
         """
@@ -65,8 +64,8 @@ class BestCasualParamsFinder:
         # add to the best_row the result.stats and result.pvalue
         # stats_values = pd.Series({'statistic': f'{result.statistic:.2f}', 'pvalue': f'{result.pvalue:.2f}'})
         # best_row = pd.concat([best_row, stats_values])
-        if file_path.exists():
-            best_combinations_df = pd.read_csv(file_path, dtype=str)
+        if best_file_path.exists():
+            best_combinations_df = pd.read_csv(best_file_path, dtype=str)
         else:
             best_combinations_df = pd.DataFrame()
 
@@ -89,7 +88,7 @@ class BestCasualParamsFinder:
                 best_combinations_df = pd.concat([best_combinations_df, pd.DataFrame(data, columns=columns)],
                                                  ignore_index=True)
         best_combinations_df.sort_values(by="model", inplace=True, ignore_index=True)
-        best_combinations_df.to_csv(file_path, index=False)
+        best_combinations_df.to_csv(best_file_path, index=False)
 
 
 if __name__ == "__main__":
@@ -97,11 +96,14 @@ if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--dataset", type=str, choices=DatasetsConstants.DATASET_NAMES,
                       default=DatasetsConstants.DATASET_NAMES[0])
-
+    args.add_argument("--results_folder", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args = args.parse_args()
+    args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
+    best_file_path = args.results_folder / f"{ResultConstants.BEST_COMBINATIONS}.csv"
+
     # Load the model and the dataset
-    results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
     eval_on = ExperimentConstants.EVALUATE_ON_ANALYZE
-    model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
+    model_dataset_runner = ModelDatasetRunner(args.results_folder, eval_on)
     model_dataset_runner.run_function_on_all_models_and_datasets(BestCasualParamsFinder.find_best_casual_params,
-                                                                 ResultConstants.CHOOSE_ACROSS_AXES)
+                                                                 is_choose_across_axes=ResultConstants.CHOOSE_ACROSS_AXES,
+                                                                  best_file_path=best_file_path)

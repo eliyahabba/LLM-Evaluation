@@ -127,12 +127,12 @@ if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--dataset", type=str, choices=DatasetsConstants.DATASET_NAMES,
                       default=DatasetsConstants.DATASET_NAMES[0])
-
+    args.add_argument("--results_folder", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args = args.parse_args()
+    args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
     # Load the model and the dataset
-    results_folder = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH
     eval_on = ExperimentConstants.EVALUATE_ON_ANALYZE
-    model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
+    model_dataset_runner = ModelDatasetRunner(args.results_folder, eval_on)
     grouping_configurations = GroupingConfigurations()
 
     model_dataset_runner.run_function_on_all_models_and_datasets(grouping_configurations.get_group_for_dataset)

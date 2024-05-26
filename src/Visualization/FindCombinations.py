@@ -18,7 +18,7 @@ ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
 BestCombinationsConstants = Constants.BestCombinationsConstants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
-BEST_COMBINATIONS_PATH = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH / f"{ResultConstants.BEST_COMBINATIONS}.csv"
+BEST_COMBINATIONS_PATH = ExperimentConstants.MAIN_RESULTS_PATH / Path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME) / f"{ResultConstants.BEST_COMBINATIONS}.csv"
 
 MMLU_SUBCATEGORIES = MMLUConstants.SUBCATEGORIES
 MMLU_CATEGORIES = MMLUConstants.SUBCATEGORIES_TO_CATEGORIES
