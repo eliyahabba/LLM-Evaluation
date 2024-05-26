@@ -15,6 +15,7 @@ DatasetsConstants = Constants.DatasetsConstants
 ResultConstants = Constants.ResultConstants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
+
 class BestCasualParamsFinder:
     def __init__(self,
                  dataset_file_name: str,
@@ -46,7 +47,7 @@ class BestCasualParamsFinder:
     @staticmethod
     def find_best_casual_params(format_folder: Path, eval_value: str,
                                 is_choose_across_axes: bool = ResultConstants.NOT_CHOOSE_ACROSS_AXES,
-                                best_file_path:Path = None) -> None:
+                                best_file_path: Path = None) -> None:
         """
         Find the best row in the performance_summary_df.
         """
@@ -96,7 +97,8 @@ if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--dataset", type=str, choices=DatasetsConstants.DATASET_NAMES,
                       default=DatasetsConstants.DATASET_NAMES[0])
-    args.add_argument("--results_folder", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
+    args.add_argument("--results_folder", type=str,
+                      default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args = args.parse_args()
     args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
     best_file_path = args.results_folder / f"{ResultConstants.BEST_COMBINATIONS}.csv"
@@ -106,4 +108,4 @@ if __name__ == "__main__":
     model_dataset_runner = ModelDatasetRunner(args.results_folder, eval_on)
     model_dataset_runner.run_function_on_all_models_and_datasets(BestCasualParamsFinder.find_best_casual_params,
                                                                  is_choose_across_axes=ResultConstants.CHOOSE_ACROSS_AXES,
-                                                                  best_file_path=best_file_path)
+                                                                 best_file_path=best_file_path)
