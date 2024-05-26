@@ -39,6 +39,8 @@ class ClusteringDisplayer:
                                                                                       PERFORMANCE_SUMMARY)
         performance_summary_df  = pd.read_csv(performance_summary_path)
         cols_to_remove = ['card', 'system_format', 'score', 'score_name']
+        if 'groups_mean_score' in df.columns:
+            cols_to_remove.append('groups_mean_score')
         columns_order = ['template_name', 'number_of_instances', 'accuracy', 'accuracy_ci_low', 'accuracy_ci_high',
                          'score_ci_low', 'score_ci_high', 'groups_mean_score']
         performance_summary_df = performance_summary_df.drop(cols_to_remove, axis=1)

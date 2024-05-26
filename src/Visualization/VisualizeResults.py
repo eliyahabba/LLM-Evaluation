@@ -45,8 +45,10 @@ class VisualizeResults:
         """
         df = pd.read_csv(results_file)
         cols_to_remove = ['card', 'system_format', 'score', 'score_name']
+        if 'groups_mean_score' in df.columns:
+            cols_to_remove.append('groups_mean_score')
         columns_order = ['template_name', 'number_of_instances', 'accuracy', 'accuracy_ci_low', 'accuracy_ci_high',
-                         'score_ci_low', 'score_ci_high', 'groups_mean_score']
+                         'score_ci_low', 'score_ci_high']
         df = df.drop(cols_to_remove, axis=1)
         df = df[columns_order]
         st.write(df)
