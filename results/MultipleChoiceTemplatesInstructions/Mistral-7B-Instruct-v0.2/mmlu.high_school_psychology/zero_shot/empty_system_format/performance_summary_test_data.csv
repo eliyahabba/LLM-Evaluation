@@ -23,6 +23,10 @@ template_20,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.76
 template_21,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.774,0.774,accuracy,0.741,0.809,0.741,0.809,545
 template_22,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.771,0.771,accuracy,0.736,0.804,0.736,0.804,545
 template_23,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.752,0.752,accuracy,0.719,0.789,0.719,0.789,545
+template_24,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.752,0.752,accuracy,0.714,0.785,0.714,0.785,545
+template_25,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.767,0.767,accuracy,0.736,0.804,0.736,0.804,545
+template_26,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.760,0.760,accuracy,0.725,0.794,0.725,0.794,545
+template_27,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.765,0.765,accuracy,0.734,0.800,0.734,0.800,545
 template_28,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.747,0.747,accuracy,0.708,0.782,0.708,0.782,545
 template_29,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.741,0.741,accuracy,0.705,0.773,0.705,0.773,545
 template_30,cards.mmlu.high_school_psychology,empty_system_format,0,10,1600,0.738,0.738,accuracy,0.701,0.772,0.701,0.772,545
