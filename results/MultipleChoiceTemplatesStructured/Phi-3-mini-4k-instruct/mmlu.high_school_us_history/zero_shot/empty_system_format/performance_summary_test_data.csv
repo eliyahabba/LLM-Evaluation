@@ -29,6 +29,8 @@ template_26,cards.mmlu.high_school_us_history,empty_system_format,0,10,1600,0.43
 template_27,cards.mmlu.high_school_us_history,empty_system_format,0,10,1600,0.422,0.422,accuracy,0.348,0.490,0.348,0.490,204
 template_28,cards.mmlu.high_school_us_history,empty_system_format,0,10,1600,0.417,0.417,accuracy,0.353,0.490,0.353,0.490,204
 template_29,cards.mmlu.high_school_us_history,empty_system_format,0,10,1600,0.353,0.353,accuracy,0.294,0.426,0.294,0.426,204
+template_30,cards.mmlu.high_school_us_history,empty_system_format,0,10,1600,0.343,0.343,accuracy,0.284,0.412,0.284,0.412,204
+template_31,cards.mmlu.high_school_us_history,empty_system_format,0,10,1600,0.377,0.377,accuracy,0.309,0.446,0.309,0.446,204
 template_32,cards.mmlu.high_school_us_history,empty_system_format,0,10,1600,0.382,0.382,accuracy,0.324,0.456,0.324,0.456,204
 template_33,cards.mmlu.high_school_us_history,empty_system_format,0,10,1600,0.412,0.412,accuracy,0.343,0.480,0.343,0.480,204
 template_34,cards.mmlu.high_school_us_history,empty_system_format,0,10,1600,0.407,0.407,accuracy,0.343,0.475,0.343,0.475,204
