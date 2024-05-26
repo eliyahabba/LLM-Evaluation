@@ -1,3 +1,4 @@
+import re
 import sys
 from pathlib import Path
 from typing import List, Tuple
@@ -18,31 +19,49 @@ ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
 BestCombinationsConstants = Constants.BestCombinationsConstants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
-BEST_COMBINATIONS_PATH = ExperimentConstants.MAIN_RESULTS_PATH / Path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME) / f"{ResultConstants.BEST_COMBINATIONS}.csv"
+BEST_COMBINATIONS_PATH = ExperimentConstants.MAIN_RESULTS_PATH / Path(
+    TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME) / f"{ResultConstants.BEST_COMBINATIONS}.csv"
 
 MMLU_SUBCATEGORIES = MMLUConstants.SUBCATEGORIES
 MMLU_CATEGORIES = MMLUConstants.SUBCATEGORIES_TO_CATEGORIES
 BestOrWorst = Constants.BestOrWorst
+MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
 
 class FindCombinations:
-    def __init__(self, best_or_worst: BestOrWorst, file_path: Path = BEST_COMBINATIONS_PATH,
-                 override_options: dict = None) -> None:
+    def __init__(self, best_or_worst: BestOrWorst, override_options: dict = None) -> None:
         """
         Initialize the BestCombinationsDisplayer class.
 
         @param file_path: Path to the CSV file containing the best combinations.
         @param override_options: Dictionary containing options to override histograms.
         """
-        self.best_or_worst = best_or_worst
+        self.best_combinations = None
+        self.best_combinations_file_path = None
+        self.results_folder = None
         self.model_results_path = None
-        self.file_path: Path = file_path
-        self.results_folder = self.file_path.parent
-        self.override_options: dict = override_options
 
-        self.best_combinations: pd.DataFrame = self.read_best_combinations()
-        self._filter_best_combinations()
+        self.best_or_worst = best_or_worst
+        self.main_results_path = Path(MAIN_RESULTS_PATH)
+        self.override_options: dict = override_options
         self._read_templates_metadata()
+
+    def get_result_files(self) -> Path:
+        """
+        Get the result files.
+        @return:
+        """
+        # ask the use to select the results folder from the ExperimentConstants.MAIN_RESULTS_PATH
+        results_folders = [folder for folder in self.main_results_path.iterdir() if folder.is_dir()]
+        # take the part name of the folder
+        results_folders = [folder.parts[-1] for folder in results_folders]
+        # split each name to the last word that start with capital letter
+        results_names = [re.findall('[A-Z][^A-Z]*', folder)[-1] for folder in results_folders]
+        # join the words with space
+        chosen_results_names = st.selectbox("Select the template prompt of the results", results_names)
+        results_folder_ind = results_names.index(chosen_results_names)
+        return self.main_results_path / Path(results_folders[results_folder_ind])
+
 
     def read_best_combinations(self) -> pd.DataFrame:
         """
@@ -50,7 +69,7 @@ class FindCombinations:
 
         @return: DataFrame containing the best combinations.
         """
-        return pd.read_csv(self.file_path)
+        return pd.read_csv(self.best_combinations_file_path)
 
     def _read_templates_metadata(self):
         templates_path = TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH
@@ -185,6 +204,12 @@ class FindCombinations:
             with cols[i]:
                 st.pyplot(fig)
 
+    def read_best_combinations(self) -> None:
+        self.results_folder = self.get_result_files()
+        self.best_combinations_file_path = self.results_folder / Path(f"{ResultConstants.BEST_COMBINATIONS}.csv")
+        self.best_combinations: pd.DataFrame = self.read_best_combinations()
+        self._filter_best_combinations()
+
     def evaluate(self) -> None:
         """
         Renders the evaluation of the best combinations.
@@ -193,8 +218,10 @@ class FindCombinations:
         """
         st.title("Evaluation by model")
         display_histograms = st.checkbox("Display histograms")
-        models = self.best_combinations[BestCombinationsConstants.MODEL].unique()
 
+        self.read_best_combinations()
+
+        models = self.best_combinations[BestCombinationsConstants.MODEL].unique()
         model = st.selectbox("Choose a model", models)
         self.model_results_path = self.results_folder / model
         model_data = self.best_combinations[self.best_combinations[BestCombinationsConstants.MODEL] == model]
