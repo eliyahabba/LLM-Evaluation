@@ -15,12 +15,11 @@ class ModelDatasetRunner:
         self.evaluate_on = evaluate_on
 
     def run_function_on_all_models_and_datasets(self, processing_function: Callable,
-                                                kwargs: dict = None
-                                                ) -> None:
+                                                **kwargs) -> None:
         results_folder = Path(self.structured_input_folder_path)
         eval_on = self.evaluate_on
         models_names = [model.split('/')[1] for model in LLMProcessorConstants.MODEL_NAMES.values()]
-
+        # models_names = models_names[2:3]
         models_folders = [Path(results_folder / model_name) for model_name in models_names]
         for model_name in models_folders:
             print(f"Model {model_name.name}")
@@ -32,7 +31,7 @@ class ModelDatasetRunner:
                     for format_folder in formats:
                         for eval_value in eval_on:
                             try:
-                                processing_function(format_folder, eval_value, kwargs)
+                                processing_function(format_folder, eval_value, **kwargs)
                             except Exception as e:
                                 print(f"Error in {model_name.name}/{dataset_folder.name}/{shot.name}/"
                                       f"{format_folder.name} for {eval_value}: {e}")
