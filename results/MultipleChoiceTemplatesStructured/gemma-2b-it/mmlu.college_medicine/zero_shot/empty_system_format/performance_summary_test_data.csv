@@ -11,3 +11,11 @@ template_28,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.350,0.35
 template_30,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.350,0.350,accuracy,0.233,0.483,0.233,0.483,60
 template_35,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.300,0.300,accuracy,0.200,0.417,0.200,0.417,60
 template_40,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.400,0.400,accuracy,0.283,0.533,0.283,0.533,60
+template_45,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.329,0.329,accuracy,0.260,0.399,0.260,0.399,173
+template_46,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.301,0.301,accuracy,0.225,0.364,0.225,0.364,173
+template_47,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.335,0.335,accuracy,0.266,0.405,0.266,0.405,173
+template_48,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.289,0.289,accuracy,0.225,0.355,0.225,0.355,173
+template_50,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.233,0.233,accuracy,0.133,0.350,0.133,0.350,60
+template_53,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.301,0.301,accuracy,0.230,0.370,0.230,0.370,173
+template_54,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.277,0.277,accuracy,0.220,0.353,0.220,0.353,173
+template_55,cards.mmlu.college_medicine,empty_system_format,0,10,1600,0.272,0.272,accuracy,0.208,0.341,0.208,0.341,173
