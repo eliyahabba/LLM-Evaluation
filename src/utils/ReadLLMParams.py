@@ -8,7 +8,7 @@ TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 class ReadLLMParams:
     @staticmethod
     def read_llm_params(args: argparse.ArgumentParser):
-        args.add_argument("--model_name", type=str, default="mistralai/Mistral-7B-Instruct-v0.2")
+        args.add_argument("--model_name", type=str, default="MISTRAL_V2")
         args.add_argument("--load_in_4bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_4BIT,
                           help="True if the model should be loaded in 4-bit.")
         args.add_argument("--load_in_8bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_8BIT,
