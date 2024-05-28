@@ -12,6 +12,7 @@ from src.CreateData.DatasetLoader import DatasetLoader
 from src.ModelsPredictors.LLMPredictor import LLMPredictor
 from src.ModelsPredictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
+from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -72,7 +73,8 @@ class ExperimentRunner:
 
         system_foramt = Utils.get_system_format_class(self.args.system_format)
 
-        results_path = ExperimentConstants.NOT_STRUCTURED_INPUT_FOLDER_PATH
+        results_path = ExperimentConstants.MAIN_RESULTS_PATH / Path(
+            TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
         results_file_path = results_path / self.args.card.split('cards.')[1] / num_of_shot_icl / system_foramt / \
                             json_file_name
         results_file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -132,21 +134,45 @@ class ExperimentRunner:
 
         llm_proc = LLMProcessor(self.args.model_name, self.args.load_in_4bit, self.args.load_in_8bit)
         llm_pred = LLMPredictor(llm_proc)
+
+        enumerators = template.enumerator[:4]
+        if isinstance(enumerators, str):
+            # convrte each char tp an element in a list
+            enumerators = list(enumerators)
+        # for each element in the enumerator list add another token of " " + token
+        enumerators_with_space = [f" {enumerator}" for enumerator in enumerators]
+        possible_gt_tokens = enumerators + enumerators_with_space
+
         llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
+
+
+def parser_bit_precision(args: argparse.Namespace) -> Tuple[bool, bool]:
+    # Resolve conflicts and decide final settings
+    if args.not_load_in_8bit and args.not_load_in_4bit:
+        load_in_4bit = False
+        load_in_8bit = False
+    elif args.load_in_4bit:
+        load_in_4bit = True
+        load_in_8bit = False
+    elif args.load_in_8bit:
+        load_in_4bit = False
+        load_in_8bit = True
+    else:
+        load_in_4bit = False
+        load_in_8bit = False
+
+    return load_in_4bit, load_in_8bit
 
 
 def main():
     args = argparse.ArgumentParser()
-    args.add_argument("--card", type=str, default="cards.sciq")
-    args.add_argument("--model_name", type=str, default=LLMProcessorConstants.MODEL_NAME)
-    args.add_argument("--load_in_4bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_4BIT,
-                      help="True if the model should be loaded in 4-bit.")
-    args.add_argument("--load_in_8bit", action="store_true", default=LLMProcessorConstants.LOAD_IN_8BIT,
-                      help="True if the model should be loaded in 8-bit.")
-    args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
+    args = ReadLLMParams.read_llm_params(args)
 
+    args.add_argument("--card", type=str, default="cards.mmlu.college_medicine")
+    args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
+    args.add_argument("--batch_size", type=int, default=ExperimentConstants.BATCH_SIZE, help="The batch size.")
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
-    args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON,
+    args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON_INFERENCE,
                       help='The data types to evaluate the model on.')
     args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
     args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
@@ -156,12 +182,23 @@ def main():
                       help="Specify the range of templates to run the experiment on (e.g., 1 10).")
     # add param
     args = args.parse_args()
+    # check if load_in_4bit or not_load_in_4bit
+    args.load_in_4bit, args.load_in_8bit = parser_bit_precision(args)
+
     # add the syte  format to the args
     args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
+    # map between the model name to the real model name from the constants
+    args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
+    args.multiple_choice_path = TemplatesGeneratorConstants.DATA_PATH / Path(args.multiple_choice_name)
+    args.results_path = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.multiple_choice_name)
     runner = ExperimentRunner(args)
     runner.run_experiment()
 
 
 if __name__ == "__main__":
     # measure the time of the experiment
+    start = time.time()
     main()
+    end = time.time()
+    # print the time of the experiment in minutes (blue color)
+    print(colored(f"Total time of the experiment: {round((end - start) / 60, 2)} minutes", "blue"))
