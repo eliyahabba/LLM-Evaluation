@@ -29,7 +29,8 @@ class LLMPredictor:
         self.llmp = llmp
         self.batch_size = batch_size
 
-    def predict_on_single_dataset(self, eval_dataset, eval_value: str, results_file_path: Path) -> None:
+    def predict_on_single_dataset(self, eval_dataset, eval_value: str, results_file_path: Path,
+                                  possible_gt_tokens: List[str] = None) -> None:
         """
         Predict the model on a single dataset.
 
@@ -43,7 +44,8 @@ class LLMPredictor:
         max_new_tokens = min(max_new_tokens, 25)
 
         eval_set_indexes = list(range(len(eval_dataset)))
-        filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_dataset, eval_value, eval_set_indexes,
+        filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_dataset, eval_value,
+                                                                               eval_set_indexes,
                                                                                results_file_path)
         # print in red the number of instances that were already predicted and will be skipped
         print(colored(f"{len(eval_dataset)} instances were already predicted and will be skipped.", "red"))
@@ -58,11 +60,14 @@ class LLMPredictor:
             loaded_input_texts = [result['Instance'] for result in loaded_results]
             loaded_ground_truths = [result['GroundTruth'] for result in loaded_results]
             loaded_answers = [result['Result'] for result in loaded_results]
+            loaded_max_tokens_probability = [result['MaxTokenProbability'] for result in loaded_results]
+
         else:
             loaded_idxs = []
             loaded_input_texts = []
             loaded_ground_truths = []
             loaded_answers = []
+            loaded_max_tokens_probability = []
 
         # run the model on the dataset and save the results in the file after each batch
         counter_idx = 0
@@ -75,21 +80,18 @@ class LLMPredictor:
             counter_idx += self.batch_size
             input_text = [batch_instance["source"] for batch_instance in batch_instances]
             ground_truth = [batch_instance["target"] for batch_instance in batch_instances]
-            result = self.llmp.predict(input_text, max_new_tokens)
+            generated_tokens_decoded, max_tokens = self.llmp.predict(input_text, max_new_tokens,
+                                                                     possible_gt_tokens=possible_gt_tokens)
             loaded_idxs.extend(batch_indexes)
             loaded_input_texts.extend(input_text)
             loaded_ground_truths.extend(ground_truth)
-            loaded_answers.extend(result)
-            # if counter_idx % self.batch_size == 0:
+            loaded_answers.extend(generated_tokens_decoded)
+            loaded_max_tokens_probability.extend(max_tokens)
             self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
-                              loaded_ground_truths, loaded_data)
-            # save the remaining results if there are any
-        # if counter_idx % self.batch_size != 0:
-        #     self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
-        #                       loaded_ground_truths, loaded_data)
+                              loaded_ground_truths, loaded_max_tokens_probability, loaded_data)
 
     def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list,
-                        results_file_path: Path) -> None:
+                        results_file_path: Path, possible_gt_tokens: List[str] = None) -> None:
         """
         Predict the model on all the instances in the dataset.
 
@@ -100,7 +102,8 @@ class LLMPredictor:
 
             else:
                 eval_dataset = llm_dataset.dataset[eval_value]
-                self.predict_on_single_dataset(eval_dataset, eval_value, results_file_path=results_file_path)
+                self.predict_on_single_dataset(eval_dataset, eval_value, results_file_path=results_file_path,
+                                               possible_gt_tokens=possible_gt_tokens)
 
     def load_results_file(self, results_file_path: Path) -> dict:
         """
@@ -114,7 +117,7 @@ class LLMPredictor:
 
     def save_results(self, results_file_path: Path, eval_value: str,
                      idxs: List[int], input_texts: List[str], results: List[str], ground_truths: List[str],
-                     loaded_data: dict) -> None:
+                     loaded_max_tokens_probability: List[str], loaded_data: dict) -> None:
         """
         Save the results in a JSON file.
 
@@ -127,12 +130,13 @@ class LLMPredictor:
 
         """
 
-        entries = self.create_entries(idxs, input_texts, results, ground_truths)
+        entries = self.create_entries(idxs, input_texts, results, loaded_max_tokens_probability, ground_truths)
         loaded_data['results'][eval_value] = entries
         with open(results_file_path, "w") as f:
             json.dump(loaded_data, f)
 
-    def create_entries(self, idxs: List[int], input_texts: List[str], results: List[str], ground_truths: List[str]):
+    def create_entries(self, idxs: List[int], input_texts: List[str], results: List[str],
+                       loaded_max_tokens_probability: List[str], ground_truths: List[str]):
         """
         Create the entries for the results file.
         @param idxs: The indices of the instances.
@@ -145,8 +149,10 @@ class LLMPredictor:
             "Index": idx,
             "Instance": instance,
             "Result": result,
+            "MaxTokenProbability": max_token,
             "GroundTruth": ground_truth
-        } for idx, instance, result, ground_truth in zip(idxs, input_texts, results, ground_truths)]
+        } for idx, instance, result, max_token, ground_truth in
+            zip(idxs, input_texts, results, loaded_max_tokens_probability, ground_truths)]
         # sort the entries by the index
         entries = sorted(entries, key=lambda x: x["Index"])
         return entries

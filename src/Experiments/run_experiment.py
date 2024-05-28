@@ -29,7 +29,7 @@ class ExperimentRunner:
         self.args = args
 
     def load_template(self, template_num: int, multiple_choice_path) -> \
-    Tuple[str, Template]:
+            Tuple[str, Template]:
         """
         Loads the template from the specified path.
         @return: The template
@@ -143,8 +143,19 @@ class ExperimentRunner:
         entry_experiment = self.create_entry_experiment(template_name)
         results_file_path = self.save_results_to_json(entry_experiment, template_name, self.args.num_demos)
 
+        enumerators = template.enumerator[:4]
+        if isinstance(enumerators, str):
+            # convrte each char tp an element in a list
+            enumerators = list(enumerators)
+        # for each element in the enumerator list add another token of " " + token
+        enumerators_with_space = [f" {enumerator}" for enumerator in enumerators]
+        enumerators_with_space2 = [f"{enumerator} " for enumerator in enumerators]
+        enumerators_with_dot = [f"{enumerator}." for enumerator in enumerators]
+        possible_gt_tokens = enumerators + enumerators_with_space + enumerators_with_dot + enumerators_with_space2
+
         llm_pred = LLMPredictor(llm_proc, batch_size=self.args.batch_size)
-        llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
+        llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path,
+                                 possible_gt_tokens=possible_gt_tokens)
 
 
 def parser_bit_precision(args: argparse.Namespace) -> Tuple[bool, bool]:

@@ -1,8 +1,9 @@
 import argparse
-from typing import Union, List
+from typing import Union, List, Tuple
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers.tokenization_utils_base import BatchEncoding
 
@@ -104,8 +105,7 @@ class LLMProcessor:
         print("The decoded generated tokens are:")
         print(generated_tokens_decoded)
 
-    def generate_model_text(self, input_text: Union[str, List[str]], max_new_tokens: int,
-                            is_print: bool = False) -> str:
+    def generate_model_text(self, input_text: Union[str, List[str]], max_new_tokens: int) -> Tuple[BatchEncoding, dict]:
         """
         Generate text using a pre-trained language model and print the results.
 
@@ -116,6 +116,9 @@ class LLMProcessor:
         """
         input_tokenized = self.tokenize_text(input_text)
         outputs = self.generate_text(input_tokenized, max_new_tokens)
+        return input_tokenized, outputs
+
+    def generate_decoded_text(self, outputs, input_tokenized: BatchEncoding, is_print: bool = False) -> List[str]:
         generated_tokens = outputs.sequences[:, input_tokenized.input_ids.shape[1]:]
         generated_tokens_decoded = self.decode_tokens(generated_tokens)
         if is_print:
@@ -124,11 +127,34 @@ class LLMProcessor:
             self.print_generated_tokens_decoded(generated_tokens_decoded)
         return generated_tokens_decoded
 
-    def predict(self, input_text: Union[str, List[str]], max_new_tokens: int, is_print: bool = False) -> str:
+    def predict(self, input_text: Union[str, List[str]], max_new_tokens: int, possible_gt_tokens: list = None,
+                is_print: bool = False) -> Tuple[List[str], List[str]]:
         """
         Predict the next word in the sequence.
         """
-        return self.generate_model_text(input_text, max_new_tokens, is_print=is_print)
+        input_tokenized, outputs = self.generate_model_text(input_text, max_new_tokens)
+        generated_tokens_decoded = self.generate_decoded_text(outputs, input_tokenized, is_print)
+        max_tokens = self.get_max_token(outputs, possible_gt_tokens)
+        return generated_tokens_decoded, max_tokens
+
+    def get_max_token(self, outputs, tokens):
+        # Get the scores from the output
+        scores = outputs.scores[0]  # scores for the last token
+
+        # Convert the specific tokens to their IDs
+        token_ids = self.tokenizer.convert_tokens_to_ids(tokens)
+        max_tokens = []
+        # Get the probabilities for the specific token IDs
+        for batch_idx in range(scores.size(0)):
+            # Get the probabilities for the specific token IDs for this batch item
+            probs = F.softmax(scores[batch_idx], dim=-1)
+            token_probs = {token: probs[token_id].item() for token, token_id in zip(tokens, token_ids)}
+
+            # Select the token with the highest probability
+            max_token = max(token_probs, key=token_probs.get)
+            max_tokens.append(max_token)
+
+        return max_tokens
 
 
 # Execute the main function
