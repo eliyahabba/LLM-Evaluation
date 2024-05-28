@@ -62,18 +62,20 @@ if __name__ == '__main__':
         "engineering principles", "humor", "nutritional inconsistencies", "physical principles",
         "religion principles", "safety", "social conventions", "temporal principles", "weather conditions"
     ]
-    suggest_categories = ["Animal Behavior", "Biological Principles", "Physical Principles", "Cultural Principles",
+    suggest_categories = ["Animal Behavior", "Biological Principles",
+                          "Physical Principles", "Cultural Principles",
                           "Social Conventions",
-                          "Engineering and Architectural Features", "Humor", "Nutritional and Food Practices",
+                          "Engineering and Architectural Features",
+                          "Nutritional and Food Practices",
                           "Religion Principles",
                           "Safety and Survival Situations", "Temporal Principles",
                           "Weather and Environmental Conditions",
-                          "Geographic Knowledge", "Historical Interests and Professions",
+                          "Geographic Knowledge", "Historical Contexts",
                           "Traffic Regulations and Conventions",
                           "Object Counting and Placement", "Law and Order and Crime", "Education and Study Environment",
                           "Office and Equipment Troubleshooting", "Animal behavior", "Game Strategy and Tactics",
                           "Health and Personal Care",
-                          "Film and Television Production", "Sport"]
+                          "Sport"]
 
     new_suggest = "If you believe there is another category that would be more suitable but is not in the list, please still choose the most appropriate category from the existing ones and then suggest a new category on a new line. Respond only with the category name and, if applicable, the new category suggestion"
     response_foramt = "Please respond with only the category name and nothing else."
