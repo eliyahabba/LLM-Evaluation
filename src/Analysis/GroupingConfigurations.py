@@ -113,7 +113,7 @@ class GroupingConfigurations:
         dataset_file_name = format_folder.parents[1].name
 
         grouped_result_file = format_folder / f"{ResultConstants.GROUPED_LEADERBOARD}.csv"
-        if not grouped_result_file.exists() or True:
+        if not grouped_result_file.exists():
             grouped_metadata_df = GroupingConfigurations.select_and_display_best_combination(dataset_file_name,
                                                                                              performance_summary_path,
                                                                                              comparison_matrix_path)
