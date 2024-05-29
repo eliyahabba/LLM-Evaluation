@@ -23,7 +23,9 @@ class Constants:
         LLAMA13B_MODEL = "meta-llama/Llama-2-13b-chat-hf"
         LLAMA70B_MODEL = "meta-llama/Llama-2-70b-chat-hf"
         LLAMA3_8B_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
-        LLAMAS_FAMILY = [LLAMA7B_MODEL, LLAMA13B_MODEL, LLAMA70B_MODEL, LLAMA3_8B_MODEL]
+        LLAMA7B_BASE_MODEL = "meta-llama/Llama-2-7b-hf"
+        LLAMA13B_BASE_MODEL = "meta-llama/Llama-2-13b-hf"
+
         LLAMAS_FAMILY = [LLAMA7B_MODEL, LLAMA13B_MODEL, LLAMA3_8B_MODEL]
 
         GEMMA_7B_MODEL = "google/gemma-7b-it"
@@ -63,6 +65,8 @@ class Constants:
                             "LLAMA13B": LLAMA13B_MODEL,
                             "LLAMA70B": LLAMA70B_MODEL,
                             "LLAMA3_8B": LLAMA3_8B_MODEL,
+                            "LLAMA7B_BASE": LLAMA7B_BASE_MODEL,
+                            "LLAMA13B_BASE": LLAMA13B_BASE_MODEL,
                             "GEMMA_7B": GEMMA_7B_MODEL,
                             "GEMMA_2B": GEMMA_2B_MODEL,
                             "OLMO": OLMO_MODEL}
