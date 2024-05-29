@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --mem=22g
+#SBATCH --mem=4g
 #SBATCH --time=1-0
 #SBATCH --gres=gpu:1,vmem:10g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
