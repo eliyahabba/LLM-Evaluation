@@ -14,11 +14,14 @@ ResultConstants = Constants.ResultConstants
 
 
 class DisplayConfigurationsGroups:
-    def __init__(self, model_results_path, templates_metadata):
+    def __init__(self, model_results_path, templates_metadata, diplay_full_details=False, first_model=True):
         self.model_results_path = model_results_path
         self.templates_metadata = templates_metadata
+        self.diplay_full_details = diplay_full_details
+        self.first_model = first_model
 
-    def check_the_group_of_conf(self, configuration: dict, datasets: List[str], num_of_expected_datasets: int, num_od_actual_datasets: int) -> None:
+    def check_the_group_of_conf(self, configuration: dict, datasets: List[str], num_of_expected_datasets: int, num_od_actual_datasets: int,
+                                ) -> None:
         """
         Checks the group of the configuration.
         @param configuration:
@@ -27,7 +30,7 @@ class DisplayConfigurationsGroups:
         @param num_od_actual_datasets:
         @return:
         """
-        st.markdown(f"Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets")
+        # st.markdown(f"Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets")
         # 1. need to read metadata templates to get the template of the this confiuration
         # 2. need to read the file of the groups of templates, and find the group of this template, that is the group of the configuration
 
@@ -66,11 +69,15 @@ class DisplayConfigurationsGroups:
             # print the groups and the percentage tp streamlit
             self.display_configuration_stats(combination, groups_percentage, groups_percentages)
 
-    def display_configuration_stats(self, combination: dict, groups_percentage: dict, groups_percentages: dict):
-
-        conf_title = f"Configuration {list(combination.values())} is in the following groups:"
-        st.markdown(f'<span style="color:red ; font-size: 16px;">{conf_title}</span>', unsafe_allow_html=True)
-        for group, percentage in groups_percentage.items():
-            st.write(f"In Group: {group} in {(percentage * 100.):.2f}% of the datasets (the median "
-                     f" size of the group in the datasets is {(groups_percentages[group] * 100.):.2f}%)")
-        st.write("")
+    def display_configuration_stats(self, combination: dict, groups_percentage: dict, groups_percentages: dict, diplay_full_details: bool = False) -> None:
+        if diplay_full_details:
+            conf_title = f"Configuration {list(combination.values())} is in the following groups:"
+            st.markdown(f'<span style="color:red ; font-size: 16px;">{conf_title}</span>', unsafe_allow_html=True)
+            for group, percentage in groups_percentage.items():
+                st.write(f"In Group: {group} in {(percentage * 100.):.2f}% of the datasets (the median "
+                         f" size of the group in the datasets is {(groups_percentages[group] * 100.):.2f}%)")
+            st.write("")
+        else:
+            conf_title = f"Configuration {list(combination.values())}"
+            st.markdown(f'<span style="color:red ; font-size: 16px;">{conf_title}</span>', unsafe_allow_html=True)
+            st.write("")

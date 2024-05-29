@@ -19,6 +19,7 @@ ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
 BestCombinationsConstants = Constants.BestCombinationsConstants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
+LLMProcessorConstants = Constants.LLMProcessorConstants
 BEST_COMBINATIONS_PATH = ExperimentConstants.MAIN_RESULTS_PATH / Path(
     TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME) / f"{ResultConstants.BEST_COMBINATIONS}.csv"
 
@@ -29,7 +30,7 @@ MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
 
 class FindCombinations:
-    def __init__(self, best_or_worst: BestOrWorst, override_options: dict = None) -> None:
+    def __init__(self, best_or_worst: BestOrWorst, override_options: dict = None, families: bool = False) -> None:
         """
         Initialize the BestCombinationsDisplayer class.
 
@@ -44,6 +45,7 @@ class FindCombinations:
         self.best_or_worst = best_or_worst
         self.main_results_path = Path(MAIN_RESULTS_PATH)
         self.override_options: dict = override_options
+        self.families = families
         self._read_templates_metadata()
 
     def get_result_files(self) -> Path:
@@ -62,8 +64,7 @@ class FindCombinations:
         results_folder_ind = results_names.index(chosen_results_names)
         return self.main_results_path / Path(results_folders[results_folder_ind])
 
-
-    def read_best_combinations(self) -> pd.DataFrame:
+    def read_best_combinations_file(self) -> pd.DataFrame:
         """
         Reads the best combinations DataFrame.
 
@@ -149,17 +150,64 @@ class FindCombinations:
 
         return model_data_splitted
 
-    def choose_group_or_top_k(self) -> Tuple[str, int]:
-        group_or_top_k = st.radio("Do you want to take the best k or the first group?", ['First group', 'Top k'])
+    def choose_group_or_top_k(self, model_name: str) -> Tuple[str, int]:
+        group_or_top_k = st.radio("Do you want to take the best k or the first group?", ['First group', 'Top k'],
+                                  key=model_name)
         top_k = None
         if group_or_top_k == 'Top k':
-            top_k = st.number_input("Enter the number of top k groups you want to take", 1, 20, 1)
+            top_k = st.number_input("Enter the number of top k groups you want to take", 1, 20, 1, key=model_name)
 
         return group_or_top_k, top_k
 
-    def evaluate_the_model(self, model_data: pd.DataFrame,
+    def evaluate_the_model_in_family(self, model_name: str, model_data: pd.DataFrame,
+                                     display_histograms: bool = False,
+                                     split_option: str = None,
+                                     diplay_full_details: bool = False, i: int = None,
+                                     first_model: bool = False) -> None:
+
+        model_data_splitted = self.split_data_by_option(model_data, split_option)
+        group_or_top_k = 'First group'
+        top_k = None
+        # self.choose_group_or_top_k(model_name)
+        display_configurations_groups = DisplayConfigurationsGroups(self.model_results_path, self.templates_metadata,
+                                                                    diplay_full_details=diplay_full_details,
+                                                                    first_model=first_model)
+        # take the i element from the model_data_splitted (dict)
+        group_name, cur_data = list(model_data_splitted.items())[i]
+        group_name, cur_data = list(model_data_splitted.items())[i]
+        # read the df of the current group
+        dataset_names = cur_data.dataset.values
+        datasets_of_the_current_group = self.get_datasets_of_the_current_group(group_or_top_k, top_k,
+                                                                               dataset_names)
+        # concatenate the dfs to new df
+        best_templates_of_cur_group = [df.index.values.tolist() for df in datasets_of_the_current_group]
+        # map between the name of template and configuration
+        selected_configurations_df = self.convert_templates_names_to_conf_values(best_templates_of_cur_group)
+        configurations_counter = self._create_histograms_plots(selected_configurations_df)
+        if first_model:
+            st.markdown(f'<span style="font-size: 20px; color:blue">{group_name}</span>', unsafe_allow_html=True)
+
+        if display_histograms:
+            self.display_bars(configurations_counter, group_name, cur_data)
+
+        most_common_configuration = self.calculate_most_common_configurations(configurations_counter)
+        if first_model:
+            st.markdown(f'<span style="font-size: 17px;">**{self.best_or_worst.value} configurations**</span>',
+                        unsafe_allow_html=True)
+        num_of_expected_datasets = len(dataset_names)
+        num_od_actual_datasets = len(datasets_of_the_current_group)
+        st.markdown(
+            f'<span style="font-size: 16px; color:green">{model_name}:</span><span style="font-size: 16px; color:black"> Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets</span>',
+            unsafe_allow_html=True)
+        display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values,
+                                                              num_of_expected_datasets, num_od_actual_datasets)
+        # add empty line
+        st.write("")
+
+    def evaluate_the_model(self, model_name: str, model_data: pd.DataFrame,
                            display_histograms: bool = False,
-                           split_option: str = None) -> None:
+                           split_option: str = None,
+                           diplay_full_details: bool = False) -> None:
         """
         Evaluates data by the specified key (model or dataset) and splits if required.
 
@@ -167,8 +215,9 @@ class FindCombinations:
         @param split_option: Option to split data into subcategories or categories.
         """
         model_data_splitted = self.split_data_by_option(model_data, split_option)
-        group_or_top_k, top_k = self.choose_group_or_top_k()
-        display_configurations_groups = DisplayConfigurationsGroups(self.model_results_path, self.templates_metadata)
+        group_or_top_k, top_k = self.choose_group_or_top_k(model_name)
+        display_configurations_groups = DisplayConfigurationsGroups(self.model_results_path, self.templates_metadata,
+                                                                    diplay_full_details=diplay_full_details)
 
         for group_name, cur_data in model_data_splitted.items():
             # read the df of the current group
@@ -191,6 +240,7 @@ class FindCombinations:
                         unsafe_allow_html=True)
             num_of_expected_datasets = len(dataset_names)
             num_od_actual_datasets = len(datasets_of_the_current_group)
+            st.markdown(f"Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets")
             display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values,
                                                                   num_of_expected_datasets, num_od_actual_datasets)
             # add empty line
@@ -207,7 +257,7 @@ class FindCombinations:
     def read_best_combinations(self) -> None:
         self.results_folder = self.get_result_files()
         self.best_combinations_file_path = self.results_folder / Path(f"{ResultConstants.BEST_COMBINATIONS}.csv")
-        self.best_combinations: pd.DataFrame = self.read_best_combinations()
+        self.best_combinations: pd.DataFrame = self.read_best_combinations_file()
         self._filter_best_combinations()
 
     def evaluate(self) -> None:
@@ -220,9 +270,44 @@ class FindCombinations:
         display_histograms = st.checkbox("Display histograms")
 
         self.read_best_combinations()
+        if not self.families:
+            models = self.best_combinations[BestCombinationsConstants.MODEL].unique()
+            model = st.selectbox("Choose a model", models)
+            self.display_model_results(model, display_histograms)
+        else:
+            families = LLMProcessorConstants.MODELS_FAMILIES.keys()
+            family = st.selectbox("Choose a family", families)
+            self.display_family_results(family, display_histograms)
 
-        models = self.best_combinations[BestCombinationsConstants.MODEL].unique()
-        model = st.selectbox("Choose a model", models)
+    def display_family_results(self, family: str, display_histograms: bool) -> None:
+        """
+        Displays the results of the family.
+        @param family:
+        @param display_histograms:
+        @return:
+        """
+        split_option = st.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
+        for i in range(4):
+            for j, full_model_name in enumerate(LLMProcessorConstants.MODELS_FAMILIES[family]):
+                model_name = full_model_name.split("/")[1]
+                self.model_results_path = self.results_folder / model_name
+
+                model_data = self.best_combinations[
+                    self.best_combinations[BestCombinationsConstants.MODEL] == model_name]
+                model_data = model_data.sort_values(by=BestCombinationsConstants.DATASET).reset_index(drop=True)
+                self._add_mmlu_columns(model_data)
+                self.evaluate_the_model_in_family(model_name, model_data, display_histograms, split_option, i=i,
+                                                  first_model=True
+                                                  if j == 0 else False)
+
+    def display_model_results(self, model: str, display_histograms: bool) -> None:
+        """
+        Displays the results of the model.
+        @param model:
+        @param display_histograms:
+        @return:
+        """
+
         self.model_results_path = self.results_folder / model
         model_data = self.best_combinations[self.best_combinations[BestCombinationsConstants.MODEL] == model]
         model_data = model_data.sort_values(by=BestCombinationsConstants.DATASET).reset_index(drop=True)
@@ -230,7 +315,7 @@ class FindCombinations:
 
         split_option = st.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
 
-        self.evaluate_the_model(model_data, display_histograms, split_option)
+        self.evaluate_the_model(model, model_data, display_histograms, split_option, diplay_full_details=True)
 
     def calculate_most_common_configurations(self, hists: dict):
         """

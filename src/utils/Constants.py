@@ -17,15 +17,19 @@ class Constants:
         MISTRAL_V1_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
         MISTRAL_V2_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
         MISTRAL_V3_MODEL = "mistralai/Mistral-7B-Instruct-v0.3"
+        MISTRAL_FAMILY = [MISTRAL_V2_MODEL, MISTRAL_V3_MODEL]
 
         LLAMA7B_MODEL = "meta-llama/Llama-2-7b-chat-hf"
         LLAMA13B_MODEL = "meta-llama/Llama-2-13b-chat-hf"
         LLAMA70B_MODEL = "meta-llama/Llama-2-70b-chat-hf"
-
         LLAMA3_8B_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
+        LLAMAS_FAMILY = [LLAMA7B_MODEL, LLAMA13B_MODEL, LLAMA70B_MODEL, LLAMA3_8B_MODEL]
+        LLAMAS_FAMILY = [LLAMA7B_MODEL, LLAMA13B_MODEL, LLAMA3_8B_MODEL]
 
         GEMMA_7B_MODEL = "google/gemma-7b-it"
         GEMMA_2B_MODEL = "google/gemma-2b-it"
+        GEMMA_FAMILY = [GEMMA_7B_MODEL, GEMMA_2B_MODEL]
+
         PHI_MODEL = "microsoft/phi-2"
         OLMO_MODEL = "allenai/OLMo-7B-Instruct"
         QWEN_MODEL = "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8"
@@ -42,6 +46,8 @@ class Constants:
         PHI3_MEDIUM_MODEL = "microsoft/Phi-3-medium-4k-instruct"
         PHI3_SMALL_MODEL = "microsoft/Phi-3-small-8k-instruct"
         PHI3_MINI_MODEL = "microsoft/Phi-3-mini-4k-instruct"
+        PHI_FAMILY = [PHI3_MEDIUM_MODEL, PHI3_SMALL_MODEL, PHI3_MINI_MODEL]
+        PHI_FAMILY = [PHI3_MEDIUM_MODEL, PHI3_MINI_MODEL]
 
         PYTHIA_MODELS = {"PYTHIA_1B": PYTHIA_1B_MODEL, "PYTHIA_1B_DEDUPED": PYTHIA_1B_MODEL_DEDUPED,
                          "PYTHIA_2_8B": PYTHIA_2_8B_MODEL, "PYTHIA_2_8B_DEDUPED": PYTHIA_2_8B_MODEL_DEDUPED,
@@ -62,6 +68,8 @@ class Constants:
                             "OLMO": OLMO_MODEL}
         MODEL_NAMES = BASE_MODEL_NAMES
         MODEL_NAMES.update(PYTHIA_MODELS)
+
+        MODELS_FAMILIES = {"Mistral": MISTRAL_FAMILY, "Llama": LLAMAS_FAMILY, "gemma": GEMMA_FAMILY, "Phi3": PHI_FAMILY}
 
         OLD_MODEL = {"QWEN": QWEN_MODEL, "QWEN2": QWEN2_MODEL, "QWEN3": QWEN3_MODEL}
 
