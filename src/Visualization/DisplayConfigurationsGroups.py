@@ -14,20 +14,17 @@ ResultConstants = Constants.ResultConstants
 
 
 class DisplayConfigurationsGroups:
-    def __init__(self, model_results_path, templates_metadata, diplay_full_details=False, first_model=True):
+    def __init__(self, model_results_path, templates_metadata, display_full_details=False, first_model=True):
         self.model_results_path = model_results_path
         self.templates_metadata = templates_metadata
-        self.diplay_full_details = diplay_full_details
+        self.display_full_details = display_full_details
         self.first_model = first_model
 
-    def check_the_group_of_conf(self, configuration: dict, datasets: List[str], num_of_expected_datasets: int, num_od_actual_datasets: int,
-                                ) -> None:
+    def check_the_group_of_conf(self, configuration: dict, datasets: List[str]) -> None:
         """
         Checks the group of the configuration.
         @param configuration:
         @param datasets:
-        @param num_of_expected_datasets:
-        @param num_od_actual_datasets:
         @return:
         """
         # st.markdown(f"Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets")
@@ -69,8 +66,8 @@ class DisplayConfigurationsGroups:
             # print the groups and the percentage tp streamlit
             self.display_configuration_stats(combination, groups_percentage, groups_percentages)
 
-    def display_configuration_stats(self, combination: dict, groups_percentage: dict, groups_percentages: dict, diplay_full_details: bool = False) -> None:
-        if diplay_full_details:
+    def display_configuration_stats(self, combination: dict, groups_percentage: dict, groups_percentages: dict) -> None:
+        if self.display_full_details:
             conf_title = f"Configuration {list(combination.values())} is in the following groups:"
             st.markdown(f'<span style="color:red ; font-size: 16px;">{conf_title}</span>', unsafe_allow_html=True)
             for group, percentage in groups_percentage.items():

@@ -1,7 +1,7 @@
 import re
 import sys
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -162,7 +162,7 @@ class FindCombinations:
     def evaluate_the_model_in_family(self, model_name: str, model_data: pd.DataFrame,
                                      display_histograms: bool = False,
                                      split_option: str = None,
-                                     diplay_full_details: bool = False, i: int = None,
+                                     display_full_details: bool = False, i: int = None,
                                      first_model: bool = False) -> None:
 
         model_data_splitted = self.split_data_by_option(model_data, split_option)
@@ -170,10 +170,9 @@ class FindCombinations:
         top_k = None
         # self.choose_group_or_top_k(model_name)
         display_configurations_groups = DisplayConfigurationsGroups(self.model_results_path, self.templates_metadata,
-                                                                    diplay_full_details=diplay_full_details,
+                                                                    display_full_details=display_full_details,
                                                                     first_model=first_model)
         # take the i element from the model_data_splitted (dict)
-        group_name, cur_data = list(model_data_splitted.items())[i]
         group_name, cur_data = list(model_data_splitted.items())[i]
         # read the df of the current group
         dataset_names = cur_data.dataset.values
@@ -199,15 +198,14 @@ class FindCombinations:
         st.markdown(
             f'<span style="font-size: 16px; color:green">{model_name}:</span><span style="font-size: 16px; color:black"> Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets</span>',
             unsafe_allow_html=True)
-        display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values,
-                                                              num_of_expected_datasets, num_od_actual_datasets)
+        display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values)
         # add empty line
         st.write("")
 
     def evaluate_the_model(self, model_name: str, model_data: pd.DataFrame,
                            display_histograms: bool = False,
                            split_option: str = None,
-                           diplay_full_details: bool = False) -> None:
+                           display_full_details: bool = True) -> None:
         """
         Evaluates data by the specified key (model or dataset) and splits if required.
 
@@ -217,7 +215,7 @@ class FindCombinations:
         model_data_splitted = self.split_data_by_option(model_data, split_option)
         group_or_top_k, top_k = self.choose_group_or_top_k(model_name)
         display_configurations_groups = DisplayConfigurationsGroups(self.model_results_path, self.templates_metadata,
-                                                                    diplay_full_details=diplay_full_details)
+                                                                    display_full_details=display_full_details)
 
         for group_name, cur_data in model_data_splitted.items():
             # read the df of the current group
@@ -241,8 +239,7 @@ class FindCombinations:
             num_of_expected_datasets = len(dataset_names)
             num_od_actual_datasets = len(datasets_of_the_current_group)
             st.markdown(f"Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets")
-            display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values,
-                                                                  num_of_expected_datasets, num_od_actual_datasets)
+            display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values)
             # add empty line
             st.write("")
 
@@ -315,7 +312,7 @@ class FindCombinations:
 
         split_option = st.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
 
-        self.evaluate_the_model(model, model_data, display_histograms, split_option, diplay_full_details=True)
+        self.evaluate_the_model(model, model_data, display_histograms, split_option, display_full_details=True)
 
     def calculate_most_common_configurations(self, hists: dict):
         """
@@ -332,7 +329,7 @@ class FindCombinations:
 
         return max_results
 
-    def get_datasets_of_the_current_group(self, group_or_top_k: str, top_k: int, dataset_names: List[str]):
+    def get_datasets_of_the_current_group(self, group_or_top_k: str, top_k: Union[int, None], dataset_names: List[str]):
         dfs = []
 
         for dataset_name in dataset_names:
