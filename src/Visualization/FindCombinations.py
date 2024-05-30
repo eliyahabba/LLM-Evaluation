@@ -8,6 +8,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+from src.DataProcessing.MMLUSplitter import MMLUSplitter
+
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
@@ -165,7 +167,7 @@ class FindCombinations:
                                      display_full_details: bool = False, i: int = None,
                                      first_model: bool = False) -> None:
 
-        model_data_splitted = self.split_data_by_option(model_data, split_option)
+        model_data_splitted = MMLUSplitter.split_data_by_option(model_data, split_option)
         group_or_top_k = 'First group'
         top_k = None
         # self.choose_group_or_top_k(model_name)

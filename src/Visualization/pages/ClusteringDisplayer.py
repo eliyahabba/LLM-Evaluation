@@ -30,7 +30,7 @@ class ClusteringDisplayer:
         """
         st.title("Clustering Displayer")
         st.write("Displaying clustering of the accuracy of different templates in the dataset+model")
-        self.dataset_file_name, selected_shot_file_name = ResultsLoader.select_experiment_params()
+        self.dataset_file_name, selected_shot_file_name, _ = ResultsLoader.select_expeCriment_params()
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)

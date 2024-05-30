@@ -4,8 +4,10 @@ from typing import Tuple, List, Optional
 
 import streamlit as st
 
+from src.DataProcessing.MMLUSplitter import MMLUSplitter
 from src.Visualization.SamplesNavigator import SamplesNavigator
 from src.utils.Constants import Constants
+from src.utils.MMLUConstants import MMLUConstants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
@@ -121,6 +123,9 @@ class ResultsLoader:
 
         @return: the selected folder name
         """
+        if isinstance(folder_path, list):
+            results_file_name = st.sidebar.selectbox(text_to_display, list(folder_path))
+            return results_file_name
         folders_names = [file for file in folder_path.iterdir() if file.is_dir()]
         if files_filter is not None:
             folders_names = files_filter.get_files_by_name(folders_names)
@@ -140,14 +145,18 @@ class ResultsLoader:
         selected_model_file = ResultsLoader.get_folder_selections_options(selected_results_file,
                                                                           "Select model to visualize")
         filter_files = FilesFilter("mmlu")
-        selected_dataset_file = ResultsLoader.get_folder_selections_options(selected_model_file,
-                                                                            "Select dataset to visualize",
-                                                                            filter_files)
+        split_option = st.sidebar.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
+        #get the optinal dataset file
+        data_options = MMLUSplitter.get_data_options(split_option)
+
+        selected_dataset_file = ResultsLoader.get_folder_selections_options(data_options,
+                                                                            "Select dataset to visualize")
+        datasets_files = MMLUSplitter.get_data_files(split_option, selected_dataset_file)
         selected_shot_file = ResultsLoader.get_folder_selections_options(selected_dataset_file,
                                                                          "Select shot to visualize")
         selected_system_format = ResultsLoader.get_folder_selections_options(selected_shot_file,
                                                                              "Select system format to visualize")
-        return selected_dataset_file.name, selected_system_format
+        return selected_dataset_file.name, selected_system_format, selected_model_file
 
     @staticmethod
     def select_result_file(result_files, results_type_name="performance_summary"):

@@ -1,79 +1,24 @@
+from pathlib import Path
+
+import pandas as pd
+
+from src.utils.Constants import Constants
+
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 class MMLUConstants:
-    SUBCATEGORIES = {
-        "abstract_algebra": ["math"],
-        "anatomy": ["health"],
-        "astronomy": ["physics"],
-        "business_ethics": ["business"],
-        "clinical_knowledge": ["health"],
-        "college_biology": ["biology"],
-        "college_chemistry": ["chemistry"],
-        "college_computer_science": ["computer science"],
-        "college_mathematics": ["math"],
-        "college_medicine": ["health"],
-        "college_physics": ["physics"],
-        "computer_security": ["computer science"],
-        "conceptual_physics": ["physics"],
-        "econometrics": ["economics"],
-        "electrical_engineering": ["engineering"],
-        "elementary_mathematics": ["math"],
-        "formal_logic": ["philosophy"],
-        "global_facts": ["other"],
-        "high_school_biology": ["biology"],
-        "high_school_chemistry": ["chemistry"],
-        "high_school_computer_science": ["computer science"],
-        "high_school_european_history": ["history"],
-        "high_school_geography": ["geography"],
-        "high_school_government_and_politics": ["politics"],
-        "high_school_macroeconomics": ["economics"],
-        "high_school_mathematics": ["math"],
-        "high_school_microeconomics": ["economics"],
-        "high_school_physics": ["physics"],
-        "high_school_psychology": ["psychology"],
-        "high_school_statistics": ["math"],
-        "high_school_us_history": ["history"],
-        "high_school_world_history": ["history"],
-        "human_aging": ["health"],
-        "human_sexuality": ["culture"],
-        "international_law": ["law"],
-        "jurisprudence": ["law"],
-        "logical_fallacies": ["philosophy"],
-        "machine_learning": ["computer science"],
-        "management": ["business"],
-        "marketing": ["business"],
-        "medical_genetics": ["health"],
-        "miscellaneous": ["other"],
-        "moral_disputes": ["philosophy"],
-        "moral_scenarios": ["philosophy"],
-        "nutrition": ["health"],
-        "philosophy": ["philosophy"],
-        "prehistory": ["history"],
-        "professional_accounting": ["other"],
-        "professional_law": ["law"],
-        "professional_medicine": ["health"],
-        "professional_psychology": ["psychology"],
-        "public_relations": ["politics"],
-        "security_studies": ["politics"],
-        "sociology": ["culture"],
-        "us_foreign_policy": ["politics"],
-        "virology": ["health"],
-        "world_religions": ["philosophy"],
-    }
+    def __init__(self):
+        mmlu_metadata_file =  Path(__file__).parents[2] / TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH
+        self.mmlu_metadata = pd.read_csv(mmlu_metadata_file)
+    def get_mmlu_dataset_sizes(self):
+        return self.mmlu_metadata
 
-    CATEGORIES = {
-        "STEM": ["physics", "chemistry", "biology", "computer science", "math", "engineering"],
-        "humanities": ["history", "philosophy", "law"],
-        "social sciences": ["politics", "culture", "economics", "geography", "psychology"],
-        "other (business, health, misc.)": ["other", "business", "health"],
-    }
+    def get_mmlu_categories(self):
+        return self.mmlu_metadata['category'].unique()
 
-    SUBCATEGORIES_TO_CATEGORIES = {
-        subcategory: category for category, subcategories in CATEGORIES.items()
-        for subcategory in subcategories
-    }
+    def get_mmlu_subcategories(self):
+        return self.mmlu_metadata['subcategory'].unique()
 
-    SAMPLES_TO_SUBCATEGORIES = {
-        sample[0]: category for category, sample in SUBCATEGORIES.items()
-    }
+    def get_mmlu_
 
     MMLU_DATASETS_SAMPLE = [f'mmlu.{mmlu_dataset}' for mmlu_dataset in SUBCATEGORIES.keys()]
 

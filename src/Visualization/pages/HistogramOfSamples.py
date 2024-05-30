@@ -14,19 +14,29 @@ ResultConstants = Constants.ResultConstants
 class HistogramOfSamples:
     def display_page(self):
         st.title("Histogram of Samples")
-        dataset_file_name, selected_shot_file_name = ResultsLoader.select_experiment_params()
+        dataset_file_name, selected_shot_file_name, selected_model_file = ResultsLoader.select_experiment_params()
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
         result_file_name, result_file = ResultsLoader.select_result_file(result_files,
                                                                          ResultConstants.COMPARISON_MATRIX)
+        mmlu_files = []
+        for folder in selected_model_file.iterdir():
+            if "mmlu" in folder.name:
+                mmlu_files.append(folder / Path(selected_shot_file_name.parent.name) / Path(selected_shot_file_name.name) / result_file.name)
+        merged_df = pd.DataFrame()
+        if len(mmlu_files) > 0:
+            for mmlu_file in mmlu_files:
+                df = self.display_samples_prediction_accuracy(mmlu_file, display_results=False)
+                merged_df = pd.concat([merged_df, df])
+        self.plot_histogram(merged_df)
 
         df = self.display_samples_prediction_accuracy(result_file)
         self.plot_histogram(df)
 
         ResultsLoader.display_sample_examples(selected_shot_file_name, dataset_file_name, result_file_name)
 
-    def display_samples_prediction_accuracy(self, results_file: Path):
+    def display_samples_prediction_accuracy(self, results_file: Path, display_results=True):
         """
         Display the results of the model.
 
@@ -47,7 +57,8 @@ class HistogramOfSamples:
         df = df[['num_of_predictions', 'accuracy'] + predictions_columns]
         # add name to the index column
         df.index.name = 'example number'
-        st.write(df)
+        if display_results:
+            st.write(df)
         return df
 
     def plot_histogram(self, df):
