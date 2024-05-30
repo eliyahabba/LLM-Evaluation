@@ -66,15 +66,15 @@ if __name__ == '__main__':
                           "Physical Principles", "Cultural Principles",
                           "Social Conventions",
                           "Engineering and Architectural Features",
-                          "Nutritional and Food Practices",
+                          "Nutritional and Food",
                           "Religion Principles",
-                          "Safety and Survival Situations", "Temporal Principles",
+                          "Safety and Survivals", "Temporal Principles",
                           "Weather and Environmental Conditions",
                           "Geographic Knowledge", "Historical Contexts",
-                          "Traffic Regulations and Conventions",
-                          "Object Counting and Placement", "Law and Order and Crime", "Education and Study Environment",
-                          "Office and Equipment Troubleshooting", "Animal behavior", "Game Strategy and Tactics",
-                          "Health and Personal Care",
+                          "Traffic",
+                          "Object Counting and Placement", "Law and Order and Crime", "Education and Study",
+                          "Office and Equipment Troubleshooting", "Animal behavior", "Game Strategy",
+                          "Health",
                           "Sport"]
 
     new_suggest = "If you believe there is another category that would be more suitable but is not in the list, please still choose the most appropriate category from the existing ones and then suggest a new category on a new line. Respond only with the category name and, if applicable, the new category suggestion"

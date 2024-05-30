@@ -13,19 +13,26 @@ if __name__ == '__main__':
 
     df = pd.concat([df1, df2])
 
-    suggest_categories = ["Animal Behavior", "Biological Principles",
-                          "Physical Principles", "Cultural Principles",
+    suggest_categories = ["Animal Behavior",
+                          "Biological Principles",
+                          "Physical Principles", 
+                          "Cultural Principles",
                           "Social Conventions",
                           "Engineering and Architectural Features",
-                          "Nutritional and Food Practices",
+                          "Nutritional and Food",
                           "Religion Principles",
-                          "Safety and Survival Situations", "Temporal Principles",
+                          "Safety and Survival",
+                          "Temporal Principles",
                           "Weather and Environmental Conditions",
-                          "Geographic Knowledge", "Historical Contexts",
-                          "Traffic Regulations and Conventions",
-                          "Object Counting and Placement", "Law, Order and Crime", "Education and Study Environment",
-                          "Office and Equipment Troubleshooting", "Game Strategy and Tactics",
-                          "Health and Personal Care",
+                          "Geographic Knowledge",
+                          "Historical Contexts",
+                          "Traffic",
+                          "Object Counting and Placement",
+                          "Law, Order and Crime",
+                          "Education and Study",
+                          "Office and Equipment Troubleshooting",
+                          "Game Strategy",
+                          "Health",
                           "Sport"]
 
     # count how many each category appears in category column (There can be
