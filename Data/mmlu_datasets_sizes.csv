@@ -1,58 +1,58 @@
-Category,train,validation,test
-abstract_algebra,5,11,100
-anatomy,5,14,135
-astronomy,5,16,152
-business_ethics,5,11,100
-clinical_knowledge,5,29,265
-college_biology,5,16,144
-college_chemistry,5,8,100
-college_computer_science,5,11,100
-college_mathematics,5,11,100
-college_medicine,5,22,173
-college_physics,5,11,102
-computer_security,5,11,100
-conceptual_physics,5,26,235
-econometrics,5,12,114
-electrical_engineering,5,16,145
-elementary_mathematics,5,41,378
-formal_logic,5,14,126
-global_facts,5,10,100
-high_school_biology,5,32,310
-high_school_chemistry,5,22,203
-high_school_computer_science,5,9,100
-high_school_european_history,5,18,165
-high_school_geography,5,22,198
-high_school_government_and_politics,5,21,193
-high_school_macroeconomics,5,43,390
-high_school_mathematics,5,29,270
-high_school_microeconomics,5,26,238
-high_school_physics,5,17,151
-high_school_psychology,5,60,545
-high_school_statistics,5,23,216
-high_school_us_history,5,22,204
-high_school_world_history,5,26,237
-human_aging,5,23,223
-human_sexuality,5,12,131
-international_law,5,13,121
-jurisprudence,5,11,108
-logical_fallacies,5,18,163
-machine_learning,5,11,112
-management,5,11,103
-marketing,5,25,234
-medical_genetics,5,11,100
-miscellaneous,5,86,783
-moral_disputes,5,38,346
-moral_scenarios,5,100,895
-nutrition,5,33,306
-philosophy,5,34,311
-prehistory,5,35,324
-professional_accounting,5,31,282
-professional_law,5,170,1534
-professional_medicine,5,31,272
-professional_psychology,5,69,612
-public_relations,5,12,110
-security_studies,5,27,245
-sociology,5,22,201
-us_foreign_policy,5,11,100
-virology,5,18,166
-world_religions,5,19,171
+Category,train,validation,test,PARENT_CATEGORIES,SUBCATEGORIES
+abstract_algebra,5,11,100,STEM,math
+anatomy,5,14,135,"other (business, health, misc.)",health
+astronomy,5,16,152,STEM,physics
+business_ethics,5,11,100,"other (business, health, misc.)",business
+clinical_knowledge,5,29,265,"other (business, health, misc.)",health
+college_biology,5,16,144,STEM,biology
+college_chemistry,5,8,100,STEM,chemistry
+college_computer_science,5,11,100,STEM,computer science
+college_mathematics,5,11,100,STEM,math
+college_medicine,5,22,173,"other (business, health, misc.)",health
+college_physics,5,11,102,STEM,physics
+computer_security,5,11,100,STEM,computer science
+conceptual_physics,5,26,235,STEM,physics
+econometrics,5,12,114,social sciences,economics
+electrical_engineering,5,16,145,STEM,engineering
+elementary_mathematics,5,41,378,STEM,math
+formal_logic,5,14,126,humanities,philosophy
+global_facts,5,10,100,"other (business, health, misc.)",other
+high_school_biology,5,32,310,STEM,biology
+high_school_chemistry,5,22,203,STEM,chemistry
+high_school_computer_science,5,9,100,STEM,computer science
+high_school_european_history,5,18,165,humanities,history
+high_school_geography,5,22,198,social sciences,geography
+high_school_government_and_politics,5,21,193,social sciences,politics
+high_school_macroeconomics,5,43,390,social sciences,economics
+high_school_mathematics,5,29,270,STEM,math
+high_school_microeconomics,5,26,238,social sciences,economics
+high_school_physics,5,17,151,STEM,physics
+high_school_psychology,5,60,545,social sciences,psychology
+high_school_statistics,5,23,216,STEM,math
+high_school_us_history,5,22,204,humanities,history
+high_school_world_history,5,26,237,humanities,history
+human_aging,5,23,223,"other (business, health, misc.)",health
+human_sexuality,5,12,131,social sciences,culture
+international_law,5,13,121,humanities,law
+jurisprudence,5,11,108,humanities,law
+logical_fallacies,5,18,163,humanities,philosophy
+machine_learning,5,11,112,STEM,computer science
+management,5,11,103,"other (business, health, misc.)",business
+marketing,5,25,234,"other (business, health, misc.)",business
+medical_genetics,5,11,100,"other (business, health, misc.)",health
+miscellaneous,5,86,783,"other (business, health, misc.)",other
+moral_disputes,5,38,346,humanities,philosophy
+moral_scenarios,5,100,895,humanities,philosophy
+nutrition,5,33,306,"other (business, health, misc.)",health
+philosophy,5,34,311,humanities,philosophy
+prehistory,5,35,324,humanities,history
+professional_accounting,5,31,282,"other (business, health, misc.)",other
+professional_law,5,170,1534,humanities,law
+professional_medicine,5,31,272,"other (business, health, misc.)",health
+professional_psychology,5,69,612,social sciences,psychology
+public_relations,5,12,110,social sciences,politics
+security_studies,5,27,245,social sciences,politics
+sociology,5,22,201,social sciences,culture
+us_foreign_policy,5,11,100,social sciences,politics
+virology,5,18,166,"other (business, health, misc.)",health
+world_religions,5,19,171,humanities,philosophy
