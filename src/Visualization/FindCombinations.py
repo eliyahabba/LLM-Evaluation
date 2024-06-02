@@ -9,13 +9,13 @@ import pandas as pd
 import streamlit as st
 
 from src.DataProcessing.MMLUSplitter import MMLUSplitter
+from src.utils.MMLUData import MMLUData
 
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
 from src.Visualization.DisplayConfigurationsGroups import DisplayConfigurationsGroups
 from src.utils.Constants import Constants
-from src.utils.MMLUData import MMLUData
 
 ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
@@ -24,9 +24,7 @@ TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
 BEST_COMBINATIONS_PATH = ExperimentConstants.MAIN_RESULTS_PATH / Path(
     TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME) / f"{ResultConstants.BEST_COMBINATIONS}.csv"
-
-MMLU_SUBCATEGORIES = MMLUData.SUBCATEGORIES
-MMLU_CATEGORIES = MMLUData.SUBCATEGORIES_TO_CATEGORIES
+MMLUConstants = Constants.MMLUConstants
 BestOrWorst = Constants.BestOrWorst
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
@@ -85,7 +83,7 @@ class FindCombinations:
         """
         self.best_combinations.drop(columns=[ResultConstants.ACCURACY_COLUMN], inplace=True)
         self.best_combinations = self.best_combinations[
-            self.best_combinations[BestCombinationsConstants.DATASET].str.startswith(MMLUData.MMLU_CARDS_PREFIX)]
+            self.best_combinations[BestCombinationsConstants.DATASET].str.startswith(MMLUConstants.MMLU_CARDS_PREFIX)]
 
     def _add_mmlu_columns(self, model_data: pd.DataFrame) -> None:
         """
@@ -93,13 +91,17 @@ class FindCombinations:
 
         @param model_data: DataFrame containing model data to update.
         """
-        model_data[MMLUData.SUBCATEGORIES_COLUMN] = model_data[BestCombinationsConstants.DATASET].apply(
-            lambda x: (MMLU_SUBCATEGORIES[x.split(MMLUData.MMLU_CARDS_PREFIX)[1]][0] if x.startswith(
-                MMLUData.MMLU_CARDS_PREFIX) else 'None'))
-        model_data[MMLUData.CATEGORIES_COLUMN] = model_data[BestCombinationsConstants.DATASET].apply(
-            lambda x: (
-                MMLU_CATEGORIES[MMLU_SUBCATEGORIES[x.split(MMLUData.MMLU_CARDS_PREFIX)[1]][0]] if x.startswith(
-                    MMLUData.MMLU_CARDS_PREFIX) else 'None'))
+        MMLUData.initialize()
+        mmlu_dataset = MMLUData.get_mmlu_dataset_sizes()
+        # add a column MMLUConstants.SUBCATEGORIES_COLUMN to the model_data DataFrame, and the values will be the
+        # values from mmlu_dataset by the dataset name - so take the row from mmlu_dataset that the dataset name is
+        # the same as the value in the column BestCombinationsConstants.DATASET in the model_data DataFrame, and take
+        # the value from the column MMLUConstants.SUBCATEGORIES_COLUMN in the mmlu_dataset DataFrame
+        mmlu_dataset.set_index(MMLUConstants.ALL_DATASETS_COLUMN, inplace=True)
+        model_data[MMLUConstants.SUBCATEGORIES_COLUMN] = model_data[BestCombinationsConstants.DATASET].apply(
+            lambda x: mmlu_dataset.loc[x.split(MMLUConstants.MMLU_CARDS_PREFIX)[1], MMLUConstants.SUBCATEGORIES_COLUMN])
+        model_data[MMLUConstants.CATEGORIES_COLUMN] = model_data[BestCombinationsConstants.DATASET].apply(
+            lambda x: mmlu_dataset.loc[x.split(MMLUConstants.MMLU_CARDS_PREFIX)[1], MMLUConstants.CATEGORIES_COLUMN])
 
     def _create_histogram(self, axis, axis_values, cur_data: pd.DataFrame) -> dict:
         values = cur_data[axis].values
@@ -141,12 +143,12 @@ class FindCombinations:
         @param split_option:
         @return:
         """
-        if split_option == MMLUData.SUBCATEGORIES_COLUMN:
-            model_data_splitted = {group: model_data[model_data[MMLUData.SUBCATEGORIES_COLUMN] == group] for group
-                                   in model_data[MMLUData.SUBCATEGORIES_COLUMN].unique()}
-        elif split_option == MMLUData.CATEGORIES_COLUMN:
-            model_data_splitted = {group: model_data[model_data[MMLUData.CATEGORIES_COLUMN] == group] for group in
-                                   model_data[MMLUData.CATEGORIES_COLUMN].unique()}
+        if split_option == MMLUConstants.SUBCATEGORIES_COLUMN:
+            model_data_splitted = {group: model_data[model_data[MMLUConstants.SUBCATEGORIES_COLUMN] == group] for group
+                                   in model_data[MMLUConstants.SUBCATEGORIES_COLUMN].unique()}
+        elif split_option == MMLUConstants.CATEGORIES_COLUMN:
+            model_data_splitted = {group: model_data[model_data[MMLUConstants.CATEGORIES_COLUMN] == group] for group in
+                                   model_data[MMLUConstants.CATEGORIES_COLUMN].unique()}
         else:
             model_data_splitted = [model_data]
 
@@ -285,7 +287,7 @@ class FindCombinations:
         @param display_histograms:
         @return:
         """
-        split_option = st.selectbox("Split the dataset by:", MMLUData.SPLIT_OPTIONS)
+        split_option = st.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
         for i in range(4):
             for j, full_model_name in enumerate(LLMProcessorConstants.MODELS_FAMILIES[family]):
                 model_name = full_model_name.split("/")[1]
@@ -312,7 +314,7 @@ class FindCombinations:
         model_data = model_data.sort_values(by=BestCombinationsConstants.DATASET).reset_index(drop=True)
         self._add_mmlu_columns(model_data)
 
-        split_option = st.selectbox("Split the dataset by:", MMLUData.SPLIT_OPTIONS)
+        split_option = st.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
 
         self.evaluate_the_model(model, model_data, display_histograms, split_option, display_full_details=True)
 

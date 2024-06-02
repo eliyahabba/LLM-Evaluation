@@ -20,13 +20,16 @@ LLMProcessorConstants = Constants.LLMProcessorConstants
 
 
 class LLMPredictor:
-    def __init__(self, llmp: LLMProcessor, batch_size: int = ExperimentConstants.BATCH_SIZE):
+    def __init__(self, llmp: LLMProcessor,
+                 predict_prob_of_tokens: bool = LLMProcessorConstants.PREDICT_PROB_OF_TOKENS,
+                 batch_size: int = ExperimentConstants.BATCH_SIZE):
         """
         Initializes the LLMPredictor.
         @param llmp:
         @param batch_size:
         """
         self.llmp = llmp
+        self.predict_prob_of_tokens = predict_prob_of_tokens
         self.batch_size = batch_size
 
     def predict_on_single_dataset(self, eval_dataset, eval_value: str, results_file_path: Path,
@@ -80,7 +83,8 @@ class LLMPredictor:
             counter_idx += self.batch_size
             input_text = [batch_instance["source"] for batch_instance in batch_instances]
             ground_truth = [batch_instance["target"] for batch_instance in batch_instances]
-            generated_tokens_decoded, max_tokens = self.llmp.predict(input_text, max_new_tokens,
+            generated_tokens_decoded, max_tokens = self.llmp.predict(input_text, self.predict_prob_of_tokens,
+                                                                     max_new_tokens,
                                                                      possible_gt_tokens=possible_gt_tokens)
             loaded_idxs.extend(batch_indexes)
             loaded_input_texts.extend(input_text)

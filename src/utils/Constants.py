@@ -71,6 +71,9 @@ class Constants:
         LOAD_IN_8BIT = True
         TRUST_REMOTE_CODE = False
         RETURN_TOKEN_TYPE_IDS = None
+        PREDICT_PROB_OF_TOKENS = False
+
+        MAX_NEW_TOKENS = 10
 
     class TemplatesGeneratorConstants:
         MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME = "MultipleChoiceTemplatesStructured"
