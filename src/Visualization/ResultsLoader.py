@@ -4,13 +4,12 @@ from typing import Tuple, List, Optional
 
 import streamlit as st
 
-from src.DataProcessing.MMLUSplitter import MMLUSplitter
 from src.Visualization.SamplesNavigator import SamplesNavigator
 from src.utils.Constants import Constants
-from src.utils.MMLUConstants import MMLUConstants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
+MMLUConstants = Constants.MMLUConstants
 
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
@@ -144,14 +143,18 @@ class ResultsLoader:
                                                                             "Select results folder to visualize")
         selected_model_file = ResultsLoader.get_folder_selections_options(selected_results_file,
                                                                           "Select model to visualize")
-        filter_files = FilesFilter("mmlu")
-        split_option = st.sidebar.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
-        #get the optinal dataset file
-        data_options = MMLUSplitter.get_data_options(split_option)
+        # files_filter = FilesFilter("mmlu")
+        # split_option = st.sidebar.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
+        # #get the optinal dataset file
+        # data_options = MMLUSplitter.get_data_options(split_option)
+        #
+        # selected_dataset_file = ResultsLoader.get_folder_selections_options(data_options,
+        #                                                                     "Select dataset to visualize")
+        # datasets_files = MMLUSplitter.get_data_files(split_option, selected_dataset_file)
+        # select the first file to select the system format
 
-        selected_dataset_file = ResultsLoader.get_folder_selections_options(data_options,
+        selected_dataset_file = ResultsLoader.get_folder_selections_options(selected_model_file,
                                                                             "Select dataset to visualize")
-        datasets_files = MMLUSplitter.get_data_files(split_option, selected_dataset_file)
         selected_shot_file = ResultsLoader.get_folder_selections_options(selected_dataset_file,
                                                                          "Select shot to visualize")
         selected_system_format = ResultsLoader.get_folder_selections_options(selected_shot_file,
