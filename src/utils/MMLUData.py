@@ -5,6 +5,7 @@ import pandas as pd
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
+MMLUConstants = Constants.MMLUConstants
 
 
 class MMLUData:
@@ -18,7 +19,7 @@ class MMLUData:
 
     @staticmethod
     def add_mmlu_prefix(dataset_name):
-        return f'mmlu.{dataset_name}'
+        return f'{MMLUConstants.MMLU_CARDS_PREFIX}{dataset_name}'
 
     @staticmethod
     def get_mmlu_dataset_sizes():
@@ -26,22 +27,25 @@ class MMLUData:
 
     @staticmethod
     def get_mmlu_categories():
-        return MMLUData.mmlu_metadata['Category'].unique().tolist()
+        return MMLUData.mmlu_metadata[MMLUConstants.CATEGORIES_COLUMN].unique().tolist()
 
     @staticmethod
     def get_mmlu_subcategories():
-        return MMLUData.mmlu_metadata['Sub_Category'].unique().tolist()
+        return MMLUData.mmlu_metadata[MMLUConstants.SUBCATEGORIES_COLUMN].unique().tolist()
 
     @staticmethod
     def get_mmlu_subcategories_from_category(category):
-        return MMLUData.mmlu_metadata[MMLUData.mmlu_metadata['Category'] == category]['Sub_Category'].unique()
+        return MMLUData.mmlu_metadata[MMLUData.mmlu_metadata[MMLUConstants.CATEGORIES_COLUMN] == category][
+            MMLUConstants.SUBCATEGORIES_COLUMN].unique()
 
     @staticmethod
     def get_mmlu_datasets_from_subcategory(subcategory):
-        return (MMLUData.mmlu_metadata[MMLUData.mmlu_metadata['Sub_Category'] == subcategory]['Name']
+        return (MMLUData.mmlu_metadata[MMLUData.mmlu_metadata[MMLUConstants.SUBCATEGORIES_COLUMN] == subcategory][
+                    MMLUConstants.ALL_DATASETS_COLUMN]
                 .apply(lambda x: MMLUData.add_mmlu_prefix(x)).unique())
 
     @staticmethod
     def get_mmlu_datasets():
-        mmlu_datasets = [f'mmlu.{mmlu_dataset}' for mmlu_dataset in MMLUData.mmlu_metadata['Name']]
+        mmlu_datasets = [f'{MMLUConstants.MMLU_CARDS_PREFIX}{mmlu_dataset}' for mmlu_dataset in
+                         MMLUData.mmlu_metadata[MMLUConstants.ALL_DATASETS_COLUMN]]
         return mmlu_datasets
