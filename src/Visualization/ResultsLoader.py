@@ -112,7 +112,7 @@ class ResultsLoader:
         ResultsLoader.load_template(results_file, dataset_file_name)
 
     @staticmethod
-    def get_folder_selections_options(folder_path: Path, text_to_display: str,
+    def get_folder_selections_options(folder_path: Path, text_to_display: str, reverse: bool = False,
                                       files_filter: FilesFilter = None) -> Path:
         """
         Get the folder selection options. The user can select the folder to visualize.
@@ -132,7 +132,8 @@ class ResultsLoader:
         # id Mistral in the name, the name of Mistral should be first
         names_to_display = dict(sorted(names_to_display.items(), key=lambda x: ("Mistral" not in x[0],
                                                                                 "not_structured" in x[0],
-                                                                                x[0].lower(), x[0])))
+                                                                                x[0].lower(), x[0])
+                                       , reverse=reverse))
         results_file_name = st.sidebar.selectbox(text_to_display, list(names_to_display.keys()))
         selected_file_name = names_to_display[results_file_name]
         return selected_file_name
@@ -140,10 +141,11 @@ class ResultsLoader:
     @staticmethod
     def select_experiment_params():
         selected_results_file = ResultsLoader.get_folder_selections_options(MAIN_RESULTS_PATH,
-                                                                            "Select results folder to visualize")
+                                                                            "Select results folder to visualize",
+                                                                            reverse=True)
         selected_model_file = ResultsLoader.get_folder_selections_options(selected_results_file,
                                                                           "Select model to visualize")
-        # files_filter = FilesFilter("mmlu")
+        files_filter = FilesFilter("mmlu")
         # split_option = st.sidebar.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
         # #get the optinal dataset file
         # data_options = MMLUSplitter.get_data_options(split_option)
@@ -154,7 +156,8 @@ class ResultsLoader:
         # select the first file to select the system format
 
         selected_dataset_file = ResultsLoader.get_folder_selections_options(selected_model_file,
-                                                                            "Select dataset to visualize")
+                                                                            files_filter=files_filter,
+                                                                            text_to_display="Select dataset to visualize")
         selected_shot_file = ResultsLoader.get_folder_selections_options(selected_dataset_file,
                                                                          "Select shot to visualize")
         selected_system_format = ResultsLoader.get_folder_selections_options(selected_shot_file,
