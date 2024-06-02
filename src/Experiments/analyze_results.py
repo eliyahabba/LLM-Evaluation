@@ -209,7 +209,7 @@ if __name__ == "__main__":
         datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
         for dataset_folder in datasets:
             print(f"Start evaluating {dataset_folder.name}")
-            car_mmlu_dataset_sizes = mmlu_dataset_sizes[mmlu_dataset_sizes["Category"] == dataset_folder.name.split("mmlu.")[1]]
+            car_mmlu_dataset_sizes = mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == dataset_folder.name.split("mmlu.")[1]]
             shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
             # shots = [shot for shot in shots if "one" in str(shot)]
             loaded_datasets = {}
