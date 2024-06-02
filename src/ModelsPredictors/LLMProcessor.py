@@ -127,14 +127,20 @@ class LLMProcessor:
             self.print_generated_tokens_decoded(generated_tokens_decoded)
         return generated_tokens_decoded
 
-    def predict(self, input_text: Union[str, List[str]], max_new_tokens: int, possible_gt_tokens: list = None,
+    def predict(self, input_text: Union[str, List[str]],
+                predict_prob_of_tokens: bool = False,
+                max_new_tokens: int = LLMProcessorConstants.MAX_NEW_TOKENS,
+                possible_gt_tokens: list = None,
                 is_print: bool = False) -> Tuple[List[str], List[str]]:
         """
         Predict the next word in the sequence.
         """
         input_tokenized, outputs = self.generate_model_text(input_text, max_new_tokens)
         generated_tokens_decoded = self.generate_decoded_text(outputs, input_tokenized, is_print)
-        max_tokens = self.get_max_token(outputs, possible_gt_tokens)
+        if predict_prob_of_tokens:
+            max_tokens = self.get_max_token(outputs, possible_gt_tokens)
+        else:
+            max_tokens = [None] * outputs.scores[0].size(0)
         return generated_tokens_decoded, max_tokens
 
     def get_max_token(self, outputs, tokens):
