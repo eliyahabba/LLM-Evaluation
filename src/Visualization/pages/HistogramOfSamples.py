@@ -5,10 +5,13 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+from src.DataProcessing.MMLUSplitter import MMLUSplitter
 from src.Visualization.ResultsLoader import ResultsLoader
 from src.utils.Constants import Constants
 
 ResultConstants = Constants.ResultConstants
+
+MMLUConstants = Constants.MMLUConstants
 
 
 class HistogramOfSamples:
@@ -20,21 +23,27 @@ class HistogramOfSamples:
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
         result_file_name, result_file = ResultsLoader.select_result_file(result_files,
                                                                          ResultConstants.COMPARISON_MATRIX)
-        mmlu_files = []
-        for folder in selected_model_file.iterdir():
-            if "mmlu" in folder.name:
-                mmlu_files.append(folder / Path(selected_shot_file_name.parent.name) / Path(selected_shot_file_name.name) / result_file.name)
-        merged_df = pd.DataFrame()
-        if len(mmlu_files) > 0:
-            for mmlu_file in mmlu_files:
-                df = self.display_samples_prediction_accuracy(mmlu_file, display_results=False)
-                merged_df = pd.concat([merged_df, df])
-        self.plot_histogram(merged_df)
-
         df = self.display_samples_prediction_accuracy(result_file)
         self.plot_histogram(df)
 
+        self.display_aggregated_results(dataset_file_name, selected_shot_file_name, selected_model_file, result_file)
         ResultsLoader.display_sample_examples(selected_shot_file_name, dataset_file_name, result_file_name)
+
+    def display_aggregated_results(self, dataset_file_name, selected_shot_file_name, selected_model_file, result_file):
+        if "mmlu" in dataset_file_name:
+            split_option = st.selectbox("aggregated the dataset by:", MMLUConstants.SPLIT_OPTIONS)
+            data_options = MMLUSplitter.get_data_options(split_option)
+            split_option_value = st.selectbox("select the split option value:", data_options)
+            datasets_names = MMLUSplitter.get_data_files(split_option, split_option_value)
+            shot_suffix = Path(selected_shot_file_name.parent.name) / Path(selected_shot_file_name.name)
+            mmlu_files = [selected_model_file / Path(datasets_name) / shot_suffix / result_file.name for datasets_name in
+                          datasets_names]
+            merged_df = pd.DataFrame()
+            if len(mmlu_files) > 0:
+                for mmlu_file in mmlu_files:
+                    df = self.display_samples_prediction_accuracy(mmlu_file, display_results=False)
+                    merged_df = pd.concat([merged_df, df])
+            self.plot_aggregated_histogram(merged_df, split_option, split_option_value)
 
     def display_samples_prediction_accuracy(self, results_file: Path, display_results=True):
         """
@@ -61,7 +70,7 @@ class HistogramOfSamples:
             st.write(df)
         return df
 
-    def plot_histogram(self, df):
+    def plot_histogram(self, df, title="Histogram of Prediction Accuracy"):
         """
         Plot the histogram of the results.
         @param df: DataFrame containing the data to plot.
@@ -76,7 +85,7 @@ class HistogramOfSamples:
         df['accuracy'].plot(kind='hist', bins=bins, ax=ax, color='skyblue', edgecolor='black')
 
         # Adding title and labels
-        ax.set_title("Histogram of Prediction Accuracy", fontsize=16)
+        ax.set_title(title, fontsize=16)
         ax.set_xlabel("Number of Templates with Correct Prediction", fontsize=14)
         ax.set_ylabel("Number of Examples", fontsize=14)
 
@@ -98,6 +107,9 @@ class HistogramOfSamples:
         plt.tight_layout()  # Adjust layout to prevent clipping of labels
         # plt.show()
         st.pyplot(fig)
+
+    def plot_aggregated_histogram(self, merged_df, split_option, split_option_value):
+        self.plot_histogram(merged_df, title=f"Aggregated Histogram by {split_option} on {split_option_value}")
 
 
 if __name__ == '__main__':
