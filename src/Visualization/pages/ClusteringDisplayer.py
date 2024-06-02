@@ -30,7 +30,7 @@ class ClusteringDisplayer:
         """
         st.title("Clustering Displayer")
         st.write("Displaying clustering of the accuracy of different templates in the dataset+model")
-        self.dataset_file_name, selected_shot_file_name, _ = ResultsLoader.select_expeCriment_params()
+        self.dataset_file_name, selected_shot_file_name, _ = ResultsLoader.select_experiment_params()
 
         # find the csv file in the folder if exists
         result_files = ResultsLoader.get_result_files(selected_shot_file_name)
@@ -39,10 +39,10 @@ class ClusteringDisplayer:
                                                                                       PERFORMANCE_SUMMARY)
         performance_summary_df  = pd.read_csv(performance_summary_path)
         cols_to_remove = ['card', 'system_format', 'score', 'score_name']
-        if 'groups_mean_score' in df.columns:
+        if 'groups_mean_score' in performance_summary_df.columns:
             cols_to_remove.append('groups_mean_score')
         columns_order = ['template_name', 'number_of_instances', 'accuracy', 'accuracy_ci_low', 'accuracy_ci_high',
-                         'score_ci_low', 'score_ci_high', 'groups_mean_score']
+                         'score_ci_low', 'score_ci_high']
         performance_summary_df = performance_summary_df.drop(cols_to_remove, axis=1)
         performance_summary_df = performance_summary_df[columns_order]
 
@@ -52,20 +52,20 @@ class ClusteringDisplayer:
         # display the clustering method name in the select box and get the file name from the map
         clustering_files_map = {i: [f for f in clustering_files if i in f.name.lower()][0] for i in
                                 clustering_methods if [f for f in clustering_files if i in f.name.lower()]}
+        if clustering_files_map:
+            clustering_method_name = st.selectbox("Select the clustering method to visualize",
+                                                  key="clustering_method",
+                                                  options=list(clustering_files_map.keys()))
+            clustering_file = clustering_files_map[clustering_method_name]
+            clustering_data = self.read_clustering_results_data(clustering_file)
+            metadata_df = self.read_metadata()
+            merged_df = self.merge_data(clustering_data, metadata_df)
+            # add to performance_summary_df the k columns form merged_df when usinf the index
+            performance_summary_df.set_index('template_name', inplace=True)
+            merged_df_k_columns = merged_df.filter(regex='K=\d+')
 
-        clustering_method_name = st.selectbox("Select the clustering method to visualize",
-                                              key="clustering_method",
-                                              options=list(clustering_files_map.keys()))
-        clustering_file = clustering_files_map[clustering_method_name]
-        clustering_data = self.read_clustering_results_data(clustering_file)
-        metadata_df = self.read_metadata()
-        merged_df = self.merge_data(clustering_data, metadata_df)
-        # add to performance_summary_df the k columns form merged_df when usinf the index
-        performance_summary_df.set_index('template_name', inplace=True)
-        merged_df_k_columns = merged_df.filter(regex='K=\d+')
-
-        performance_summary_df2 = pd.concat([merged_df_k_columns, performance_summary_df], axis=1)
-        self.plot_clusters(merged_df, performance_summary_df2)
+            performance_summary_df2 = pd.concat([merged_df_k_columns, performance_summary_df], axis=1)
+            self.plot_clusters(merged_df, performance_summary_df2)
 
     def read_clustering_results_data(self, results_file: Path) -> pd.DataFrame:
         """
