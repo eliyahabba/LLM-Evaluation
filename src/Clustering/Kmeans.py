@@ -6,11 +6,11 @@ from tqdm import tqdm
 
 from src.Clustering.Clustering import Clustering
 from src.utils.Constants import Constants
+from src.utils.DatasetsManger import DatasetsManger
 from src.utils.Utils import Utils
 
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
-DatasetsConstants = Constants.DatasetsConstants
 ClusteringConstants = Constants.ClusteringConstants
 
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
@@ -100,8 +100,8 @@ if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--model", type=str, choices=LLMProcessorConstants.MODEL_NAMES.keys(),
                       default=list(LLMProcessorConstants.MODEL_NAMES.keys())[1])
-    args.add_argument("--dataset", type=str, choices=DatasetsConstants.DATASET_NAMES,
-                      default=DatasetsConstants.DATASET_NAMES[0])
+    args.add_argument("--dataset", type=str, choices=DatasetsManger.get_dataset_names(),
+                      default=DatasetsManger.get_dataset_names()[0])
     args.add_argument("--k_min_index", type=int, default=ClusteringConstants.K_MIN_INDEX,
                       help="The minimum number of clusters.")
     args.add_argument("--k_max_index", type=int, default=ClusteringConstants.K_MAX_INDEX,

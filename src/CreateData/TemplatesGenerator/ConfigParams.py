@@ -1,10 +1,9 @@
 import random
 
-random.seed(42)
-from src.utils.Constants import Constants
-from src.utils.MMLUConstants import MMLUConstants
+from src.utils.DatasetsManger import DatasetsManger
 
-DatasetsConstants = Constants.DatasetsConstants
+random.seed(42)
+from src.utils.MMLUData import MMLUData
 
 
 def get_mmlu_instructions(topic: str) -> str:
@@ -114,8 +113,8 @@ class ConfigParams:
     }
 
     datasets_templates = [base_args_sciq, base_args_race, base_args_ai2_arc_easy, base_args_hellaswag]
-    dataset_names_to_templates = dict(zip(DatasetsConstants.DATASET_NAMES, datasets_templates))
-    for mmlu_dataset in MMLUConstants.MMLU_DATASETS_SAMPLE:
+    dataset_names_to_templates = dict(zip(DatasetsManger.get_base_dataset_names(), datasets_templates))
+    for mmlu_dataset in MMLUData.get_mmlu_datasets():
         dataset_names_to_templates[f"{mmlu_dataset}"] = base_args_mmlu_instructions
 
     override_options = {

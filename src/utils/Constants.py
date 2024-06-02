@@ -1,18 +1,8 @@
 from enum import Enum
 from pathlib import Path
 
-from src.utils.MMLUConstants import MMLUConstants
-
 
 class Constants:
-    class DatasetsConstants:
-        SCIQ = "sciq"
-        RACE_ALL = "race_all"
-        AI2_ARC_ARC_EASY = "ai2_arc.arc_easy"
-        HELLASWAG = "hellaswag"
-        DATASET_NAMES = [SCIQ, RACE_ALL, AI2_ARC_ARC_EASY]
-        DATASET_NAMES.extend(MMLUConstants.MMLU_DATASETS_SAMPLE)
-
     class LLMProcessorConstants:
         MISTRAL_V1_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
         MISTRAL_V2_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
@@ -151,3 +141,13 @@ class Constants:
     class BestOrWorst(Enum):
         BEST = "best"
         WORST = "worst"
+
+    class MMLUConstants:
+        CATEGORIES_COLUMN = "Category"
+        SUBCATEGORIES_COLUMN = "Sub_Category"
+        ALL_DATASETS_COLUMN = "Name"
+        ALL_NAMES = "All"
+        SPLIT_OPTIONS = [CATEGORIES_COLUMN, SUBCATEGORIES_COLUMN, ALL_DATASETS_COLUMN, ALL_NAMES]
+
+        MMLU_NAME = "mmlu"
+        MMLU_CARDS_PREFIX = f"{MMLU_NAME}."

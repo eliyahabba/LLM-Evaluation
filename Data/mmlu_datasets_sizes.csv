@@ -1,4 +1,4 @@
-Category,train,validation,test,PARENT_CATEGORIES,SUBCATEGORIES
+Name,train,validation,test,Category,Sub_Category
 abstract_algebra,5,11,100,STEM,math
 anatomy,5,14,135,"other (business, health, misc.)",health
 astronomy,5,16,152,STEM,physics

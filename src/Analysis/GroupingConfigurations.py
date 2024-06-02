@@ -4,6 +4,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from src.utils.DatasetsManger import DatasetsManger
+
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
 
@@ -15,7 +17,6 @@ from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
-DatasetsConstants = Constants.DatasetsConstants
 ResultConstants = Constants.ResultConstants
 
 
@@ -76,6 +77,7 @@ class GroupingConfigurations:
             if best_row_template in exclude_templates:
                 del exclude_templates[exclude_templates.index(best_row_template)]
             exclude_templates.append(best_row.template_name[0])
+
             def process_index(index):
                 """Process each index value to retain only the relevant part."""
                 return [x.split(' ')[2] if 'best set: ' in x else x for x in index]
@@ -125,9 +127,10 @@ class GroupingConfigurations:
 if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
-    args.add_argument("--dataset", type=str, choices=DatasetsConstants.DATASET_NAMES,
-                      default=DatasetsConstants.DATASET_NAMES[0])
-    args.add_argument("--results_folder", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
+    args.add_argument("--dataset", type=str, choices=DatasetsManger.get_dataset_names(),
+                      default=DatasetsManger.get_dataset_names()[0])
+    args.add_argument("--results_folder", type=str,
+                      default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args = args.parse_args()
     args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
     # Load the model and the dataset

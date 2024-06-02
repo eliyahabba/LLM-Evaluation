@@ -5,11 +5,11 @@ from tqdm import tqdm
 
 from src.Analysis.StatisticalTests.CompareSeriesBinaryDataFromTable import CompareSeriesBinaryDataFromTable
 from src.utils.Constants import Constants
+from src.utils.DatasetsManger import DatasetsManger
 from src.utils.Utils import Utils
 
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
-DatasetsConstants = Constants.DatasetsConstants
 McNemarTestConstants = Constants.McNemarTestConstants
 ResultConstants = Constants.ResultConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
@@ -81,8 +81,8 @@ if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--model", type=str, choices=LLMProcessorConstants.MODEL_NAMES.keys(),
                       default=list(LLMProcessorConstants.MODEL_NAMES.keys())[1])
-    args.add_argument("--dataset", type=str, choices=DatasetsConstants.DATASET_NAMES,
-                      default=DatasetsConstants.DATASET_NAMES[0])
+    args.add_argument("--dataset", type=str, choices=DatasetsManger.get_dataset_names(),
+                      default=DatasetsManger.get_dataset_names()[0])
     args = args.parse_args()
     model = LLMProcessorConstants.MODEL_NAMES[args.model].split('/')[-1]
     # Perform McNemar test

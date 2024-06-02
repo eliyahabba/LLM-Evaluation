@@ -6,7 +6,6 @@ from src.utils.Constants import Constants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
-DatasetsConstants = Constants.DatasetsConstants
 
 
 class ModelDatasetRunner:
@@ -37,6 +36,8 @@ class ModelDatasetRunner:
                                       f"{format_folder.name} for {eval_value}: {e}")
 
             print("\n")
+
+
 # Example usage:
 def check_comparison_matrix(folder, eval_value):
     print(f"Checking comparison matrix in {folder} for {eval_value}")
@@ -47,7 +48,8 @@ def check_results_files(folder, eval_value):
 
 
 if __name__ == "__main__":
-    results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
+    results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(
+        TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     eval_on = ExperimentConstants.EVALUATE_ON_INFERENCE
     runner = ModelDatasetRunner(results_folder, eval_on)
     runner.run_function_on_all_models_and_datasets(check_comparison_matrix)

@@ -9,9 +9,9 @@ from src.Analysis.PerformAnalysis import PerformAnalysis
 from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
 from src.Visualization.ChooseBestCombination import ChooseBestCombination
 from src.utils.Constants import Constants
+from src.utils.DatasetsManger import DatasetsManger
 
 ExperimentConstants = Constants.ExperimentConstants
-DatasetsConstants = Constants.DatasetsConstants
 ResultConstants = Constants.ResultConstants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
@@ -95,8 +95,8 @@ class BestCasualParamsFinder:
 if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
-    args.add_argument("--dataset", type=str, choices=DatasetsConstants.DATASET_NAMES,
-                      default=DatasetsConstants.DATASET_NAMES[0])
+    args.add_argument("--dataset", type=str, choices=DatasetsManger.get_dataset_names(),
+                      default=DatasetsManger.get_dataset_names()[0])
     args.add_argument("--results_folder", type=str,
                       default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args = args.parse_args()

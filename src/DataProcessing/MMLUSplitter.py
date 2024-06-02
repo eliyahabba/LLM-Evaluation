@@ -1,9 +1,9 @@
 import pandas as pd
 
-from src.utils.MMLUConstants import MMLUConstants
+from src.utils.Constants import Constants
+from src.utils.MMLUData import MMLUData
 
-MMLU_SUBCATEGORIES = MMLUConstants.SUBCATEGORIES
-MMLU_CATEGORIES = MMLUConstants.SUBCATEGORIES_TO_CATEGORIES
+MMLUConstants = Constants.MMLUConstants
 
 
 class MMLUSplitter:
@@ -26,28 +26,35 @@ class MMLUSplitter:
 
         return model_data_splitted
 
-    @classmethod
-    def get_data_options(cls, split_option):
-        if split_option == MMLUConstants.SUBCATEGORIES_COLUMN:
-            all_subcategories = MMLUConstants.CATEGORIES.values()
-            options = [subcategories for subcategories in all_subcategories]
+    @staticmethod
+    def get_data_options(split_option):
+        MMLUData.initialize()
+        if split_option == MMLUConstants.ALL_NAMES:
+            options = []
+        elif split_option == MMLUConstants.SUBCATEGORIES_COLUMN:
+            options = MMLUData.get_mmlu_subcategories()
         elif split_option == MMLUConstants.CATEGORIES_COLUMN:
-            options = list(MMLUConstants.CATEGORIES.keys())
+            options = MMLUData.get_mmlu_categories()
         else:
-            options = list(MMLUConstants.SUBCATEGORIES.keys())
+            options = MMLUData.get_mmlu_datasets()
         return options
 
-    @classmethod
-    def get_data_files(cls, split_option, value):
-        if split_option == MMLUConstants.SUBCATEGORIES_COLUMN:
-            all_subcategories = MMLUConstants.CATEGORIES.values()
-            options = [subcategories for subcategories in all_subcategories]
+    @staticmethod
+    def get_data_files(split_option, value):
+        if split_option == MMLUConstants.ALL_NAMES:
+            options = []
+            categories = MMLUData.get_mmlu_categories()
+            for category in categories:
+                subs_options = MMLUData.get_mmlu_subcategories_from_category(category)
+                for sub_option in subs_options:
+                    options.extend(MMLUData.get_mmlu_datasets_from_subcategory(sub_option))
+        elif split_option == MMLUConstants.SUBCATEGORIES_COLUMN:
+            options = MMLUData.get_mmlu_datasets_from_subcategory(value)
         elif split_option == MMLUConstants.CATEGORIES_COLUMN:
-            options = MMLUConstants.CATEGORIES[value]
-            files = []
-            for option in options:
-                files.extend([subcategories for subcategories in all_subcategories])
+            subs_options = MMLUData.get_mmlu_subcategories_from_category(value)
+            options = []
+            for sub_option in subs_options:
+                options.extend(MMLUData.get_mmlu_datasets_from_subcategory(sub_option))
         else:
-            options = list(MMLUConstants.SUBCATEGORIES.keys())
-
+            options = [value]
         return options
