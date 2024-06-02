@@ -6,7 +6,7 @@ from typing import List
 
 import pandas as pd
 
-from src.utils.MMLUConstants import MMLUConstants
+from src.utils.MMLUData import MMLUData
 
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
@@ -21,10 +21,10 @@ BEST_COMBINATIONS_PATH = ExperimentConstants.STRUCTURED_INPUT_FOLDER_PATH / f"{R
 
 from src.Experiments.GroupPredictor import GroupPredictor
 
-split_option = MMLUConstants.SPLIT_OPTIONS[0]
+split_option = MMLUData.SPLIT_OPTIONS[0]
 
-MMLU_SUBCATEGORIES = MMLUConstants.SUBCATEGORIES
-MMLU_CATEGORIES = MMLUConstants.SUBCATEGORIES_TO_CATEGORIES
+MMLU_SUBCATEGORIES = MMLUData.SUBCATEGORIES
+MMLU_CATEGORIES = MMLUData.SUBCATEGORIES_TO_CATEGORIES
 
 
 class RandomForest:
@@ -39,13 +39,13 @@ class RandomForest:
 
         @param model_data: DataFrame containing model data to update.
         """
-        model_data[MMLUConstants.SUBCATEGORIES_COLUMN] = model_data[BestCombinationsConstants.DATASET].apply(
-            lambda x: (MMLU_SUBCATEGORIES[x.split(MMLUConstants.MMLU_CARDS_PREFIX)[1]][0] if x.startswith(
-                MMLUConstants.MMLU_CARDS_PREFIX) else 'None'))
-        model_data[MMLUConstants.CATEGORIES_COLUMN] = model_data[BestCombinationsConstants.DATASET].apply(
+        model_data[MMLUData.SUBCATEGORIES_COLUMN] = model_data[BestCombinationsConstants.DATASET].apply(
+            lambda x: (MMLU_SUBCATEGORIES[x.split(MMLUData.MMLU_CARDS_PREFIX)[1]][0] if x.startswith(
+                MMLUData.MMLU_CARDS_PREFIX) else 'None'))
+        model_data[MMLUData.CATEGORIES_COLUMN] = model_data[BestCombinationsConstants.DATASET].apply(
             lambda x: (
-                MMLU_CATEGORIES[MMLU_SUBCATEGORIES[x.split(MMLUConstants.MMLU_CARDS_PREFIX)[1]][0]] if x.startswith(
-                    MMLUConstants.MMLU_CARDS_PREFIX) else 'None'))
+                MMLU_CATEGORIES[MMLU_SUBCATEGORIES[x.split(MMLUData.MMLU_CARDS_PREFIX)[1]][0]] if x.startswith(
+                    MMLUData.MMLU_CARDS_PREFIX) else 'None'))
 
     def _load_data(self,group: str) -> pd.DataFrame:
         self.group_data = self.data[group]
@@ -124,12 +124,12 @@ class RandomForest:
 
     def split_data_by_option(self, model_data: pd.DataFrame, split_option: str) -> dict:
 
-        if split_option == MMLUConstants.SUBCATEGORIES_COLUMN:
-            model_datas = {group: model_data[model_data[MMLUConstants.SUBCATEGORIES_COLUMN] == group] for group
-                           in model_data[MMLUConstants.SUBCATEGORIES_COLUMN].unique()}
-        elif split_option == MMLUConstants.CATEGORIES_COLUMN:
-            model_datas = {group: model_data[model_data[MMLUConstants.CATEGORIES_COLUMN] == group] for group in
-                           model_data[MMLUConstants.CATEGORIES_COLUMN].unique()}
+        if split_option == MMLUData.SUBCATEGORIES_COLUMN:
+            model_datas = {group: model_data[model_data[MMLUData.SUBCATEGORIES_COLUMN] == group] for group
+                           in model_data[MMLUData.SUBCATEGORIES_COLUMN].unique()}
+        elif split_option == MMLUData.CATEGORIES_COLUMN:
+            model_datas = {group: model_data[model_data[MMLUData.CATEGORIES_COLUMN] == group] for group in
+                           model_data[MMLUData.CATEGORIES_COLUMN].unique()}
         else:
             model_datas = [model_data]
 
