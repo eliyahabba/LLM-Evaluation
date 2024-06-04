@@ -15,14 +15,14 @@ FORMAT = "empty_system_format"
 
 
 class Clustering:
-    def __init__(self, model: str, dataset: str, eval_value: str,
+    def __init__(self, format_folder: str, eval_value: str,
                  random_state: int = ClusteringConstants.RANDOM_STATE,
                  main_results_folder: str = MAIN_RESULTS_PATH):
         self.labels = None
         self.data = None
         self.comparison_matrix_df = None
 
-        self.results_folder = f"{main_results_folder}/{RESULTS_FOLDER}/{model}/{dataset}/{SHOT}/{FORMAT}"
+        self.results_folder = format_folder
         self.eval_value = eval_value
         self.random_state = random_state
         self.main_results_folder = main_results_folder
