@@ -5,6 +5,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
+from src.RandomForests.Constants import RandomForestsConstants
+
+
 class GroupPredictor:
     def __init__(self, random_state=42):
         """Initialize the predictor with a random state for reproducibility."""
@@ -38,7 +41,7 @@ class GroupPredictor:
     def load_and_split_data(self, data):
         """Load data, prepare it, and split it into training and testing datasets."""
         df = self.prepare_data(data)
-        X = df.drop('group', axis=1)
-        y = df['group']
+        X = df.drop(RandomForestsConstants.GROUP, axis=1)
+        y = df[RandomForestsConstants.GROUP]
         return train_test_split(X, y, test_size=0.2, random_state=self.random_state)
 
