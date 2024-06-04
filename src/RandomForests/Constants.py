@@ -1,8 +1,6 @@
-from enum import Enum
 from pathlib import Path
-
-from src.utils.MMLUData import MMLUData
 
 
 class RandomTreeConstants:
-    pass
+    CONFIGURATIONS_DATA_FILE_NAME = "configurations_data.csv"
+    CONFIGURATIONS_DATA_PATH = Path(__file__).parents[0] / CONFIGURATIONS_DATA_FILE_NAME

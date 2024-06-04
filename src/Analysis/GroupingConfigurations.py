@@ -49,7 +49,7 @@ class GroupingConfigurations:
         current_group = 'A'
         exclude_templates = []
         origin_results = None
-        for i in range(5):
+        for i in range(10):
             choose_best_combination = ChooseBestCombination(dataset_file_name, performance_summary_path,
                                                             selected_best_value_axes=list(
                                                                 ConfigParams.override_options.keys()))
@@ -115,7 +115,7 @@ class GroupingConfigurations:
         dataset_file_name = format_folder.parents[1].name
 
         grouped_result_file = format_folder / f"{ResultConstants.GROUPED_LEADERBOARD}.csv"
-        if not grouped_result_file.exists():
+        if not grouped_result_file.exists() or True:
             grouped_metadata_df = GroupingConfigurations.select_and_display_best_combination(dataset_file_name,
                                                                                              performance_summary_path,
                                                                                              comparison_matrix_path)
@@ -123,12 +123,11 @@ class GroupingConfigurations:
             grouped_metadata_df.to_csv(grouped_result_file, index=True)
             print(f"Saved the grouped metadata to {grouped_result_file}")
 
-
 if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
     args.add_argument("--dataset", type=str, choices=DatasetsManger.get_dataset_names(),
-                      default=DatasetsManger.get_dataset_names()[0])
+                      default="mmlu.high_school_psychology")
     args.add_argument("--results_folder", type=str,
                       default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args = args.parse_args()

@@ -1,7 +1,5 @@
+from src.RandomForests.GroupPredictor import GroupPredictor
 
-
-# Usage
-from src.Experiments.GroupPredictor import GroupPredictor
 
 if __name__ == "__main__":
     data = [
