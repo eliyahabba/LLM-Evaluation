@@ -1,9 +1,11 @@
 import argparse
+from pathlib import Path
 
 import pandas as pd
 from sklearn.cluster import KMeans
 from tqdm import tqdm
 
+from src.Analysis.ModelDatasetRunner import ModelDatasetRunner
 from src.Clustering.Clustering import Clustering
 from src.utils.Constants import Constants
 from src.utils.DatasetsManger import DatasetsManger
@@ -12,16 +14,16 @@ from src.utils.Utils import Utils
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
 ClusteringConstants = Constants.ClusteringConstants
-
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 TRAIN_OR_TEST_TYPE = "test"
 
 
 class KmeansClustering(Clustering):
-    def __init__(self, k, model: str, dataset: str, eval_value: str,
+    def __init__(self, k, format_folder: str, eval_value: str,
                  random_state: int = ClusteringConstants.RANDOM_STATE,
                  main_results_folder: str = MAIN_RESULTS_PATH):
-        super().__init__(model, dataset, eval_value, random_state, main_results_folder)
+        super().__init__(format_folder, eval_value, random_state, main_results_folder)
         self.k = k
         self.kmeans = None
 
@@ -67,7 +69,7 @@ class PerformKmeansClustering:
         self.k_min_index = k_min_index
         self.k_max_index = k_max_index
 
-    def run_clustering_for_range(self, model: str, dataset: str) -> None:
+    def run_clustering_for_range(self, format_folder, eval_value) -> None:
         """
         Run the clustering for the specified model and dataset.
         @param model: The model to be used for the clustering.
@@ -75,7 +77,7 @@ class PerformKmeansClustering:
         @return: None
         """
         for k in range(self.k_min_index, self.k_max_index):
-            kmeans_clustering = KmeansClustering(k, model, dataset, eval_value=TRAIN_OR_TEST_TYPE)
+            kmeans_clustering = KmeansClustering(k, format_folder, eval_value=TRAIN_OR_TEST_TYPE)
             kmeans_clustering.load_comparison_matrix()
             results = kmeans_clustering.fit()
             kmeans_clustering.save_labels(results)
@@ -94,6 +96,15 @@ class PerformKmeansClustering:
                     print(f"Error: {e} for model: {model} and dataset: {dataset}")
                     continue
 
+def run_clustering(format_folder: Path, eval_value: str, kwargs: dict = None) -> None:
+    """
+    Run the clustering for the specified model and dataset.
+    @param model: The model to be used for the clustering.
+    @param dataset: The dataset to be used for the clustering.
+    @return: None
+    """
+    perform_kmeans_clustering = PerformKmeansClustering(ClusteringConstants.K_MIN_INDEX, ClusteringConstants.K_MAX_INDEX)
+    perform_kmeans_clustering.run_clustering_for_range(format_folder, eval_value)
 
 if __name__ == "__main__":
     # Load the model and the dataset
@@ -108,5 +119,10 @@ if __name__ == "__main__":
                       help="The maximum number of clusters.")
     args = args.parse_args()
 
-    perform_kmeans_clustering = PerformKmeansClustering(args.k_min_index, args.k_max_index)
-    perform_kmeans_clustering.run_clustering_for_all()
+    results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(
+        TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
+    model_dataset_runner = ModelDatasetRunner(results_folder, [TRAIN_OR_TEST_TYPE])
+    model_dataset_runner.run_function_on_all_models_and_datasets(run_clustering)
+    #
+    # perform_kmeans_clustering = PerformKmeansClustering(args.k_min_index, args.k_max_index)
+    # perform_kmeans_clustering.run_clustering_for_all()
