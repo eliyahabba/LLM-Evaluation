@@ -185,13 +185,13 @@ class FindCombinations:
             self.display_bars(configurations_counter, group_name, cur_data)
 
         most_common_configuration = self.calculate_most_common_configurations(configurations_counter)
-        if first_model:
-            st.markdown(f'<span style="font-size: 17px;">**{self.best_or_worst.value} configurations**</span>',
-                        unsafe_allow_html=True)
+        # if first_model:
+        #     st.markdown(f'<span style="font-size: 17px; color:green">**The {self.best_or_worst.value} configurations of {model_name}**</span>',
+        #                 unsafe_allow_html=True)
         num_of_expected_datasets = len(dataset_names)
         num_od_actual_datasets = len(datasets_of_the_current_group)
         st.markdown(
-            f'<span style="font-size: 16px; color:green">{model_name}:</span><span style="font-size: 16px; color:black"> Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets</span>',
+            f'<span style="font-size: 16px; color:black">{model_name}:</span><span style="font-size: 16px; color:gray"> Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets</span>',
             unsafe_allow_html=True)
         display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values)
         # add empty line
@@ -211,6 +211,8 @@ class FindCombinations:
         group_or_top_k, top_k = self.choose_group_or_top_k(model_name)
         display_configurations_groups = DisplayConfigurationsGroups(self.model_results_path, self.templates_metadata,
                                                                     display_full_details=display_full_details)
+        st.markdown(f'<span style="font-size: 17px; color:green">**The {self.best_or_worst.value} configurations of {model_name}**</span>',
+                    unsafe_allow_html=True)
 
         for group_name, cur_data in model_data_splitted.items():
             # read the df of the current group
@@ -229,8 +231,6 @@ class FindCombinations:
 
             most_common_configuration = self.calculate_most_common_configurations(configurations_counter)
 
-            st.markdown(f'<span style="font-size: 17px;">**{self.best_or_worst.value} configurations**</span>',
-                        unsafe_allow_html=True)
             num_of_expected_datasets = len(dataset_names)
             num_od_actual_datasets = len(datasets_of_the_current_group)
             st.markdown(f"Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets")
@@ -278,7 +278,14 @@ class FindCombinations:
         @param display_histograms:
         @return:
         """
+        fam = LLMProcessorConstants.MODELS_FAMILIES[family]
         split_option = st.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
+        st.markdown(f'<span style="font-size: 17px; color:green">**The {self.best_or_worst.value} configurations of:**</span>',
+                unsafe_allow_html=True)
+        for model in fam:
+            st.markdown(f'<span style="font-size: 17px; color:green">{model}</span>',
+                        unsafe_allow_html=True)
+
         for i in range(4):
             for j, full_model_name in enumerate(LLMProcessorConstants.MODELS_FAMILIES[family]):
                 model_name = full_model_name.split("/")[1]

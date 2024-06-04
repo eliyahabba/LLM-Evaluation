@@ -30,10 +30,10 @@ class VisualizeResults:
                                                                                       PERFORMANCE_SUMMARY)
         comparison_matrix_path = \
             [result_file for result_file in result_files if ResultConstants.COMPARISON_MATRIX in result_file.name][0]
-        with st.expander("The results of the model"):
-            self.display_results(performance_summary_path)
-        self.select_and_display_best_combination(dataset_file_name, performance_summary_path, comparison_matrix_path)
-        self.display_heatmap(dataset_file_name, performance_summary_path)
+        # with st.expander("The results of the model"):
+        #     self.display_results(performance_summary_path)
+        # self.select_and_display_best_combination(dataset_file_name, performance_summary_path, comparison_matrix_path)
+        # self.display_heatmap(dataset_file_name, performance_summary_path)
         ResultsLoader.display_sample_examples(selected_shot_file_name, dataset_file_name, result_file_name)
 
     def display_results(self, results_file: Path):
