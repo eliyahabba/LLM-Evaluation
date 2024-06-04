@@ -19,13 +19,13 @@ class ModelDatasetRunner:
         eval_on = self.evaluate_on
         models_names = [model.split('/')[1] for model in LLMProcessorConstants.MODEL_NAMES.values()]
         # models_names = models_names[2:3]
-        models_names = [model for model in models_names if  "Llama-2-13b-chat-hf" in model]
+        # models_names = [model for model in models_names if  "Llama-2-13b-chat-hf" in model]
         models_folders = [Path(results_folder / model_name) for model_name in models_names]
 
         for model_name in models_folders:
             print(f"Model {model_name.name}")
             datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
-            datasets = [datasets for datasets in datasets if datasets.name == "mmlu.high_school_psychology"]
+            # datasets = [datasets for datasets in datasets if datasets.name == "mmlu.high_school_psychology"]
             for dataset_folder in datasets:
                 shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
                 for shot in shots:
