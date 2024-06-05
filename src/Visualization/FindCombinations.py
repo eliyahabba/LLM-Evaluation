@@ -1,3 +1,4 @@
+import itertools
 import re
 import sys
 from pathlib import Path
@@ -9,6 +10,8 @@ import pandas as pd
 import streamlit as st
 
 from src.DataProcessing.MMLUSplitter import MMLUSplitter
+from src.RandomForests.Constants import RandomForestsConstants
+from src.RandomForests.random_forest import RandomForest
 from src.utils.MMLUData import MMLUData
 
 file_path = Path(__file__).parents[3]
@@ -211,8 +214,9 @@ class FindCombinations:
         group_or_top_k, top_k = self.choose_group_or_top_k(model_name)
         display_configurations_groups = DisplayConfigurationsGroups(self.model_results_path, self.templates_metadata,
                                                                     display_full_details=display_full_details)
-        st.markdown(f'<span style="font-size: 17px; color:green">**The {self.best_or_worst.value} configurations of {model_name}**</span>',
-                    unsafe_allow_html=True)
+        st.markdown(
+            f'<span style="font-size: 17px; color:green">**The {self.best_or_worst.value} configurations of {model_name}**</span>',
+            unsafe_allow_html=True)
 
         for group_name, cur_data in model_data_splitted.items():
             # read the df of the current group
@@ -236,7 +240,39 @@ class FindCombinations:
             st.markdown(f"Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets")
             display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values)
             # add empty line
+            self.predict_with_random_forest(most_common_configuration, model_name, group_name, cur_data)
             st.write("")
+
+    def predict_with_random_forest(self, most_common_configuration, model_name: str, group_name: str,
+                                   cur_data: pd.DataFrame) -> None:
+        """
+        Predicts the best configurations for the specified model using Random Forest.
+
+        @param model_name: Name of the model to predict the best configurations for.
+        """
+        st.markdown(
+            f'<span style="font-size: 17px; color:orange">**Predicting the groups of the configurations of this subset of datasets using Random Forest:**</span>',
+            unsafe_allow_html=True)
+        st.markdown("")
+        rf = RandomForest(feature_columns=["enumerator", "choices_separator", "shuffle_choices"])
+        rf.load_data(model=model_name)
+        rf.create_model()
+        X_train, X_test, y_train, y_test = rf.split_data(split_column_name=RandomForestsConstants.CATEGORY,
+                                                         test_column_values=[group_name])
+        rf.train(X_train, y_train)
+
+        # predictions = rf.predict(X_test)
+        # metrics = rf.evaluate(y_test, predictions, print_metrics=True)
+        def generate_combinations(options_dict):
+            return [dict(zip(options_dict, values)) for values in itertools.product(*options_dict.values())]
+
+        combinations = generate_combinations(most_common_configuration)
+        for i, combination in enumerate(combinations):
+            # print(f"Combination {i}: {combination}")
+            prediction = rf.predict(pd.DataFrame(combination, index=[0]))
+            # this onlt one prediction so we can take the first one
+            prediction = prediction[0]
+            st.markdown(f"{prediction}")
 
     def display_bars(self, hists: dict, group: str, cur_data: pd.DataFrame) -> None:
         figs = self._create_figure(hists)
@@ -262,14 +298,14 @@ class FindCombinations:
         display_histograms = st.checkbox("Display histograms")
 
         self.read_best_combinations()
-        if not self.families:
-            models = self.best_combinations[BestCombinationsConstants.MODEL].unique()
-            model = st.selectbox("Choose a model", models)
-            self.display_model_results(model, display_histograms)
-        else:
+        if self.families:
             families = LLMProcessorConstants.MODELS_FAMILIES.keys()
             family = st.selectbox("Choose a family", families)
             self.display_family_results(family, display_histograms)
+        else:
+            models = self.best_combinations[BestCombinationsConstants.MODEL].unique()
+            model = st.selectbox("Choose a model", models)
+            self.display_model_results(model, display_histograms)
 
     def display_family_results(self, family: str, display_histograms: bool) -> None:
         """
@@ -280,8 +316,9 @@ class FindCombinations:
         """
         fam = LLMProcessorConstants.MODELS_FAMILIES[family]
         split_option = st.selectbox("Split the dataset by:", MMLUConstants.SPLIT_OPTIONS)
-        st.markdown(f'<span style="font-size: 17px; color:green">**The {self.best_or_worst.value} configurations of:**</span>',
-                unsafe_allow_html=True)
+        st.markdown(
+            f'<span style="font-size: 17px; color:green">**The {self.best_or_worst.value} configurations of:**</span>',
+            unsafe_allow_html=True)
         for model in fam:
             st.markdown(f'<span style="font-size: 17px; color:green">{model}</span>',
                         unsafe_allow_html=True)

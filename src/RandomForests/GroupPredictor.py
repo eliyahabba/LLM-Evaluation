@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
@@ -6,17 +7,19 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
 from src.RandomForests.Constants import RandomForestsConstants
+from src.RandomForests.Evaluator import Evaluator
 
 
 class GroupPredictor:
-    def __init__(self, random_state=42):
+    def __init__(self, feature_columns: list = None, random_state=42):
         """Initialize the predictor with a random state for reproducibility."""
         self.random_state = random_state
+        self.feature_columns = feature_columns
         self.model = self._create_pipeline()
 
     def _create_pipeline(self):
         """Create a pipeline that includes one-hot encoding and a random forest classifier."""
-        categorical_features = ['enumerator', 'choices_separator', 'shuffle_choices', "model"]
+        categorical_features = self.feature_columns
         categorical_transformer = OneHotEncoder(handle_unknown='ignore')
         preprocessor = ColumnTransformer(
             transformers=[
@@ -38,10 +41,18 @@ class GroupPredictor:
         """Prepare the data by converting it from a list of dicts to a DataFrame."""
         return pd.DataFrame(data)
 
-    def load_and_split_data(self, data):
+    def split_data(self, df, target_column=RandomForestsConstants.GROUP):
         """Load data, prepare it, and split it into training and testing datasets."""
-        df = self.prepare_data(data)
-        X = df.drop(RandomForestsConstants.GROUP, axis=1)
-        y = df[RandomForestsConstants.GROUP]
+        # df = self.prepare_data(data)
+        X = df.drop(target_column, axis=1)
+        y = df[target_column]
         return train_test_split(X, y, test_size=0.2, random_state=self.random_state)
+
+    def evaluate(self, y_test: pd.Series
+                 , predictions: np.ndarray)-> dict:
+        """Evaluate the model using accuracy."""
+        evaluator = Evaluator(y_test=y_test, predictions=predictions)
+        metrics = evaluator.evaluate()
+        return metrics
+
 
