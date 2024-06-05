@@ -192,7 +192,7 @@ if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
     args.add_argument("--model_index", type=int, default=0)
-    args.add_argument("--results_folder", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
+    args.add_argument("--results_folder", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME)
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
     args = args.parse_args()
     args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
@@ -207,6 +207,7 @@ if __name__ == "__main__":
         print("Models to evaluate: ", model_name)
         datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
         datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
+        # datasets = datasets[::-1]
         for dataset_folder in datasets:
             print(f"Start evaluating {dataset_folder.name}")
             car_mmlu_dataset_sizes = mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == dataset_folder.name.split("mmlu.")[1]]
