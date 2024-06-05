@@ -40,7 +40,7 @@ class DatasetLoader:
         """
         mmlu_dataset_sizes = self.read_mmlu_dataset_sizes()
         validation_size = \
-        mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == card.split("cards.mmlu")[1]]["validation"].values[0]
+        mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == card.split("cards.mmlu.")[1]]["validation"].values[0]
         return validation_size
 
     def load(self) -> LLMDataset:
