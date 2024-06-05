@@ -265,9 +265,8 @@ class FindCombinations:
         combinations = generate_combinations(most_common_configuration)
         predictions = []
         for i, combination in enumerate(combinations):
-            # print(f"Combination {i}: {combination}")
             prediction = rf.predict(pd.DataFrame(combination, index=[0]))
-            # this onlt one prediction so we can take the first one
+            # this only one prediction so we can take the first one
             prediction = prediction[0]
             predictions.append(prediction)
 
