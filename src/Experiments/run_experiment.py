@@ -188,7 +188,7 @@ def main():
     args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON_INFERENCE,
                       help='The data types to evaluate the model on.')
     args.add_argument("--demos_taken_from", type=str, default=ExperimentConstants.DEMOS_TAKEN_FROM)
-    args.add_argument("--num_demos", type=int, default=3)
+    args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
     args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
     # args.add_argument("--template_num", type=int, default=ExperimentConstants.TEMPLATE_NUM)
     # # option to give a range of templates to run the experiment on (e.g. 1 10). with 2 parameters min and max template
