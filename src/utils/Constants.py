@@ -100,8 +100,8 @@ class Constants:
         EVALUATE_ON_ANALYZE = ['test']
         TEMPLATE_NUM = 0
         NUM_DEMOS = 0
-        DEMOS_POOL_SIZE = 10
-
+        DEMOS_POOL_SIZE = 20
+        DEMOS_TAKEN_FROM = "validation"
         BATCH_SIZE = 8
 
     class McNemarTestConstants:

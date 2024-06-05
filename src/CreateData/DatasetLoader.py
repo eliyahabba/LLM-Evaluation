@@ -6,11 +6,13 @@ from src.CreateData.LLMDataset import LLMDataset
 
 
 class DatasetLoader:
-    def __init__(self, card: str, template: Template, system_format: str, num_demos: int, demos_pool_size: int,
+    def __init__(self, card: str, template: Template, system_format: str, demos_taken_from: str, num_demos: int,
+                 demos_pool_size: int,
                  max_instances: int, template_name: str):
         self.card = card
         self.template = template
         self.system_format = system_format
+        self.demos_taken_from = demos_taken_from
         self.num_demos = num_demos
         self.demos_pool_size = demos_pool_size
         self.max_instances = max_instances
@@ -32,6 +34,7 @@ class DatasetLoader:
             card=self.card,
             template=self.template,
             format=system_format,
+            demos_taken_from=self.demos_taken_from,
             num_demos=self.num_demos,
             demos_pool_size=self.demos_pool_size if "mmlu" not in self.card else None,
             max_train_instances=self.max_instances,

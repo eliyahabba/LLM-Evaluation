@@ -178,6 +178,7 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
 
     llm_dataset_loader = DatasetLoader(card=experiment['card'], template=template,
                                        system_format=experiment['system_format'],
+                                       demos_taken_from=experiment['demos_taken_from'],
                                        num_demos=experiment['num_demos'],
                                        demos_pool_size=experiment['demos_pool_size'] if "mmlu" not in experiment[
                                            "card"] else None,

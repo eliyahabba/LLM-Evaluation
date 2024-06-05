@@ -66,8 +66,8 @@ class ExperimentRunner:
         @return: The path to the results file.
         """
         json_file_name = "experiment_" + template_name + ".json"
-        num_of_shot_str = "zero" if num_demos == 0 else "one" if num_demos == 1 else "two" if num_demos == 2 \
-            else None
+        num_of_shot_str = "zero" if num_demos == 0 else "one" if num_demos == 1 else\
+            "two" if num_demos == 2 else "three" if num_demos == 3 else None
         if num_of_shot_str is None:
             raise ValueError(f"num_demos should be between 0 and 2, but it is {num_demos}.")
         num_of_shot_icl = f"{num_of_shot_str}_shot"
@@ -135,6 +135,7 @@ class ExperimentRunner:
         llm_dataset_loader = DatasetLoader(card=self.args.card,
                                            template=template,
                                            system_format=self.args.system_format,
+                                           demos_taken_from=self.args.demos_taken_from,
                                            num_demos=self.args.num_demos, demos_pool_size=self.args.demos_pool_size,
                                            max_instances=self.args.max_instances,
                                            template_name=template_name)
@@ -186,7 +187,8 @@ def main():
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
     args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON_INFERENCE,
                       help='The data types to evaluate the model on.')
-    args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
+    args.add_argument("--demos_taken_from", type=str, default=ExperimentConstants.DEMOS_TAKEN_FROM)
+    args.add_argument("--num_demos", type=int, default=3)
     args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
     # args.add_argument("--template_num", type=int, default=ExperimentConstants.TEMPLATE_NUM)
     # # option to give a range of templates to run the experiment on (e.g. 1 10). with 2 parameters min and max template

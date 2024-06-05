@@ -198,6 +198,7 @@ if __name__ == "__main__":
     args.add_argument("--system_format", type=str, default="unitxt")
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
     args.add_argument("--template_num", type=int, default=ExperimentConstants.TEMPLATE_NUM)
+    args.add_argument("--demos_taken_from", type=str, default=ExperimentConstants.DEMOS_TAKEN_FROM)
     args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
     args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
 
@@ -211,6 +212,7 @@ if __name__ == "__main__":
     llm_dataset_loader = DatasetLoader(card=args.card,
                                        template=template,
                                        system_format=args.system_format,
+                                       demos_taken_from=args.demos_taken_from,
                                        num_demos=args.num_demos,
                                        demos_pool_size=args.demos_pool_size,
                                        max_instances=args.max_instances,

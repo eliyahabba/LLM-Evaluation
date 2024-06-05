@@ -124,6 +124,7 @@ class ExperimentRunner:
         llm_dataset_loader = DatasetLoader(card=self.args.card,
                                            template=template,
                                            system_format=self.args.system_format,
+                                           demos_taken_from=self.args.demos_taken_from,
                                            num_demos=self.args.num_demos, demos_pool_size=self.args.demos_pool_size,
                                            max_instances=self.args.max_instances,
                                            template_name=template_name)
@@ -174,6 +175,7 @@ def main():
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
     args.add_argument('--evaluate_on', nargs='+', default=ExperimentConstants.EVALUATE_ON_INFERENCE,
                       help='The data types to evaluate the model on.')
+    args.add_argument("--demos_taken_from", type=str, default=ExperimentConstants.DEMOS_TAKEN_FROM)
     args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
     args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
     # args.add_argument("--template_num", type=int, default=ExperimentConstants.TEMPLATE_NUM)
