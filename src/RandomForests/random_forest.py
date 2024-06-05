@@ -50,7 +50,6 @@ class RandomForest:
     def predict(self, X_test):
         new_df = self.predictor.prepare_data(X_test)
         predictions = self.predictor.predict(new_df)
-        print("Predictions:", predictions)
         return predictions
 
     def evaluate(self, y_test, predictions, print_metrics: bool = True):
