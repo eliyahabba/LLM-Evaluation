@@ -1,8 +1,12 @@
+import pandas as pd
 from unitxt.formats import SystemFormat
 from unitxt.standard import StandardRecipe
 from unitxt.templates import Template
 
 from src.CreateData.LLMDataset import LLMDataset
+from src.utils.Constants import Constants
+
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class DatasetLoader:
@@ -18,6 +22,27 @@ class DatasetLoader:
         self.max_instances = max_instances
         self.template_name = template_name
 
+    def read_mmlu_dataset_sizes(self):
+        """
+        Reads the MMLU dataset sizes from the file.
+
+        @return: The MMLU dataset sizes
+        """
+        mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
+        return mmlu_dataset_sizes
+
+    def get_validation_size(self, card: str):
+        """
+        Gets the validation size for the specified card.
+
+        @param card: The card
+        @return: The validation size
+        """
+        mmlu_dataset_sizes = self.read_mmlu_dataset_sizes()
+        validation_size = \
+        mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == card.split("cards.mmlu")[1]]["validation"].values[0]
+        return validation_size
+
     def load(self) -> LLMDataset:
         """
         Loads the dataset from the specified path.
@@ -30,13 +55,16 @@ class DatasetLoader:
             system_format = SystemFormat(
                 model_input_format=f"{self.system_format}\n{{source}}",
             )
+        if self.num_demos:
+            self.demos_pool_size = self.get_validation_size(self.card) - 1
+
         recipe = StandardRecipe(
             card=self.card,
             template=self.template,
             format=system_format,
             demos_taken_from=self.demos_taken_from,
             num_demos=self.num_demos,
-            demos_pool_size=self.demos_pool_size if "mmlu" not in self.card else None,
+            demos_pool_size=None if "mmlu" in self.card and self.demos_pool_size == 0 else self.demos_pool_size,
             max_train_instances=self.max_instances,
             max_validation_instances=self.max_instances,
             max_test_instances=self.max_instances,

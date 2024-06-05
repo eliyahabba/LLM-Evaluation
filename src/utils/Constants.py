@@ -99,7 +99,7 @@ class Constants:
         EVALUATE_ON_INFERENCE = ['test']
         EVALUATE_ON_ANALYZE = ['test']
         TEMPLATE_NUM = 0
-        NUM_DEMOS = 0
+        NUM_DEMOS = 3
         DEMOS_POOL_SIZE = 20
         DEMOS_TAKEN_FROM = "validation"
         BATCH_SIZE = 8
