@@ -250,10 +250,6 @@ class FindCombinations:
 
         @param model_name: Name of the model to predict the best configurations for.
         """
-        st.markdown(
-            f'<span style="font-size: 17px; color:orange">**Predicting the groups of the configurations of this subset of datasets using Random Forest:**</span>',
-            unsafe_allow_html=True)
-        st.markdown("")
         rf = RandomForest(feature_columns=["enumerator", "choices_separator", "shuffle_choices"])
         rf.load_data(model=model_name)
         rf.create_model()
@@ -267,12 +263,17 @@ class FindCombinations:
             return [dict(zip(options_dict, values)) for values in itertools.product(*options_dict.values())]
 
         combinations = generate_combinations(most_common_configuration)
+        predictions = []
         for i, combination in enumerate(combinations):
             # print(f"Combination {i}: {combination}")
             prediction = rf.predict(pd.DataFrame(combination, index=[0]))
             # this onlt one prediction so we can take the first one
             prediction = prediction[0]
-            st.markdown(f"{prediction}")
+            predictions.append(prediction)
+
+        results_str = '<span style="font-size: 17px; color:orange">**Predicting the groups of the configurations of this subset of datasets using Random Forest predict these configurations for the group:**</span> ' + ' '.join(
+            f'<span style="color:black">**{result}**</span>' for result in predictions)
+        st.markdown(results_str, unsafe_allow_html=True)
 
     def display_bars(self, hists: dict, group: str, cur_data: pd.DataFrame) -> None:
         figs = self._create_figure(hists)
