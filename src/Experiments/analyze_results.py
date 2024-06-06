@@ -178,10 +178,10 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
 
     llm_dataset_loader = DatasetLoader(card=experiment['card'], template=template,
                                        system_format=experiment['system_format'],
-                                       demos_taken_from=experiment['demos_taken_from'],
+                                       demos_taken_from=experiment.get('demos_taken_from', 'validation'),
                                        num_demos=experiment['num_demos'],
                                        demos_pool_size=experiment['demos_pool_size'] if "mmlu" not in experiment[
-                                           "card"] else None,
+                                           "card"] or experiment['num_demos'] != 0 else None,
                                        max_instances=max(max([index['Index'] for index in experiment['results'][key]]) for key in experiment['results'])+1,
                                        template_name=experiment['template_name'])
     llm_dataset = llm_dataset_loader.load()
@@ -192,7 +192,7 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
 if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
-    args.add_argument("--model_index", type=int, default=0)
+    args.add_argument("--model_index", type=int, default=10)
     args.add_argument("--results_folder", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
     args = args.parse_args()
