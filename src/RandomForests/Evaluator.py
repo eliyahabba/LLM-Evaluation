@@ -55,11 +55,11 @@ class Evaluator:
             # class_metrics[class_name] = { "accuracy": self.evaluate_accuracy(y_test[class_indices], predictions[class_indices]) }
             # calculate precision, recall, f1-score, etc.
             recall = np.sum(predictions[class_indices] == class_name) / np.sum(y_test == class_name)
-            precision = np.sum(predictions[class_indices] == class_name) / np.sum(predictions == class_name)
+            precision = 0.0 if np.sum(predictions == class_name) ==0 else np.sum(predictions[class_indices] == class_name) / np.sum(predictions == class_name)
             class_metrics[class_name] = {}
-            class_metrics[class_name]["recall"] = recall.round(2)
-            class_metrics[class_name]["precision"] = precision.round(2)
-            class_metrics[class_name]["f1-score"] = (2 * (precision * recall) / (precision + recall)).round(2)
+            class_metrics[class_name]["recall"] = round(recall, 2)
+            class_metrics[class_name]["precision"] = round(precision, 2)
+            class_metrics[class_name]["f1-score"] = 0 if precision + recall== 0 else round((2 * (precision * recall) / (precision + recall)), 2)
         return class_metrics
 
 if __name__ == "__main__":
