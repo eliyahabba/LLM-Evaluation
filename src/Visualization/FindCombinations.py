@@ -250,7 +250,7 @@ class FindCombinations:
 
         @param model_name: Name of the model to predict the best configurations for.
         """
-        rf = RandomForest(feature_columns=["enumerator", "choices_separator", "shuffle_choices"])
+        rf = RandomForest(feature_columns=["dataset", "Sub_Category", "Category", "enumerator", "choices_separator", "shuffle_choices"])
         rf.load_data(model=model_name)
         rf.create_model()
         X_train, X_test, y_train, y_test = rf.split_data(split_column_name=RandomForestsConstants.CATEGORY,
@@ -265,6 +265,7 @@ class FindCombinations:
         combinations = generate_combinations(most_common_configuration)
         predictions = []
         for i, combination in enumerate(combinations):
+            combination = self.add_metadata_to_combination(combination, cur_data)
             prediction = rf.predict(pd.DataFrame(combination, index=[0]))
             # this only one prediction so we can take the first one
             prediction = prediction[0]
@@ -411,3 +412,15 @@ class FindCombinations:
                 selected_configurations.append(self.templates_metadata.loc[template_col].to_dict())
         selected_configurations_df = pd.DataFrame(selected_configurations)
         return selected_configurations_df
+
+    def add_metadata_to_combination(self, combination:dict, cur_data: pd.DataFrame)->dict:
+        """
+        Adds metadata to the combination.
+        @param combination:
+        @param cur_data:
+        @return:
+        """
+        combination["dataset"] = cur_data["dataset"].values[0]
+        combination["Sub_Category"] = cur_data["Sub_Category"].values[0]
+        combination["Category"] = cur_data["Category"].values[0]
+        return combination
