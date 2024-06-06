@@ -8,7 +8,8 @@ from src.RandomForests.GroupPredictor import GroupPredictor
 
 
 class RandomForest:
-    def __init__(self, configurations_data_path: Path=RandomForestsConstants.CONFIGURATIONS_DATA_PATH, feature_columns: list = None):
+    def __init__(self, configurations_data_path: Path = RandomForestsConstants.CONFIGURATIONS_DATA_PATH,
+                 feature_columns: list = None):
         self.configurations_data = None
         self.predictor = None
         self.configurations_data_path: Path = configurations_data_path
@@ -39,7 +40,8 @@ class RandomForest:
     def split_data(self, split_column_name: str = RandomForestsConstants.CATEGORY, test_column_values: list = None):
         self.configurations_data = self.configurations_data.dropna(subset=[RandomForestsConstants.GROUP])
         X_train, X_test, y_train, y_test = self.predictor.split_data(self.configurations_data)
-        X_train, X_test, y_train, y_test = self.split_data_by_column(self.configurations_data, split_column_name, test_column_values)
+        X_train, X_test, y_train, y_test = self.split_data_by_column(self.configurations_data, split_column_name,
+                                                                     test_column_values)
         X_train = self._process_data(X_train)
         X_test = self._process_data(X_test)
         return X_train, X_test, y_train, y_test
@@ -82,13 +84,20 @@ def main():
 
     args = parser.parse_args()
     rf = RandomForest(configurations_data_path=args.configurations_data_path,
-                      feature_columns=["enumerator", "choices_separator", "shuffle_choices"])
+                      feature_columns=["dataset", "Sub_Category", "Category", "enumerator", "choices_separator",
+                                       "shuffle_choices"])
     rf.load_data(model="Llama-2-7b-chat-hf")
     rf.create_model()
     X_train, X_test, y_train, y_test = rf.split_data(split_column_name=RandomForestsConstants.CATEGORY)
     rf.train(X_train, y_train)
     predictions = rf.predict(X_test)
+    print("Test set")
     metrics = rf.evaluate(y_test, predictions, print_metrics=True)
+
+    print("Train set")
+    predictions = rf.predict(X_train)
+    metrics = rf.evaluate(y_train, predictions, print_metrics=True)
+
 
 if __name__ == "__main__":
     main()
