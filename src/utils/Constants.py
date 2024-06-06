@@ -41,6 +41,7 @@ class Constants:
         PHI_FAMILY = [PHI3_MEDIUM_MODEL, PHI3_SMALL_MODEL, PHI3_MINI_MODEL]
         PHI_FAMILY = [PHI3_MEDIUM_MODEL, PHI3_MINI_MODEL]
 
+        ALPACA = "tatsu-lab/alpaca-7b-wdiff"
         PYTHIA_MODELS = {"PYTHIA_1B": PYTHIA_1B_MODEL, "PYTHIA_1B_DEDUPED": PYTHIA_1B_MODEL_DEDUPED,
                          "PYTHIA_2_8B": PYTHIA_2_8B_MODEL, "PYTHIA_2_8B_DEDUPED": PYTHIA_2_8B_MODEL_DEDUPED,
                          "PYTHIA_6_9B": PYTHIA_6_9B_MODEL, "PYTHIA_6_9B_DEDUPED": PYTHIA_6_9B_MODEL_DEDUPED}
@@ -59,7 +60,8 @@ class Constants:
                             "LLAMA13B_BASE": LLAMA13B_BASE_MODEL,
                             "GEMMA_7B": GEMMA_7B_MODEL,
                             "GEMMA_2B": GEMMA_2B_MODEL,
-                            "OLMO": OLMO_MODEL}
+                            "OLMO": OLMO_MODEL,
+                            "ALPACA": ALPACA}
         MODEL_NAMES = BASE_MODEL_NAMES
         MODEL_NAMES.update(PYTHIA_MODELS)
 
