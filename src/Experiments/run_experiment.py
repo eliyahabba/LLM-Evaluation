@@ -66,7 +66,7 @@ class ExperimentRunner:
         @return: The path to the results file.
         """
         json_file_name = "experiment_" + template_name + ".json"
-        num_of_shot_str = "zero" if num_demos == 0 else "one" if num_demos == 1 else\
+        num_of_shot_str = "zero" if num_demos == 0 else "one" if num_demos == 1 else \
             "two" if num_demos == 2 else "three" if num_demos == 3 else None
         if num_of_shot_str is None:
             raise ValueError(f"num_demos should be between 0 and 2, but it is {num_demos}.")
@@ -154,7 +154,8 @@ class ExperimentRunner:
         enumerators_with_dot = [f"{enumerator}." for enumerator in enumerators]
         possible_gt_tokens = enumerators + enumerators_with_space + enumerators_with_dot + enumerators_with_space2
 
-        llm_pred = LLMPredictor(llm_proc, batch_size=self.args.batch_size)
+        llm_pred = LLMPredictor(llm_proc, predict_prob_of_tokens=self.args.predict_prob_of_tokens,
+                                batch_size=self.args.batch_size)
         llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path,
                                  possible_gt_tokens=possible_gt_tokens)
 
@@ -194,6 +195,7 @@ def main():
     # # option to give a range of templates to run the experiment on (e.g. 1 10). with 2 parameters min and max template
     args.add_argument("--template_range", nargs=2, type=int, default=ExperimentConstants.TEMPLATES_RANGE,
                       help="Specify the range of templates to run the experiment on (e.g., 1 10).")
+    args.add_argument("--predict_prob_of_tokens", type=bool, default=LLMProcessorConstants.PREDICT_PROB_OF_TOKENS)
     # add param
     args = args.parse_args()
     # check if load_in_4bit or not_load_in_4bit
