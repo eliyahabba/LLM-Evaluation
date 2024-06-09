@@ -42,6 +42,7 @@ class Constants:
         PHI_FAMILY = [PHI3_MEDIUM_MODEL, PHI3_MINI_MODEL]
 
         ALPACA = "tatsu-lab/alpaca-7b-wdiff"
+        VICUNA = "lmsys/vicuna-7b-v1.5"
         PYTHIA_MODELS = {"PYTHIA_1B": PYTHIA_1B_MODEL, "PYTHIA_1B_DEDUPED": PYTHIA_1B_MODEL_DEDUPED,
                          "PYTHIA_2_8B": PYTHIA_2_8B_MODEL, "PYTHIA_2_8B_DEDUPED": PYTHIA_2_8B_MODEL_DEDUPED,
                          "PYTHIA_6_9B": PYTHIA_6_9B_MODEL, "PYTHIA_6_9B_DEDUPED": PYTHIA_6_9B_MODEL_DEDUPED}
@@ -61,7 +62,8 @@ class Constants:
                             "GEMMA_7B": GEMMA_7B_MODEL,
                             "GEMMA_2B": GEMMA_2B_MODEL,
                             "OLMO": OLMO_MODEL,
-                            "ALPACA": ALPACA}
+                            "ALPACA": ALPACA,
+                            "VICUNA": VICUNA}
         MODEL_NAMES = BASE_MODEL_NAMES
         MODEL_NAMES.update(PYTHIA_MODELS)
 
@@ -101,10 +103,10 @@ class Constants:
         EVALUATE_ON_INFERENCE = ['test']
         EVALUATE_ON_ANALYZE = ['test']
         TEMPLATE_NUM = 0
-        NUM_DEMOS = 3
-        DEMOS_POOL_SIZE = 20
+        NUM_DEMOS = 0
+        DEMOS_POOL_SIZE = 1
         DEMOS_TAKEN_FROM = "validation"
-        BATCH_SIZE = 8
+        BATCH_SIZE = 2
 
     class McNemarTestConstants:
         ALPHA = 0.05
