@@ -34,4 +34,4 @@ template_41,cards.mmlu.abstract_algebra,empty_system_format,0,10,1600,0.260,0.26
 template_42,cards.mmlu.abstract_algebra,empty_system_format,0,10,1600,0.280,0.280,accuracy,0.190,0.370,0.190,0.370,100
 template_43,cards.mmlu.abstract_algebra,empty_system_format,0,10,1600,0.280,0.280,accuracy,0.190,0.371,0.190,0.371,100
 template_44,cards.mmlu.abstract_algebra,empty_system_format,0,10,1600,0.250,0.250,accuracy,0.170,0.340,0.170,0.340,100
-template_45,cards.mmlu.abstract_algebra,empty_system_format,0,10,1600,0.264,0.264,accuracy,0.167,0.369,0.167,0.369,72
+template_45,cards.mmlu.abstract_algebra,empty_system_format,0,10,1600,0.264,0.264,accuracy,0.167,0.375,0.167,0.375,72

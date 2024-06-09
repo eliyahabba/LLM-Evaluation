@@ -14,4 +14,4 @@ template_21,cards.mmlu.astronomy,empty_system_format,0,10,1600,0.263,0.263,accur
 template_22,cards.mmlu.astronomy,empty_system_format,0,10,1600,0.283,0.283,accuracy,0.211,0.357,0.211,0.357,152
 template_23,cards.mmlu.astronomy,empty_system_format,0,10,1600,0.303,0.303,accuracy,0.230,0.382,0.230,0.382,152
 template_24,cards.mmlu.astronomy,empty_system_format,0,10,1600,0.276,0.276,accuracy,0.211,0.355,0.211,0.355,152
-template_25,cards.mmlu.astronomy,empty_system_format,0,10,1600,0.259,0.259,accuracy,0.181,0.339,0.181,0.339,112
+template_25,cards.mmlu.astronomy,empty_system_format,0,10,1600,0.223,0.223,accuracy,0.152,0.304,0.152,0.304,112
