@@ -1,0 +1,1 @@
+{"card": "cards.mmlu.public_relations", "template_name": "template_30", "model_name": "meta-llama/Llama-2-13b-hf", "system_format": "empty_system_format", "max_instances": 1600, "num_demos": 3, "demos_pool_size": 20, "results": {}}
