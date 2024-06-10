@@ -1,0 +1,13 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,number_of_instances
+template_0,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.230,0.230,accuracy,0.150,0.320,0.150,0.320,100
+template_1,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.240,0.240,accuracy,0.150,0.330,0.150,0.330,100
+template_2,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.280,0.280,accuracy,0.190,0.370,0.190,0.370,100
+template_3,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.250,0.250,accuracy,0.170,0.340,0.170,0.340,100
+template_4,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.270,0.270,accuracy,0.190,0.370,0.190,0.370,100
+template_5,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.226,0.226,accuracy,0.143,0.321,0.143,0.321,84
+template_28,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.270,0.270,accuracy,0.190,0.360,0.190,0.360,100
+template_29,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.220,0.220,accuracy,0.140,0.300,0.140,0.300,100
+template_30,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.250,0.250,accuracy,0.170,0.340,0.170,0.340,100
+template_31,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.200,0.200,accuracy,0.140,0.290,0.140,0.290,100
+template_32,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.300,0.300,accuracy,0.210,0.390,0.210,0.390,100
+template_33,cards.mmlu.global_facts,empty_system_format,3,20,1600,0.260,0.260,accuracy,0.180,0.350,0.180,0.350,100

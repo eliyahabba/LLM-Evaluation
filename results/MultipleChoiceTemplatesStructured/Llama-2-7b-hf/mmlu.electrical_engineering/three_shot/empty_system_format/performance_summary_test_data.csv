@@ -1,0 +1,14 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,number_of_instances
+template_0,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.310,0.310,accuracy,0.241,0.393,0.241,0.393,145
+template_1,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.297,0.297,accuracy,0.234,0.379,0.234,0.379,145
+template_2,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.338,0.338,accuracy,0.262,0.416,0.262,0.416,145
+template_3,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.379,0.379,accuracy,0.297,0.455,0.297,0.455,145
+template_4,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.338,0.338,accuracy,0.269,0.421,0.269,0.421,145
+template_5,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.345,0.345,accuracy,0.276,0.428,0.276,0.428,145
+template_28,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.283,0.283,accuracy,0.214,0.359,0.214,0.359,145
+template_29,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.331,0.331,accuracy,0.262,0.420,0.262,0.420,145
+template_30,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.276,0.276,accuracy,0.207,0.352,0.207,0.352,145
+template_31,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.372,0.372,accuracy,0.297,0.455,0.297,0.455,145
+template_32,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.386,0.386,accuracy,0.310,0.467,0.310,0.467,145
+template_33,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.359,0.359,accuracy,0.283,0.441,0.283,0.441,145
+template_34,cards.mmlu.electrical_engineering,empty_system_format,3,20,1600,0.417,0.417,accuracy,0.271,0.562,0.271,0.562,48

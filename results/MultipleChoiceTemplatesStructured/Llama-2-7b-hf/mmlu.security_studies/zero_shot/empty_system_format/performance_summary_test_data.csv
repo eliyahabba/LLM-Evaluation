@@ -3,3 +3,12 @@ template_0,cards.mmlu.security_studies,empty_system_format,0,10,1600,0.212,0.212
 template_1,cards.mmlu.security_studies,empty_system_format,0,10,1600,0.216,0.216,accuracy,0.171,0.269,0.171,0.269,245
 template_2,cards.mmlu.security_studies,empty_system_format,0,10,1600,0.265,0.265,accuracy,0.212,0.322,0.212,0.322,245
 template_3,cards.mmlu.security_studies,empty_system_format,0,10,1600,0.219,0.219,accuracy,0.141,0.344,0.141,0.344,64
+template_28,cards.mmlu.security_studies,empty_system_format,0,1,1600,0.249,0.249,accuracy,0.196,0.302,0.196,0.302,245
+template_29,cards.mmlu.security_studies,empty_system_format,0,1,1600,0.245,0.245,accuracy,0.192,0.302,0.192,0.302,245
+template_30,cards.mmlu.security_studies,empty_system_format,0,1,1600,0.245,0.245,accuracy,0.196,0.306,0.196,0.306,245
+template_31,cards.mmlu.security_studies,empty_system_format,0,1,1600,0.253,0.253,accuracy,0.204,0.314,0.204,0.314,245
+template_32,cards.mmlu.security_studies,empty_system_format,0,1,1600,0.216,0.216,accuracy,0.163,0.265,0.163,0.265,245
+template_33,cards.mmlu.security_studies,empty_system_format,0,1,1600,0.278,0.278,accuracy,0.224,0.331,0.224,0.331,245
+template_34,cards.mmlu.security_studies,empty_system_format,0,1,1600,0.249,0.249,accuracy,0.196,0.306,0.196,0.306,245
+template_35,cards.mmlu.security_studies,empty_system_format,0,1,1600,0.261,0.261,accuracy,0.208,0.316,0.208,0.316,245
+template_36,cards.mmlu.security_studies,empty_system_format,0,1,1600,0.149,0.149,accuracy,0.085,0.226,0.085,0.226,94

@@ -13,3 +13,8 @@ template_10,cards.mmlu.nutrition,empty_system_format,0,10,1600,0.268,0.268,accur
 template_11,cards.mmlu.nutrition,empty_system_format,0,10,1600,0.258,0.258,accuracy,0.209,0.304,0.209,0.304,306
 template_12,cards.mmlu.nutrition,empty_system_format,0,10,1600,0.265,0.265,accuracy,0.219,0.316,0.219,0.316,306
 template_13,cards.mmlu.nutrition,empty_system_format,0,10,1600,0.309,0.309,accuracy,0.254,0.357,0.254,0.357,272
+template_28,cards.mmlu.nutrition,empty_system_format,0,1,1600,0.317,0.317,accuracy,0.268,0.373,0.268,0.373,306
+template_29,cards.mmlu.nutrition,empty_system_format,0,1,1600,0.284,0.284,accuracy,0.239,0.340,0.239,0.340,306
+template_30,cards.mmlu.nutrition,empty_system_format,0,1,1600,0.379,0.379,accuracy,0.327,0.435,0.327,0.435,306
+template_31,cards.mmlu.nutrition,empty_system_format,0,1,1600,0.350,0.350,accuracy,0.297,0.407,0.297,0.407,306
+template_32,cards.mmlu.nutrition,empty_system_format,0,1,1600,0.314,0.314,accuracy,0.237,0.391,0.237,0.391,156
