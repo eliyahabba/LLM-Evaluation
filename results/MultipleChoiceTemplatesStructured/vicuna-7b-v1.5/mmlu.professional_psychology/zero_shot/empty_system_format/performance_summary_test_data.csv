@@ -35,4 +35,4 @@ template_41,cards.mmlu.professional_psychology,empty_system_format,0,1,1600,0.29
 template_42,cards.mmlu.professional_psychology,empty_system_format,0,1,1600,0.317,0.317,accuracy,0.283,0.356,0.283,0.356,612
 template_43,cards.mmlu.professional_psychology,empty_system_format,0,1,1600,0.343,0.343,accuracy,0.309,0.382,0.309,0.382,612
 template_44,cards.mmlu.professional_psychology,empty_system_format,0,1,1600,0.343,0.343,accuracy,0.306,0.381,0.306,0.381,612
-template_45,cards.mmlu.professional_psychology,empty_system_format,0,1,1600,0.347,0.347,accuracy,0.303,0.383,0.303,0.383,554
+template_45,cards.mmlu.professional_psychology,empty_system_format,0,1,1600,0.348,0.348,accuracy,0.303,0.386,0.303,0.386,554
