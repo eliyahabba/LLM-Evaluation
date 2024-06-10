@@ -105,8 +105,8 @@ class Constants:
         TEMPLATE_NUM = 0
         NUM_DEMOS = 0
         DEMOS_POOL_SIZE = 1
-        #NUM_DEMOS = 3
-        #DEMOS_POOL_SIZE = 20
+        NUM_DEMOS = 3
+        DEMOS_POOL_SIZE = 20
         DEMOS_TAKEN_FROM = "validation"
         BATCH_SIZE = 2
 
@@ -125,6 +125,7 @@ class Constants:
         NOT_CHOOSE_ACROSS_AXES = False
 
         ZERO_SHOT = "zero_shot"
+        THREE_SHOT = "three_shot"
         EMPTY_SYSTEM_FORMAT = "empty_system_format"
 
         GROUP = "group"

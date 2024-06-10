@@ -33,7 +33,8 @@ MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
 
 class FindCombinations:
-    def __init__(self, best_or_worst: BestOrWorst, override_options: dict = None, families: bool = False) -> None:
+    def __init__(self, best_or_worst: BestOrWorst, override_options: dict = None, families: bool = False,
+                 predict_random_forest: bool = False) -> None:
         """
         Initialize the BestCombinationsDisplayer class.
 
@@ -45,10 +46,12 @@ class FindCombinations:
         self.results_folder = None
         self.model_results_path = None
 
+
         self.best_or_worst = best_or_worst
         self.main_results_path = Path(MAIN_RESULTS_PATH)
         self.override_options: dict = override_options
         self.families = families
+        self.predict_random_forest = predict_random_forest
         self._read_templates_metadata()
 
     def get_result_files(self) -> Path:
@@ -240,7 +243,8 @@ class FindCombinations:
             st.markdown(f"Coverage of: {num_od_actual_datasets}/{num_of_expected_datasets} datasets")
             display_configurations_groups.check_the_group_of_conf(most_common_configuration, cur_data.dataset.values)
             # add empty line
-            self.predict_with_random_forest(most_common_configuration, model_name, group_name, cur_data)
+            if self.predict_random_forest:
+                self.predict_with_random_forest(most_common_configuration, model_name, group_name, cur_data)
             st.write("")
 
     def predict_with_random_forest(self, most_common_configuration, model_name: str, group_name: str,
@@ -377,6 +381,12 @@ class FindCombinations:
                           Path(ResultConstants.ZERO_SHOT) / \
                           Path(ResultConstants.EMPTY_SYSTEM_FORMAT) / \
                           Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
+            if not groups_path.exists():
+                groups_path = self.model_results_path / dataset_name / \
+                              Path(ResultConstants.THREE_SHOT   ) / \
+                              Path(ResultConstants.EMPTY_SYSTEM_FORMAT) / \
+                              Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
+
             if not groups_path.exists():
                 continue
             template_groups_df = pd.read_csv(groups_path)

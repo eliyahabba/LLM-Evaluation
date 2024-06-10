@@ -26,6 +26,7 @@ if __name__ == "__main__":
     # Use BestOrWorst class to get the value of the selected option
     best_combinations_displayer = FindCombinations(
         best_or_worst,
-        ConfigParams.override_options
+        ConfigParams.override_options,
+        predict_random_forest=True
     )
     best_combinations_displayer.evaluate()
