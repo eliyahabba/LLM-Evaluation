@@ -1,1 +1,0 @@
-{"card": "cards.mmlu.professional_law", "template_name": "template_35", "model_name": "meta-llama/Llama-2-7b-hf", "system_format": "empty_system_format", "max_instances": 1600, "num_demos": 0, "demos_pool_size": 10, "results": {}}
