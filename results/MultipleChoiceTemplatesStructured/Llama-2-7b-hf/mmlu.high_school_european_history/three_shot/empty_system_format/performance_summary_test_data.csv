@@ -19,7 +19,14 @@ template_16,cards.mmlu.high_school_european_history,empty_system_format,3,20,160
 template_17,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.558,0.558,accuracy,0.481,0.632,0.481,0.632,165
 template_18,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.467,0.467,accuracy,0.394,0.539,0.394,0.539,165
 template_19,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.491,0.491,accuracy,0.412,0.564,0.412,0.564,165
-template_20,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.536,0.536,accuracy,0.411,0.679,0.411,0.679,56
+template_20,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.527,0.527,accuracy,0.455,0.600,0.455,0.600,165
+template_21,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.527,0.527,accuracy,0.446,0.606,0.446,0.606,165
+template_22,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.509,0.509,accuracy,0.430,0.582,0.430,0.582,165
+template_23,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.515,0.515,accuracy,0.430,0.600,0.430,0.600,165
+template_24,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.491,0.491,accuracy,0.412,0.564,0.412,0.564,165
+template_25,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.515,0.515,accuracy,0.436,0.600,0.436,0.600,165
+template_26,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.436,0.436,accuracy,0.364,0.515,0.364,0.515,165
+template_27,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.448,0.448,accuracy,0.369,0.524,0.369,0.524,165
 template_28,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.461,0.461,accuracy,0.387,0.539,0.387,0.539,165
 template_29,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.430,0.430,accuracy,0.352,0.515,0.352,0.515,165
 template_30,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.533,0.533,accuracy,0.458,0.610,0.458,0.610,165

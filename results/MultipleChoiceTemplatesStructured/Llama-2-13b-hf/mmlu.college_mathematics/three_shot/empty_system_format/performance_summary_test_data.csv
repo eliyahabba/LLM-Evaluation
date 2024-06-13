@@ -25,7 +25,8 @@ template_22,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.370,0
 template_23,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.260,0.260,accuracy,0.180,0.350,0.180,0.350,100
 template_24,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.330,0.330,accuracy,0.240,0.430,0.240,0.430,100
 template_25,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.230,0.230,accuracy,0.160,0.323,0.160,0.323,100
-template_26,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.329,0.329,accuracy,0.232,0.439,0.232,0.439,82
+template_26,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.310,0.310,accuracy,0.230,0.400,0.230,0.400,100
+template_27,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.230,0.230,accuracy,0.160,0.320,0.160,0.320,100
 template_28,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.260,0.260,accuracy,0.180,0.360,0.180,0.360,100
 template_29,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.230,0.230,accuracy,0.150,0.320,0.150,0.320,100
 template_30,cards.mmlu.college_mathematics,empty_system_format,3,20,1600,0.280,0.280,accuracy,0.190,0.370,0.190,0.370,100
