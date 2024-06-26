@@ -23,7 +23,11 @@ class Constants:
         GEMMA_FAMILY = [GEMMA_7B_MODEL, GEMMA_2B_MODEL]
 
         PHI_MODEL = "microsoft/phi-2"
+
         OLMO_MODEL = "allenai/OLMo-7B-Instruct"
+        OLMO_HF_MODEL = "allenai/OLMo-7B-Instruct-hf"
+        OLMO_1_7_MODEL = "allenai/OLMo-1.7-7B-hf"
+
         QWEN_MODEL = "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8"
         QWEN2_MODEL = "Qwen/Qwen-7B-Chat-Int8"
         QWEN3_MODEL = "Qwen/Qwen1.5-MoE-A2.7B"
@@ -108,7 +112,7 @@ class Constants:
         NUM_DEMOS = 3
         DEMOS_POOL_SIZE = 20
         DEMOS_TAKEN_FROM = "validation"
-        BATCH_SIZE = 2
+        BATCH_SIZE = 1
 
     class McNemarTestConstants:
         ALPHA = 0.05
