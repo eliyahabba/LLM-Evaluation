@@ -66,6 +66,8 @@ class Constants:
                             "GEMMA_7B": GEMMA_7B_MODEL,
                             "GEMMA_2B": GEMMA_2B_MODEL,
                             "OLMO": OLMO_MODEL,
+                            "OLMO_HF": OLMO_HF_MODEL,
+                            "OLMO_1_7": OLMO_1_7_MODEL,
                             "ALPACA": ALPACA,
                             "VICUNA": VICUNA}
         MODEL_NAMES = BASE_MODEL_NAMES

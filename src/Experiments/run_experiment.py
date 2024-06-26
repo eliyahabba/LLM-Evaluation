@@ -182,6 +182,8 @@ def main():
     args = argparse.ArgumentParser()
     args = ReadLLMParams.read_llm_params(args)
 
+    args.add_argument("--predict_prob_of_tokens", default=LLMProcessorConstants.PREDICT_PROB_OF_TOKENS,
+                        help="Whether to predict the probability of each token.", action="store_false")
     args.add_argument("--card", type=str, default="cards.sciq")
     args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
     args.add_argument("--batch_size", type=int, default=ExperimentConstants.BATCH_SIZE, help="The batch size.")
@@ -195,7 +197,6 @@ def main():
     # # option to give a range of templates to run the experiment on (e.g. 1 10). with 2 parameters min and max template
     args.add_argument("--template_range", nargs=2, type=int, default=ExperimentConstants.TEMPLATES_RANGE,
                       help="Specify the range of templates to run the experiment on (e.g., 1 10).")
-    args.add_argument("--predict_prob_of_tokens", type=bool, default=LLMProcessorConstants.PREDICT_PROB_OF_TOKENS)
     # add param
     args = args.parse_args()
     # check if load_in_4bit or not_load_in_4bit
