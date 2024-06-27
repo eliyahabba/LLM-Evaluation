@@ -25,7 +25,8 @@ template_22,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.369
 template_23,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.355,0.355,accuracy,0.286,0.419,0.286,0.419,203
 template_24,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.355,0.355,accuracy,0.286,0.419,0.286,0.419,203
 template_25,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.389,0.389,accuracy,0.321,0.458,0.321,0.458,203
-template_26,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.356,0.356,accuracy,0.287,0.426,0.287,0.426,188
+template_26,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.345,0.345,accuracy,0.281,0.409,0.281,0.409,203
+template_27,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.379,0.379,accuracy,0.315,0.443,0.315,0.443,203
 template_28,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.379,0.379,accuracy,0.315,0.444,0.315,0.444,203
 template_29,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.369,0.369,accuracy,0.300,0.438,0.300,0.438,203
 template_30,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.429,0.429,accuracy,0.360,0.493,0.360,0.493,203

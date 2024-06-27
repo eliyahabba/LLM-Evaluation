@@ -26,7 +26,7 @@ template_23,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.53
 template_24,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.506,0.506,accuracy,0.464,0.547,0.464,0.547,545
 template_25,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.512,0.512,accuracy,0.468,0.550,0.468,0.550,545
 template_26,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.477,0.477,accuracy,0.436,0.521,0.436,0.521,545
-template_27,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.472,0.472,accuracy,0.387,0.566,0.387,0.566,106
+template_27,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.486,0.486,accuracy,0.444,0.528,0.444,0.528,545
 template_28,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.512,0.512,accuracy,0.472,0.554,0.472,0.554,545
 template_29,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.517,0.517,accuracy,0.479,0.560,0.479,0.560,545
 template_30,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.543,0.543,accuracy,0.505,0.585,0.505,0.585,545
@@ -52,4 +52,6 @@ template_49,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.45
 template_50,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.451,0.451,accuracy,0.409,0.495,0.409,0.495,545
 template_51,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.420,0.420,accuracy,0.378,0.461,0.378,0.461,545
 template_52,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.450,0.450,accuracy,0.411,0.494,0.411,0.494,545
-template_53,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.389,0.389,accuracy,0.259,0.519,0.259,0.519,54
+template_53,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.435,0.435,accuracy,0.393,0.477,0.393,0.477,545
+template_54,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.459,0.459,accuracy,0.417,0.503,0.417,0.503,545
+template_55,cards.mmlu.high_school_psychology,empty_system_format,3,20,1600,0.435,0.435,accuracy,0.396,0.475,0.396,0.475,545

@@ -25,6 +25,8 @@ template_22,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.287,0.287
 template_23,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.254,0.254,accuracy,0.224,0.284,0.224,0.284,895
 template_24,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.287,0.287,accuracy,0.257,0.317,0.257,0.317,895
 template_25,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.256,0.256,accuracy,0.229,0.286,0.229,0.286,895
+template_26,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.282,0.282,accuracy,0.254,0.316,0.254,0.316,895
+template_27,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.260,0.260,accuracy,0.231,0.289,0.231,0.289,895
 template_28,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.309,0.309,accuracy,0.280,0.341,0.280,0.341,895
 template_29,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.270,0.270,accuracy,0.242,0.302,0.242,0.302,895
 template_30,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.296,0.296,accuracy,0.268,0.325,0.268,0.325,895
@@ -49,4 +51,7 @@ template_48,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.260,0.260
 template_49,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.257,0.257,accuracy,0.229,0.286,0.229,0.286,895
 template_50,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.267,0.267,accuracy,0.238,0.296,0.238,0.296,895
 template_51,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.251,0.251,accuracy,0.223,0.279,0.223,0.279,895
-template_52,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.256,0.256,accuracy,0.222,0.292,0.222,0.292,558
+template_52,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.248,0.248,accuracy,0.220,0.280,0.220,0.280,895
+template_53,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.250,0.250,accuracy,0.225,0.280,0.225,0.280,895
+template_54,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.255,0.255,accuracy,0.227,0.286,0.227,0.286,895
+template_55,cards.mmlu.moral_scenarios,empty_system_format,3,20,1600,0.246,0.246,accuracy,0.220,0.275,0.220,0.275,895

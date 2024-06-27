@@ -26,7 +26,7 @@ template_23,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.704,0.704,a
 template_24,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.692,0.692,accuracy,0.657,0.723,0.657,0.723,783
 template_25,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.708,0.708,accuracy,0.675,0.741,0.675,0.741,783
 template_26,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.683,0.683,accuracy,0.648,0.715,0.648,0.715,783
-template_27,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.703,0.703,accuracy,0.662,0.736,0.662,0.736,592
+template_27,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.691,0.691,accuracy,0.658,0.722,0.658,0.722,783
 template_28,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.687,0.687,accuracy,0.653,0.720,0.653,0.720,783
 template_29,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.687,0.687,accuracy,0.655,0.720,0.655,0.720,783
 template_30,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.687,0.687,accuracy,0.651,0.718,0.651,0.718,783
@@ -49,7 +49,9 @@ template_46,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.687,0.687,a
 template_47,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.685,0.685,accuracy,0.651,0.716,0.651,0.716,783
 template_48,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.692,0.692,accuracy,0.659,0.723,0.659,0.723,783
 template_49,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.681,0.681,accuracy,0.647,0.710,0.647,0.710,783
-template_50,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.661,0.661,accuracy,0.606,0.712,0.606,0.712,292
+template_50,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.687,0.687,accuracy,0.657,0.720,0.657,0.720,783
+template_51,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.687,0.687,accuracy,0.655,0.719,0.655,0.719,783
+template_52,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.678,0.678,accuracy,0.645,0.710,0.645,0.710,783
 template_53,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.693,0.693,accuracy,0.660,0.725,0.660,0.725,783
 template_54,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.665,0.665,accuracy,0.632,0.696,0.632,0.696,783
 template_55,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.665,0.665,accuracy,0.634,0.697,0.634,0.697,783
