@@ -71,7 +71,7 @@ class Constants:
                             "ALPACA": ALPACA,
                             "VICUNA": VICUNA}
         MODEL_NAMES = BASE_MODEL_NAMES
-        MODEL_NAMES.update(PYTHIA_MODELS)
+        # MODEL_NAMES.update(PYTHIA_MODELS)
 
         MODELS_FAMILIES = {"Mistral": MISTRAL_FAMILY, "Llama": LLAMAS_FAMILY, "gemma": GEMMA_FAMILY, "Phi3": PHI_FAMILY}
 
@@ -132,10 +132,17 @@ class Constants:
 
         ZERO_SHOT = "zero_shot"
         THREE_SHOT = "three_shot"
+        SHOTS = [   ZERO_SHOT, THREE_SHOT]
         EMPTY_SYSTEM_FORMAT = "empty_system_format"
 
         GROUP = "group"
         TEMPLATE_NAME = "template_name"
+
+        MAIN_RESULTS_FOLDER_NAME = "results"
+        MAIN_RESULTS_PATH = Path(__file__).parents[2] / MAIN_RESULTS_FOLDER_NAME
+        SUMMARIZE_DF_NAME = "summarize_df_path"
+        SUMMARIZE_DF_PATH = MAIN_RESULTS_PATH / SUMMARIZE_DF_NAME
+
 
     class ClusteringConstants:
         RANDOM_STATE = 0
