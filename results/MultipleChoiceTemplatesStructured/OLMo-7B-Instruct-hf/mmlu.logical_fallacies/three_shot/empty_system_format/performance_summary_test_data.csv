@@ -1,0 +1,11 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,number_of_instances
+template_0,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.497,0.497,accuracy,0.417,0.571,0.417,0.571,163
+template_1,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.509,0.509,accuracy,0.436,0.583,0.436,0.583,163
+template_2,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.540,0.540,accuracy,0.466,0.613,0.466,0.613,163
+template_3,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.552,0.552,accuracy,0.485,0.626,0.485,0.626,163
+template_4,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.583,0.583,accuracy,0.250,0.833,0.250,0.833,12
+template_28,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.454,0.454,accuracy,0.374,0.521,0.374,0.521,163
+template_29,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.411,0.411,accuracy,0.337,0.485,0.337,0.485,163
+template_30,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.528,0.528,accuracy,0.460,0.601,0.460,0.601,163
+template_31,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.515,0.515,accuracy,0.442,0.589,0.442,0.589,163
+template_32,cards.mmlu.logical_fallacies,empty_system_format,3,20,1600,0.500,0.500,accuracy,0.250,0.750,0.250,0.750,12
