@@ -16,7 +16,7 @@ template_13,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.509,0.
 template_14,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.498,0.498,accuracy,0.436,0.555,0.436,0.555,265
 template_15,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.521,0.521,accuracy,0.464,0.577,0.464,0.577,265
 template_16,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.540,0.540,accuracy,0.479,0.596,0.479,0.596,265
-template_17,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.491,0.491,accuracy,0.415,0.561,0.415,0.561,171
+template_17,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.503,0.503,accuracy,0.427,0.575,0.427,0.575,171
 template_28,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.521,0.521,accuracy,0.465,0.581,0.465,0.581,265
 template_29,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.506,0.506,accuracy,0.447,0.562,0.447,0.562,265
 template_30,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.532,0.532,accuracy,0.472,0.585,0.472,0.585,265

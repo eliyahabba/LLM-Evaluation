@@ -16,4 +16,14 @@ template_41,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.400,0.400,accurac
 template_42,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.430,0.430,accuracy,0.356,0.519,0.356,0.519,135
 template_43,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.415,0.415,accuracy,0.333,0.504,0.333,0.504,135
 template_44,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.437,0.437,accuracy,0.348,0.519,0.348,0.519,135
-template_45,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.418,0.418,accuracy,0.343,0.515,0.343,0.515,134
+template_45,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.415,0.415,accuracy,0.333,0.496,0.333,0.496,135
+template_46,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.422,0.422,accuracy,0.341,0.504,0.341,0.504,135
+template_47,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.407,0.407,accuracy,0.329,0.496,0.329,0.496,135
+template_48,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.415,0.415,accuracy,0.333,0.496,0.333,0.496,135
+template_49,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.415,0.415,accuracy,0.341,0.504,0.341,0.504,135
+template_50,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.400,0.400,accuracy,0.311,0.482,0.311,0.482,135
+template_51,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.459,0.459,accuracy,0.385,0.541,0.385,0.541,135
+template_52,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.407,0.407,accuracy,0.319,0.483,0.319,0.483,135
+template_53,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.415,0.415,accuracy,0.341,0.504,0.341,0.504,135
+template_54,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.400,0.400,accuracy,0.311,0.474,0.311,0.474,135
+template_55,cards.mmlu.anatomy,empty_system_format,3,20,1600,0.415,0.415,accuracy,0.341,0.504,0.341,0.504,135

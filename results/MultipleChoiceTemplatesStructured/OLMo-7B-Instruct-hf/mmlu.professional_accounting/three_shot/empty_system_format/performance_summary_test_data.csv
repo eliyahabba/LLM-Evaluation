@@ -12,7 +12,7 @@ template_9,cards.mmlu.professional_accounting,empty_system_format,3,20,1600,0.32
 template_10,cards.mmlu.professional_accounting,empty_system_format,3,20,1600,0.337,0.337,accuracy,0.284,0.397,0.284,0.397,282
 template_11,cards.mmlu.professional_accounting,empty_system_format,3,20,1600,0.351,0.351,accuracy,0.298,0.408,0.298,0.408,282
 template_12,cards.mmlu.professional_accounting,empty_system_format,3,20,1600,0.330,0.330,accuracy,0.280,0.390,0.280,0.390,282
-template_13,cards.mmlu.professional_accounting,empty_system_format,3,20,1600,0.345,0.345,accuracy,0.282,0.408,0.282,0.408,206
+template_13,cards.mmlu.professional_accounting,empty_system_format,3,20,1600,0.333,0.333,accuracy,0.279,0.393,0.279,0.393,252
 template_28,cards.mmlu.professional_accounting,empty_system_format,3,20,1600,0.333,0.333,accuracy,0.277,0.387,0.277,0.387,282
 template_29,cards.mmlu.professional_accounting,empty_system_format,3,20,1600,0.344,0.344,accuracy,0.291,0.394,0.291,0.394,282
 template_30,cards.mmlu.professional_accounting,empty_system_format,3,20,1600,0.323,0.323,accuracy,0.270,0.383,0.270,0.383,282

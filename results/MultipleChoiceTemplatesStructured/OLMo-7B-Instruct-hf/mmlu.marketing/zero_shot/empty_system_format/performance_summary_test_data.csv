@@ -12,7 +12,7 @@ template_9,cards.mmlu.marketing,empty_system_format,0,1,1600,0.637,0.637,accurac
 template_10,cards.mmlu.marketing,empty_system_format,0,1,1600,0.726,0.726,accuracy,0.667,0.782,0.667,0.782,234
 template_11,cards.mmlu.marketing,empty_system_format,0,1,1600,0.662,0.662,accuracy,0.603,0.726,0.603,0.726,234
 template_12,cards.mmlu.marketing,empty_system_format,0,1,1600,0.701,0.701,accuracy,0.637,0.756,0.637,0.756,234
-template_13,cards.mmlu.marketing,empty_system_format,0,1,1600,0.696,0.696,accuracy,0.565,0.826,0.565,0.826,46
+template_13,cards.mmlu.marketing,empty_system_format,0,1,1600,0.717,0.717,accuracy,0.587,0.843,0.587,0.843,46
 template_28,cards.mmlu.marketing,empty_system_format,0,1,1600,0.620,0.620,accuracy,0.560,0.682,0.560,0.682,234
 template_29,cards.mmlu.marketing,empty_system_format,0,1,1600,0.543,0.543,accuracy,0.479,0.607,0.479,0.607,234
 template_30,cards.mmlu.marketing,empty_system_format,0,1,1600,0.709,0.709,accuracy,0.650,0.765,0.650,0.765,234
@@ -24,4 +24,4 @@ template_35,cards.mmlu.marketing,empty_system_format,0,1,1600,0.526,0.526,accura
 template_36,cards.mmlu.marketing,empty_system_format,0,1,1600,0.603,0.603,accuracy,0.543,0.662,0.543,0.662,234
 template_37,cards.mmlu.marketing,empty_system_format,0,1,1600,0.483,0.483,accuracy,0.415,0.547,0.415,0.547,234
 template_38,cards.mmlu.marketing,empty_system_format,0,1,1600,0.594,0.594,accuracy,0.526,0.654,0.526,0.654,234
-template_39,cards.mmlu.marketing,empty_system_format,0,1,1600,0.658,0.658,accuracy,0.500,0.816,0.500,0.816,38
+template_39,cards.mmlu.marketing,empty_system_format,0,1,1600,0.684,0.684,accuracy,0.526,0.816,0.526,0.816,38

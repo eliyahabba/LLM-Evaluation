@@ -52,4 +52,4 @@ template_49,cards.mmlu.high_school_mathematics,empty_system_format,0,1,1600,0.21
 template_50,cards.mmlu.high_school_mathematics,empty_system_format,0,1,1600,0.222,0.222,accuracy,0.178,0.278,0.178,0.278,270
 template_51,cards.mmlu.high_school_mathematics,empty_system_format,0,1,1600,0.219,0.219,accuracy,0.178,0.274,0.178,0.274,270
 template_52,cards.mmlu.high_school_mathematics,empty_system_format,0,1,1600,0.211,0.211,accuracy,0.170,0.272,0.170,0.272,270
-template_53,cards.mmlu.high_school_mathematics,empty_system_format,0,1,1600,0.263,0.263,accuracy,0.105,0.511,0.105,0.511,19
+template_53,cards.mmlu.high_school_mathematics,empty_system_format,0,1,1600,0.158,0.158,accuracy,0.053,0.368,0.053,0.368,19

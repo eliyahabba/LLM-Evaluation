@@ -16,7 +16,7 @@ template_13,cards.mmlu.machine_learning,empty_system_format,0,1,1600,0.321,0.321
 template_14,cards.mmlu.machine_learning,empty_system_format,0,1,1600,0.268,0.268,accuracy,0.188,0.357,0.188,0.357,112
 template_15,cards.mmlu.machine_learning,empty_system_format,0,1,1600,0.304,0.304,accuracy,0.223,0.393,0.223,0.393,112
 template_16,cards.mmlu.machine_learning,empty_system_format,0,1,1600,0.312,0.312,accuracy,0.232,0.402,0.232,0.402,112
-template_17,cards.mmlu.machine_learning,empty_system_format,0,1,1600,0.403,0.403,accuracy,0.299,0.519,0.299,0.519,77
+template_17,cards.mmlu.machine_learning,empty_system_format,0,1,1600,0.416,0.416,accuracy,0.299,0.530,0.299,0.530,77
 template_28,cards.mmlu.machine_learning,empty_system_format,0,1,1600,0.304,0.304,accuracy,0.223,0.393,0.223,0.393,112
 template_29,cards.mmlu.machine_learning,empty_system_format,0,1,1600,0.295,0.295,accuracy,0.216,0.384,0.216,0.384,112
 template_30,cards.mmlu.machine_learning,empty_system_format,0,1,1600,0.339,0.339,accuracy,0.259,0.446,0.259,0.446,112
