@@ -162,7 +162,7 @@ if __name__ == "__main__":
     df = get_summarize_df(ResultConstants.SUMMARIZE_DF_PATH)
     MMLUData.initialize()
     # run the function on all the models and datasets
-    for model in tqdm(list(LLMProcessorConstants.MODEL_NAMES.values())[15:]):
+    for model in tqdm(list(LLMProcessorConstants.MODEL_NAMES.values())):
         model_name = model.split("/")[-1]
         for mmlu_dataset in tqdm(list(MMLUData.get_mmlu_datasets())):
             for shots in ResultConstants.SHOTS:
