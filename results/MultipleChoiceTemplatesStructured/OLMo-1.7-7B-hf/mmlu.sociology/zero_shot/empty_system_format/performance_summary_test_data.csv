@@ -23,7 +23,10 @@ template_20,cards.mmlu.sociology,empty_system_format,0,1,1600,0.274,0.274,accura
 template_21,cards.mmlu.sociology,empty_system_format,0,1,1600,0.274,0.274,accuracy,0.212,0.338,0.212,0.338,201
 template_22,cards.mmlu.sociology,empty_system_format,0,1,1600,0.274,0.274,accuracy,0.212,0.338,0.212,0.338,201
 template_23,cards.mmlu.sociology,empty_system_format,0,1,1600,0.269,0.269,accuracy,0.209,0.333,0.209,0.333,201
-template_24,cards.mmlu.sociology,empty_system_format,0,1,1600,0.269,0.269,accuracy,0.213,0.330,0.213,0.330,197
+template_24,cards.mmlu.sociology,empty_system_format,0,1,1600,0.269,0.269,accuracy,0.209,0.333,0.209,0.333,201
+template_25,cards.mmlu.sociology,empty_system_format,0,1,1600,0.254,0.254,accuracy,0.194,0.318,0.194,0.318,201
+template_26,cards.mmlu.sociology,empty_system_format,0,1,1600,0.274,0.274,accuracy,0.212,0.338,0.212,0.338,201
+template_27,cards.mmlu.sociology,empty_system_format,0,1,1600,0.274,0.274,accuracy,0.212,0.338,0.212,0.338,201
 template_28,cards.mmlu.sociology,empty_system_format,0,1,1600,0.244,0.244,accuracy,0.186,0.308,0.186,0.308,201
 template_29,cards.mmlu.sociology,empty_system_format,0,1,1600,0.239,0.239,accuracy,0.184,0.303,0.184,0.303,201
 template_30,cards.mmlu.sociology,empty_system_format,0,1,1600,0.338,0.338,accuracy,0.279,0.407,0.279,0.407,201
@@ -51,4 +54,4 @@ template_51,cards.mmlu.sociology,empty_system_format,0,1,1600,0.239,0.239,accura
 template_52,cards.mmlu.sociology,empty_system_format,0,1,1600,0.244,0.244,accuracy,0.184,0.308,0.184,0.308,201
 template_53,cards.mmlu.sociology,empty_system_format,0,1,1600,0.234,0.234,accuracy,0.174,0.295,0.174,0.295,201
 template_54,cards.mmlu.sociology,empty_system_format,0,1,1600,0.244,0.244,accuracy,0.184,0.308,0.184,0.308,201
-template_55,cards.mmlu.sociology,empty_system_format,0,1,1600,0.220,0.220,accuracy,0.157,0.299,0.157,0.299,127
+template_55,cards.mmlu.sociology,empty_system_format,0,1,1600,0.236,0.236,accuracy,0.173,0.315,0.173,0.315,127

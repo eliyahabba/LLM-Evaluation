@@ -25,6 +25,8 @@ template_22,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.435,0.435,ac
 template_23,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.407,0.407,accuracy,0.315,0.509,0.315,0.509,108
 template_24,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.472,0.472,accuracy,0.372,0.565,0.372,0.565,108
 template_25,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.509,0.509,accuracy,0.417,0.602,0.417,0.602,108
+template_26,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.444,0.444,accuracy,0.361,0.537,0.361,0.537,108
+template_27,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.444,0.444,accuracy,0.352,0.537,0.352,0.537,108
 template_28,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.407,0.407,accuracy,0.315,0.500,0.315,0.500,108
 template_29,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.426,0.426,accuracy,0.324,0.509,0.324,0.509,108
 template_30,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.500,0.500,accuracy,0.407,0.593,0.407,0.593,108
@@ -49,4 +51,7 @@ template_48,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.444,0.444,ac
 template_49,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.500,0.500,accuracy,0.398,0.602,0.398,0.602,108
 template_50,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.472,0.472,accuracy,0.380,0.565,0.380,0.565,108
 template_51,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.454,0.454,accuracy,0.370,0.546,0.370,0.546,108
-template_52,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.559,0.559,accuracy,0.382,0.706,0.382,0.706,34
+template_52,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.500,0.500,accuracy,0.407,0.591,0.407,0.591,108
+template_53,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.463,0.463,accuracy,0.370,0.556,0.370,0.556,108
+template_54,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.481,0.481,accuracy,0.389,0.574,0.389,0.574,108
+template_55,cards.mmlu.jurisprudence,empty_system_format,0,1,1600,0.444,0.444,accuracy,0.343,0.537,0.343,0.537,108

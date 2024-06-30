@@ -8,4 +8,4 @@ template_5,cards.mmlu.high_school_world_history,empty_system_format,3,20,1600,0.
 template_28,cards.mmlu.high_school_world_history,empty_system_format,3,20,1600,0.603,0.603,accuracy,0.540,0.658,0.540,0.658,237
 template_29,cards.mmlu.high_school_world_history,empty_system_format,3,20,1600,0.565,0.565,accuracy,0.498,0.624,0.498,0.624,237
 template_30,cards.mmlu.high_school_world_history,empty_system_format,3,20,1600,0.646,0.646,accuracy,0.582,0.700,0.582,0.700,237
-template_31,cards.mmlu.high_school_world_history,empty_system_format,3,20,1600,0.620,0.620,accuracy,0.556,0.676,0.556,0.676,216
+template_31,cards.mmlu.high_school_world_history,empty_system_format,3,20,1600,0.620,0.620,accuracy,0.557,0.683,0.557,0.683,221
