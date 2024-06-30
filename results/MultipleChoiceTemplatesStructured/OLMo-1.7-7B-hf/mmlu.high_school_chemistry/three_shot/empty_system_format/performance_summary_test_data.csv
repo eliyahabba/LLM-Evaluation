@@ -37,4 +37,15 @@ template_40,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.281
 template_41,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.355,0.355,accuracy,0.291,0.424,0.291,0.424,203
 template_42,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.360,0.360,accuracy,0.296,0.429,0.296,0.429,203
 template_43,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.379,0.379,accuracy,0.310,0.453,0.310,0.453,203
-template_44,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.481,0.481,accuracy,0.333,0.611,0.333,0.611,54
+template_44,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.399,0.399,accuracy,0.330,0.468,0.330,0.468,203
+template_45,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.374,0.374,accuracy,0.310,0.443,0.310,0.443,203
+template_46,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.399,0.399,accuracy,0.335,0.463,0.335,0.463,203
+template_47,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.438,0.438,accuracy,0.369,0.507,0.369,0.507,203
+template_48,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.404,0.404,accuracy,0.340,0.473,0.340,0.473,203
+template_49,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.399,0.399,accuracy,0.325,0.460,0.325,0.460,203
+template_50,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.404,0.404,accuracy,0.336,0.473,0.336,0.473,203
+template_51,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.379,0.379,accuracy,0.310,0.443,0.310,0.443,203
+template_52,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.365,0.365,accuracy,0.300,0.433,0.300,0.433,203
+template_53,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.374,0.374,accuracy,0.310,0.438,0.310,0.438,203
+template_54,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.340,0.340,accuracy,0.278,0.409,0.278,0.409,203
+template_55,cards.mmlu.high_school_chemistry,empty_system_format,3,20,1600,0.389,0.389,accuracy,0.325,0.458,0.325,0.458,203
