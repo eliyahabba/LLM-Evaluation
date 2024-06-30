@@ -140,7 +140,7 @@ class Constants:
 
         MAIN_RESULTS_FOLDER_NAME = "results"
         MAIN_RESULTS_PATH = Path(__file__).parents[2] / MAIN_RESULTS_FOLDER_NAME
-        SUMMARIZE_DF_NAME = "summarize_df_path"
+        SUMMARIZE_DF_NAME = "summarize_df_path.csv"
         SUMMARIZE_DF_PATH = MAIN_RESULTS_PATH / SUMMARIZE_DF_NAME
 
 
