@@ -34,16 +34,10 @@ class ExperimentsResultsFolder:
         @return:
         """
         self.load_experiment_file(results_file)
-        result_counter = {}
         results = self.experiment['results']
-        for eval_on_value in self.eval_on:
-            if eval_on_value not in results:
-                result_counter[eval_on_value] = 0
-                continue
-            results_to_eval = results[eval_on_value]
-            predictions_idx = [result['Index'] for result in results_to_eval]
-            result_counter[eval_on_value] = len(predictions_idx)
-
+        if self.eval_on not in results:
+            return 0
+        result_counter = len(results[self.eval_on])
         return result_counter
 
     def get_data_percentage_and_completed(self, results_folder, model, mmlu_dataset, shots):
@@ -56,40 +50,27 @@ class ExperimentsResultsFolder:
         # model_name = sorted_file_paths[0].parents[3].name.split("-")[0].lower()
         mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
         dataset_size = mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == mmlu_dataset.split("mmlu.")[1]]
-        exs_numbers = []
+
         all_files_names = [f"experiment_template_{i}" for i in range(0, 56)]
         sorted_file_names = [file.name.split(".json")[0] for file in sorted_file_paths]
+        
         missing_files = [file for file in all_files_names if file not in sorted_file_names]
+        files_percentage = {}
+        files_completed = {}
         for missing_file in missing_files:
             configuration_number = int(missing_file.split("experiment_template_")[1])
-            exs_numbers.append(configuration_number)
+            files_percentage[configuration_number] = 0
+            files_completed[configuration_number] = False
+            
         for results_file in sorted_file_paths:
-            try:
-                results_counter = experiments_results.count_results(results_file)
-                # if one of the values of results_counter < 100 then print the results_counter
-                configuration_number = int(results_file.name.split("experiment_template_")[1].split(".")[0])
-                self.eval_on
-                if any([results_counter[key] < dataset_size.iloc[0].to_dict()[key] for key
-                        in results_counter.keys()]):
-                    exs_numbers.append(configuration_number)
-                    # print(f"sbatch {model_name} /run_mmlu.sh cards.{dataset_name} 0 56")
-            except Exception as e:
-                print(f"Error in {results_file}: {e}")
-                continue
-        if exs_numbers:
-            k = 30
-            exs_numbers = sorted(exs_numbers)
-            # create groups of 10 experiments but I need the last pair to be the last experiment (his paor will be 56)
-            pairs = [(exs_numbers[i], exs_numbers[i + k - 1]) for i in range(0, len(exs_numbers), k) if
-                     i + k - 1 < len(exs_numbers)]
-            # take the last part of the array that is less from 10, and add the last experiment to the last pair
-            last_pare_ex = [] if len(exs_numbers) % k == 0 else exs_numbers[-(len(exs_numbers) % k):]
-            pairs.append((last_pare_ex[0], last_pare_ex[-1] + 1))
-            for i, end in pairs:
-                print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {i} {end};")
-        # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {0} {28};")
-        # print(f"sbatch {model_name}/run_mmlu.sh cards.{dataset_name} {28} {56};")
+            results_counter = experiments_results.count_results(results_file)
+            # if one of the values of results_counter < 100 then print the results_counter
+            configuration_number = int(results_file.name.split("experiment_template_")[1].split(".")[0])
+            percentage_of_evaluated_data = results_counter // dataset_size.iloc[0].to_dict()[self.eval_on]
+            files_percentage[configuration_number] = percentage_of_evaluated_data    
+            files_completed[configuration_number] = percentage_of_evaluated_data == 100
 
+        return files_percentage, files_completed
 
 def check_comparison_matrix(format_folder: Path, eval_value: str, kwargs: dict = None):
     if not format_folder.exists():
@@ -116,6 +97,8 @@ def create_summarize_df():
     names = ['Model', 'Dataset', 'Shots', "Configuration"]
     index = pd.MultiIndex(levels=[[], [], [], []], codes=[[], [], [], []], names=names)
     df = pd.DataFrame(index=index, columns=['Data Percentage', 'Data Completed'])
+    # add a dummmy row to the df with the update_function
+    df.loc[('dummy', 'dummy', 'dummy', "dummy"), ['Data Percentage', 'Data Completed']] = [0, False]
     return df
 
 
@@ -127,16 +110,17 @@ def create_save_summarize_df(file_path):
 def get_summarize_df(file_path):
     if not file_path.exists():
         create_save_summarize_df(file_path)
-    return pd.read_csv(file_path, index_col=[0, 1, 2])
+    return pd.read_csv(file_path, index_col=[0, 1, 2, 3])
 
 
-def udpate_summarize_df(df, model, dataset, shots, data_percentage, data_completed):
+def udpate_summarize_df(df, model, dataset, shots, config_number, data_percentage, data_completed):
+    df.sort_index(inplace=True)
     if (model, dataset, shots) not in df.index:
         # add the new row
         new_row = pd.DataFrame({
             'Data Percentage': [data_percentage],
             'Data Completed': [data_completed]
-        }, index=pd.MultiIndex.from_tuples([(model, dataset, shots)],
+        }, index=pd.MultiIndex.from_tuples([(model, dataset, shots, config_number)],
                                            names=['Model', 'Dataset', 'Shots', "Configuration"]))
         df = pd.concat([df, new_row])
     else:
@@ -146,6 +130,13 @@ def udpate_summarize_df(df, model, dataset, shots, data_percentage, data_complet
 
 def save_updated_summarize_df(df, file_path):
     df.to_csv(file_path)
+
+
+def update_df_files(files_percentage, files_completed, df, model_name, mmlu_dataset, shots):
+    for config_number, data_percentage in files_percentage.items():
+        data_completed = files_completed[config_number]
+        df = udpate_summarize_df(df, model_name, mmlu_dataset, shots,config_number, data_percentage, data_completed)
+    return df        
 
 
 if __name__ == "__main__":
@@ -165,9 +156,7 @@ if __name__ == "__main__":
         model_name = model.split("/")[-1]
         for mmlu_dataset in MMLUData.get_mmlu_datasets():
             for shots in ResultConstants.SHOTS:
-                data_percentage = 0
-                data_completed = False
-                data_percentage, data_completed = experiments_results. \
+                files_percentage, files_completed = experiments_results. \
                     get_data_percentage_and_completed(results_folder, model_name, mmlu_dataset, shots)
-                df = udpate_summarize_df(df, model_name, mmlu_dataset, shots, data_percentage, data_completed)
+                df = update_df_files(files_percentage, files_completed, df, model_name, mmlu_dataset, shots)
     save_updated_summarize_df(df, ResultConstants.SUMMARIZE_DF_PATH)
