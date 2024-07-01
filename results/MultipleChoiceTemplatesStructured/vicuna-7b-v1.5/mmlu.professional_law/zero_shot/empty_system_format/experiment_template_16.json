@@ -1,0 +1,1 @@
+{"card": "cards.mmlu.professional_law", "template_name": "template_16", "model_name": "lmsys/vicuna-7b-v1.5", "system_format": "empty_system_format", "max_instances": 1600, "num_demos": 0, "demos_pool_size": 1, "results": {}}

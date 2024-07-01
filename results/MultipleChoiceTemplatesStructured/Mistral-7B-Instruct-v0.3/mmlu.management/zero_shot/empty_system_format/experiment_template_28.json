@@ -1,0 +1,1 @@
+{"card": "cards.mmlu.management", "template_name": "template_28", "model_name": "mistralai/Mistral-7B-Instruct-v0.3", "system_format": "empty_system_format", "max_instances": 1600, "num_demos": 0, "demos_pool_size": 1, "results": {}}
