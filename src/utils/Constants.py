@@ -20,6 +20,8 @@ class Constants:
 
         GEMMA_7B_MODEL = "google/gemma-7b-it"
         GEMMA_2B_MODEL = "google/gemma-2b-it"
+        GEMMA2_9B = "google/gemma-2-9b-it"
+        GEMMA2_27B = "google/gemma-2-27b-it"
         GEMMA_FAMILY = [GEMMA_7B_MODEL, GEMMA_2B_MODEL]
 
         PHI_MODEL = "microsoft/phi-2"
@@ -65,6 +67,8 @@ class Constants:
                             "LLAMA13B_BASE": LLAMA13B_BASE_MODEL,
                             "GEMMA_7B": GEMMA_7B_MODEL,
                             "GEMMA_2B": GEMMA_2B_MODEL,
+                            "GEMMA2_9B": GEMMA2_9B,
+                            "GEMMA2_27B": GEMMA2_27B,
                             "OLMO": OLMO_MODEL,
                             "OLMO_HF": OLMO_HF_MODEL,
                             "OLMO_1_7": OLMO_1_7_MODEL,
@@ -132,7 +136,7 @@ class Constants:
 
         ZERO_SHOT = "zero_shot"
         THREE_SHOT = "three_shot"
-        SHOTS = [   ZERO_SHOT, THREE_SHOT]
+        SHOTS = [ZERO_SHOT, THREE_SHOT]
         EMPTY_SYSTEM_FORMAT = "empty_system_format"
 
         GROUP = "group"
@@ -143,6 +147,8 @@ class Constants:
         SUMMARIZE_DF_NAME = "summarize_df_path.csv"
         SUMMARIZE_DF_PATH = MAIN_RESULTS_PATH / SUMMARIZE_DF_NAME
 
+        UPDATED_DATA = "updated_data.csv"
+        UPDATED_DATA_PATH = MAIN_RESULTS_PATH / UPDATED_DATA
 
     class ClusteringConstants:
         RANDOM_STATE = 0
