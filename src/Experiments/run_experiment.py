@@ -4,6 +4,7 @@ import time
 from pathlib import Path
 from typing import Tuple
 
+import pandas as pd
 from termcolor import colored
 from unitxt.templates import Template
 
@@ -18,6 +19,7 @@ from src.utils.Utils import Utils
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
+ResultConstants = Constants.ResultConstants
 
 
 class ExperimentRunner:
@@ -27,6 +29,7 @@ class ExperimentRunner:
 
     def __init__(self, args):
         self.args = args
+        self.update_list = ResultConstants.UPDATED_DATA_PATH
 
     def load_template(self, template_num: int, multiple_choice_path) -> \
             Tuple[str, Template]:
@@ -70,13 +73,13 @@ class ExperimentRunner:
             "two" if num_demos == 2 else "three" if num_demos == 3 else None
         if num_of_shot_str is None:
             raise ValueError(f"num_demos should be between 0 and 2, but it is {num_demos}.")
-        num_of_shot_icl = f"{num_of_shot_str}_shot"
+        self.num_of_shot_icl = f"{num_of_shot_str}_shot"
 
         system_foramt_name = ExperimentConstants.SYSTEM_FORMATS_NAMES[self.args.system_format]
         results_file_path = (self.args.results_path /
                              Utils.get_model_name(self.args.model_name) /
                              Utils.get_card_name(self.args.card) /
-                             num_of_shot_icl /
+                             self.num_of_shot_icl /
                              system_foramt_name /
                              json_file_name)
         results_file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -156,8 +159,39 @@ class ExperimentRunner:
 
         llm_pred = LLMPredictor(llm_proc, predict_prob_of_tokens=self.args.predict_prob_of_tokens,
                                 batch_size=self.args.batch_size)
+
+        self.add_to_update_list(model=Utils.get_model_name(self.args.model_name),
+                                dataset=Utils.get_card_name(self.args.card),
+                                shots=self.num_of_shot_icl,
+                                configuration=Utils.get_num_from_template_name(template_name))
         llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path,
                                  possible_gt_tokens=possible_gt_tokens)
+
+    def add_to_update_list(self, model, dataset, shots, configuration):
+        # Load the update list
+        try:
+            update_list = pd.read_csv(self.update_list, names=['Model', 'Dataset', 'Shots', 'Configuration'])
+
+        except FileNotFoundError:
+            # If the file doesn't exist, create an empty DataFrame
+            update_list = pd.DataFrame(columns=['Model', 'Dataset', 'Shots', 'Configuration'])
+
+        # Check if the entry already exists
+        if not ((update_list['Model'] == model) &
+                (update_list['Dataset'] == dataset) &
+                (update_list['Shots'] == shots) &
+                (update_list['Configuration'] == configuration)).any():
+            # Add the new entry
+            new_entry = pd.DataFrame([[model, dataset, shots, configuration
+                                       ]], columns=['Model', 'Dataset', 'Shots', 'Configuration'])
+            update_list = pd.concat([update_list, new_entry], ignore_index=True)
+            # Save the updated list
+            # update_list['Configurtion'] = update_list['Configuration'].astype(int)
+            # locking the file before writing to it
+            update_list.to_csv(self.update_list, index=False, header=False)
+        #     print(f"Added ({model}, {dataset}, {shots}) to {filename}.")
+        # else:
+        #     print(f"Entry ({model}, {dataset}, {shots}) already exists in {filename}.")
 
 
 def parser_bit_precision(args: argparse.Namespace) -> Tuple[bool, bool]:
@@ -183,7 +217,7 @@ def main():
     args = ReadLLMParams.read_llm_params(args)
 
     args.add_argument("--predict_prob_of_tokens", default=LLMProcessorConstants.PREDICT_PROB_OF_TOKENS,
-                        help="Whether to predict the probability of each token.", action="store_false")
+                      help="Whether to predict the probability of each token.", action="store_false")
     args.add_argument("--card", type=str, default="cards.sciq")
     args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
     args.add_argument("--batch_size", type=int, default=ExperimentConstants.BATCH_SIZE, help="The batch size.")
@@ -209,6 +243,9 @@ def main():
     args.multiple_choice_path = TemplatesGeneratorConstants.DATA_PATH / Path(args.multiple_choice_name)
     args.results_path = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.multiple_choice_name)
     runner = ExperimentRunner(args)
+    # print the args for this experiment: model name, card name, template range, num of demos, demos_pool_size
+    print(f"Model name: {args.model_name}, Card name: {args.card}, Template range: {args.template_range}, "
+          f"Number of demos: {args.num_demos}, Demos pool size: {args.demos_pool_size}")
     runner.run_experiment()
 
 
