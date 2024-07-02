@@ -63,7 +63,7 @@ class LLMPredictor:
             loaded_input_texts = [result['Instance'] for result in loaded_results]
             loaded_ground_truths = [result['GroundTruth'] for result in loaded_results]
             loaded_answers = [result['Result'] for result in loaded_results]
-            loaded_max_tokens_probability = [result['MaxTokenProbability'] for result in loaded_results]
+            loaded_max_tokens_probability = [" " if 'MaxTokenProbability' not in result else result['MaxTokenProbability'] for result in loaded_results]
 
         else:
             loaded_idxs = []
