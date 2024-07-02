@@ -20,4 +20,4 @@ cd $dir
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA3_8B --card $1 --template_range $2 $3
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA3_8B --card $1 --template_range $2 $3      --num_demos $4 --demos_pool_size $5
