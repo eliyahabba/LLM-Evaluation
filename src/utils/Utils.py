@@ -26,6 +26,15 @@ class Utils:
         return path / Utils.get_card_name(card)
 
     @staticmethod
+    def get_num_from_template_name(template_name: str) -> int:
+        """
+        Get the name of the template.
+        @param template_name: The name of the template
+        @return: The number of the template
+        """
+        return int(template_name.split("_")[-1])
+
+    @staticmethod
     def get_template_name(template_num: int) -> str:
         """
         Get the name of the template.
