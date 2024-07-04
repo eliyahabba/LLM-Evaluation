@@ -1,4 +1,6 @@
 import json
+import os
+import subprocess
 from pathlib import Path
 
 import pandas as pd
@@ -18,6 +20,7 @@ mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_
 class ExperimentsResultsFolder:
     def __init__(self, eval_on: str):
         self.eval_on = eval_on
+        self.mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
 
     def load_experiment_file(self, results_file: Path):
         """
@@ -44,16 +47,38 @@ class ExperimentsResultsFolder:
         result_counter = len(results[self.eval_on])
         return result_counter
 
-    def get_data_percentage_and_completed(self, results_folder, model, mmlu_dataset, shots):
+    def get_data_percentage_and_completed(self, results_folder, model, mmlu_dataset, shots, configuration_number):
         # def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict = None):
+        path = Path(results_folder) / model / mmlu_dataset / shots / "empty_system_format"
+        results_file = path / f"experiment_template_{configuration_number}.json"
+
+        experiments_results = ExperimentsResultsFolder(eval_on)
+
+        results_counter = experiments_results.count_results(results_file)
+        # if one of the values of results_counter < 100 then print the results_counter
+        dataset_size = self.mmlu_dataset_sizes[self.mmlu_dataset_sizes["Name"] == mmlu_dataset.split("mmlu.")[1]]
+        total_data = dataset_size.iloc[0].to_dict()[self.eval_on]
+        acquired_data = results_counter
+        return total_data, acquired_data
+
+    def get_data_percentage_and_completed_of_all_experiments(self, results_folder, model, mmlu_dataset, shots):
+        # def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict = None):
+        dataset_size = self.mmlu_dataset_sizes[self.mmlu_dataset_sizes["Name"] == mmlu_dataset.split("mmlu.")[1]]
+
         path = Path(results_folder) / model / mmlu_dataset / shots / "empty_system_format"
         results_files = list([file for file in path.glob("*.json")])
         sorted_file_paths = sorted(results_files, key=lambda x: int(x.name.split("_")[-1].split(".")[0]))
+        # check only the files that changed (use git diff to check the files that changed)
+        if not os.path.exists(path):
+            return None, None
+
+        changed_files_output = subprocess.check_output(["git", "status", "--porcelain", str(path)])
+        changed_files = changed_files_output.decode('utf-8').splitlines()
+        if not changed_files:
+            return None, None
 
         experiments_results = ExperimentsResultsFolder(eval_on)
         # model_name = sorted_file_paths[0].parents[3].name.split("-")[0].lower()
-        mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
-        dataset_size = mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == mmlu_dataset.split("mmlu.")[1]]
 
         all_files_names = [f"experiment_template_{i}" for i in range(0, 56)]
         sorted_file_names = [file.name.split(".json")[0] for file in sorted_file_paths]
@@ -110,7 +135,7 @@ def create_summarize_df():
 
 def create_save_summarize_df(file_path):
     df = create_summarize_df()
-    # df.index = df.index.set_levels(df.index.levels[3].astype(int), level=3)
+    df.index = df.index.set_levels(df.index.levels[3].astype(int), level=3)
     df.to_csv(file_path)
 
 
@@ -149,6 +174,20 @@ def update_df_files(files_total_data, files_acquired_data, df, model_name, mmlu_
     return df
 
 
+def update_df_row(total_data, data_acquired, df, model_name, mmlu_dataset, shots, config_number):
+    df = udpate_summarize_df(df, model_name, mmlu_dataset, shots, config_number,
+                             total_data, data_acquired)
+    return df
+
+
+def load_update_list(filename):
+    return pd.read_csv(filename, names=['Model', 'Dataset', 'Shots', 'Configuration', 'Total Data', 'Data Acquired'])
+
+
+def save_update_list(update_list, filename):
+    update_list.to_csv(filename, index=False, header=False)
+
+
 if __name__ == "__main__":
     # Load the model and the dataset
     results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(
@@ -162,11 +201,46 @@ if __name__ == "__main__":
     df = get_summarize_df(ResultConstants.SUMMARIZE_DF_PATH)
     MMLUData.initialize()
     # run the function on all the models and datasets
-    for model in tqdm(list(LLMProcessorConstants.MODEL_NAMES.values())):
+
+    MODEL_TO_CHECK = ["OLMO_HF",
+                      "OLMO_1_7",
+                      "GEMMA",
+                      "GEMMA_7B",
+                      "VICUNA"
+                      ]
+    # models = {k: v for k, v in LLMProcessorConstants.MODEL_NAMES.items() if k in MODEL_TO_CHECK}
+    models =   LLMProcessorConstants.MODEL_NAMES
+    for model in tqdm(list(models.values())):
         model_name = model.split("/")[-1]
         for mmlu_dataset in tqdm(list(MMLUData.get_mmlu_datasets())):
             for shots in ResultConstants.SHOTS:
                 files_total_data, files_acquired_data = experiments_results. \
-                    get_data_percentage_and_completed(results_folder, model_name, mmlu_dataset, shots)
+                    get_data_percentage_and_completed_of_all_experiments(results_folder, model_name, mmlu_dataset,
+                                                                         shots)
+                if files_total_data is None:
+                    continue
                 df = update_df_files(files_total_data, files_acquired_data, df, model_name, mmlu_dataset, shots)
                 save_updated_summarize_df(df, ResultConstants.SUMMARIZE_DF_PATH)
+
+    #     # Load update list
+    # update_list = load_update_list(ResultConstants.UPDATED_DATA_PATH)
+    # rows_to_remove = []
+    # for index, row in tqdm(update_list.iterrows(), total=len(update_list)):
+    #     # if there is nan in the row skip it
+    #     if row.isnull().values.any():
+    #         rows_to_remove.append(index)
+    #         continue
+    #     model, dataset, shots, configuration = row['Model'], row['Dataset'], row['Shots'], row['Configuration']
+    #     if not shots.endswith("shot"):
+    #         shots = f"{shots}_shot"
+    #     total_data, acquired_data = experiments_results.get_data_percentage_and_completed(results_folder, model,
+    #                                                                                       dataset,
+    #                                                                                       shots, configuration)
+    #     df = update_df_row(total_data, acquired_data, df, model, dataset, shots, configuration)
+    #     save_updated_summarize_df(df, ResultConstants.SUMMARIZE_DF_PATH)
+    #     # remove the row from the update list
+    #     rows_to_remove.append(index)
+    # # read again the update list and remove the rows
+    # update_list2 = load_update_list(ResultConstants.UPDATED_DATA_PATH)
+    # update_list2.drop(rows_to_remove, inplace=True)
+    # update_list2.to_csv(ResultConstants.UPDATED_DATA_PATH, index=False, header=False)
