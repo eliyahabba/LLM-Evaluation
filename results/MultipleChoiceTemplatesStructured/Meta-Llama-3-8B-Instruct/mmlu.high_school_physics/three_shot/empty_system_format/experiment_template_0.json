@@ -1,0 +1,1 @@
+{"card": "cards.mmlu.high_school_physics", "template_name": "template_0", "model_name": "meta-llama/Meta-Llama-3-8B-Instruct", "system_format": "empty_system_format", "max_instances": 1600, "num_demos": 3, "demos_pool_size": 20, "results": {}}
