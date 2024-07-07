@@ -6,8 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
-from src.RandomForests.Constants import RandomForestsConstants
-from src.RandomForests.Evaluator import Evaluator
+from src.Analysis.RandomForests.Constants import RandomForestsConstants
+from src.Analysis.RandomForests.Evaluator import Evaluator
 
 
 class GroupPredictor:

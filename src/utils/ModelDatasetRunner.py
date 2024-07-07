@@ -18,7 +18,9 @@ class ModelDatasetRunner:
         results_folder = Path(self.structured_input_folder_path)
         eval_on = self.evaluate_on
         models_names = [model.split('/')[1] for model in LLMProcessorConstants.MODEL_NAMES.values()]
-        # models_names = models_names[2:3]
+        chosen_models_names = ["GEMMA_7B", "OLMo-1.7-7B-hf", "Mistral-7B-Instruct-v0.3", "Mistral-7B-Instruct-v0.2",
+                               "Llama-2-13b-hf"]
+        models_names = [model for model in models_names if model in chosen_models_names]
         # models_names = [model for model in models_names if  "Llama-2-13b-chat-hf" in model]
         models_folders = [Path(results_folder / model_name) for model_name in models_names]
 
@@ -28,6 +30,7 @@ class ModelDatasetRunner:
             # datasets = [datasets for datasets in datasets if datasets.name == "mmlu.high_school_psychology"]
             for dataset_folder in datasets:
                 shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
+                shots = [shots for shots in shots if shots.name == "three_shot"]
                 for shot in shots:
                     formats = [file for file in shot.glob("*") if file.is_dir()]
                     for format_folder in formats:
@@ -44,10 +47,6 @@ class ModelDatasetRunner:
 # Example usage:
 def check_comparison_matrix(folder, eval_value):
     print(f"Checking comparison matrix in {folder} for {eval_value}")
-
-
-def check_results_files(folder, eval_value):
-    print(f"Checking results files in {folder} for {eval_value}")
 
 
 if __name__ == "__main__":

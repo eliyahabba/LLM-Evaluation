@@ -5,10 +5,10 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from tqdm import tqdm
 
-from src.Analysis.ModelDatasetRunner import ModelDatasetRunner
-from src.Clustering.Clustering import Clustering
+from src.Analysis.Clustering.Clustering import Clustering
 from src.utils.Constants import Constants
 from src.utils.DatasetsManger import DatasetsManger
+from src.utils.ModelDatasetRunner import ModelDatasetRunner
 from src.utils.Utils import Utils
 
 ExperimentConstants = Constants.ExperimentConstants
@@ -89,7 +89,7 @@ class PerformKmeansClustering:
         """
         for model_key, model_name in tqdm(sorted(LLMProcessorConstants.MODEL_NAMES.items())):
             model = Utils.get_model_name(model_name)
-            for dataset in sorted(DatasetsConstants.DATASET_NAMES):
+            for dataset in sorted(DatasetsManger.DATASET_NAMES):
                 try:
                     self.run_clustering_for_range(model, dataset)
                 except Exception as e:

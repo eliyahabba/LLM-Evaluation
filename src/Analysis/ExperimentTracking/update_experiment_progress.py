@@ -6,9 +6,9 @@ from pathlib import Path
 import pandas as pd
 from tqdm import tqdm
 
-from src.Analysis.ModelDatasetRunner import ModelDatasetRunner
 from src.utils.Constants import Constants
 from src.utils.MMLUData import MMLUData
+from src.utils.ModelDatasetRunner import ModelDatasetRunner
 
 ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
@@ -209,7 +209,7 @@ if __name__ == "__main__":
                       "VICUNA"
                       ]
     # models = {k: v for k, v in LLMProcessorConstants.MODEL_NAMES.items() if k in MODEL_TO_CHECK}
-    models =   LLMProcessorConstants.MODEL_NAMES
+    models = LLMProcessorConstants.MODEL_NAMES
     for model in tqdm(list(models.values())):
         model_name = model.split("/")[-1]
         for mmlu_dataset in tqdm(list(MMLUData.get_mmlu_datasets())):

@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.Analysis.ModelDatasetRunner import ModelDatasetRunner
 from src.utils.Constants import Constants
+from src.utils.ModelDatasetRunner import ModelDatasetRunner
 
 ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
@@ -103,11 +103,11 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
             print(f"Error in {results_file}: {e}")
             continue
     if exs_numbers:
-        k=30
+        k = 30
         exs_numbers = sorted(exs_numbers)
         # create groups of 10 experiments but I need the last pair to be the last experiment (his paor will be 56)
-        pairs = [(exs_numbers[i], exs_numbers[i + k-1]) for i in range(0, len(exs_numbers), k) if
-                 i + k-1 < len(exs_numbers)]
+        pairs = [(exs_numbers[i], exs_numbers[i + k - 1]) for i in range(0, len(exs_numbers), k) if
+                 i + k - 1 < len(exs_numbers)]
         # take the last part of the array that is less from 10, and add the last experiment to the last pair
         last_pare_ex = [] if len(exs_numbers) % k == 0 else exs_numbers[-(len(exs_numbers) % k):]
         pairs.append((last_pare_ex[0], last_pare_ex[-1] + 1))

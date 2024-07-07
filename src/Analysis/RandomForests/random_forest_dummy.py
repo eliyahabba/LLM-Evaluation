@@ -1,4 +1,4 @@
-from src.RandomForests.GroupPredictor import GroupPredictor
+from src.Analysis.RandomForests.GroupPredictor import GroupPredictor
 
 
 if __name__ == "__main__":

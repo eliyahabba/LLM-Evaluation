@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.RandomForests.Constants import RandomForestsConstants
-from src.RandomForests.GroupPredictor import GroupPredictor
+from src.Analysis.RandomForests.Constants import RandomForestsConstants
+from src.Analysis.RandomForests.GroupPredictor import GroupPredictor
 
 
 class RandomForest:
