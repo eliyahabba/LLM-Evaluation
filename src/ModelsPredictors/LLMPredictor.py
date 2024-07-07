@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 from src.CreateData.CatalogManager import CatalogManager
 from src.CreateData.DatasetLoader import DatasetLoader
-from src.CreateData.LLMDataset import LLMDataset
+from src.CreateData.NLPDataset import NLPDataset
 from src.ModelsPredictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
 from src.utils.ReadLLMParams import ReadLLMParams
@@ -94,7 +94,7 @@ class LLMPredictor:
             self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
                               loaded_ground_truths, loaded_max_tokens_probability, loaded_data)
 
-    def predict_dataset(self, llm_dataset: LLMDataset, evaluate_on: list,
+    def predict_dataset(self, llm_dataset: NLPDataset, evaluate_on: list,
                         results_file_path: Path, possible_gt_tokens: List[str] = None) -> None:
         """
         Predict the model on all the instances in the dataset.

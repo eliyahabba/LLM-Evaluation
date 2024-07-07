@@ -3,7 +3,7 @@ from unitxt.formats import SystemFormat
 from unitxt.standard import StandardRecipe
 from unitxt.templates import Template
 
-from src.CreateData.LLMDataset import LLMDataset
+from src.CreateData.LLMDataset import NLPDataset
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -43,7 +43,7 @@ class DatasetLoader:
         mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == card.split("cards.mmlu.")[1]]["validation"].values[0]
         return validation_size
 
-    def load(self) -> LLMDataset:
+    def load(self) -> NLPDataset:
         """
         Loads the dataset from the specified path.
 
@@ -72,5 +72,5 @@ class DatasetLoader:
 
         dataset = recipe().to_dataset()
 
-        llm_dataset = LLMDataset(self.template_name, dataset)
+        llm_dataset = NLPDataset(self.template_name, dataset)
         return llm_dataset
