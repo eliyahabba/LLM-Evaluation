@@ -3,7 +3,7 @@ import argparse
 import pandas as pd
 from tqdm import tqdm
 
-from src.Analysis.StatisticalTests.CompareSeriesBinaryDataFromTable import CompareSeriesBinaryDataFromTable
+from src.analysis.StatisticalTests.CompareSeriesBinaryDataFromTable import CompareSeriesBinaryDataFromTable
 from src.utils.Constants import Constants
 from src.utils.DatasetsManger import DatasetsManger
 from src.utils.Utils import Utils

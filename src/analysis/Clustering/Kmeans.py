@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from tqdm import tqdm
 
-from src.Analysis.Clustering.Clustering import Clustering
+from src.analysis.Clustering.Clustering import Clustering
 from src.utils.Constants import Constants
 from src.utils.DatasetsManger import DatasetsManger
 from src.utils.ModelDatasetRunner import ModelDatasetRunner

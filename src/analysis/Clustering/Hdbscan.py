@@ -4,7 +4,7 @@ import hdbscan
 import pandas as pd
 from tqdm import tqdm
 
-from src.Analysis.Clustering.Clustering import Clustering
+from src.analysis.Clustering.Clustering import Clustering
 from src.utils.Constants import Constants
 from src.utils.DatasetsManger import DatasetsManger
 from src.utils.Utils import Utils

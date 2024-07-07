@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.cluster import SpectralClustering
 from tqdm import tqdm
 
-from src.Analysis.Clustering import Clustering
+from src.analysis.Clustering import Clustering
 from src.utils.Constants import Constants
 from src.utils.DatasetsManger import DatasetsManger
 from src.utils.Utils import Utils
