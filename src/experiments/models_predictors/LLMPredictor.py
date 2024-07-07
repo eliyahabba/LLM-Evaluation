@@ -6,6 +6,9 @@ from typing import List, Tuple
 from termcolor import colored
 from tqdm import tqdm
 
+from src.experiments.data_loading.CatalogManager import CatalogManager
+from src.experiments.data_loading.DatasetLoader import DatasetLoader
+from src.experiments.data_loading.NLPDataset import NLPDataset
 from src.experiments.models_predictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
 from src.utils.ReadLLMParams import ReadLLMParams
