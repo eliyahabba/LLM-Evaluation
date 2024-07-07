@@ -1,11 +1,13 @@
 import sys
 from pathlib import Path
+
 import streamlit as st
+
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
-from src.Visualization.FindCombinations import FindCombinations
-from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
+from src.streamlit_app.ui_components.FindCombinations import FindCombinations
+from src.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.utils.Constants import Constants
 
 BestOrWorst = Constants.BestOrWorst

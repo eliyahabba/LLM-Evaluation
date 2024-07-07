@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from src.DataProcessing.MMLUSplitter import MMLUSplitter
-from src.Visualization.ResultsLoader import ResultsLoader
+from src.experiments.data_loading.MMLUSplitter import MMLUSplitter
+from src.streamlit_app.ui_components.ResultsLoader import ResultsLoader
 from src.utils.Constants import Constants
 
 ResultConstants = Constants.ResultConstants
@@ -36,7 +36,8 @@ class HistogramOfSamples:
             split_option_value = st.selectbox("select the split option value:", data_options)
             datasets_names = MMLUSplitter.get_data_files(split_option, split_option_value)
             shot_suffix = Path(selected_shot_file_name.parent.name) / Path(selected_shot_file_name.name)
-            mmlu_files = [selected_model_file / Path(datasets_name) / shot_suffix / result_file.name for datasets_name in
+            mmlu_files = [selected_model_file / Path(datasets_name) / shot_suffix / result_file.name for datasets_name
+                          in
                           datasets_names]
             merged_df = pd.DataFrame()
             if len(mmlu_files) > 0:

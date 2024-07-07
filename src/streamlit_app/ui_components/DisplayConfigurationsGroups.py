@@ -5,7 +5,7 @@ from typing import List
 import numpy as np
 import streamlit as st
 
-from src.Visualization.GetGroupOfConfiguration import GetGroupOfConfiguration
+from src.streamlit_app.ui_components.GetGroupOfConfiguration import GetGroupOfConfiguration
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants

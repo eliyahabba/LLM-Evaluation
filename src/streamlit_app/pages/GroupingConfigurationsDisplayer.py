@@ -3,11 +3,11 @@ from pathlib import Path
 
 import streamlit as st
 
-from src.Analysis.GroupingConfigurations import GroupingConfigurations
-
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
-from src.Visualization.ResultsLoader import ResultsLoader
+
+from src.streamlit_app.ui_components.GroupingConfigurations import GroupingConfigurations
+from src.streamlit_app.ui_components.ResultsLoader import ResultsLoader
 from src.utils.Constants import Constants
 
 ResultConstants = Constants.ResultConstants

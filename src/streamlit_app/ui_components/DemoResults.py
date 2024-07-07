@@ -6,12 +6,12 @@ import streamlit as st
 
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
-from src.Visualization.SelectAxes import SelectAxes
-from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
-from src.Visualization.ChooseBestCombination import ChooseBestCombination
-from src.Visualization.CreateHeatmap import CreateHeatmap
-from src.Visualization.AnalysisDisplay import AnalysisDisplay
-from src.Visualization.ResultsLoader import ResultsLoader
+from src.streamlit_app.ui_components.SelectAxes import SelectAxes
+from src.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.streamlit_app.ui_components.ChooseBestCombination import ChooseBestCombination
+from src.streamlit_app.ui_components.CreateHeatmap import CreateHeatmap
+from src.streamlit_app.ui_components.AnalysisDisplay import AnalysisDisplay
+from src.streamlit_app.ui_components.ResultsLoader import ResultsLoader
 from src.utils.Constants import Constants
 
 ResultConstants = Constants.ResultConstants

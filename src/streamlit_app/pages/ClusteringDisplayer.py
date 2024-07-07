@@ -7,9 +7,9 @@ import streamlit as st
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
-from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
-from src.Visualization.PlotClustering import PlotClustering
-from src.Visualization.ResultsLoader import ResultsLoader
+from src.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.streamlit_app.ui_components.PlotClustering import PlotClustering
+from src.streamlit_app.ui_components.ResultsLoader import ResultsLoader
 from src.utils.Constants import Constants
 
 ResultConstants = Constants.ResultConstants

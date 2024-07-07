@@ -3,7 +3,7 @@ from typing import Tuple
 
 import pandas as pd
 
-from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
+from src.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -43,7 +43,8 @@ class ChooseBestCombination:
         df = pd.read_csv(self.performance_summary_path)
         df = df[~df[ResultConstants.TEMPLATE_NAME].isin(exclude_templates)] if exclude_templates else df
         # add the ResultConstants.ACCURACY_COLUMN columns from df to the metadata_df by the template_name
-        metadata_df = metadata_df.join(df.set_index(ResultConstants.TEMPLATE_NAME)[ResultConstants.ACCURACY_COLUMN], on=ResultConstants.TEMPLATE_NAME)
+        metadata_df = metadata_df.join(df.set_index(ResultConstants.TEMPLATE_NAME)[ResultConstants.ACCURACY_COLUMN],
+                                       on=ResultConstants.TEMPLATE_NAME)
         if self.selected_best_value_axes:
             # group by the selected axes and calculate the mean of the accuracy
             grouped_metadata_df = metadata_df.groupby(self.selected_best_value_axes)[

@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from src.Analysis.PerformAnalysis import PerformAnalysis
+from src.streamlit_app.ui_components.PerformAnalysis import PerformAnalysis
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -12,7 +12,7 @@ ExperimentConstants = Constants.ExperimentConstants
 
 class AnalysisDisplay:
     def __init__(self, comparison_matrix_path: Path, grouped_metadata_df: pd.DataFrame, best_row: pd.Series,
-                 ask_on_key:bool=True,default_top_k: int = 5):
+                 ask_on_key: bool = True, default_top_k: int = 5):
         self.comparison_matrix_path = comparison_matrix_path
         self.performance_summary_df = pd.read_csv(self.comparison_matrix_path)
         self.grouped_metadata_df = grouped_metadata_df

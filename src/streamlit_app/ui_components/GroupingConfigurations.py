@@ -5,14 +5,14 @@ from pathlib import Path
 import pandas as pd
 
 from src.utils.DatasetsManger import DatasetsManger
+from src.utils.ModelDatasetRunner import ModelDatasetRunner
 
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
 
-from src.Analysis.ModelDatasetRunner import ModelDatasetRunner
-from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
-from src.Visualization.ChooseBestCombination import ChooseBestCombination
-from src.Visualization.AnalysisDisplay import AnalysisDisplay
+from src.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.streamlit_app.ui_components.ChooseBestCombination import ChooseBestCombination
+from src.streamlit_app.ui_components.AnalysisDisplay import AnalysisDisplay
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants

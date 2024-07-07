@@ -9,15 +9,14 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from src.DataProcessing.MMLUSplitter import MMLUSplitter
-from src.RandomForests.Constants import RandomForestsConstants
-from src.RandomForests.random_forest import RandomForest
-from src.utils.MMLUData import MMLUData
-
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
-from src.Visualization.DisplayConfigurationsGroups import DisplayConfigurationsGroups
+from src.analysis.RandomForests.Constants import RandomForestsConstants
+from src.analysis.RandomForests.random_forest import RandomForest
+from src.experiments.data_loading.MMLUSplitter import MMLUSplitter
+from src.utils.MMLUData import MMLUData
+from src.streamlit_app.ui_components.DisplayConfigurationsGroups import DisplayConfigurationsGroups
 from src.utils.Constants import Constants
 
 ExperimentConstants = Constants.ExperimentConstants
@@ -45,7 +44,6 @@ class FindCombinations:
         self.best_combinations_file_path = None
         self.results_folder = None
         self.model_results_path = None
-
 
         self.best_or_worst = best_or_worst
         self.main_results_path = Path(MAIN_RESULTS_PATH)
@@ -254,7 +252,8 @@ class FindCombinations:
 
         @param model_name: Name of the model to predict the best configurations for.
         """
-        rf = RandomForest(feature_columns=["dataset", "Sub_Category", "Category", "enumerator", "choices_separator", "shuffle_choices"])
+        rf = RandomForest(feature_columns=["dataset", "Sub_Category", "Category", "enumerator", "choices_separator",
+                                           "shuffle_choices"])
         rf.load_data(model=model_name)
         rf.create_model()
         X_train, X_test, y_train, y_test = rf.split_data(split_column_name=RandomForestsConstants.CATEGORY,
@@ -383,7 +382,7 @@ class FindCombinations:
                           Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
             if not groups_path.exists():
                 groups_path = self.model_results_path / dataset_name / \
-                              Path(ResultConstants.THREE_SHOT   ) / \
+                              Path(ResultConstants.THREE_SHOT) / \
                               Path(ResultConstants.EMPTY_SYSTEM_FORMAT) / \
                               Path(ResultConstants.GROUPED_LEADERBOARD + '.csv')
 
@@ -423,7 +422,7 @@ class FindCombinations:
         selected_configurations_df = pd.DataFrame(selected_configurations)
         return selected_configurations_df
 
-    def add_metadata_to_combination(self, combination:dict, cur_data: pd.DataFrame)->dict:
+    def add_metadata_to_combination(self, combination: dict, cur_data: pd.DataFrame) -> dict:
         """
         Adds metadata to the combination.
         @param combination:

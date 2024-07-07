@@ -4,7 +4,7 @@ from typing import Tuple, List, Optional
 
 import streamlit as st
 
-from src.Visualization.SamplesNavigator import SamplesNavigator
+from src.streamlit_app.ui_components.SamplesNavigator import SamplesNavigator
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
