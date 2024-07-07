@@ -1,12 +1,12 @@
 from typing import List
-from termcolor import colored
 
+from termcolor import colored
 from tqdm import tqdm
 from unitxt.templates import MultipleChoiceTemplate
 
-from src.CreateData.CatalogManager import CatalogManager
-from src.CreateData.TemplatesGenerator.ConfigParams import ConfigParams
-from src.CreateData.TemplatesGenerator.TemplateGenerator import TemplateGenerator
+from src.experiments.data_loading.CatalogManager import CatalogManager
+from src.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiment_preparation.configuration_generation.TemplateGenerator import TemplateGenerator
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -50,7 +50,8 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
         metadata_df['enumerator'] = metadata_df['enumerator'].astype(str)
         metadata_df.replace({"enumerator": ConfigParams.map_enumerator}, inplace=True)
         # save the metadata to a csv file
-        metadata_df.to_csv(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / dataset_name / TemplatesGeneratorConstants.TEMPLATES_METADATA)
+        metadata_df.to_csv(
+            TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / dataset_name / TemplatesGeneratorConstants.TEMPLATES_METADATA)
 
 
 if __name__ == "__main__":

@@ -6,10 +6,7 @@ from typing import List, Tuple
 from termcolor import colored
 from tqdm import tqdm
 
-from src.CreateData.CatalogManager import CatalogManager
-from src.CreateData.DatasetLoader import DatasetLoader
-from src.CreateData.NLPDataset import NLPDataset
-from src.ModelsPredictors.LLMProcessor import LLMProcessor
+from src.models_predictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
 from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils
@@ -63,7 +60,9 @@ class LLMPredictor:
             loaded_input_texts = [result['Instance'] for result in loaded_results]
             loaded_ground_truths = [result['GroundTruth'] for result in loaded_results]
             loaded_answers = [result['Result'] for result in loaded_results]
-            loaded_max_tokens_probability = [" " if 'MaxTokenProbability' not in result else result['MaxTokenProbability'] for result in loaded_results]
+            loaded_max_tokens_probability = [
+                " " if 'MaxTokenProbability' not in result else result['MaxTokenProbability'] for result in
+                loaded_results]
 
         else:
             loaded_idxs = []

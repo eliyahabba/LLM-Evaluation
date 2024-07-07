@@ -1,8 +1,8 @@
 import random
 
-from src.utils.DatasetsManger import DatasetsManger
-
 random.seed(42)
+
+from src.utils.DatasetsManger import DatasetsManger
 from src.utils.MMLUData import MMLUData
 
 

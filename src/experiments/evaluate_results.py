@@ -8,9 +8,9 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from src.CreateData.CatalogManager import CatalogManager
-from src.CreateData.DatasetLoader import DatasetLoader
-from src.CreateData.LLMDataset import LLMDataset
+from src.experiments.data_loading.CatalogManager import CatalogManager
+from src.experiments.data_loading.DatasetLoader import DatasetLoader
+from src.experiments.data_loading.NLPDataset import NLPDataset
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 
@@ -51,7 +51,7 @@ class EvaluateModel:
         with open(self.results_file, "w") as f:
             json.dump(self.experiment, f)
 
-    def evaluate(self, results: dict, llm_dataset: LLMDataset, save_to_file: bool = True) -> Union[None, dict]:
+    def evaluate(self, results: dict, llm_dataset: NLPDataset, save_to_file: bool = True) -> Union[None, dict]:
         """
         Calculate the scores of the model on the dataset.
         @return: the scores
@@ -69,7 +69,7 @@ class EvaluateModel:
         scores_by_index = self.parser_predictions(scores, predictions_idx, len(llm_dataset.dataset[self.eval_on_value]))
         return scores_by_index
 
-    def get_predictions_and_references(self, results: dict, llm_dataset: LLMDataset):
+    def get_predictions_and_references(self, results: dict, llm_dataset: NLPDataset):
         results_to_eval = results[self.eval_on_value]
         predictions = [result['Result'] for result in results_to_eval]
         predictions_idx = [result['Index'] for result in results_to_eval]
@@ -155,7 +155,7 @@ def read_experiment(results_file: Path) -> dict:
     return experiment
 
 
-def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
+def load_dataset(results_file: Path, loaded_datasets: dict) -> NLPDataset:
     """
     Load the dataset from the experiment.
     """
@@ -182,7 +182,9 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> LLMDataset:
                                        num_demos=experiment['num_demos'],
                                        demos_pool_size=experiment['demos_pool_size'] if "mmlu" not in experiment[
                                            "card"] or experiment['num_demos'] != 0 else None,
-                                       max_instances=max(max([index['Index'] for index in experiment['results'][key]]) for key in experiment['results'])+1,
+                                       max_instances=max(
+                                           max([index['Index'] for index in experiment['results'][key]]) for key in
+                                           experiment['results']) + 1,
                                        template_name=experiment['template_name'])
     llm_dataset = llm_dataset_loader.load()
     loaded_datasets[template_hash] = llm_dataset
@@ -193,7 +195,8 @@ if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
     args.add_argument("--model_index", type=int, default=10)
-    args.add_argument("--results_folder", type=str, default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
+    args.add_argument("--results_folder", type=str,
+                      default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
     args = args.parse_args()
     args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
@@ -211,7 +214,8 @@ if __name__ == "__main__":
         # datasets = datasets[::-1]
         for dataset_folder in datasets:
             print(f"Start evaluating {dataset_folder.name}")
-            car_mmlu_dataset_sizes = mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == dataset_folder.name.split("mmlu.")[1]]
+            car_mmlu_dataset_sizes = mmlu_dataset_sizes[
+                mmlu_dataset_sizes["Name"] == dataset_folder.name.split("mmlu.")[1]]
             shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
             # shots = [shot for shot in shots if "one" in str(shot)]
             loaded_datasets = {}
@@ -240,7 +244,7 @@ if __name__ == "__main__":
                                                 not comparison_df[results_file_number].isna().any() and \
                                                 size == comparison_df[results_file_number].shape[0] and \
                                                 all(['Score' in result for result in results[eval_on_value]]):
-                                                # and  len(results[eval_on_value]) == 100:
+                                            # and  len(results[eval_on_value]) == 100:
                                             # len(results_files) == pd.read_csv(comparison_matrix_file).shape[1] and \
                                             continue
                                     except pd.errors.EmptyDataError:
