@@ -10,8 +10,8 @@ from unitxt.templates import Template
 
 from src.experiments.data_loading.CatalogManager import CatalogManager
 from src.experiments.data_loading.DatasetLoader import DatasetLoader
-from src.models_predictors.LLMPredictor import LLMPredictor
-from src.models_predictors.LLMProcessor import LLMProcessor
+from src.experiments.models_predictors.LLMPredictor import LLMPredictor
+from src.experiments.models_predictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
 from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils

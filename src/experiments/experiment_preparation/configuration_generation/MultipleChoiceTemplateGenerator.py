@@ -5,8 +5,8 @@ from tqdm import tqdm
 from unitxt.templates import MultipleChoiceTemplate
 
 from src.experiments.data_loading.CatalogManager import CatalogManager
-from src.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
-from src.experiment_preparation.configuration_generation.TemplateGenerator import TemplateGenerator
+from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateGenerator import TemplateGenerator
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants

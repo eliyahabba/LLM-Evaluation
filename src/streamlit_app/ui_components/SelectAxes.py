@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-from src.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants

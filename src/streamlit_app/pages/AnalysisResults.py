@@ -7,7 +7,7 @@ import streamlit as st
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
 
-from src.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.streamlit_app.ui_components.SelectAxes import SelectAxes
 from src.streamlit_app.ui_components.ChooseBestCombination import ChooseBestCombination
 from src.streamlit_app.ui_components.CreateHeatmap import CreateHeatmap
