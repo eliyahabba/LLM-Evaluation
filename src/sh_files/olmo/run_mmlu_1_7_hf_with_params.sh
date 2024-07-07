@@ -15,7 +15,7 @@ sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,en
 module load cuda
 module load torch
 
-dir=/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/Experiments/
+dir=/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/experiments/
 cd $dir
 
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate

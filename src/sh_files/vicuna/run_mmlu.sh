@@ -13,10 +13,10 @@ sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,en
 module load cuda
 module load torch
 
-dir=/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/Experiments/
+dir=/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/experiments/
 cd $dir
 
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name VICUNA --card $1 --template_range $2 $3 --num_demos 0 --demos_pool_size 1
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name VICUNA --card $1 --template_range $2 $3 --num_demos $4 --demos_pool_size $5

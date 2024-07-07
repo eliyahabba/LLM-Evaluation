@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --mem=10g
+#SBATCH --mem=12g
 #SBATCH --time=6:0:0
-#SBATCH --gres=gpu:1,vmem:10g
+#SBATCH --gres=gpu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
@@ -139,4 +139,4 @@ dir=/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/sh_files/
 cd $dir
 
 # Run the secondary script with the determined parameters
-/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/sh_files/llama/run_mmlu_13b_base.sh $PARAMS --num_demos $4 --demos_pool_size $5
+/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/sh_files/vicuna/run_mmlu.sh  $PARAMS  3 20
