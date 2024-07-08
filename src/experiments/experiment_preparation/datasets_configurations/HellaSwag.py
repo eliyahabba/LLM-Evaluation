@@ -1,7 +1,7 @@
 from src.experiments.experiment_preparation.datasets_configurations.BaseDatasetConfig import BaseDatasetConfig
 
 
-class AI2ARCChallengeConfig(BaseDatasetConfig):
+class HellaSwagConfig(BaseDatasetConfig):
     def __init__(self, kwargs=None):
         super().__init__(kwargs)
 
@@ -13,6 +13,6 @@ class AI2ARCChallengeConfig(BaseDatasetConfig):
 
 
 if __name__ == "__main__":
-    config = AI2ARCChallengeConfig({"shuffle_choices": True})
+    config = HellaSwagConfig({"shuffle_choices": True})
     config_dict = config.to_dict()
     print(config_dict)
