@@ -124,10 +124,10 @@ class ConfigParams:
     #     ]
     # }
     #
-    datasets_templates = [base_args_bool_q, base_args_ai2_arc_challenge, base_args_hellaswag]
-    dataset_names_to_templates = dict(zip(DatasetsManger.get_base_dataset_names(), datasets_templates))
-    for mmlu_dataset in MMLUData.get_mmlu_datasets():
-        dataset_names_to_templates[f"{mmlu_dataset}"] = base_args_mmlu_instructions
+    # datasets_templates = [base_args_bool_q, base_args_ai2_arc_challenge, base_args_hellaswag]
+    # dataset_names_to_templates = dict(zip(DatasetsManger.get_base_dataset_names(), datasets_templates))
+    # for mmlu_dataset in MMLUData.get_mmlu_datasets():
+    #     dataset_names_to_templates[f"{mmlu_dataset}"] = base_args_mmlu_instructions
 
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman"],
