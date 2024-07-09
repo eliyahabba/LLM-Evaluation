@@ -8,11 +8,10 @@ from src.utils.MMLUData import MMLUData
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 class DatasetsManger:
-    SCIQ = "sciq"
-    RACE_ALL = "race_all"
-    AI2_ARC_ARC_EASY = "ai2_arc.arc_easy"
+    AI2_ARC_ARC_EASY = "ai2_arc.arc_challenge"
+    BOOLQ = "boolq"
     HELLASWAG = "hellaswag"
-    BASE_DATASET_NAMES = [SCIQ, RACE_ALL, AI2_ARC_ARC_EASY]
+    BASE_DATASET_NAMES = [AI2_ARC_ARC_EASY, BOOLQ, HELLASWAG]
     MMLUData.initialize()
     DATASET_NAMES = BASE_DATASET_NAMES + MMLUData.get_mmlu_datasets()
 
