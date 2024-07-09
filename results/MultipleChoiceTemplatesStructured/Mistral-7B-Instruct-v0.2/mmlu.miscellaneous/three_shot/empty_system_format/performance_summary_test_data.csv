@@ -1,0 +1,17 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,number_of_instances
+template_0,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.748,0.748,accuracy,0.714,0.779,0.714,0.779,783
+template_1,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.732,0.732,accuracy,0.701,0.764,0.701,0.764,783
+template_2,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.788,0.788,accuracy,0.757,0.815,0.757,0.815,783
+template_3,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.768,0.768,accuracy,0.739,0.798,0.739,0.798,783
+template_4,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.777,0.777,accuracy,0.742,0.806,0.742,0.806,783
+template_5,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.778,0.778,accuracy,0.748,0.807,0.748,0.807,783
+template_6,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.799,0.799,accuracy,0.762,0.831,0.762,0.831,593
+template_28,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.798,0.798,accuracy,0.766,0.825,0.766,0.825,783
+template_29,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.777,0.777,accuracy,0.748,0.807,0.748,0.807,783
+template_30,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.770,0.770,accuracy,0.737,0.799,0.737,0.799,783
+template_31,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.761,0.761,accuracy,0.733,0.792,0.733,0.792,783
+template_32,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.791,0.791,accuracy,0.759,0.817,0.759,0.817,783
+template_33,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.792,0.792,accuracy,0.764,0.820,0.764,0.820,783
+template_34,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.798,0.798,accuracy,0.768,0.825,0.768,0.825,783
+template_35,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.788,0.788,accuracy,0.759,0.815,0.759,0.815,783
+template_36,cards.mmlu.miscellaneous,empty_system_format,3,20,1600,0.797,0.797,accuracy,0.766,0.825,0.766,0.825,708
