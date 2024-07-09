@@ -12,7 +12,7 @@ class DatasetConfigFactory:
         mmlu_dataset_classes = {}
         MMLUData.initialize()
         for mmlu_dataset in MMLUData.get_mmlu_datasets():
-            mmlu_dataset_classes[f"{mmlu_dataset}"] = MMLUConfig(mmlu_dataset)
+            mmlu_dataset_classes[f"{mmlu_dataset}"] = MMLUConfig
         return mmlu_dataset_classes
 
     @staticmethod
@@ -37,4 +37,4 @@ class DatasetConfigFactory:
             # Add other datasets here
         }
         dataset_classes.update(mmlu_dataset_classes)
-        return dataset_classes
+        return mmlu_dataset_classes
