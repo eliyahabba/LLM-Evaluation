@@ -19,4 +19,4 @@ template_33,cards.mmlu.moral_scenarios,empty_system_format,0,1,1600,0.268,0.268,
 template_34,cards.mmlu.moral_scenarios,empty_system_format,0,1,1600,0.269,0.269,accuracy,0.240,0.299,0.240,0.299,895
 template_35,cards.mmlu.moral_scenarios,empty_system_format,0,1,1600,0.251,0.251,accuracy,0.225,0.283,0.225,0.283,895
 template_36,cards.mmlu.moral_scenarios,empty_system_format,0,1,1600,0.249,0.249,accuracy,0.222,0.277,0.222,0.277,895
-template_37,cards.mmlu.moral_scenarios,empty_system_format,0,1,1600,0.280,0.280,accuracy,0.245,0.321,0.245,0.321,535
+template_37,cards.mmlu.moral_scenarios,empty_system_format,0,1,1600,0.282,0.282,accuracy,0.247,0.323,0.247,0.323,535

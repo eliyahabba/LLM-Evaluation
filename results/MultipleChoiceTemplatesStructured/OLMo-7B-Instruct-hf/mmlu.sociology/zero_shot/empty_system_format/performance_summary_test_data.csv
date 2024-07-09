@@ -48,4 +48,4 @@ template_47,cards.mmlu.sociology,empty_system_format,0,1,1600,0.537,0.537,accura
 template_48,cards.mmlu.sociology,empty_system_format,0,1,1600,0.527,0.527,accuracy,0.458,0.592,0.458,0.592,201
 template_49,cards.mmlu.sociology,empty_system_format,0,1,1600,0.512,0.512,accuracy,0.438,0.572,0.438,0.572,201
 template_50,cards.mmlu.sociology,empty_system_format,0,1,1600,0.473,0.473,accuracy,0.403,0.542,0.403,0.542,201
-template_51,cards.mmlu.sociology,empty_system_format,0,1,1600,0.467,0.467,accuracy,0.389,0.533,0.389,0.533,180
+template_51,cards.mmlu.sociology,empty_system_format,0,1,1600,0.494,0.494,accuracy,0.417,0.567,0.417,0.567,180

@@ -20,7 +20,7 @@ template_17,cards.mmlu.philosophy,empty_system_format,0,1,1600,0.453,0.453,accur
 template_18,cards.mmlu.philosophy,empty_system_format,0,1,1600,0.450,0.450,accuracy,0.399,0.505,0.399,0.505,311
 template_19,cards.mmlu.philosophy,empty_system_format,0,1,1600,0.405,0.405,accuracy,0.354,0.460,0.354,0.460,311
 template_20,cards.mmlu.philosophy,empty_system_format,0,1,1600,0.463,0.463,accuracy,0.408,0.514,0.408,0.514,311
-template_21,cards.mmlu.philosophy,empty_system_format,0,1,1600,0.421,0.421,accuracy,0.366,0.472,0.366,0.472,309
+template_21,cards.mmlu.philosophy,empty_system_format,0,1,1600,0.411,0.411,accuracy,0.359,0.466,0.359,0.466,309
 template_28,cards.mmlu.philosophy,empty_system_format,0,1,1600,0.424,0.424,accuracy,0.367,0.473,0.367,0.473,311
 template_29,cards.mmlu.philosophy,empty_system_format,0,1,1600,0.360,0.360,accuracy,0.309,0.415,0.309,0.415,311
 template_30,cards.mmlu.philosophy,empty_system_format,0,1,1600,0.444,0.444,accuracy,0.389,0.502,0.389,0.502,311
