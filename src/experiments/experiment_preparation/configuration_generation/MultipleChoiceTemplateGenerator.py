@@ -7,6 +7,7 @@ from unitxt.templates import MultipleChoiceTemplate
 from src.experiments.data_loading.CatalogManager import CatalogManager
 from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.experiments.experiment_preparation.configuration_generation.TemplateGenerator import TemplateGenerator
+from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -22,20 +23,21 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
 
         @return: MultipleChoiceTemplate: The created template instance.
         """
-        args = {**self.base_args, **override_args}
-        if args['enumerator'] == 'roman':
-            args['postprocessors'] = [
+        dataset_config = self.dataset_config(override_args)
+        if dataset_config.enumerator == 'roman':
+            dataset_config.postprocessors = [
                 "processors.to_string_stripped",
                 "processors.take_first_non_empty_line",
                 "processors.match_closest_option"
             ]
-        if args['target_choice_format'] in ["{choice_numeral}. {choice_text}", "{choice_text}"]:
-            args['postprocessors'] = [
+
+        if dataset_config.target_choice_format in ["{choice_numeral}. {choice_text}", "{choice_text}"]:
+            dataset_config.postprocessors = [
                 "processors.to_string_stripped",
                 "processors.take_first_non_empty_line",
                 "processors.match_closest_option"
             ]
-        template = MultipleChoiceTemplate(**args)
+        template = MultipleChoiceTemplate(**dataset_config.to_dict())
         return template
 
     def create_and_process_metadata(self, created_templates: List[MultipleChoiceTemplate], dataset_name: str,
@@ -56,12 +58,12 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
 
 if __name__ == "__main__":
     # Base arguments for all templates
-    dataset_names_to_templates = ConfigParams.dataset_names_to_templates
+    dataset_names_to_configs = DatasetConfigFactory.get_all_datasets()
     override_options = ConfigParams.override_options
-    for dataset_name, base_args in dataset_names_to_templates.items():
+    for dataset_name, datasetConfig in dataset_names_to_configs.items():
         print(colored(f"Creating templates for {dataset_name}", "blue"))
         # Override options for different parameters and create templates
-        generator = MultipleChoiceTemplateGenerator(base_args, override_options)
+        generator = MultipleChoiceTemplateGenerator(datasetConfig, override_options)
         created_templates = generator.create_templates()
 
         # Save templates to local catalog

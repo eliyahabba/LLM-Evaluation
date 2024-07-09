@@ -1,7 +1,7 @@
 from src.experiments.experiment_preparation.datasets_configurations.BaseDatasetConfig import BaseDatasetConfig
 
 
-class MMLUConfig(BaseDatasetConfig):
+class BoolQConfig(BaseDatasetConfig):
     def __init__(self, kwargs=None):
         super().__init__(kwargs)
 
@@ -13,6 +13,6 @@ class MMLUConfig(BaseDatasetConfig):
 
 
 if __name__ == "__main__":
-    config = MMLUConfig({"shuffle_choices": True})
+    config = BoolQConfig({"shuffle_choices": True})
     config_dict = config.to_dict()
     print(config_dict)

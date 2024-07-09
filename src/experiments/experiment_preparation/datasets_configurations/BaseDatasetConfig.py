@@ -13,6 +13,8 @@ class BaseDatasetConfig:
             "processors.take_first_non_empty_line",
             "processors.match_closest_option"
         ]
+        self.input_format = self.get_input_format()
+
 
     def to_dict(self):
         return {

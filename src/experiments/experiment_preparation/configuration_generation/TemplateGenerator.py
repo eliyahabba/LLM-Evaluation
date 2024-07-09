@@ -6,20 +6,21 @@ import pandas as pd
 from tqdm import tqdm
 from unitxt.templates import Template
 
+from src.experiments.experiment_preparation.datasets_configurations.BaseDatasetConfig import BaseDatasetConfig
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class TemplateGenerator:
-    def __init__(self, base_args: dict, override_options: dict):
+    def __init__(self, dataset_config: BaseDatasetConfig, override_options: dict):
         """
         Initializes the TemplateGenerator with base arguments and override options.
 
         @param base_args: A dictionary containing base arguments for the template.
         @param override_options: A dictionary containing override options for the template.
         """
-        self.base_args = base_args
+        self.dataset_config = dataset_config
         self.override_options = override_options
 
     def create_templates(self) -> list:
