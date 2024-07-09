@@ -115,10 +115,10 @@ class Constants:
         TEMPLATE_NUM = 0
         NUM_DEMOS = 0
         DEMOS_POOL_SIZE = 1
-        NUM_DEMOS = 3
-        DEMOS_POOL_SIZE = 20
+        # NUM_DEMOS = 3
+        # DEMOS_POOL_SIZE = 20
         DEMOS_TAKEN_FROM = "validation"
-        BATCH_SIZE = 1
+        BATCH_SIZE = 4
 
     class McNemarTestConstants:
         ALPHA = 0.05
