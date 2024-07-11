@@ -53,38 +53,60 @@ Run the script:
 sbatch run_dataset_on_model_70b.sh --card {example: cards.mmlu.clinical_knowledge}   --template_range {min: 0, max: 10}
 ```
 
-The project is organized as follows:
+[//]: # (The project is organized as follows:)
 
-- `data/`: Contains original and modified datasets.
-- `models/`: Contains pretrained LLM models.
-- `Modifiers/`: Contains scripts for modifying datasets.
-- `experiments/`: Contains scripts for running experiments and analyzing results.
-- `README.md`: Documentation explaining the project and its structure.
+[//]: # ()
+[//]: # (- `data/`: Contains original and modified datasets.)
 
-## Dataset Modification
+[//]: # (- `models/`: Contains pretrained LLM models.)
 
-Different types of dataset modifications are implemented based on specific tasks:
+[//]: # (- `Modifiers/`: Contains scripts for modifying datasets.)
 
-- `MultipleChoiceModifier`: Shuffles answer choices for multiple-choice questions.
-- `QAModifier`: Implements modifications for question-answering datasets.
-- `NLIModifier`: Implements modifications for natural language inference datasets.
+[//]: # (- `experiments/`: Contains scripts for running experiments and analyzing results.)
 
-## Experimentation
+[//]: # (- `README.md`: Documentation explaining the project and its structure.)
 
-The project conducts experiments to evaluate LLM performance:
+[//]: # ()
+[//]: # (## Dataset Modification)
 
-1. Identifying tasks and models for evaluation.
-2. Modifying datasets using appropriate modifiers.
-3. Running models on both original and modified datasets.
-4. Analyzing results to assess model robustness.
+[//]: # ()
+[//]: # (Different types of dataset modifications are implemented based on specific tasks:)
 
-## Usage
+[//]: # ()
+[//]: # (- `MultipleChoiceModifier`: Shuffles answer choices for multiple-choice questions.)
 
-1. Clone the repository: `git clone https://github.com/your-username/robust-llm-evaluation.git`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run dataset modifications: `python dataset_modification/modify_dataset.py`
-4. Run experiments: `python experiments/run_experiment.py`
-5. Analyze results: `python experiments/analyze_results.py`
+[//]: # (- `QAModifier`: Implements modifications for question-answering datasets.)
+
+[//]: # (- `NLIModifier`: Implements modifications for natural language inference datasets.)
+
+[//]: # ()
+[//]: # (## Experimentation)
+
+[//]: # ()
+[//]: # (The project conducts experiments to evaluate LLM performance:)
+
+[//]: # ()
+[//]: # (1. Identifying tasks and models for evaluation.)
+
+[//]: # (2. Modifying datasets using appropriate modifiers.)
+
+[//]: # (3. Running models on both original and modified datasets.)
+
+[//]: # (4. Analyzing results to assess model robustness.)
+
+[//]: # ()
+[//]: # (## Usage)
+
+[//]: # ()
+[//]: # (1. Clone the repository: `git clone https://github.com/your-username/robust-llm-evaluation.git`)
+
+[//]: # (2. Install dependencies: `pip install -r requirements.txt`)
+
+[//]: # (3. Run dataset modifications: `python dataset_modification/modify_dataset.py`)
+
+[//]: # (4. Run experiments: `python experiments/run_experiment.py`)
+
+[//]: # (5. Analyze results: `python experiments/analyze_results.py`)
 
 ## Contributors
 
