@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from config.get_config import Config
 from src.utils.Constants import Constants
 
 ExperimentConstants = Constants.ExperimentConstants
@@ -58,8 +59,9 @@ class Utils:
         Get the access token.
         @return:
         """
-        with open(Path(__file__).parent / "access_token", "r") as file:
-            return file.readline().strip()
+        config = Config()
+        access_token = config.config_values.get("access_token", "")
+        return access_token
 
     @staticmethod
     def get_model_name(model_name) -> str:
