@@ -8,7 +8,11 @@
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 
 
-export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
+load_config_path="../load_config.sh"
+source $load_config_path
+
+# Now HF_HOME is available to use in this script
+echo "HF_HOME is set to: $HF_HOME"
 python_path="../../"
 export PYTHONPATH=$python_path
 

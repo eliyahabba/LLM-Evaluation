@@ -2,7 +2,7 @@
 
 #SBATCH --mem=12g
 #SBATCH --time=0:10:0
-#SBATCH --gres=gpu:1,vmem:45g
+#SBATCH --gres=gpu:1,vmem:2g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
@@ -12,7 +12,11 @@
 #SBATCH --killable
 #SBATCH --requeue
 
-export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
+load_config_path="../load_config.sh"
+source $load_config_path
+
+# Now HF_HOME is available to use in this script
+echo "HF_HOME is set to: $HF_HOME"
 
 # Generate parameters based on dataset name, total items, and split size
 function generate_params {
@@ -82,7 +86,4 @@ source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
 
 echo ${SLURM_ARRAY_TASK_ID}
 read -r card start end <<< "${PARAMS}"
-echo ${card}
-echo ${start}
-echo ${end}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card $card --template_range $start $end --load_in_8bit

@@ -12,7 +12,11 @@
 #SBATCH --killable
 #SBATCH --requeue
 
-export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
+load_config_path="../load_config.sh"
+source $load_config_path
+
+# Now HF_HOME is available to use in this script
+echo "HF_HOME is set to: $HF_HOME"
 
 # Generate parameters based on dataset name, total items, and split size
 function generate_params {
@@ -85,4 +89,4 @@ read -r card start end <<< "${PARAMS}"
 echo ${card}
 echo ${start}
 echo ${end}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card $card--template_range $start $end --load_in_8bit

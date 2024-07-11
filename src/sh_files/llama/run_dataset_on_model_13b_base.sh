@@ -9,9 +9,17 @@
 #SBATCH --killable
 #SBATCH --requeue
 
-export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
+load_config_path="../load_config.sh"
+source $load_config_path
 
-export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
+# Now HF_HOME is available to use in this script
+echo "HF_HOME is set to: $HF_HOME"
+
+load_config_path="../load_config.sh"
+source $load_config_path
+
+# Now HF_HOME is available to use in this script
+echo "HF_HOME is set to: $HF_HOME"
 python_path="../../"
 export PYTHONPATH=$python_path
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
