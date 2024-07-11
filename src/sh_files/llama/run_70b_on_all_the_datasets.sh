@@ -1,12 +1,16 @@
 #!/bin/bash
+log_dir="../logs"
+mkdir -p "$log_dir"  # Make directory if it does not exist
+export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
 
 #SBATCH --mem=12g
 #SBATCH --time=0:10:0
+#SBATCH --gres=gpu:1,vmem:45g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 #SBATCH --job-name=mmlu_job_array
-#SBATCH --array=0-2%50   # Full data is 246 configurations
+#SBATCH --array=0-246%50   # Full data is 246 configurations
 #SBATCH --output=../logs/mmlu_output_%A_%a.log
 #SBATCH --killable
 #SBATCH --requeue
@@ -25,7 +29,7 @@ function generate_params {
         ARGS+=("$dataset $i $end")
     done
 }
-/cs/labs/gabis/eliyahabba/LLM-Evaluation/Data/MultipleChoiceTemplatesStructured/AI2_ARC_Challenge
+
 # Define a function to map array job indices to script parameters
 function set_parameters {
     local dataset total split
@@ -66,7 +70,6 @@ function set_parameters {
 # Get parameters for the current array job
 PARAMS=$(set_parameters $SLURM_ARRAY_TASK_ID)
 
-export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
 export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
 
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
