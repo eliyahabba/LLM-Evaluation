@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #SBATCH --mem=12g
 #SBATCH --time=6:0:0
 #SBATCH --gres=gpu:1,vmem:48g
@@ -10,6 +11,8 @@
 #SBATCH --output=mmlu_output_%A_%a.log
 #SBATCH --killable
 #SBATCH --requeue
+
+export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
 
 # Define a function to map array job indices to script parameters
 function set_parameters {
@@ -136,8 +139,8 @@ function set_parameters {
 set_parameters $SLURM_ARRAY_TASK_ID
 
 export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
-export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
-
+python_path="../../"
+export PYTHONPATH=$python_path
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch

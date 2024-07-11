@@ -1,7 +1,4 @@
 #!/bin/bash
-log_dir="../logs"
-mkdir -p "$log_dir"  # Make directory if it does not exist
-export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
 
 #SBATCH --mem=12g
 #SBATCH --time=0:10:0
@@ -11,9 +8,11 @@ export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 #SBATCH --job-name=mmlu_job_array
 #SBATCH --array=0-246%50   # Full data is 246 configurations
-#SBATCH --output=../logs/mmlu_output_%A_%a.log
+#SBATCH --output=logs/slurm_output_%A_%a.log
 #SBATCH --killable
 #SBATCH --requeue
+
+export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
 
 # Generate parameters based on dataset name, total items, and split size
 function generate_params {
@@ -70,13 +69,13 @@ function set_parameters {
 # Get parameters for the current array job
 PARAMS=$(set_parameters $SLURM_ARRAY_TASK_ID)
 
-export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
-
+python_path="../../"
+export PYTHONPATH=$python_path
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch
 
-dir="../../experiments/"
+dir="../experiments/"
 cd $dir
 
 source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate

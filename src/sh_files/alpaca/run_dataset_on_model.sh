@@ -8,8 +8,8 @@
 #SBATCH --killable
 
 export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
-export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
-
+python_path="../../"
+export PYTHONPATH=$python_path
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch

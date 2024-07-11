@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #SBATCH --mem=24g
 #SBATCH --time=6:0:0
 #SBATCH --gres=gpu:1,vmem:24g
@@ -9,8 +10,10 @@
 #SBATCH --requeue
 
 export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
-export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
 
+export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
+python_path="../../"
+export PYTHONPATH=$python_path
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch
