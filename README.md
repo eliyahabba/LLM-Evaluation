@@ -11,6 +11,12 @@ aims to evaluate the robustness of Language Model Models (LLMs)
 ## Prerequisites
 
 - Access to a SLURM cluster with GPU capabilities.
+- Clone the Repository:
+    
+    ```
+    git clone git@github.com:eliyahabba/LLM-Evaluation.git
+    ```
+  
 - Install required Python packages:
 
 ```
@@ -50,13 +56,13 @@ the existing model folders:
 
 ```
 mkdir -p src/sh_files/llama
-cd src/sh_files/llama
+cd src/sh_files
 ```
 
 Run the script:
 
 ```
-sbatch run_70b_on_all_the_datasets.sh
+sbatch llama/run_70b_on_all_the_datasets.sh
 ```
 
 This script processes each dataset according to predefined configurations.
@@ -67,13 +73,13 @@ Choose and navigate to the appropriate model directory as described above. If th
 
 ```
 mkdir -p src/sh_files/llama
-cd src/sh_files/llama
+cd src/sh_files
 ```
 
 Run the script:
 
 ```
-sbatch run_dataset_on_model_70b.sh --card {example: cards.mmlu.clinical_knowledge}   --template_range {min: 0, max: 10}
+sbatch llama/run_dataset_on_model_70b.sh --card {example: cards.mmlu.clinical_knowledge}   --template_range {min: 0, max: 10}
 ```
 
 [//]: # (The project is organized as follows:)
