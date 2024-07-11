@@ -12,17 +12,39 @@ aims to evaluate the robustness of Language Model Models (LLMs)
 
 - Access to a SLURM cluster with GPU capabilities.
 - Install required Python packages:
+
 ```
 pip install -r requirements.txt
 ```
 
+- Hugging Face Access Token: token: Ensure you have an **access_token** file in the utils folder to authenticate API
+  calls:
+  Obtain a Hugging Face access token by creating an account at Hugging Face and navigating to your account settings to
+  generate a new token.
+  This token is required to authenticate API calls, especially for accessing models that require permissions.
+  The local_config.yaml file should include your personal or project-specific Hugging Face access token. This token is
+  necessary for accessing certain models and datasets.
+
+Open the local_config.yaml file located at config/local_config.yaml.
+Add or update the access_token key with your Hugging Face access token as follows:
+Place the token in the utils folder:
+
+```
+  access_token: "YOUR_ACCESS_TOKEN_HERE"
+```
+
+Replace 'YOUR_ACCESS_TOKEN' with your actual access token.
+
 ## Usage Instructions
+
 ### General
+
 Both scripts request memory and GPU resources as estimates. You may need to adjust these values depending on the dataset
 size and model complexity. Modify the --mem, --gres, and other related SLURM directives in the scripts according to your
 needs.
 
 ### Running on All Datasets
+
 To launch evaluations across all datasets:
 
 Choose a model, for example, *Llama*.
@@ -35,12 +57,15 @@ cd src/sh_files/llama
 ```
 
 Run the script:
+
 ```
 sbatch run_70b_on_all_the_datasets.sh
 ```
+
 This script processes each dataset according to predefined configurations.
 
 ### Running on Specific Datasets
+
 Choose and navigate to the appropriate model directory as described above. If the directory does not exist, create it:
 
 ```
@@ -49,6 +74,7 @@ cd src/sh_files/llama
 ```
 
 Run the script:
+
 ```
 sbatch run_dataset_on_model_70b.sh --card {example: cards.mmlu.clinical_knowledge}   --template_range {min: 0, max: 10}
 ```
@@ -56,6 +82,7 @@ sbatch run_dataset_on_model_70b.sh --card {example: cards.mmlu.clinical_knowledg
 [//]: # (The project is organized as follows:)
 
 [//]: # ()
+
 [//]: # (- `data/`: Contains original and modified datasets.)
 
 [//]: # (- `models/`: Contains pretrained LLM models.)
@@ -67,12 +94,15 @@ sbatch run_dataset_on_model_70b.sh --card {example: cards.mmlu.clinical_knowledg
 [//]: # (- `README.md`: Documentation explaining the project and its structure.)
 
 [//]: # ()
+
 [//]: # (## Dataset Modification)
 
 [//]: # ()
+
 [//]: # (Different types of dataset modifications are implemented based on specific tasks:)
 
 [//]: # ()
+
 [//]: # (- `MultipleChoiceModifier`: Shuffles answer choices for multiple-choice questions.)
 
 [//]: # (- `QAModifier`: Implements modifications for question-answering datasets.)
@@ -80,12 +110,15 @@ sbatch run_dataset_on_model_70b.sh --card {example: cards.mmlu.clinical_knowledg
 [//]: # (- `NLIModifier`: Implements modifications for natural language inference datasets.)
 
 [//]: # ()
+
 [//]: # (## Experimentation)
 
 [//]: # ()
+
 [//]: # (The project conducts experiments to evaluate LLM performance:)
 
 [//]: # ()
+
 [//]: # (1. Identifying tasks and models for evaluation.)
 
 [//]: # (2. Modifying datasets using appropriate modifiers.)
@@ -95,9 +128,11 @@ sbatch run_dataset_on_model_70b.sh --card {example: cards.mmlu.clinical_knowledg
 [//]: # (4. Analyzing results to assess model robustness.)
 
 [//]: # ()
+
 [//]: # (## Usage)
 
 [//]: # ()
+
 [//]: # (1. Clone the repository: `git clone https://github.com/your-username/robust-llm-evaluation.git`)
 
 [//]: # (2. Install dependencies: `pip install -r requirements.txt`)
