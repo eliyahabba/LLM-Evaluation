@@ -109,7 +109,7 @@ class Constants:
                                 LLAMA_SYSTEM_FORMATS: "llama_system_format"}
         SYSTEM_FORMAT_INDEX = 0
 
-        MAX_INSTANCES = 1600
+        MAX_INSTANCES = 14000
         EVALUATE_ON_INFERENCE = ['test']
         EVALUATE_ON_ANALYZE = ['test']
         TEMPLATE_NUM = 0
