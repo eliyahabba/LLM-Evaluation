@@ -22,12 +22,9 @@ pip install -r requirements.txt
   Obtain a Hugging Face access token by creating an account at Hugging Face and navigating to your account settings to
   generate a new token.
   This token is required to authenticate API calls, especially for accessing models that require permissions.
-  The local_config.yaml file should include your personal or project-specific Hugging Face access token. This token is
-  necessary for accessing certain models and datasets.
-
-Open the local_config.yaml file located at config/local_config.yaml.
+  
+Open the **local_config.yaml** file located at **config/local_config.yaml**.
 Add or update the access_token key with your Hugging Face access token as follows:
-Place the token in the utils folder:
 
 ```
   access_token: "YOUR_ACCESS_TOKEN_HERE"
