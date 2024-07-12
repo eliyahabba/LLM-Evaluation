@@ -20,6 +20,7 @@ aims to evaluate the robustness of Language Model Models (LLMs)
 - Install required Python packages:
 
 ```
+cd LLM-Evaluation
 pip install -r requirements.txt
 ```
 
