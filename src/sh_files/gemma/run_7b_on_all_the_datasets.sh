@@ -82,6 +82,8 @@ module load torch
 dir="../experiments/"
 cd $dir
 
+dir="../experiments/"
+cd $dir
 echo "VENV is set to: $VENV"
 source $VENV
 

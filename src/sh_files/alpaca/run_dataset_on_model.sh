@@ -18,6 +18,8 @@ sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,en
 module load cuda
 module load torch
 
+dir="../experiments/"
+cd $dir
 echo "VENV is set to: $VENV"
 source $VENV
 
