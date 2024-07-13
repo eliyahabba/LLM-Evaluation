@@ -39,6 +39,15 @@ Add or update the access_token key with your Hugging Face access token as follow
 
 Replace 'YOUR_ACCESS_TOKEN' with your actual access token.
 
+-Virtual Environment Path
+Open the local_config.yaml file located at config/local_config.yaml.
+Add or update the venv_path key with the path to your Python virtual environment as follows:
+    
+```
+venv_path: "/path/to/your/virtualenv"
+```
+Replace "/path/to/your/virtualenv" with the actual path to your virtual environment. This path is essential for the Bash scripts that may need to activate the virtual environment.
+
 ## Usage Instructions
 
 ### General
