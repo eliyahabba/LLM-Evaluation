@@ -22,7 +22,8 @@ module load torch
 dir=/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/experiments/
 cd $dir
 
-source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
+echo "VENV is set to: $VENV"
+source $VENV
 
 echo ${SLURM_ARRAY_TASK_ID}
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA7B --card $1 --template_range $2 $3

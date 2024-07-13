@@ -156,6 +156,7 @@ module load torch
 dir=/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/experiments/
 cd $dir
 
-source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
+echo "VENV is set to: $VENV"
+source $VENV
 
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card ${ARGS[0]} --template_range ${ARGS[1]} ${ARGS[2]} --load_in_8bit

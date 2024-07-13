@@ -83,7 +83,8 @@ module load torch
 dir="../experiments/"
 cd $dir
 
-source /cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate
+echo "VENV is set to: $VENV"
+source $VENV
 
 echo ${SLURM_ARRAY_TASK_ID}
 read -r card start end <<< "${PARAMS}"

@@ -21,3 +21,13 @@ fi
 
 echo "Using Hugging Face home directory at $HF_HOME"
 export HF_HOME=$HF_HOME
+
+
+# Check if HF_HOME is empty
+if [ -z "$VENV" ]; then
+    echo "Failed to load VENV configuration."
+    exit 1
+fi
+
+echo "Using VENV home directory at $VENV"
+export VENV=$VENV
