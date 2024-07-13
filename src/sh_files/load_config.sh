@@ -22,6 +22,7 @@ fi
 echo "Using Hugging Face home directory at $HF_HOME"
 export HF_HOME=$HF_HOME
 
+VENV=$(python $config_path venv)
 
 # Check if HF_HOME is empty
 if [ -z "$VENV" ]; then
