@@ -5,6 +5,12 @@
 config_path="../../config/get_config.py"
 echo "Using configuration script at $config_path"
 # Ensure the Python script exists and is executable
+
+# Scripts may run from their dir
+if [ ! -f "$config_path" ]; then
+    config_path="../../../config/get_config.py"
+fi
+# Ensure the Python script exists and is executable
 if [ ! -f "$config_path" ]; then
     echo "Configuration script not found at $config_path"
     exit 1
