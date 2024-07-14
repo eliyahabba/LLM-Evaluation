@@ -1,8 +1,10 @@
 #!/bin/bash
 log_dir="../logs"
 mkdir -p "$log_dir"  # Make directory if it does not exist
-export HF_HOME="/cs/snapless/gabis/gabis/shared/huggingface"
-
+load_config_path="load_config.sh"
+config_bash=$(readlink -f $config_path)
+echo "Loading config with: " $config_bash
+source $config_bash
 #SBATCH --mem=12g
 #SBATCH --time=0:10:0
 #SBATCH --gres=gpu:1,vmem:12g
@@ -77,14 +79,14 @@ module load cuda
 module load torch
 
 dir="../../experiments/"
+absolute_path=$(readlink -f $dir)
+# print the full (not relative) path of the dir variable
+echo "current dir is set to: $absolute_path"
 cd $dir
-
-echo "VENV is set to: $VENV"
-source $VENV
 
 echo ${SLURM_ARRAY_TASK_ID}
 read -r card start end <<< "${PARAMS}"
 echo ${card}
 echo ${start}
 echo ${end}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card $card--template_range $start $end --load_in_8bit

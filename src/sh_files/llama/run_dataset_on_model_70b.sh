@@ -12,12 +12,10 @@
 #SBATCH --killable
 #SBATCH --requeue
 
-load_config_path="../load_config.sh"
-source $load_config_path
-
-# Now HF_HOME is available to use in this script
-echo "HF_HOME is set to: $HF_HOME"
-
+load_config_path="load_config.sh"
+config_bash=$(readlink -f $config_path)
+echo "Loading config with: " $config_bash
+source $config_bash
 # Define a function to map array job indices to script parameters
 function set_parameters {
     case $1 in
@@ -142,8 +140,10 @@ function set_parameters {
 # Get parameters for the current array job
 set_parameters $SLURM_ARRAY_TASK_ID
 
-load_config_path="../load_config.sh"
-source $load_config_path
+load_config_path="load_config.sh"
+config_bash=$(readlink -f $config_path)
+echo "Loading config with: " $config_bash
+source $config_bash
 
 # Now HF_HOME is available to use in this script
 echo "HF_HOME is set to: $HF_HOME"
@@ -154,8 +154,8 @@ module load cuda
 module load torch
 
 dir="../experiments/"
+absolute_path=$(readlink -f $dir)
+# print the full (not relative) path of the dir variable
+echo "current dir is set to: $absolute_path"
 cd $dir
-echo "VENV is set to: $VENV"
-source $VENV
-
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card ${ARGS[0]} --template_range ${ARGS[1]} ${ARGS[2]} --load_in_8bit

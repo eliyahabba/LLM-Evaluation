@@ -10,8 +10,10 @@
 #SBATCH --killable
 
 
-load_config_path="../load_config.sh"
-source $load_config_path
+load_config_path="load_config.sh"
+config_bash=$(readlink -f $config_path)
+echo "Loading config with: " $config_bash
+source $config_bash
 
 # Now HF_HOME is available to use in this script
 echo "HF_HOME is set to: $HF_HOME"
@@ -22,10 +24,10 @@ module load cuda
 module load torch
 
 dir="../experiments/"
+absolute_path=$(readlink -f $dir)
+# print the full (not relative) path of the dir variable
+echo "current dir is set to: $absolute_path"
 cd $dir
-
-echo "VENV is set to: $VENV"
-source $VENV
 
 echo ${SLURM_ARRAY_TASK_ID}
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name PHI_MEDIUM --card $1 --template_range $2 $3 --trust_remote_code

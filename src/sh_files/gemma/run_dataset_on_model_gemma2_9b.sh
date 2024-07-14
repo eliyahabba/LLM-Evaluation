@@ -15,10 +15,11 @@ module load cuda
 module load torch
 
 dir="../experiments/"
+absolute_path=$(readlink -f $dir)
+# print the full (not relative) path of the dir variable
+echo "current dir is set to: $absolute_path"
 cd $dir
 
-echo "VENV is set to: $VENV"
-source $VENV
-
+.
 echo ${SLURM_ARRAY_TASK_ID}
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name GEMMA2_9B --card $1 --template_range $2 $3     --num_demos $4 --demos_pool_size $5

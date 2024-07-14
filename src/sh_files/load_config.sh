@@ -3,8 +3,14 @@
 # Example of how to use the Python script to get the 'hf_home' configuration
 # Assuming the Python script is two levels up from the current directory
 config_path="../../config/get_config.py"
-echo "Using configuration script at $config_path"
+absolute_path=$(readlink -f $config_path)
+echo "Using configuration script at $absolute_path"
+
 # Ensure the Python script exists and is executable
+if [ ! -f "$config_path" ]; then
+    config_path="../../../config/get_config.py"
+fi
+
 if [ ! -f "$config_path" ]; then
     echo "Configuration script not found at $config_path"
     exit 1
@@ -30,5 +36,6 @@ if [ -z "$VENV" ]; then
     exit 1
 fi
 
-echo "Using VENV home directory at $VENV"
-export VENV=$VENV
+absolute_path=$(readlink -f $VENV)
+echo "Using VENV at $absolute_path"
+source $VENV
