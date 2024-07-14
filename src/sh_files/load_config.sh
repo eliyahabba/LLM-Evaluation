@@ -7,6 +7,12 @@ absolute_path=$(readlink -f $config_path)
 echo "Using configuration script at $absolute_path"
 
 # Ensure the Python script exists and is executable
+
+# Scripts may run from their dir
+if [ ! -f "$config_path" ]; then
+    config_path="../../../config/get_config.py"
+fi
+# Ensure the Python script exists and is executable
 if [ ! -f "$config_path" ]; then
     config_path="../../../config/get_config.py"
 fi
