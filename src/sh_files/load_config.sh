@@ -36,7 +36,7 @@ export HF_HOME=$HF_HOME
 
 VENV=$(python $config_path venv)
 
-# Check if HF_HOME is empty
+# Check if VENV is empty
 if [ -z "$VENV" ]; then
     echo "Failed to load VENV configuration."
     exit 1
