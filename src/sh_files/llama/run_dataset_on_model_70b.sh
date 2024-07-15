@@ -13,7 +13,7 @@
 #SBATCH --requeue
 
 load_config_path="load_config.sh"
-config_bash=$(readlink -f $config_path)
+config_bash=$(readlink -f $load_config_path)
 echo "Loading config with: " $config_bash
 source $config_bash
 # Define a function to map array job indices to script parameters
@@ -141,7 +141,7 @@ function set_parameters {
 set_parameters $SLURM_ARRAY_TASK_ID
 
 load_config_path="load_config.sh"
-config_bash=$(readlink -f $config_path)
+config_bash=$(readlink -f $load_config_path)
 echo "Loading config with: " $config_bash
 source $config_bash
 

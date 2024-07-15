@@ -8,7 +8,7 @@
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 
 load_config_path="load_config.sh"
-config_bash=$(readlink -f $config_path)
+config_bash=$(readlink -f $load_config_path)
 echo "Loading config with: " $config_bash
 source $config_bash
 
