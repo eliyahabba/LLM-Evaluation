@@ -2,13 +2,24 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import math
 
-# Define the model and tokenizer
-model_name = "mistralai/Mistral-7B-Instruct-v0.1"  # Replace with the actual model name if different
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+from src.utils.Utils import Utils
+
+access_token = Utils.get_access_token()
+trust_remote_code = True
 load_in_4bit = False
 load_in_8bit = False
+# Define the model and tokenizer
+model_name = "mistralai/Mistral-7B-Instruct-v0.1"  # Replace with the actual model name if different
+tokenizer = AutoTokenizer.from_pretrained(model_name,
+                                          token=access_token,
+                                          trust_remote_code=trust_remote_code)
 
-model = AutoModelForCausalLM.from_pretrained(model_name, load_in_4bit = load_in_4bit, load_in_8bit = load_in_8bit)
+model = AutoModelForCausalLM.from_pretrained(model_name,
+                                             device_map="auto",
+                                             token=access_token,
+trust_remote_code = trust_remote_code,
+
+load_in_4bit = load_in_4bit, load_in_8bit = load_in_8bit)
 
 
 # Function to calculate perplexity
