@@ -12,6 +12,7 @@ load_in_8bit = False
 model_name = "mistralai/Mistral-7B-Instruct-v0.1"  # Replace with the actual model name if different
 tokenizer = AutoTokenizer.from_pretrained(model_name,
                                           token=access_token,
+                                          padding_side="left",
                                           trust_remote_code=trust_remote_code)
 
 model = AutoModelForCausalLM.from_pretrained(model_name,
