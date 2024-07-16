@@ -6,7 +6,7 @@ from src.utils.Utils import Utils
 access_token = Utils.get_access_token()
 
 trust_remote_code = True
-load_in_4bit = False
+load_in_4bit = True
 load_in_8bit = False
 # Define the model and tokenizer
 model_name = "mistralai/Mistral-7B-Instruct-v0.1"  # Replace with the actual model name if different
