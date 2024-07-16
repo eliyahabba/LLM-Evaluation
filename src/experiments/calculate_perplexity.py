@@ -27,10 +27,8 @@ load_in_4bit = load_in_4bit, load_in_8bit = load_in_8bit)
 def calculate_perplexity(texts, model, tokenizer):
     # Tokenize the input text
     device = model.device
-    tokenizer(texts, return_tensors="pt",
-                   padding=True).to(device)
     tokenizer.pad_token = tokenizer.eos_token
-    encoded_inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True)
+    encoded_inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True).to(device)
 
     # Get model outputs
     with torch.no_grad():
