@@ -1,10 +1,10 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-import math
 
 from src.utils.Utils import Utils
 
 access_token = Utils.get_access_token()
+print(access_token)
 trust_remote_code = True
 load_in_4bit = False
 load_in_8bit = False
