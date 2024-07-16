@@ -14,7 +14,7 @@
 
 
 load_config_path="load_config.sh"
-config_bash=$(readlink -f load_config_path)
+config_bash=$(readlink -f $load_config_path)
 echo "Loading config with: " $config_bash
 source $config_bash
 
