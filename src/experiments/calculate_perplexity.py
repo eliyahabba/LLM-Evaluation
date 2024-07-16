@@ -47,7 +47,7 @@ def calculate_perplexity(texts, model, tokenizer):
     # Calculate perplexity
     perplexity = torch.exp(loss).item()
 
-    perplexity2 = torch.exp(outputs_generate.loss).item()
+    perplexity2 = torch.exp(outputs_generate.loss)
     print(f"Perplexity: {perplexity}")
     print(f"Perplexity outputs_generate: {perplexity2}")
 
