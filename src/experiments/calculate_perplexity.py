@@ -29,8 +29,8 @@ def calculate_perplexity(texts, model, tokenizer):
     device = model.device
     tokenizer(texts, return_tensors="pt",
                    padding=True).to(device)
+    tokenizer.pad_token = tokenizer.eos_token
     encoded_inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True)
-    input_ids = encoded_inputs.input_ids
 
     # Get model outputs
     with torch.no_grad():
