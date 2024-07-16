@@ -35,13 +35,25 @@ def calculate_perplexity(texts, model, tokenizer):
     # Get model outputs
     with torch.no_grad():
         outputs = model(**encoded_inputs)
+    outputs_generate = model.generate(
+        **encoded_inputs,
+        max_new_tokens=5,
+        return_dict_in_generate=True,
+        output_scores=True,
+        do_sample=False,
+    )
 
     # Calculate the cross-entropy loss
     loss = outputs.loss
 
     # Calculate perplexity
-    perplexity = torch.exp(loss)
-    return perplexity.item()
+    perplexity = torch.exp(loss).item()
+
+    perplexity2 = torch.exp(outputs_generate.loss).item()
+    print(f"Perplexity: {perplexity}")
+    print(f"Perplexity outputs_generate: {perplexity2}")
+
+    return perplexity
 
 # Example text
 text = "Your example text goes here."
