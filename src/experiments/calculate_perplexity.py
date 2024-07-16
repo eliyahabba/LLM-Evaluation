@@ -4,7 +4,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from src.utils.Utils import Utils
 
 access_token = Utils.get_access_token()
-print(access_token)
+
 trust_remote_code = True
 load_in_4bit = False
 load_in_8bit = False
@@ -23,13 +23,14 @@ load_in_4bit = load_in_4bit, load_in_8bit = load_in_8bit)
 
 
 # Function to calculate perplexity
-def calculate_perplexity(text, model, tokenizer):
+def calculate_perplexity(texts, model, tokenizer):
     # Tokenize the input text
-    inputs = tokenizer(text, return_tensors="pt")
+    encoded_inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True)
+    input_ids = encoded_inputs.input_ids
 
     # Get model outputs
     with torch.no_grad():
-        outputs = model(**inputs, labels=inputs["input_ids"])
+        outputs = model(**encoded_inputs)
 
     # Calculate the cross-entropy loss
     loss = outputs.loss
@@ -42,5 +43,9 @@ def calculate_perplexity(text, model, tokenizer):
 text = "Your example text goes here."
 
 # Calculate and print perplexity
-perplexity = calculate_perplexity(text, model, tokenizer)
-print(f"Perplexity: {perplexity}")
+# List of example texts
+texts = ["Your example text goes here.", "Another example text."]
+perplexities = calculate_perplexity(text, model, tokenizer)
+
+for text, perplexity in zip(texts, perplexities):
+    print(f"Text: {text}\nPerplexity: {perplexity.item()}\n")
