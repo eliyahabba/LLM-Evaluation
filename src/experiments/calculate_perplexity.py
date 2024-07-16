@@ -26,6 +26,9 @@ load_in_4bit = load_in_4bit, load_in_8bit = load_in_8bit)
 # Function to calculate perplexity
 def calculate_perplexity(texts, model, tokenizer):
     # Tokenize the input text
+    device = model.device
+    tokenizer(texts, return_tensors="pt",
+                   padding=True).to(device)
     encoded_inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True)
     input_ids = encoded_inputs.input_ids
 
