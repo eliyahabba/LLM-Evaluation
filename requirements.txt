@@ -16,3 +16,5 @@ plotly~=5.20.0
 hdbscan~=0.8.33
 pingouin~=0.5.4
 unitxt~=1.11.1
+PyYAML~=6.0.1
+accelerate~=0.30.1
