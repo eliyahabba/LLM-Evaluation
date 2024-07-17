@@ -37,7 +37,8 @@ class BaseDatasetConfig:
 
     def get_structured_instruction_text(self, context_topic):
         # Provide a default implementation if needed
-        return f"{context_topic}Question: {{question}} Choices: {{choices}} Answer: {{answer}}\n"
+        # return f"{context_topic}Question: {{question}} Choices: {{choices}} Answer: {{answer}}\n"
+       return f"{context_topic}Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
 
     def get_context_topic(self):
         # Base class provides a generic placeholder which can be overridden
