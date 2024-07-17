@@ -15,7 +15,6 @@ class BaseDatasetConfig:
         ]
         self.input_format = self.get_input_format()
 
-
     def to_dict(self):
         return {
             "input_format": self.get_input_format(),
@@ -37,8 +36,7 @@ class BaseDatasetConfig:
 
     def get_structured_instruction_text(self, context_topic):
         # Provide a default implementation if needed
-        # return f"{context_topic}Question: {{question}} Choices: {{choices}} Answer: {{answer}}\n"
-       return f"{context_topic}Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
+        return f"{context_topic}Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
 
     def get_context_topic(self):
         # Base class provides a generic placeholder which can be overridden
