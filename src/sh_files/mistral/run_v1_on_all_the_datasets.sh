@@ -89,4 +89,4 @@ read -r card start end <<< "${PARAMS}"
 echo ${card}
 echo ${start}
 echo ${end}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card $card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name MISTRAL_V1 --card $card --template_range $start $end --load_in_8bit
