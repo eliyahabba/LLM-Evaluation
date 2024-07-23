@@ -71,13 +71,13 @@ function set_parameters {
 # Get parameters for the current array job
 PARAMS=$(set_parameters $SLURM_ARRAY_TASK_ID)
 
-python_path="../../"
+python_path="../../../"
 export PYTHONPATH=$python_path
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch
 
-dir="../experiments/"
+dir="../../experiments/"
 absolute_path=$(readlink -f $dir)
 # print the full (not relative) path of the dir variable
 echo "current dir is set to: $absolute_path"
