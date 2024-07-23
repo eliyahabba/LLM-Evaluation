@@ -64,10 +64,10 @@ PARAMS=$(set_parameters $1)
 echo "args are: $ARGS"
 read -r card start end <<< "${PARAMS}"
 
-python_path="../../"
+python_path="../../../"
 export PYTHONPATH=$python_path
 
-dir="../experiments/"
+dir="../../experiments/"
 absolute_path=$(readlink -f $dir)
 # print the full (not relative) path of the dir variable
 echo "current dir is set to: $absolute_path"

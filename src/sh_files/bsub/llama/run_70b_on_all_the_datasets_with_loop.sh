@@ -29,13 +29,13 @@ echo "Loading config with: " \$config_bash
 source \$config_bash
 
 # Set Python path
-python_path="../../"
+python_path="../../../"
 export PYTHONPATH=\$python_path
 
 module load cuda
 module load torch
 # Change to the experiments directory
-dir="../experiments/"
+dir="../../experiments/"
 absolute_path=\$(readlink -f \$dir)
 # Print the full (not relative) path of the dir variable
 echo "Current dir is set to: \$absolute_path"
