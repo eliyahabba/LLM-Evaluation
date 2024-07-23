@@ -1,22 +1,21 @@
 #!/bin/bash
-log_dir="../logs"
-mkdir -p "$log_dir"  # Make directory if it does not exist
-load_config_path="load_config.sh"
-config_bash=$(readlink -f $load_config_path)
-echo "Loading config with: " $config_bash
-source $config_bash
+
 #SBATCH --mem=12g
 #SBATCH --time=0:10:0
-#SBATCH --gres=gpu:1,vmem:12g
+#SBATCH --gres=gpu:1,vmem:24
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 #SBATCH --job-name=mmlu_job_array
 #SBATCH --array=0-246%50   # Full data is 246 configurations
-#SBATCH --output=../logs/mmlu_output_%A_%a.log
+#SBATCH --output=logs/slurm_output_%A_%a.log
 #SBATCH --killable
 #SBATCH --requeue
 
+load_config_path="load_config.sh"
+config_bash=$(readlink -f $load_config_path)
+echo "Loading config with: " $config_bash
+source $config_bash
 # Generate parameters based on dataset name, total items, and split size
 function generate_params {
     local dataset=$1
@@ -72,21 +71,20 @@ function set_parameters {
 # Get parameters for the current array job
 PARAMS=$(set_parameters $SLURM_ARRAY_TASK_ID)
 
-export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
-
+python_path="../../"
+export PYTHONPATH=$python_path
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch
 
-dir="../../experiments/"
+dir="../experiments/"
 absolute_path=$(readlink -f $dir)
 # print the full (not relative) path of the dir variable
 echo "current dir is set to: $absolute_path"
 cd $dir
 
-echo ${SLURM_ARRAY_TASK_ID}
 read -r card start end <<< "${PARAMS}"
 echo ${card}
 echo ${start}
 echo ${end}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card $card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name GEMMA2_9B --card $card --template_range $start $end --load_in_8bit

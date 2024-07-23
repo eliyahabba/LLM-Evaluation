@@ -2,7 +2,7 @@
 
 #SBATCH --mem=12g
 #SBATCH --time=0:10:0
-#SBATCH --gres=gpu:1,vmem:24g
+#SBATCH --gres=gpu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
@@ -83,10 +83,9 @@ absolute_path=$(readlink -f $dir)
 echo "current dir is set to: $absolute_path"
 cd $dir
 
-.
 echo ${SLURM_ARRAY_TASK_ID}
 read -r card start end <<< "${PARAMS}"
 echo ${card}
 echo ${start}
 echo ${end}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name GEMMA2_27B --card $card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name OLMO_1_7 --card $card --template_range $start $end --load_in_8bit
