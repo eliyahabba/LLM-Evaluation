@@ -1,21 +1,16 @@
 #!/bin/bash
-
 #SBATCH --mem=12g
 #SBATCH --time=6:0:0
-#SBATCH --gres=gpu:1,vmem:48g
+#SBATCH --gres=gpu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 #SBATCH --job-name=mmlu_job_array
-#SBATCH --array=0-133%50   # Adjust the %2 to set maximum concurrent jobs
+#SBATCH --array=0-113%50   # 114 cards in total
 #SBATCH --output=mmlu_output_%A_%a.log
 #SBATCH --killable
 #SBATCH --requeue
 
-load_config_path="load_config.sh"
-config_bash=$(readlink -f $load_config_path)
-echo "Loading config with: " $config_bash
-source $config_bash
 # Define a function to map array job indices to script parameters
 function set_parameters {
     case $1 in
@@ -117,6 +112,8 @@ function set_parameters {
         95) ARGS=("cards.mmlu.professional_accounting" 28 56);;
         96) ARGS=("cards.mmlu.professional_law" 0 28);;
         97) ARGS=("cards.mmlu.professional_law" 28 56);;
+        96) ARGS=("cards.mmlu.professional_law" 0 28);;
+        97) ARGS=("cards.mmlu.professional_law" 28 56);;
         98) ARGS=("cards.mmlu.professional_medicine" 0 28);;
         99) ARGS=("cards.mmlu.professional_medicine" 28 56);;
         100) ARGS=("cards.mmlu.professional_psychology" 0 28);;
@@ -147,15 +144,10 @@ source $config_bash
 
 # Now HF_HOME is available to use in this script
 echo "HF_HOME is set to: $HF_HOME"
-python_path="../../../"
-export PYTHONPATH=$python_path
+export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
+
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch
 
-dir="../../experiments/"
-absolute_path=$(readlink -f $dir)
-# print the full (not relative) path of the dir variable
-echo "current dir is set to: $absolute_path"
-cd $dir
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA70B --card ${ARGS[0]} --template_range ${ARGS[1]} ${ARGS[2]} --load_in_8bit
