@@ -19,10 +19,10 @@ echo "Loading config with: " $config_bash
 source $config_bash
 
 # Now HF_HOME is available to use in this script
-python_path="../../"
+python_path="../../../"
 export PYTHONPATH=$python_path
 
-dir="../experiments/"
+dir="../../experiments/"
 absolute_path=$(readlink -f $dir)
 # print the full (not relative) path of the dir variable
 echo "current dir is set to: $absolute_path"
