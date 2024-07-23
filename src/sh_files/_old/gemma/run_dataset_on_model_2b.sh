@@ -27,6 +27,4 @@ absolute_path=$(readlink -f $dir)
 echo "current dir is set to: $absolute_path"
 cd $dir
 
-.
-echo ${SLURM_ARRAY_TASK_ID}
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name GEMMA_2B --card $1 --template_range $2 $3     --num_demos $4 --demos_pool_size $5
