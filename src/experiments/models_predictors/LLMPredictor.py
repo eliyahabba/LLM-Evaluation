@@ -50,10 +50,13 @@ class LLMPredictor:
         filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_dataset, eval_value,
                                                                                eval_set_indexes,
                                                                                results_file_path)
-        # print in red the number of instances that were already predicted and will be skipped
-        print(colored(f"{len(eval_dataset)} instances were already predicted and will be skipped.", "red"))
+        # print in red the number of instances in the dataset
+        print(colored(f"{len(eval_dataset)} instances in the dataset.", "red"))
         # print in green the number of instances that will be predicted
         print(colored(f"{len(filter_eval_set)} instances will be predicted.", "green"))
+        # print in yellow the number of instances that were already predicted
+        print(colored(f"{len(eval_dataset) - len(filter_eval_set)} instances were already predicted.", "yellow"))
+
         loaded_data = self.load_results_file(results_file_path)
         # each result is a dictionary with the keys: 'idx', 'input_text', 'result', 'ground_truth'.
         # create a list of the indexes of the instances that were already predicted

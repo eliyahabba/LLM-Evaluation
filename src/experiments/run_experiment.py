@@ -106,6 +106,10 @@ class ExperimentRunner:
                                 print(f"max_instances in the current experiment: {entry_experiment[key]}")
                                 print(f"max_instances in the previous experiment: {data[key]}")
                             else:
+                                # print the key and the value of the key in the current experiment and the previous experiment
+                                print(f"{key} in the current experiment: {entry_experiment[key]}")
+                                print(f"{key} in the previous experiment: {data[key]}")
+
                                 raise ValueError(f"The metadata of the experiment in {results_file_path} "
                                                  f"is different from the one in the current experiment.")
                 # print blue message
