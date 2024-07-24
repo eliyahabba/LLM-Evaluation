@@ -7,6 +7,7 @@ import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers.tokenization_utils_base import BatchEncoding
 
+from src.experiments.models_predictors.PerplexityCalculator import PerplexityCalculator
 from src.utils.Constants import Constants
 from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils
@@ -18,7 +19,9 @@ access_token = Utils.get_access_token()
 class LLMProcessor:
     def __init__(self, model_name: str,
                  load_in_4bit: bool = False, load_in_8bit: bool = False,
-                 trust_remote_code: bool = False, return_token_type_ids: bool = True):
+                 trust_remote_code: bool = False, return_token_type_ids: bool = True,
+                 is_get_perplexity: bool = True,
+                 ):
         # Define the pre-trained model and tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(model_name,
                                                        token=access_token,
@@ -33,6 +36,7 @@ class LLMProcessor:
                                                           trust_remote_code=trust_remote_code)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.return_token_type_ids = return_token_type_ids
+        self.is_get_perplexity = is_get_perplexity
 
     def tokenize_text(self, input_text: str) -> BatchEncoding:
         """
@@ -131,7 +135,7 @@ class LLMProcessor:
                 predict_prob_of_tokens: bool = False,
                 max_new_tokens: int = LLMProcessorConstants.MAX_NEW_TOKENS,
                 possible_gt_tokens: list = None,
-                is_print: bool = False) -> Tuple[List[str], List[str]]:
+                is_print: bool = False) -> Tuple[List[str], List[str], List[float]]:
         """
         Predict the next word in the sequence.
         """
@@ -141,7 +145,9 @@ class LLMProcessor:
             max_tokens = self.get_max_token(outputs, possible_gt_tokens)
         else:
             max_tokens = [None] * outputs.scores[0].size(0)
-        return generated_tokens_decoded, max_tokens
+
+        perplexities = self.get_perplexity(input_tokenized) if self.is_get_perplexity else [None] * outputs.scores[0].size(0)
+        return generated_tokens_decoded, max_tokens, perplexities
 
     def get_max_token(self, outputs, tokens):
         # Get the scores from the output
@@ -161,6 +167,11 @@ class LLMProcessor:
             max_tokens.append(max_token)
 
         return max_tokens
+
+    def get_perplexity(self, input_tokenized)->List[float]:
+        perplexity_calculator = PerplexityCalculator()
+        ppls = perplexity_calculator.compute(self.model, self.tokenizer, input_tokenized, device=self.device)
+        return ppls
 
 
 # Execute the main function

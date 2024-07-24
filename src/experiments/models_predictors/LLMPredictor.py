@@ -69,13 +69,15 @@ class LLMPredictor:
             loaded_max_tokens_probability = [
                 " " if 'MaxTokenProbability' not in result else result['MaxTokenProbability'] for result in
                 loaded_results]
-
+            loaded_perplexities = [
+                " " if 'Perplexity' not in result else result['Perplexity'] for result in loaded_results]
         else:
             loaded_idxs = []
             loaded_input_texts = []
             loaded_ground_truths = []
             loaded_answers = []
             loaded_max_tokens_probability = []
+            loaded_perplexities = []
 
         # run the model on the dataset and save the results in the file after each batch
         counter_idx = 0
@@ -88,7 +90,7 @@ class LLMPredictor:
             counter_idx += self.batch_size
             input_text = [batch_instance["source"] for batch_instance in batch_instances]
             ground_truth = [batch_instance["target"] for batch_instance in batch_instances]
-            generated_tokens_decoded, max_tokens = self.llmp.predict(input_text, self.predict_prob_of_tokens,
+            generated_tokens_decoded, max_tokens, perplexities = self.llmp.predict(input_text, self.predict_prob_of_tokens,
                                                                      max_new_tokens,
                                                                      possible_gt_tokens=possible_gt_tokens)
             loaded_idxs.extend(batch_indexes)
@@ -96,8 +98,10 @@ class LLMPredictor:
             loaded_ground_truths.extend(ground_truth)
             loaded_answers.extend(generated_tokens_decoded)
             loaded_max_tokens_probability.extend(max_tokens)
+            loaded_perplexities.extend(perplexities)
             self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
-                              loaded_ground_truths, loaded_max_tokens_probability, loaded_data)
+                              loaded_ground_truths, loaded_max_tokens_probability,
+                                loaded_perplexities, loaded_data)
 
     def predict_dataset(self, llm_dataset: NLPDataset, evaluate_on: list,
                         results_file_path: Path, possible_gt_tokens: List[str] = None) -> None:
@@ -126,7 +130,8 @@ class LLMPredictor:
 
     def save_results(self, results_file_path: Path, eval_value: str,
                      idxs: List[int], input_texts: List[str], results: List[str], ground_truths: List[str],
-                     loaded_max_tokens_probability: List[str], loaded_data: dict) -> None:
+                     loaded_max_tokens_probability: List[str], loaded_perplexities: List[str],
+                     loaded_data: dict) -> None:
         """
         Save the results in a JSON file.
 
@@ -136,22 +141,30 @@ class LLMPredictor:
         @param input_texts: The input texts of the instances.
         @param results: The model predictions.
         @param ground_truths: The ground truth of the instances.
+        @param loaded_max_tokens_probability: The maximum token probability of the instances.
+        @param loaded_perplexities: The perplexities of the instances.
+        @param loaded_data: The dictionary containing the loaded data.
 
         """
 
-        entries = self.create_entries(idxs, input_texts, results, loaded_max_tokens_probability, ground_truths)
+        entries = self.create_entries(idxs, input_texts, results, loaded_max_tokens_probability,
+                                    loaded_perplexities, ground_truths)
         loaded_data['results'][eval_value] = entries
         with open(results_file_path, "w") as f:
             json.dump(loaded_data, f)
 
     def create_entries(self, idxs: List[int], input_texts: List[str], results: List[str],
-                       loaded_max_tokens_probability: List[str], ground_truths: List[str]):
+                       loaded_max_tokens_probability: List[str],
+                       loaded_perplexities: List[str],
+                       ground_truths: List[str]):
         """
         Create the entries for the results file.
         @param idxs: The indices of the instances.
         @param input_texts: The input texts of the instances.
         @param results: The model predictions.
         @param ground_truths: The ground truth of the instances.
+        @param loaded_max_tokens_probability: The maximum token probability of the instances.
+        @param loaded_perplexities: The perplexities of the instances.
         @return: The list of entries.
         """
         entries = [{
@@ -159,9 +172,10 @@ class LLMPredictor:
             "Instance": instance,
             "Result": result,
             "MaxTokenProbability": max_token,
+            "Perplexity": perplexity,
             "GroundTruth": ground_truth
-        } for idx, instance, result, max_token, ground_truth in
-            zip(idxs, input_texts, results, loaded_max_tokens_probability, ground_truths)]
+        } for idx, instance, result, max_token, perplexity , ground_truth in
+            zip(idxs, input_texts, results, loaded_max_tokens_probability, loaded_perplexities, ground_truths)]
         # sort the entries by the index
         entries = sorted(entries, key=lambda x: x["Index"])
         return entries
