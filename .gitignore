@@ -1,3 +1,4 @@
 /.idea
 /src/utils/access_token
 **/__pycache__/
+**/logs/
