@@ -20,7 +20,9 @@ source $config_bash
 
 # Now HF_HOME is available to use in this script
 python_path="../../../"
+python_path=$(readlink -f $python_path)
 export PYTHONPATH=$python_path
+echo "PYTHONPATH is set to: $PYTHONPATH"
 
 dir="../../experiments/"
 absolute_path=$(readlink -f $dir)
@@ -33,4 +35,4 @@ module load cuda
 module load torch
 
 echo ${SLURM_ARRAY_TASK_ID}
-CUDA_LAUNCH_BLOCKING=1 python calculate_perplexity.py
+CUDA_LAUNCH_BLOCKING=1 python calculate_perplexity2.py

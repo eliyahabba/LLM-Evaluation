@@ -72,11 +72,14 @@ function set_parameters {
 PARAMS=$(set_parameters $SLURM_ARRAY_TASK_ID)
 
 python_path="../../../"
-export PYTHONPATH=$python_path
+absolute_python_path=$(readlink -f $python_path)
+export PYTHONPATH=$absolute_python_path
+# print the full (not relative) path of the dir variable
+echo "PYTHONPATH is set to: $PYTHONPATH"
+
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch
-
 dir="../../experiments/"
 absolute_path=$(readlink -f $dir)
 # print the full (not relative) path of the dir variable

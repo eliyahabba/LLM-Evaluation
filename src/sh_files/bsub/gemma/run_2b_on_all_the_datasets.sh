@@ -65,7 +65,10 @@ echo "args are: $ARGS"
 read -r card start end <<< "${PARAMS}"
 
 python_path="../../../"
-export PYTHONPATH=$python_path
+absolute_python_path=$(readlink -f $python_path)
+export PYTHONPATH=$absolute_python_path
+# print the full (not relative) path of the dir variable
+echo "PYTHONPATH is set to: $PYTHONPATH"
 
 dir="../../experiments/"
 absolute_path=$(readlink -f $dir)

@@ -20,7 +20,10 @@ source $config_bash
 
 # Now HF_HOME is available to use in this script
 python_path="../../../"
-export PYTHONPATH=$python_path
+absolute_python_path=$(readlink -f $python_path)
+export PYTHONPATH=$absolute_python_path
+# print the full (not relative) path of the dir variable
+echo "PYTHONPATH is set to: $PYTHONPATH"
 
 dir="../../experiments/"
 absolute_path=$(readlink -f $dir)
