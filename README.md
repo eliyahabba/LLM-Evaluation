@@ -60,13 +60,10 @@ needs.
 
 To launch evaluations across all datasets:
 
-Choose a model, for example, *Llama*.
-Navigate to the model's directory. If the model directory does not exist, please create a folder structured similarly to
-the existing model folders:
+Choose a model, for example, *Llama* and navigate to scheduler environment.
 
 ```
-mkdir -p src/sh_files/llama
-cd src/sh_files
+cd src/sh_files/{scheduler environment - (slrum/bsub)}
 ```
 
 Run the script:
