@@ -2,7 +2,7 @@
 
 # Example of how to use the Python script to get the 'hf_home' configuration
 # Assuming the Python script is two levels up from the current directory
-config_path="../../config/get_config.py"
+config_path="../../../config/get_config.py"
 absolute_path=$(readlink -f $config_path)
 echo "Using configuration script at $absolute_path"
 
