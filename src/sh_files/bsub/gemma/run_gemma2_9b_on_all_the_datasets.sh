@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#conda activate gabim
+conda activate gabim
 
 load_config_path="load_config.sh"
 config_bash=$(readlink -f $load_config_path)
