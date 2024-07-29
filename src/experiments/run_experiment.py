@@ -4,7 +4,6 @@ import time
 from pathlib import Path
 from typing import Tuple
 
-import pandas as pd
 from termcolor import colored
 from unitxt.templates import Template
 
@@ -29,7 +28,6 @@ class ExperimentRunner:
 
     def __init__(self, args):
         self.args = args
-        self.update_list = ResultConstants.UPDATED_DATA_PATH
 
     def load_template(self, template_num: int, multiple_choice_path) -> \
             Tuple[str, Template]:
@@ -164,38 +162,8 @@ class ExperimentRunner:
         llm_pred = LLMPredictor(llm_proc, predict_prob_of_tokens=self.args.predict_prob_of_tokens,
                                 batch_size=self.args.batch_size)
 
-        self.add_to_update_list(model=Utils.get_model_name(self.args.model_name),
-                                dataset=Utils.get_card_name(self.args.card),
-                                shots=self.num_of_shot_icl,
-                                configuration=Utils.get_num_from_template_name(template_name))
         llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path,
                                  possible_gt_tokens=possible_gt_tokens)
-
-    def add_to_update_list(self, model, dataset, shots, configuration):
-        # Load the update list
-        try:
-            update_list = pd.read_csv(self.update_list, names=['Model', 'Dataset', 'Shots', 'Configuration'])
-
-        except FileNotFoundError:
-            # If the file doesn't exist, create an empty DataFrame
-            update_list = pd.DataFrame(columns=['Model', 'Dataset', 'Shots', 'Configuration'])
-
-        # Check if the entry already exists
-        if not ((update_list['Model'] == model) &
-                (update_list['Dataset'] == dataset) &
-                (update_list['Shots'] == shots) &
-                (update_list['Configuration'] == configuration)).any():
-            # Add the new entry
-            new_entry = pd.DataFrame([[model, dataset, shots, configuration
-                                       ]], columns=['Model', 'Dataset', 'Shots', 'Configuration'])
-            update_list = pd.concat([update_list, new_entry], ignore_index=True)
-            # Save the updated list
-            # update_list['Configurtion'] = update_list['Configuration'].astype(int)
-            # locking the file before writing to it
-            update_list.to_csv(self.update_list, index=False, header=False)
-        #     print(f"Added ({model}, {dataset}, {shots}) to {filename}.")
-        # else:
-        #     print(f"Entry ({model}, {dataset}, {shots}) already exists in {filename}.")
 
 
 def parser_bit_precision(args: argparse.Namespace) -> Tuple[bool, bool]:
