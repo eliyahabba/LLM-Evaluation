@@ -22,14 +22,14 @@ class DatasetLoader:
         self.max_instances = max_instances
         self.template_name = template_name
 
-    def read_mmlu_dataset_sizes(self):
+    def read_dataset_sizes(self):
         """
         Reads the MMLU dataset sizes from the file.
 
         @return: The MMLU dataset sizes
         """
-        mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
-        return mmlu_dataset_sizes
+        dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.DATASET_SIZES_PATH)
+        return dataset_sizes
 
     def get_validation_size(self, card: str):
         """
@@ -38,9 +38,9 @@ class DatasetLoader:
         @param card: The card
         @return: The validation size
         """
-        mmlu_dataset_sizes = self.read_mmlu_dataset_sizes()
+        dataset_sizes = self.read_dataset_sizes()
         validation_size = \
-            mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == card.split("cards.mmlu.")[1]]["validation"].values[0]
+            dataset_sizes[dataset_sizes["Name"] == card.split("cards.")[1]]["validation"].values[0]
         return validation_size
 
     def load(self) -> NLPDataset:

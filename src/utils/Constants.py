@@ -95,7 +95,8 @@ class Constants:
         MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME
         DATA_PATH = Path(__file__).parents[2] / "Data"
         TEMPLATES_METADATA = "templates_metadata.csv"
-        MMLU_DATASET_SIZES_PATH = DATA_PATH / "mmlu_datasets_sizes.csv"
+        DATASET_SIZES_PATH = DATA_PATH / "datasets_sizes.csv"
+        MMLU_METADATA_PATH = DATA_PATH / "mmlu_metadata.csv"
 
     class ExperimentConstants:
         TEMPLATES_RANGE = [0, 1]
@@ -118,7 +119,7 @@ class Constants:
         # NUM_DEMOS = 3
         # DEMOS_POOL_SIZE = 20
         DEMOS_TAKEN_FROM = "validation"
-        BATCH_SIZE = 4
+        BATCH_SIZE = 1
 
     class McNemarTestConstants:
         ALPHA = 0.05
@@ -146,9 +147,6 @@ class Constants:
         MAIN_RESULTS_PATH = Path(__file__).parents[2] / MAIN_RESULTS_FOLDER_NAME
         SUMMARIZE_DF_NAME = "summarize_df_path.csv"
         SUMMARIZE_DF_PATH = MAIN_RESULTS_PATH / SUMMARIZE_DF_NAME
-
-        UPDATED_DATA = "updated_data.csv"
-        UPDATED_DATA_PATH = MAIN_RESULTS_PATH / UPDATED_DATA
 
     class ClusteringConstants:
         RANDOM_STATE = 0

@@ -10,8 +10,6 @@ ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
-mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
-
 
 class ExperimentsResultsFolder:
     def __init__(self, eval_on: str):
@@ -81,8 +79,8 @@ def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict 
     dataset_name = sorted_file_paths[0].parents[2].name
     if "mmlu" not in dataset_name:
         return
-    mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
-    dataset_size = mmlu_dataset_sizes[mmlu_dataset_sizes["Name"] == dataset_name.split("mmlu.")[1]]
+    dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.DATASET_SIZES_PATH)
+    dataset_size = dataset_sizes[dataset_sizes["Name"] == dataset_name]
     exs_numbers = []
     all_files_names = [f"experiment_template_{i}" for i in range(0, 56)]
     sorted_file_names = [file.name.split(".json")[0] for file in sorted_file_paths]

@@ -15,7 +15,7 @@ class MMLUData:
 
     @classmethod
     def initialize(cls):
-        cls.mmlu_metadata_file = Path(__file__).parents[2] / TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH
+        cls.mmlu_metadata_file = Path(__file__).parents[2] / TemplatesGeneratorConstants.MMLU_METADATA_PATH
         cls.mmlu_metadata = pd.read_csv(cls.mmlu_metadata_file)
 
     @staticmethod

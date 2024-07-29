@@ -206,16 +206,16 @@ if __name__ == "__main__":
     # models_names = [models_name for models_name in models_names if "Lla" in str(models_name)]
     models_names = models_names if args.model_index is None else [models_folders[args.model_index]]
     error_files, errors_msgs = [], []
-    mmlu_dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.MMLU_DATASET_SIZES_PATH)
+    dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.DATASET_SIZES_PATH)
     for model_name in models_names:
         print("Models to evaluate: ", model_name)
         datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
-        datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
+        # datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
         # datasets = datasets[::-1]
         for dataset_folder in datasets:
             print(f"Start evaluating {dataset_folder.name}")
-            car_mmlu_dataset_sizes = mmlu_dataset_sizes[
-                mmlu_dataset_sizes["Name"] == dataset_folder.name.split("mmlu.")[1]]
+            car_dataset_sizes = dataset_sizes[
+                dataset_sizes["Name"] == dataset_folder.name]
             shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
             # shots = [shot for shot in shots if "one" in str(shot)]
             loaded_datasets = {}
@@ -229,11 +229,12 @@ if __name__ == "__main__":
 
                     summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in args.eval_on}
                     for eval_on_value in args.eval_on:
-                        size = car_mmlu_dataset_sizes.iloc[0][eval_on_value]
+                        size = car_dataset_sizes.iloc[0][eval_on_value]
 
                         comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
                         for results_file in tqdm(results_files):
                             try:
+                                llm_dataset = load_dataset(results_file, loaded_datasets)
                                 eval_model = EvaluateModel(results_file, eval_on_value)
                                 results = eval_model.load_results_from_experiment_file()
                                 results_file_number = results_file.name.split(".json")[0]
