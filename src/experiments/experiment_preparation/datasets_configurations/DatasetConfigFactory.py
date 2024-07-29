@@ -18,9 +18,9 @@ class DatasetConfigFactory:
     @staticmethod
     def get_dataset(dataset_name):
         dataset_classes = {
-            'AI2_ARC_Challenge': AI2ARCChallengeConfig,
-            'BoolQ': BoolQConfig,
-            'HellaSwag': HellaSwagConfig,
+            'ai2_arc.arc_challenge': AI2ARCChallengeConfig,
+            'boolq.multiple_choice': BoolQConfig,
+            'hellaswag': HellaSwagConfig,
             # Add other datasets here
         }
         mmlu_dataset_classes = DatasetConfigFactory.get_create_mmlu_config()
@@ -31,10 +31,10 @@ class DatasetConfigFactory:
     def get_all_datasets():
         mmlu_dataset_classes = DatasetConfigFactory.get_create_mmlu_config()
         dataset_classes = {
-            'AI2_ARC_Challenge': AI2ARCChallengeConfig,
-            'BoolQ': BoolQConfig,
-            'HellaSwag': HellaSwagConfig,
+            'ai2_arc.arc_challenge': AI2ARCChallengeConfig,
+            'boolq.multiple_choice': BoolQConfig,
+            'hellaswag': HellaSwagConfig,
             # Add other datasets here
         }
         dataset_classes.update(mmlu_dataset_classes)
-        return mmlu_dataset_classes
+        return dataset_classes

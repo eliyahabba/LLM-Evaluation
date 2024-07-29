@@ -9,7 +9,7 @@ class HellaSwagConfig(BaseDatasetConfig):
         return self.get_structured_instruction_text(self.get_context_topic())
 
     def get_context_topic(self):
-        return "Topic: {topic}\n"
+        return "Context: {context}\n"
 
 
 if __name__ == "__main__":

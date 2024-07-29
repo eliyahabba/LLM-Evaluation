@@ -8,6 +8,10 @@ class AI2ARCChallengeConfig(BaseDatasetConfig):
     def get_input_format(self):
         return self.get_structured_instruction_text(self.get_context_topic())
 
+    def get_structured_instruction_text(self, context_topic):
+        # Provide a default implementation if needed
+        return f"{context_topic}Question: [question] Choices: [choices] Answer: [Answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
+
     def get_context_topic(self):
         return "Topic: {topic}\n"
 

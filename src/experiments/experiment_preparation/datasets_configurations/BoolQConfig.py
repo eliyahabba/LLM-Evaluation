@@ -8,8 +8,10 @@ class BoolQConfig(BaseDatasetConfig):
     def get_input_format(self):
         return self.get_structured_instruction_text(self.get_context_topic())
 
-    def get_context_topic(self):
-        return "Topic: {topic}\n"
+    def get_structured_instruction_text(self, context_topic):
+        # Provide a default implementation if needed
+        return f"Context: [Context]\nQuestion: [question] Choices: [choices] Answer: [answer]\nContext: {{context}}\nQuestion: {{question}} Choices: {{choices}} Answer:"
+
 
 
 if __name__ == "__main__":
