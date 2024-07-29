@@ -1,6 +1,6 @@
 #!/bin/bash
 
-conda activate gabim
+#conda activate gabim
 
 load_config_path="load_config.sh"
 config_bash=$(readlink -f $load_config_path)
@@ -34,7 +34,7 @@ function set_parameters {
         ["mmlu.professional_psychology"]="56 10"
         ["mmlu.miscellaneous"]="56 6"
         ["ai2_arc.arc_challenge"]="56 3"
-        ["boolq"]="56 2"
+        ["boolq.multiple_choice"]="56 2"
         ["hellaswag"]="56 1"
        )
 
