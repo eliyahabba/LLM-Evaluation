@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #SBATCH --mem=10g
-#SBATCH --time=0:10:0
+#SBATCH --time=3:0:0
 #SBATCH --gres=gpu:1,vmem:16g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 #SBATCH --job-name=mmlu_job_array
-#SBATCH --array=0-246%50   # Full data is 246 configurations
+#SBATCH --array=0-237%50   # Full data is 246 configurations
 #SBATCH --output=logs/slurm_output_%A_%a.log
 #SBATCH --killable
 #SBATCH --requeue
@@ -43,7 +43,7 @@ function set_parameters {
         ["mmlu.professional_psychology"]="56 10"
         ["mmlu.miscellaneous"]="56 6"
         ["ai2_arc.arc_challenge"]="56 3"
-        ["boolq"]="56 2"
+        ["boolq.multiple_choice"]="56 2"
         ["hellaswag"]="56 1"
        )
 

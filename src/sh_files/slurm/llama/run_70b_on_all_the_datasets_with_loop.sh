@@ -11,7 +11,7 @@ function submit_job {
     cat <<EOF > $job_script
 #!/bin/bash
 #SBATCH --mem=12g
-#SBATCH --time=0:10:0
+#SBATCH --time=3:0:0
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
