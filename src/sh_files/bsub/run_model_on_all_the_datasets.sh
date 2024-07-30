@@ -59,7 +59,7 @@ function set_parameters {
 }
 
 # Get parameters for the current array job
-PARAMS=$(set_parameters $1)
+set_parameters $1
 
 python_path="../../../"
 absolute_python_path=$(readlink -f $python_path)
@@ -73,9 +73,8 @@ absolute_path=$(readlink -f $dir)
 echo "current dir is set to: $absolute_path"
 cd $dir
 
-echo ${SLURM_ARRAY_TASK_ID}
-read -r card start end <<< "${PARAMS}"
-echo ${card}
-echo ${start}
-echo ${end}
+ read -r card start end <<< "${PARAMS}"
+echo "Card: $card"
+echo "Starting configuration: $start"
+echo "Ending configuration: $end"
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name $2 --card $card --template_range $start $end --load_in_8bit

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#conda activate gabim
+conda activate gabim
 
 load_config_path="load_config.sh"
 config_bash=$(readlink -f $load_config_path)
@@ -76,9 +76,9 @@ echo "current dir is set to: $absolute_path"
 cd $dir
 
 read -r card start end <<< "${PARAMS}"
-echo ${card}
-echo ${start}
-echo ${end}
+echo "Card: $card"
+echo "Starting configuration: $start"
+echo "Ending configuration: $end"
 # Submit jobs for each set of parameters
 for PARAM in "${ARGS[@]}"; do
     read -r card start end <<< "${PARAM}"

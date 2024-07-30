@@ -60,7 +60,7 @@ function set_parameters {
 }
 
 # Get parameters for the current array job
-PARAMS=$(set_parameters $1)
+set_parameters $1
 
 python_path="../../../"
 absolute_python_path=$(readlink -f $python_path)
@@ -74,9 +74,12 @@ absolute_path=$(readlink -f $dir)
 echo "current dir is set to: $absolute_path"
 cd $dir
 
-echo ${SLURM_ARRAY_TASK_ID}
 read -r card start end <<< "${PARAMS}"
-echo ${card}
-echo ${start}
-echo ${end}
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name PHI_MEDIUM --card $card --template_range $start $end --load_in_8bit
+echo "Card: $card"
+echo "Starting configuration: $start"
+echo "Ending configuration: $end"
+for PARAM in "${ARGS[@]}"; do
+    read -r card start end <<< "${PARAM}"
+    echo "Submitting job for: $card from $start to $end"
+    jbsub -q x86_1h -cores 1+1 -require a100_40gb bash -c "python run_experiment.py --model_name PHI_MEDIUM --card $card --template_range $start $end --load_in_8bit"
+done
