@@ -92,7 +92,7 @@ cd $dir
 
 echo ${SLURM_ARRAY_TASK_ID}
 read -r card start end <<< "${PARAMS}"
-echo ${card}
-echo ${start}
-echo ${end}
+echo "Card: $card"
+echo "Starting configuration: $start"
+echo "Ending configuration: $end"
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA7B_BASE --card $card --template_range $start $end --load_in_8bit
