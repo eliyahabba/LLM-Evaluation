@@ -7,7 +7,7 @@
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 #SBATCH --job-name=mmlu_job_array
-#SBATCH --array=0-237%50   # Full data is 246 configurations
+#SBATCH --array=0-317%50   # Full data is 246 configurations
 #SBATCH --output=logs/slurm_output_%A_%a.log
 #SBATCH --killable
 #SBATCH --requeue
