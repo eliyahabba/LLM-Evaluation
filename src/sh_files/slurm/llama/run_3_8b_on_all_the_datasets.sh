@@ -38,11 +38,11 @@ function set_parameters {
 
     # Define custom splits for specified datasets
     declare -A custom_config=(
-        ["mmlu.professional_law"]="56 3"
+        ["mmlu.professional_law"]="56 4"
         ["mmlu.high_school_psychology"]="56 10"
         ["mmlu.professional_psychology"]="56 10"
         ["mmlu.miscellaneous"]="56 6"
-        ["ai2_arc.arc_challenge"]="56 3"
+        ["ai2_arc.arc_challenge"]="56 2"
         ["boolq.multiple_choice"]="56 2"
         ["hellaswag"]="56 1"
        )

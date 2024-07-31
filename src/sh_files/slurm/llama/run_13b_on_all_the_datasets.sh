@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH --mem=12g
-#SBATCH --time=3:0:0
-#SBATCH --gres=gpu:1,vmem:12g
+#SBATCH --time=4:0:0
+#SBATCH --gres=gpwwu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
@@ -42,8 +42,8 @@ function set_parameters {
         ["mmlu.high_school_psychology"]="56 10"
         ["mmlu.professional_psychology"]="56 10"
         ["mmlu.miscellaneous"]="56 6"
-        ["ai2_arc.arc_challenge"]="56 3"
-        ["boolq.multiple_choice"]="56 2"
+        ["ai2_arc.arc_challenge"]="56 1"
+        ["boolq.multiple_choice"]="56 1"
         ["hellaswag"]="56 1"
        )
 

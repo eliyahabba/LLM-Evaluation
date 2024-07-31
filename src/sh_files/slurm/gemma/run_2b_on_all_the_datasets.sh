@@ -42,8 +42,8 @@ function set_parameters {
         ["mmlu.high_school_psychology"]="56 10"
         ["mmlu.professional_psychology"]="56 10"
         ["mmlu.miscellaneous"]="56 6"
-        ["ai2_arc.arc_challenge"]="56 3"
-        ["boolq.multiple_choice"]="56 2"
+        ["ai2_arc.arc_challenge"]="56 1"
+        ["boolq.multiple_choice"]="56 1"
         ["hellaswag"]="56 1"
        )
 
@@ -86,6 +86,8 @@ absolute_path=$(readlink -f $dir)
 echo "current dir is set to: $absolute_path"
 cd $dir
 
+
+export UNITXT_ALLOW_UNVERIFIED_CODE="True"
 echo ${SLURM_ARRAY_TASK_ID}
 read -r card start end <<< "${PARAMS}"
 echo "Card: $card"
