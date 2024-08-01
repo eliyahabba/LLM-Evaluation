@@ -80,6 +80,6 @@ read -r card start end <<< "${PARAMS}"
 for PARAM in "${ARGS[@]}"; do
     read -r card start end <<< "${PARAM}"
     echo "Submitting job for: $card from $start to $end"
-    jbsub -q x86_6h -mem 32G -cores 1+1 -require a100_40gb -out "/dccstor/eval/LLM-Evaluation/out/%J_g9b.stdout"  bash -c "python run_experiment.py --model_name GEMMA2_27B --card $card --template_range $start $end --load_in_8bit"
+    jbsub -q x86_6h -mem 32G -cores 1+1 -require a100_40gb -out "/dccstor/eval/LLM-Evaluation/out/%J_g2_27b.stdout"  bash -c "python run_experiment.py --model_name GEMMA2_27B --card $card --template_range $start $end --load_in_8bit"
 done
 
