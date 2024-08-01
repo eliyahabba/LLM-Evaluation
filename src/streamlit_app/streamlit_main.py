@@ -1,7 +1,11 @@
 import argparse
 import sys
 from pathlib import Path
+
+import matplotlib
 from streamlit.web import cli as stcli
+
+matplotlib.use('Agg')
 
 # TODO: use theses flags to run the app if there will be problems with the streamlit cli
 # "--browser.serverAddress", "localhost",
