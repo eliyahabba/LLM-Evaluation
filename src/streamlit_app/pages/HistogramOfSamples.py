@@ -87,7 +87,7 @@ class HistogramOfSamples:
 
         # Adding title and labels
         ax.set_title(title, fontsize=16)
-        ax.set_xlabel("Number of Templates with Correct Prediction", fontsize=14)
+        ax.set_xlabel("Percentage of Templates with Correct Predictions", fontsize=14)
         ax.set_ylabel("Number of Examples", fontsize=14)
 
         # Customizing tick labels from and plot all the bins
