@@ -61,8 +61,6 @@ function set_parameters {
 
 # Get parameters for the current array job
 set_parameters $1
-echo "args are: $ARGS"
-read -r card start end <<< "${PARAMS}"
 
 python_path="../../../"
 absolute_python_path=$(readlink -f $python_path)
@@ -76,6 +74,8 @@ absolute_path=$(readlink -f $dir)
 echo "current dir is set to: $absolute_path"
 cd $dir
 
+export UNITXT_ALLOW_UNVERIFIED_CODE="True"
+read -r card start end <<< "${PARAMS}"
 echo "Card: $card"
 echo "Starting configuration: $start"
 echo "Ending configuration: $end"

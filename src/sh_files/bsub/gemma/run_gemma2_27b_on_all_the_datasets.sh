@@ -74,6 +74,7 @@ absolute_path=$(readlink -f $dir)
 echo "current dir is set to: $absolute_path"
 cd $dir
 
+export UNITXT_ALLOW_UNVERIFIED_CODE="True"
 read -r card start end <<< "${PARAMS}"
 # Submit jobs for each set of parameters
 for PARAM in "${ARGS[@]}"; do
