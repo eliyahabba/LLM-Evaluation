@@ -8,8 +8,9 @@ class HellaSwagConfig(BaseDatasetConfig):
     def get_input_format(self):
         return self.get_structured_instruction_text(self.get_context_topic())
 
-    def get_context_topic(self):
-        return "Context: {context}\n"
+    def get_structured_instruction_text(self, context_topic):
+        # Provide a default implementation if needed
+        return f"Context: [context] Completion Choices: [choices] Answer: [answer]\nContext: {{context}} Completion Choices: {{choices}} Answer:"
 
 
 if __name__ == "__main__":
