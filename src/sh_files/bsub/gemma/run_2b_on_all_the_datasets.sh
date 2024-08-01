@@ -29,11 +29,11 @@ function set_parameters {
 
     # Define custom splits for specified datasets
     declare -A custom_config=(
-        ["mmlu.professional_law"]="56 3"
+        ["mmlu.professional_law"]="56 4"
         ["mmlu.high_school_psychology"]="56 10"
         ["mmlu.professional_psychology"]="56 10"
         ["mmlu.miscellaneous"]="56 6"
-        ["ai2_arc.arc_challenge"]="56 3"
+        ["ai2_arc.arc_challenge"]="56 2"
         ["boolq.multiple_choice"]="56 2"
         ["hellaswag"]="56 1"
        )
@@ -61,8 +61,6 @@ function set_parameters {
 
 # Get parameters for the current array job
 set_parameters $1
-echo "args are: $ARGS"
-read -r card start end <<< "${PARAMS}"
 
 python_path="../../../"
 absolute_python_path=$(readlink -f $python_path)
@@ -76,6 +74,8 @@ absolute_path=$(readlink -f $dir)
 echo "current dir is set to: $absolute_path"
 cd $dir
 
+export UNITXT_ALLOW_UNVERIFIED_CODE="True"
+read -r card start end <<< "${PARAMS}"
 echo "Card: $card"
 echo "Starting configuration: $start"
 echo "Ending configuration: $end"
@@ -83,5 +83,5 @@ echo "Ending configuration: $end"
 for PARAM in "${ARGS[@]}"; do
     read -r card start end <<< "${PARAM}"
     echo "Submitting job for: $card from $start to $end"
-    jbsub -q x86_1h -cores 1+1 -require a100_40gb bash -c "python run_experiment.py --model_name GEMMA_2B --card $card --template_range $start $end --load_in_8bit"
+    jbsub -q x86_6h -cores 1+1 -require a100_40gb bash -c "python run_experiment.py --model_name GEMMA_2B --card $card --template_range $start $end --load_in_8bit"
 done

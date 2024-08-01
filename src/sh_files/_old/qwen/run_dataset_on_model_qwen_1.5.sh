@@ -31,4 +31,5 @@ echo "current dir is set to: $absolute_path"
 cd $dir
 
 echo ${SLURM_ARRAY_TASK_ID}
+export UNITXT_ALLOW_UNVERIFIED_CODE="True"
 CUDA_LAUNCH_BLOCKING=1 python run_experiment.py  --model_name QWEN --card cards.mmlu.global_facts --not_load_in_8bit  --template_range $1 $2
