@@ -81,5 +81,5 @@ echo "Ending configuration: $end"
 for PARAM in "${ARGS[@]}"; do
     read -r card start end <<< "${PARAM}"
     echo "Submitting job for: $card from $start to $end"
-    jbsub -q x86_6h -cores 1+1 -require a100_40gb bash -c "python run_experiment.py --model_name PHI --card $card --template_range $start $end --load_in_8bit"
+    jbsub -q x86_6h -mem 32G -cores 1+1 -require a100_40gb -out "/dccstor/eval/LLM-Evaluation/out/%J_g9b.stdout"  bash -c "python run_experiment.py --model_name PHI --card $card --template_range $start $end --load_in_8bit"
 done
