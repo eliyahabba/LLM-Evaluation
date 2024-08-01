@@ -86,6 +86,9 @@ absolute_path=$(readlink -f $dir)
 echo "current dir is set to: $absolute_path"
 cd $dir
 
+echo ${SLURM_ARRAY_TASK_ID}
+export UNITXT_ALLOW_UNVERIFIED_CODE="True"
+
 read -r card start end <<< "${PARAMS}"
 echo "Card: $card"
 echo "Starting configuration: $start"

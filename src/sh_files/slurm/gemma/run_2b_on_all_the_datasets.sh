@@ -89,7 +89,7 @@ cd $dir
 
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
 echo ${SLURM_ARRAY_TASK_ID}
-export UNITXT_ALLOW_UNVERIFIED_CODE="True"
+
 read -r card start end <<< "${PARAMS}"
 echo "Card: $card"
 echo "Starting configuration: $start"
