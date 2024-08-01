@@ -1,7 +1,7 @@
 import pandas as pd
 from unitxt.formats import SystemFormat
 from unitxt.standard import StandardRecipe
-from unitxt.templates import Template
+from unitxt.templates import Template, MultipleChoiceTemplate
 
 from src.experiments.data_loading.NLPDataset import NLPDataset
 from src.utils.Constants import Constants
@@ -55,8 +55,8 @@ class DatasetLoader:
             system_format = SystemFormat(
                 model_input_format=f"{self.system_format}\n{{source}}",
             )
-        if self.num_demos:
-            self.demos_pool_size = self.get_validation_size(self.card) - 1
+        # if self.num_demos:
+        #     self.demos_pool_size = self.get_validation_size(self.card) - 1
 
         recipe = StandardRecipe(
             card=self.card,
@@ -74,3 +74,27 @@ class DatasetLoader:
 
         llm_dataset = NLPDataset(self.template_name, dataset)
         return llm_dataset
+
+
+if __name__ == '__main__':
+    topic = "Topic_1"
+    question = "What is the capital of France?"
+    choices = ["Paris, London, Berlin, Rome"]
+
+    input_format=(f"Question: [question] Choices: [choices] Answer:"
+                  f" [Answer]\nChoices: {choices} Answer:)")
+    input_format=(f"Question")
+    template = MultipleChoiceTemplate(input_format=input_format,
+    target_prefix="",
+    # choices_field= "choices",
+    # target_field = "answer",
+    # choices_separator= ", ",
+    # source_choice_format = "{choice_numeral}. {choice_text}",
+    # target_choice_format = "{choice_numeral}",
+    # enumerator = "capitals",
+    # shuffle_choices= False
+    )
+    loader = DatasetLoader("cards.mmlu_pro.biology", template, "empty_system_format",
+                           "train", 1, 2, 10, "mmlu")
+    dataset = loader.load()
+
