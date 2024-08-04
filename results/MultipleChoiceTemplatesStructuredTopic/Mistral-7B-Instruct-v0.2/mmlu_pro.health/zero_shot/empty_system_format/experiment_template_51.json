@@ -1,0 +1,1 @@
+{"card": "cards.mmlu_pro.health", "template_name": "template_51", "model_name": "mistralai/Mistral-7B-Instruct-v0.2", "system_format": "empty_system_format", "max_instances": 14000, "num_demos": 0, "demos_pool_size": 1, "results": {}}

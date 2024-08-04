@@ -1,0 +1,1 @@
+{"card": "cards.mmlu_pro.physics", "template_name": "template_27", "model_name": "allenai/OLMo-1.7-7B-hf", "system_format": "empty_system_format", "max_instances": 14000, "num_demos": 0, "demos_pool_size": 1, "results": {}}

@@ -1,0 +1,16 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,number_of_instances
+template_0,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.191,0.191,accuracy,0.169,0.216,0.169,0.216,1132
+template_1,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.197,0.197,accuracy,0.176,0.223,0.176,0.223,1132
+template_2,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.189,0.189,accuracy,0.166,0.214,0.166,0.214,1132
+template_3,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.208,0.208,accuracy,0.186,0.235,0.186,0.235,1132
+template_4,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.194,0.194,accuracy,0.172,0.222,0.172,0.222,1132
+template_5,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.201,0.201,accuracy,0.180,0.229,0.180,0.229,1132
+template_18,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.189,0.189,accuracy,0.167,0.212,0.167,0.212,1132
+template_19,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.189,0.189,accuracy,0.164,0.210,0.164,0.210,1132
+template_20,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.191,0.191,accuracy,0.170,0.212,0.170,0.212,1132
+template_21,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.193,0.193,accuracy,0.169,0.215,0.169,0.215,1132
+template_22,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.193,0.193,accuracy,0.171,0.216,0.171,0.216,1132
+template_23,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.190,0.190,accuracy,0.168,0.211,0.168,0.211,1132
+template_45,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.237,0.237,accuracy,0.213,0.264,0.213,0.264,1132
+template_46,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.220,0.220,accuracy,0.197,0.244,0.197,0.244,1132
+template_47,cards.mmlu_pro.chemistry,empty_system_format,0,1,14000,0.229,0.229,accuracy,0.205,0.255,0.205,0.255,1132
