@@ -17,9 +17,14 @@ echo "HF_HOME is set to: $HF_HOME"
 export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
 
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
-module load cuda
-module load torch
+
+dir="/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/experiments/"
+absolute_path=$(readlink -f $dir)
+# print the full (not relative) path of the dir variable
+echo "current dir is set to: $absolute_path"
+cd $dir
+
 
 echo ${SLURM_ARRAY_TASK_ID}
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
-CUDA_LAUNCH_BLOCKING=1 python analyze_results.py --model_index $1 --results_folder MultipleChoiceTemplatesInstructions
+CUDA_LAUNCH_BLOCKING=1 python evaluate_results.py --model_name $1
