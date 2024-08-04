@@ -68,3 +68,9 @@ class MMLUData:
             lambda x: mmlu_dataset.loc[x.split(MMLUConstants.MMLU_CARDS_PREFIX)[1], MMLUConstants.SUBCATEGORIES_COLUMN])
         model_data[MMLUConstants.CATEGORIES_COLUMN] = model_data[BestCombinationsConstants.DATASET].apply(
             lambda x: mmlu_dataset.loc[x.split(MMLUConstants.MMLU_CARDS_PREFIX)[1], MMLUConstants.CATEGORIES_COLUMN])
+
+    @classmethod
+    def get_mmlu_pro_datasets(cls):
+        mmlu_datasets = [f'{MMLUConstants.MMLU_PRO_CARDS_PREFIX}{mmlu_dataset}' for mmlu_dataset in
+                         MMLUData.mmlu_metadata[MMLUConstants.SUBCATEGORIES_COLUMN]]
+        return mmlu_datasets
