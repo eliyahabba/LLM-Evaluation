@@ -1,3 +1,5 @@
+import os
+os.environ["UNITXT_ALLOW_UNVERIFIED_CODE"] = "True"
 import argparse
 import json
 from pathlib import Path
@@ -175,7 +177,8 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> NLPDataset:
     template_hash = str(template.enumerator) + str(template.target_choice_format) + str(experiment['num_demos'])
     if template_hash in loaded_datasets:
         return loaded_datasets[template_hash]
-
+    if not experiment['results']:
+        return None
     llm_dataset_loader = DatasetLoader(card=experiment['card'], template=template,
                                        system_format=experiment['system_format'],
                                        demos_taken_from=experiment.get('demos_taken_from', 'validation'),
@@ -194,95 +197,94 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> NLPDataset:
 if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
-    args.add_argument("--model_index", type=int, default=10)
+    args.add_argument("--model_name", type=str, default="MISTRAL_V2")
     args.add_argument("--results_folder", type=str,
                       default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
     args = args.parse_args()
     args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
-    models_names = [model.split('/')[1] for model in LLMProcessorConstants.BASE_MODEL_NAMES.values()]
-    models_folders = [Path(args.results_folder / model_name) for model_name in models_names]
+    model_name = LLMProcessorConstants.BASE_MODEL_NAMES[args.model_name].split('/')[1]
+
+    model_path = Path(args.results_folder / model_name)
 
     # models_names = [models_name for models_name in models_names if "Lla" in str(models_name)]
-    models_names = models_names if args.model_index is None else [models_folders[args.model_index]]
     error_files, errors_msgs = [], []
     dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.DATASET_SIZES_PATH)
-    for model_name in models_names:
-        print("Models to evaluate: ", model_name)
-        datasets = sorted([file for file in model_name.glob("*") if file.is_dir()])
-        # datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
-        # datasets = datasets[::-1]
-        for dataset_folder in datasets:
-            print(f"Start evaluating {dataset_folder.name}")
-            car_dataset_sizes = dataset_sizes[
-                dataset_sizes["Name"] == dataset_folder.name]
-            shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
-            # shots = [shot for shot in shots if "one" in str(shot)]
-            loaded_datasets = {}
-            for shot in shots:
-                formats = [file for file in shot.glob("*") if file.is_dir()]
-                for format_folder in formats:
-                    results_files = sorted([file for file in format_folder.glob("*.json")],
-                                           key=lambda x: int(x.name.split(".json")[0].split("_")[-1]))
-                    # results_files = [file for file in results_files if "template_2" in str(file)]
-                    # results_files = results_files[:1]
+    print("Models to evaluate: ", model_path)
+    datasets = sorted([file for file in model_path.glob("*") if file.is_dir()])
+    # datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
+    # datasets = datasets[::-1]
+    datasets = [dataset for dataset in datasets if "mmlu_pro.law" in str(dataset)]
+    for dataset_folder in datasets:
+        print(f"Start evaluating {dataset_folder.name}")
+        car_dataset_sizes = dataset_sizes[
+            dataset_sizes["Name"] == dataset_folder.name]
+        shots = [file for file in dataset_folder.glob("*") if file.is_dir()]
+        # shots = [shot for shot in shots if "one" in str(shot)]
+        loaded_datasets = {}
+        for shot in shots:
+            formats = [file for file in shot.glob("*") if file.is_dir()]
+            for format_folder in formats:
+                results_files = sorted([file for file in format_folder.glob("*.json")],
+                                       key=lambda x: int(x.name.split(".json")[0].split("_")[-1]))
+                # results_files = [file for file in results_files if "template_2" in str(file)]
+                # results_files = results_files[:1]
 
-                    summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in args.eval_on}
-                    for eval_on_value in args.eval_on:
-                        size = car_dataset_sizes.iloc[0][eval_on_value]
+                summary_of_accuracy_results = {eval_on_value: pd.DataFrame() for eval_on_value in args.eval_on}
+                for eval_on_value in args.eval_on:
+                    size = car_dataset_sizes.iloc[0][eval_on_value]
 
-                        comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
-                        for results_file in tqdm(results_files):
-                            try:
-                                llm_dataset = load_dataset(results_file, loaded_datasets)
-                                eval_model = EvaluateModel(results_file, eval_on_value)
-                                results = eval_model.load_results_from_experiment_file()
-                                results_file_number = results_file.name.split(".json")[0]
-                                if comparison_matrix_file.exists():
-                                    try:
-                                        comparison_df = pd.read_csv(comparison_matrix_file)
-                                        if results_file_number in comparison_df.columns and \
-                                                not comparison_df[results_file_number].isna().any() and \
-                                                size == comparison_df[results_file_number].shape[0] and \
-                                                all(['Score' in result for result in results[eval_on_value]]):
-                                            # and  len(results[eval_on_value]) == 100:
-                                            # len(results_files) == pd.read_csv(comparison_matrix_file).shape[1] and \
-                                            continue
-                                    except pd.errors.EmptyDataError:
-                                        # delete the file if it is empty
-                                        comparison_matrix_file.unlink()
-                                llm_dataset = load_dataset(results_file, loaded_datasets)
-                                scores_by_index = eval_model.evaluate(results, llm_dataset)
-                                if scores_by_index is not None:
-                                    scores_by_index_series = pd.Series(scores_by_index, name=results_file.stem)
-                                    # add the scores to the cumsum df so that the name of the file will be the index
-                                    summary_of_accuracy_results[eval_on_value] = pd.concat(
-                                        [summary_of_accuracy_results[eval_on_value], scores_by_index_series], axis=1)
-                            except Exception as e:
-                                error_files.append(results_file)
-                                errors_msgs.append(e)
-                                print(f"Error in {results_file}: {e}")
+                    comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
+                    for results_file in tqdm(results_files):
+                        try:
+                            eval_model = EvaluateModel(results_file, eval_on_value)
+                            results = eval_model.load_results_from_experiment_file()
+                            results_file_number = results_file.name.split(".json")[0]
+                            if comparison_matrix_file.exists():
+                                try:
+                                    comparison_df = pd.read_csv(comparison_matrix_file)
+                                    if results_file_number in comparison_df.columns and \
+                                            not comparison_df[results_file_number].isna().any() and \
+                                            size == comparison_df[results_file_number].shape[0] and \
+                                            all(['Score' in result for result in results[eval_on_value]]):
+                                        continue
+                                except pd.errors.EmptyDataError:
+                                    # delete the file if it is empty
+                                    comparison_matrix_file.unlink()
+                            llm_dataset = load_dataset(results_file, loaded_datasets)
+                            if llm_dataset is None:
                                 continue
-                    for eval_on_value, results_df in summary_of_accuracy_results.items():
-                        if results_df.empty:
+                            scores_by_index = eval_model.evaluate(results, llm_dataset)
+                            if scores_by_index is not None:
+                                scores_by_index_series = pd.Series(scores_by_index, name=results_file.stem)
+                                # add the scores to the cumsum df so that the name of the file will be the index
+                                summary_of_accuracy_results[eval_on_value] = pd.concat(
+                                    [summary_of_accuracy_results[eval_on_value], scores_by_index_series], axis=1)
+                        except Exception as e:
+                            error_files.append(results_file)
+                            errors_msgs.append(e)
+                            print(f"Error in {results_file}: {e}")
                             continue
-                        # sort the columns by the number of the template that in the columns name
-                        results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])),
-                                                        axis=1)
-                        comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
-                        if comparison_matrix_file.exists():
-                            comparison_matrix = pd.read_csv(comparison_matrix_file)
-                            # add from comparison matrix only the new columns that are not in the results_df
-                            comparison_matrix = comparison_matrix[
-                                [col for col in comparison_matrix.columns if col not in results_df.columns]]
-                            results_df = pd.concat([results_df, comparison_matrix], axis=1)
-                        # sort the columns by the number of the template that in the columns name
-                        results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])),
-                                                        axis=1)
-                        results_df.to_csv(comparison_matrix_file, index=False)
-                        # print the size of the results vs the number of the templates
-                        print(f"Results size: {results_df.shape[0]}")
-                        print(f"Number of templates: {results_df.shape[1]}")
+                for eval_on_value, results_df in summary_of_accuracy_results.items():
+                    if results_df.empty:
+                        continue
+                    # sort the columns by the number of the template that in the columns name
+                    results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])),
+                                                    axis=1)
+                    comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
+                    if comparison_matrix_file.exists():
+                        comparison_matrix = pd.read_csv(comparison_matrix_file)
+                        # add from comparison matrix only the new columns that are not in the results_df
+                        comparison_matrix = comparison_matrix[
+                            [col for col in comparison_matrix.columns if col not in results_df.columns]]
+                        results_df = pd.concat([results_df, comparison_matrix], axis=1)
+                    # sort the columns by the number of the template that in the columns name
+                    results_df = results_df.reindex(sorted(results_df.columns, key=lambda x: int(x.split("_")[-1])),
+                                                    axis=1)
+                    results_df.to_csv(comparison_matrix_file, index=False)
+                    # print the size of the results vs the number of the templates
+                    print(f"Results size: {results_df.shape[0]}")
+                    print(f"Number of templates: {results_df.shape[1]}")
     for file, error in zip(error_files, errors_msgs):
         print(error)
         print(file)
