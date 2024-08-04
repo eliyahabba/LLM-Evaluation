@@ -26,4 +26,4 @@ cd $dir
 
 echo ${SLURM_ARRAY_TASK_ID}
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
-CUDA_LAUNCH_BLOCKING=1 python evaluate_results_parallel.py --model_name $1
+CUDA_LAUNCH_BLOCKING=1 python evaluate_results_parallel.py --model_name $1 --results_folder MultipleChoiceTemplatesStructuredTopic
