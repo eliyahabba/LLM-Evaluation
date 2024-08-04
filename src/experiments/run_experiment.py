@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import time
 from pathlib import Path
 from typing import Tuple
@@ -18,7 +19,6 @@ from src.utils.Utils import Utils
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
-ResultConstants = Constants.ResultConstants
 
 
 class ExperimentRunner:
@@ -149,7 +149,8 @@ class ExperimentRunner:
         entry_experiment = self.create_entry_experiment(template_name)
         results_file_path = self.save_results_to_json(entry_experiment, template_name, self.args.num_demos)
 
-        enumerators = template.enumerator[:4]
+        num_of_possible_answers = 8 if "pro" in self.args.card else 2 if "boolq" in self.args.card else 4
+        enumerators = template.enumerator[:num_of_possible_answers]
         if isinstance(enumerators, str):
             # convrte each char tp an element in a list
             enumerators = list(enumerators)
