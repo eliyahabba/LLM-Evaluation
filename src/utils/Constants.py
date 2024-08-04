@@ -91,6 +91,7 @@ class Constants:
 
     class TemplatesGeneratorConstants:
         MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME = "MultipleChoiceTemplatesStructured"
+        MULTIPLE_CHOICE_STRUCTURED_TOPIC_FOLDER_NAME = "MultipleChoiceTemplatesStructuredTopic"
         MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME = "MultipleChoiceTemplatesInstructions"
         MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME
         DATA_PATH = Path(__file__).parents[2] / "Data"
