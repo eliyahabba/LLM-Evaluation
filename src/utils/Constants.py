@@ -119,7 +119,7 @@ class Constants:
         # NUM_DEMOS = 3
         # DEMOS_POOL_SIZE = 20
         DEMOS_TAKEN_FROM = "validation"
-        BATCH_SIZE = 1
+        BATCH_SIZE = 2
 
     class McNemarTestConstants:
         ALPHA = 0.05
@@ -178,3 +178,6 @@ class Constants:
 
         MMLU_NAME = "mmlu"
         MMLU_CARDS_PREFIX = f"{MMLU_NAME}."
+
+        MMLU_PRO_NAME = "mmlu_pro"
+        MMLU_PRO_CARDS_PREFIX = f"{MMLU_PRO_NAME}."
