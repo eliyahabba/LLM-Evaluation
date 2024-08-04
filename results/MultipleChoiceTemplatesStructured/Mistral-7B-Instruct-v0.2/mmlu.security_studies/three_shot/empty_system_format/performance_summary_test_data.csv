@@ -25,7 +25,8 @@ template_22,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.673,0.67
 template_23,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.641,0.641,accuracy,0.581,0.702,0.581,0.702,245
 template_24,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.649,0.649,accuracy,0.588,0.706,0.588,0.706,245
 template_25,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.641,0.641,accuracy,0.580,0.702,0.580,0.702,245
-template_26,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.600,0.600,accuracy,0.512,0.680,0.512,0.680,125
+template_26,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.649,0.649,accuracy,0.588,0.708,0.588,0.708,245
+template_27,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.649,0.649,accuracy,0.588,0.710,0.588,0.710,245
 template_28,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.661,0.661,accuracy,0.600,0.718,0.600,0.718,245
 template_29,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.624,0.624,accuracy,0.559,0.682,0.559,0.682,245
 template_30,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.661,0.661,accuracy,0.597,0.718,0.597,0.718,245
@@ -50,4 +51,7 @@ template_48,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.678,0.67
 template_49,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.629,0.629,accuracy,0.563,0.690,0.563,0.690,245
 template_50,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.690,0.690,accuracy,0.637,0.747,0.637,0.747,245
 template_51,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.629,0.629,accuracy,0.563,0.686,0.563,0.686,245
-template_52,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.614,0.614,accuracy,0.526,0.702,0.526,0.702,114
+template_52,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.669,0.669,accuracy,0.612,0.731,0.612,0.731,245
+template_53,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.612,0.612,accuracy,0.551,0.673,0.551,0.673,245
+template_54,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.661,0.661,accuracy,0.600,0.718,0.600,0.718,245
+template_55,cards.mmlu.security_studies,empty_system_format,3,20,1600,0.633,0.633,accuracy,0.571,0.694,0.571,0.694,245
