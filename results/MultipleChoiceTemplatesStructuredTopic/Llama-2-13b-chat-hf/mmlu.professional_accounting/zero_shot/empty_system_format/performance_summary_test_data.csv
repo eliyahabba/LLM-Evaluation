@@ -1,0 +1,9 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,number_of_instances
+template_0,cards.mmlu.professional_accounting,empty_system_format,0,10,14000,0.387,0.387,accuracy,0.330,0.443,0.330,0.443,282
+template_1,cards.mmlu.professional_accounting,empty_system_format,0,10,14000,0.401,0.401,accuracy,0.348,0.461,0.348,0.461,282
+template_2,cards.mmlu.professional_accounting,empty_system_format,0,10,14000,0.387,0.387,accuracy,0.330,0.445,0.330,0.445,282
+template_3,cards.mmlu.professional_accounting,empty_system_format,0,10,14000,0.372,0.372,accuracy,0.316,0.429,0.316,0.429,282
+template_4,cards.mmlu.professional_accounting,empty_system_format,0,10,14000,0.383,0.383,accuracy,0.326,0.436,0.326,0.436,282
+template_5,cards.mmlu.professional_accounting,empty_system_format,0,10,14000,0.376,0.376,accuracy,0.319,0.436,0.319,0.436,282
+template_6,cards.mmlu.professional_accounting,empty_system_format,0,10,14000,0.340,0.340,accuracy,0.226,0.491,0.226,0.491,53
+template_28,cards.mmlu.professional_accounting,empty_system_format,0,10,14000,0.234,0.234,accuracy,0.128,0.362,0.128,0.362,47

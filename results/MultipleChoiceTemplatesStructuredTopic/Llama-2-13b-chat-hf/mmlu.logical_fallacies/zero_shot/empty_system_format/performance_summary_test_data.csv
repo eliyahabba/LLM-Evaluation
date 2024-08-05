@@ -1,0 +1,4 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,number_of_instances
+template_0,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.426,0.426,accuracy,0.349,0.519,0.349,0.519,129
+template_28,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.503,0.503,accuracy,0.425,0.577,0.425,0.577,163
+template_29,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.500,0.500,accuracy,0.167,1.000,0.167,1.000,6
