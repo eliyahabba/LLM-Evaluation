@@ -14,13 +14,14 @@ ExperimentConstants = Constants.ExperimentConstants
 ResultConstants = Constants.ResultConstants
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
-dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.dataset_sizes_PATH)
+DatasetsConstants = Constants.DatasetsConstants
+dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.DATASET_SIZES_PATH)
 
 
 class ExperimentsResultsFolder:
     def __init__(self, eval_on: str):
         self.eval_on = eval_on
-        self.dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.dataset_sizes_PATH)
+        self.dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.DATASET_SIZES_PATH)
 
     def load_experiment_file(self, results_file: Path):
         """
@@ -61,11 +62,11 @@ class ExperimentsResultsFolder:
         acquired_data = results_counter
         return total_data, acquired_data
 
-    def get_data_percentage_and_completed_of_all_experiments(self, results_folder, model, mmlu_dataset, shots):
+    def get_data_percentage_and_completed_of_all_experiments(self, results_folder, model, dataset, shots):
         # def print_future_experiments(format_folder: Path, eval_value: str, kwargs: dict = None):
-        dataset_size = self.dataset_sizes[self.dataset_sizes["Name"] == mmlu_dataset.split("mmlu.")[1]]
+        dataset_size = self.dataset_sizes[self.dataset_sizes["Name"] == dataset]
 
-        path = Path(results_folder) / model / mmlu_dataset / shots / "empty_system_format"
+        path = Path(results_folder) / model / dataset / shots / "empty_system_format"
         results_files = list([file for file in path.glob("*.json")])
         sorted_file_paths = sorted(results_files, key=lambda x: int(x.name.split("_")[-1].split(".")[0]))
         # check only the files that changed (use git diff to check the files that changed)
@@ -74,7 +75,7 @@ class ExperimentsResultsFolder:
 
         changed_files_output = subprocess.check_output(["git", "status", "--porcelain", str(path)])
         changed_files = changed_files_output.decode('utf-8').splitlines()
-        if not changed_files:
+        if not changed_files and False:
             return None, None
 
         experiments_results = ExperimentsResultsFolder(eval_on)
@@ -129,7 +130,7 @@ def create_summarize_df():
     index = pd.MultiIndex(levels=[[], [], [], []], codes=[[], [], [], []], names=names)
     df = pd.DataFrame(index=index, columns=['Total Data', 'Data Acquired'])
     # add a dummmy row to the df with the update_function
-    df.loc[('dummy', 'dummy', 'dummy', "dummy"), ['Total Data', 'Data Acquired']] = [0, False]
+    df.loc[(0, 0, 0, 0), ['Total Data', 'Data Acquired']] = [0, False]
     return df
 
 
@@ -190,34 +191,40 @@ def save_update_list(update_list, filename):
 
 if __name__ == "__main__":
     # Load the model and the dataset
+    base_results_folder = TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME
+    base_results_folder = TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME
+    base_results_folder = TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_TOPIC_FOLDER_NAME
     results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(
-        TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME)
-    results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(
-        TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
+        base_results_folder)
+
     eval_on = ExperimentConstants.EVALUATE_ON_ANALYZE[0]
     experiments_results = ExperimentsResultsFolder(eval_on)
     model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
     # create a df
-    df = get_summarize_df(ResultConstants.SUMMARIZE_DF_PATH)
+    summarize_df_path = ResultConstants.MAIN_RESULTS_PATH / Path(
+        base_results_folder) / ResultConstants.SUMMARIZE_DF_NAME
+    df = get_summarize_df(summarize_df_path)
     MMLUData.initialize()
     # run the function on all the models and datasets
 
-    MODEL_TO_CHECK = ["OLMO_HF",
-                      "OLMO_1_7",
-                      "GEMMA",
-                      "GEMMA_7B",
-                      "VICUNA"
-                      ]
+    # MODEL_TO_CHECK = ["OLMO_HF",
+    #                   "OLMO_1_7",
+    #                   "GEMMA",
+    #                   "GEMMA_7B",
+    #                   "VICUNA"
+    #                   ]
     # models = {k: v for k, v in LLMProcessorConstants.MODEL_NAMES.items() if k in MODEL_TO_CHECK}
     models = LLMProcessorConstants.MODEL_NAMES
+    datasets = DatasetsConstants.ALL_DATASETS
+    # datasets = ["mmlu_pro.law"]
     for model in tqdm(list(models.values())):
         model_name = model.split("/")[-1]
-        for mmlu_dataset in tqdm(list(MMLUData.get_mmlu_datasets())):
+        for dataset in tqdm(datasets):
             for shots in ResultConstants.SHOTS:
                 files_total_data, files_acquired_data = experiments_results. \
-                    get_data_percentage_and_completed_of_all_experiments(results_folder, model_name, mmlu_dataset,
+                    get_data_percentage_and_completed_of_all_experiments(results_folder, model_name, dataset,
                                                                          shots)
                 if files_total_data is None:
                     continue
-                df = update_df_files(files_total_data, files_acquired_data, df, model_name, mmlu_dataset, shots)
-                save_updated_summarize_df(df, ResultConstants.SUMMARIZE_DF_PATH)
+                df = update_df_files(files_total_data, files_acquired_data, df, model_name, dataset, shots)
+                save_updated_summarize_df(df, summarize_df_path)
