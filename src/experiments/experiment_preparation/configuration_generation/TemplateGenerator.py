@@ -13,7 +13,7 @@ TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class TemplateGenerator:
-    def __init__(self, dataset_config: BaseDatasetConfig, override_options: dict):
+    def __init__(self, dataset_config: BaseDatasetConfig, override_options: dict, input_format_func: callable = None):
         """
         Initializes the TemplateGenerator with base arguments and override options.
 
@@ -22,6 +22,7 @@ class TemplateGenerator:
         """
         self.dataset_config = dataset_config
         self.override_options = override_options
+        self.input_format_func = input_format_func
 
     def create_templates(self) -> list:
         """
@@ -32,6 +33,7 @@ class TemplateGenerator:
         templates = []
         for options in tqdm(product(*self.override_options.values())):
             override_args = dict(zip(self.override_options.keys(), options))
+            override_args['input_format_func'] = self.input_format_func
             template = self.create_template(**override_args)
             templates.append(template)
             print(f"Created template with options: {override_args}")

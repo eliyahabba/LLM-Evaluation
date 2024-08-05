@@ -1,3 +1,4 @@
+import argparse
 from typing import List
 
 from termcolor import colored
@@ -58,18 +59,35 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
 
 if __name__ == "__main__":
     # Base arguments for all templates
+
+    # add input format to the parser
+    data_path = TemplatesGeneratorConstants.DATA_PATH
+    parser = argparse.ArgumentParser(description='Generate multiple choice templates')
+    parser.add_argument('--input_format_func', type=str, default="get_structured_instruction_text_with_topic",
+                        help='The input format for the templates')
+    parser.add_argument('--data_folder', type=str,
+                        default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_TOPIC_FOLDER_NAME,
+                        help='The data folder for the templates')
+    args = parser.parse_args()
+    args.data_folder = data_path / args.data_folder
     dataset_names_to_configs = DatasetConfigFactory.get_all_datasets()
     override_options = ConfigParams.override_options
     for dataset_name, datasetConfig in dataset_names_to_configs.items():
-        print(colored(f"Creating templates for {dataset_name}", "blue"))
-        # Override options for different parameters and create templates
-        generator = MultipleChoiceTemplateGenerator(datasetConfig, override_options)
-        created_templates = generator.create_templates()
+        try:
+            print(colored(f"Creating templates for {dataset_name}", "blue"))
+            # Override options for different parameters and create templates
+            generator = MultipleChoiceTemplateGenerator(datasetConfig, override_options, args.input_format_func)
+            created_templates = generator.create_templates()
 
-        # Save templates to local catalog
-        catalog_manager = CatalogManager(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / dataset_name)
-        for i, template in tqdm(enumerate(created_templates)):
-            catalog_manager.save_to_catalog(template, f"template_{i}")
+            # Save templates to local catalog
+            catalog_manager = CatalogManager(args.data_folder / dataset_name)
+            for i, template in tqdm(enumerate(created_templates)):
+                catalog_manager.save_to_catalog(template, f"template_{i}")
 
-        # add a df that contains the templates and their parameter
-        generator.create_and_process_metadata(created_templates, dataset_name, override_options)
+            # add a df that contains the templates and their parameter
+            generator.create_and_process_metadata(created_templates, dataset_name, override_options)
+            print(colored(f"Templates for {dataset_name} created successfully", "green"))
+        except Exception as e:
+            print(colored(f"Error in creating templates for {dataset_name} with function {args.input_format_func}: {e}",
+                          "red"))
+            continue
