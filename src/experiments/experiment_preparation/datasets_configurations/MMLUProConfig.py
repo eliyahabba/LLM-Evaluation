@@ -5,16 +5,13 @@ class MMLUConfig(BaseDatasetConfig):
     def __init__(self, kwargs=None):
         super().__init__(kwargs)
 
-    def get_structured_instruction_text(self, context_topic):
+    def get_structured_instruction_text_with_topic(self):
         # Provide a default implementation if needed
-        return f"Topic: [topic]\nQuestion: [question] Choices: [choices] Answer: [answer]\nTopic: {{topic}}\nQuestion: {{question}} Choices: {{choices}} Answer:"
+        return f"Topic: {{topic}}\nQuestion: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
 
-    def get_input_format(self):
-        return self.get_structured_instruction_text(self.get_context_topic())
-
-    def get_context_topic(self):
-        return "Topic: {topic}\n"
-
+    def get_structured_instruction_text_without_topic(self):
+        # Provide a default implementation if needed
+        return f"Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
 
 if __name__ == "__main__":
     config = MMLUConfig({"shuffle_choices": True})

@@ -5,12 +5,9 @@ class BoolQConfig(BaseDatasetConfig):
     def __init__(self, kwargs=None):
         super().__init__(kwargs)
 
-    def get_input_format(self):
-        return self.get_structured_instruction_text(self.get_context_topic())
-
-    def get_structured_instruction_text(self, context_topic):
+    def get_structured_instruction_text_with_topic(self):
         # Provide a default implementation if needed
-        return f"Context: [Context]\nQuestion: [question] Choices: [choices] Answer: [answer]\nContext: {{context}}\nQuestion: {{question}} Choices: {{choices}} Answer:"
+        return f"Context: [Context]\nQuestion: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
 
 
 

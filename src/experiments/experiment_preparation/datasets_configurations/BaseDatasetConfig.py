@@ -13,11 +13,13 @@ class BaseDatasetConfig:
             "processors.take_first_non_empty_line",
             "processors.match_closest_option"
         ]
-        self.input_format = self.get_input_format()
+        input_format_func_name = kwargs["input_format_func"]
+        input_format_func = getattr(self, input_format_func_name)
+        self.input_format = input_format_func()
 
     def to_dict(self):
         return {
-            "input_format": self.get_input_format(),
+            "input_format": self.input_format,
             "choices_field": self.choices_field,
             "target_field": self.target_field,
             "choices_separator": self.choices_separator,
@@ -28,19 +30,19 @@ class BaseDatasetConfig:
             "postprocessors": self.postprocessors
         }
 
-    def get_mmlu_instructions_with_topic(self, topic: str) -> str:
-        return f"The following are multiple choice questions (with answers) about {topic}.\n"
-
-    def get_mmlu_instructions_without_topic(self) -> str:
-        return "The following are multiple choice questions (with answers).\n"
-
-    def get_structured_instruction_text(self, context_topic):
-        # Provide a default implementation if needed
-        return f"{context_topic}Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
-
-    def get_context_topic(self):
-        # Base class provides a generic placeholder which can be overridden
-        return ""
-
-    def get_input_format(self):
-        raise NotImplementedError("Subclasses must implement this method to return the specific input format.")
+    # def get_mmlu_instructions_with_topic(self, topic: str) -> str:
+    #     return f"The following are multiple choice questions (with answers) about {topic}.\n"
+    #
+    # def get_mmlu_instructions_without_topic(self) -> str:
+    #     return "The following are multiple choice questions (with answers).\n"
+    #
+    # def get_structured_instruction_text(self, context_topic):
+    #     # Provide a default implementation if needed
+    #     return f"{context_topic}Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
+    #
+    # def get_context_topic(self):
+    #     # Base class provides a generic placeholder which can be overridden
+    #     return ""
+    #
+    # def get_input_format(self):
+    #     raise NotImplementedError("Subclasses must implement this method to return the specific input format.")
