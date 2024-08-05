@@ -3,8 +3,6 @@
 # Example of how to use the Python script to get the 'hf_home' configuration
 # Assuming the Python script is two levels up from the current directory
 config_path="../../../config/get_config.py"
-absolute_path=$(readlink -f $config_path)
-echo "Using configuration script at $absolute_path"
 
 # Ensure the Python script exists and is executable
 
@@ -21,6 +19,9 @@ if [ ! -f "$config_path" ]; then
     echo "Configuration script not found at $config_path"
     exit 1
 fi
+
+absolute_path=$(readlink -f $config_path)
+echo "Using configuration script at $absolute_path"
 
 # Call the Python script to get the 'hf_home' configuration
 HF_HOME=$(python $config_path hf_home)
