@@ -20,7 +20,7 @@ template_17,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.405,0.
 template_18,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.350,0.350,accuracy,0.276,0.423,0.276,0.423,163
 template_19,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.387,0.387,accuracy,0.319,0.466,0.319,0.466,163
 template_20,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.374,0.374,accuracy,0.301,0.460,0.301,0.460,163
-template_21,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.425,0.425,accuracy,0.325,0.525,0.325,0.525,80
+template_21,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.400,0.400,accuracy,0.300,0.512,0.300,0.512,80
 template_28,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.417,0.417,accuracy,0.337,0.485,0.337,0.485,163
 template_29,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.479,0.479,accuracy,0.411,0.558,0.411,0.558,163
 template_30,cards.mmlu.logical_fallacies,empty_system_format,0,10,14000,0.387,0.387,accuracy,0.313,0.460,0.313,0.460,163

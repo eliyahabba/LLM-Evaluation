@@ -11,5 +11,5 @@ template_12,cards.mmlu_pro.health,empty_system_format,0,1,14000,0.274,0.274,accu
 template_13,cards.mmlu_pro.health,empty_system_format,0,1,14000,0.276,0.276,accuracy,0.243,0.306,0.243,0.306,818
 template_14,cards.mmlu_pro.health,empty_system_format,0,1,14000,0.295,0.295,accuracy,0.258,0.336,0.258,0.336,542
 template_45,cards.mmlu_pro.health,empty_system_format,0,1,14000,0.264,0.264,accuracy,0.232,0.296,0.232,0.296,702
-template_54,cards.mmlu_pro.health,empty_system_format,0,1,14000,0.095,0.095,accuracy,0.076,0.116,0.076,0.116,818
-template_55,cards.mmlu_pro.health,empty_system_format,0,1,14000,0.099,0.099,accuracy,0.079,0.121,0.079,0.121,818
+template_54,cards.mmlu_pro.health,empty_system_format,0,1,14000,0.274,0.274,accuracy,0.244,0.303,0.244,0.303,818
+template_55,cards.mmlu_pro.health,empty_system_format,0,1,14000,0.254,0.254,accuracy,0.227,0.286,0.227,0.286,818

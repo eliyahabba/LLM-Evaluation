@@ -12,7 +12,7 @@ template_9,cards.mmlu.high_school_microeconomics,empty_system_format,0,10,14000,
 template_10,cards.mmlu.high_school_microeconomics,empty_system_format,0,10,14000,0.223,0.223,accuracy,0.176,0.282,0.176,0.282,238
 template_11,cards.mmlu.high_school_microeconomics,empty_system_format,0,10,14000,0.231,0.231,accuracy,0.181,0.290,0.181,0.290,238
 template_12,cards.mmlu.high_school_microeconomics,empty_system_format,0,10,14000,0.244,0.244,accuracy,0.193,0.303,0.193,0.303,238
-template_13,cards.mmlu.high_school_microeconomics,empty_system_format,0,10,14000,0.251,0.251,accuracy,0.196,0.318,0.196,0.318,179
+template_13,cards.mmlu.high_school_microeconomics,empty_system_format,0,10,14000,0.263,0.263,accuracy,0.207,0.335,0.207,0.335,179
 template_28,cards.mmlu.high_school_microeconomics,empty_system_format,0,10,14000,0.294,0.294,accuracy,0.235,0.357,0.235,0.357,238
 template_29,cards.mmlu.high_school_microeconomics,empty_system_format,0,10,14000,0.290,0.290,accuracy,0.235,0.349,0.235,0.349,238
 template_30,cards.mmlu.high_school_microeconomics,empty_system_format,0,10,14000,0.286,0.286,accuracy,0.231,0.340,0.231,0.340,238

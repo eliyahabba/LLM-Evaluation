@@ -37,4 +37,4 @@ template_43,cards.mmlu.high_school_european_history,empty_system_format,0,10,140
 template_44,cards.mmlu.high_school_european_history,empty_system_format,0,10,14000,0.424,0.424,accuracy,0.352,0.503,0.352,0.503,165
 template_45,cards.mmlu.high_school_european_history,empty_system_format,0,10,14000,0.388,0.388,accuracy,0.315,0.467,0.315,0.467,165
 template_46,cards.mmlu.high_school_european_history,empty_system_format,0,10,14000,0.339,0.339,accuracy,0.273,0.412,0.273,0.412,165
-template_47,cards.mmlu.high_school_european_history,empty_system_format,0,10,14000,0.390,0.390,accuracy,0.312,0.475,0.312,0.475,141
+template_47,cards.mmlu.high_school_european_history,empty_system_format,0,10,14000,0.397,0.397,accuracy,0.319,0.475,0.319,0.475,141

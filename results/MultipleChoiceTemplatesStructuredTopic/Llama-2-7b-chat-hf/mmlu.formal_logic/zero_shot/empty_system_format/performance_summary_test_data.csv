@@ -24,7 +24,7 @@ template_21,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.254,0.254,a
 template_22,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.238,0.238,accuracy,0.167,0.317,0.167,0.317,126
 template_23,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.254,0.254,accuracy,0.190,0.333,0.190,0.333,126
 template_24,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.222,0.222,accuracy,0.151,0.294,0.151,0.294,126
-template_25,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.263,0.263,accuracy,0.132,0.395,0.132,0.395,38
+template_25,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.289,0.289,accuracy,0.158,0.447,0.158,0.447,38
 template_28,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.302,0.302,accuracy,0.229,0.389,0.229,0.389,126
 template_29,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.333,0.333,accuracy,0.254,0.421,0.254,0.421,126
 template_30,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.270,0.270,accuracy,0.198,0.357,0.198,0.357,126
@@ -50,4 +50,4 @@ template_49,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.333,0.333,a
 template_50,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.278,0.278,accuracy,0.206,0.357,0.206,0.357,126
 template_51,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.333,0.333,accuracy,0.254,0.421,0.254,0.421,126
 template_52,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.286,0.286,accuracy,0.212,0.365,0.212,0.365,126
-template_53,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.273,0.273,accuracy,0.152,0.455,0.152,0.455,33
+template_53,cards.mmlu.formal_logic,empty_system_format,0,10,14000,0.242,0.242,accuracy,0.121,0.394,0.121,0.394,33

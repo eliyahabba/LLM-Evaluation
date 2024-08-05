@@ -31,4 +31,4 @@ template_39,cards.mmlu.human_aging,empty_system_format,0,10,14000,0.300,0.300,ac
 template_40,cards.mmlu.human_aging,empty_system_format,0,10,14000,0.305,0.305,accuracy,0.242,0.359,0.242,0.359,223
 template_41,cards.mmlu.human_aging,empty_system_format,0,10,14000,0.296,0.296,accuracy,0.238,0.359,0.238,0.359,223
 template_42,cards.mmlu.human_aging,empty_system_format,0,10,14000,0.247,0.247,accuracy,0.193,0.300,0.193,0.300,223
-template_43,cards.mmlu.human_aging,empty_system_format,0,10,14000,0.261,0.261,accuracy,0.207,0.320,0.207,0.320,222
+template_43,cards.mmlu.human_aging,empty_system_format,0,10,14000,0.275,0.275,accuracy,0.216,0.333,0.216,0.333,222
