@@ -1,7 +1,7 @@
+import argparse
 import json
-from pathlib import Path
 
-import streamlit as st
+import pandas as pd
 
 from src.experiments.data_loading.MMLUSplitter import MMLUSplitter
 from src.streamlit_app.ui_components.MetaHistogramCalculator import MetaHistogramCalculator
@@ -9,94 +9,85 @@ from src.utils.Constants import Constants
 
 MMLUConstants = Constants.MMLUConstants
 ResultConstants = Constants.ResultConstants
-
+SamplesAnalysisConstants = Constants.SamplesAnalysisConstants
 ExperimentConstants = Constants.ExperimentConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
 
-class SaveSamples:
-    def __init__(self, models, shot):
-        self.models = models
+class SampleSaver:
+    def __init__(self, models_to_save, shot, output_path):
+        self.models_to_save = models_to_save
         self.shot = shot
+        self.output_path = output_path
 
-    def run(self):
-        results_folder, models = self.get_files()
-        agg_df = self.get_aggregated_results(results_folder, models)
-        self.save_samples(agg_df)
+    def execute(self):
+        results_folder, models_files = self.retrieve_files()
+        aggregated_df = self.aggregate_results(results_folder, models_files)
+        self.save_aggregated_samples(aggregated_df)
 
-    def get_model_files(self, selected_results_file):
-        folders = [file for file in selected_results_file.iterdir() if file.is_dir()]
-        models_names = {f.name: f for f in folders}
-        sorted_folders = dict(sorted(models_names.items(), key=lambda x: (x[0].lower(), x[0]), reverse=False))
-        models = st.sidebar.multiselect("Select models to visualize", list(sorted_folders.keys()),
-                                        default=list(sorted_folders.keys()))
-        selected_models_files = [models_names[model] for model in models]
-        return selected_models_files
+    def retrieve_files(self):
+        self.results_folder = ResultConstants.MAIN_RESULTS_PATH / "MultipleChoiceTemplatesStructured"
+        model_files = [file for file in self.results_folder.iterdir() if file.is_dir()]
+        # models_names = {f.name: f for f in folders}
+        # selected_models_files = [models_names[model] for model in models]
+        # return selected_models_files
+        #
+        # model_files = [results_folder / model for model in self.models_to_save]
+        return self.results_folder, model_files
 
-    def get_files(self):
-        results_folder = ResultConstants.MAIN_RESULTS_PATH / Path("MultipleChoiceTemplatesStructured")
-        models_files = [results_folder / model for model in self.models]
-        return results_folder, models_files
-
-    def get_aggregated_results(self, selected_results_file, selected_models_files):
+    def aggregate_results(self, results_folder, model_files):
         data_options = MMLUSplitter.get_data_options(MMLUConstants.ALL_NAMES)
-        datasets_names = MMLUSplitter.get_data_files(MMLUConstants.ALL_NAMES, data_options)
-        total_merge_df = MetaHistogramCalculator.aggregate_data_across_models(selected_results_file,
-                                                                              selected_models_files, self.shot,
-                                                                              datasets_names)
-        total_merge_df = MetaHistogramCalculator.calculate_and_add_accuracy_columns(total_merge_df)
-        agg_df = self.get_examples(selected_models_files, total_merge_df)
-        return agg_df
+        dataset_names = MMLUSplitter.get_data_files(MMLUConstants.ALL_NAMES, data_options)
+        total_aggregated_df = MetaHistogramCalculator.aggregate_data_across_models(results_folder, model_files,
+                                                                                   self.shot, dataset_names)
+        total_aggregated_df = MetaHistogramCalculator.calculate_and_add_accuracy_columns(total_aggregated_df)
+        # sort bu index
+        total_aggregated_df = total_aggregated_df.sort_index()
+        aggregated_df = self.fetch_examples(total_aggregated_df)
+        return aggregated_df
 
-    def get_examples(self, models, df, min_percentage=0, max_percentage=5):
-        examples = df[(df['accuracy'] > min_percentage) & (df['accuracy'] < max_percentage)]
-        example_data = MetaHistogramCalculator.extract_example_data(examples)
-        agg_df = self.create_text_examples(example_data, models)
-        return agg_df
+    def fetch_examples(self, dataframe, min_accuracy=0, max_accuracy=5):
+        example_rows = dataframe[(dataframe['accuracy'] > min_accuracy) & (dataframe['accuracy'] < max_accuracy)]
+        example_data = MetaHistogramCalculator.extract_example_data(example_rows)
+        aggregated_df = self.compose_text_examples(example_data)
+        return aggregated_df
 
-    def create_text_examples(self, example_data, models):
-        sample_cols = ["Dataset", "Index", "Instance", "GroundTruth", "Result", "Score"]
-        import pandas as pd
-        sample_df = pd.DataFrame(columns=['model'] + sample_cols)
-        for model in models:
+    def compose_text_examples(self, example_data):
+        sample_columns = ["Dataset", "Index", "Instance", "GroundTruth", "Result", "Score"]
+        samples_df = pd.DataFrame(columns=['model'] + sample_columns)
+        for model in self.models_to_save:
             for dataset in example_data['dataset'].unique():
-                results_folder = ResultConstants.MAIN_RESULTS_PATH / Path("MultipleChoiceTemplatesStructured")
-                selected_examples = example_data[example_data['dataset'] == dataset]
-                for current_instance in range(len(selected_examples)):
-                    full_results_path = results_folder / model / dataset / "zero_shot" / "empty_system_format" / "experiment_template_0.json"
-                    with open(full_results_path, "r") as file:
+                dataset_examples = example_data[example_data['dataset'] == dataset]['example_number'].values
+                for index in dataset_examples:
+                    result_path = self.results_folder / model / dataset / "zero_shot" / "empty_system_format" / "experiment_template_0.json"
+                    with open(result_path, "r") as file:
                         template = json.load(file)
-                    sample = template["results"]["test"][current_instance]
-                    row_dict = {
-                        "model": model.name,
+                    result = template["results"]["test"][int(index)]
+                    row = {
+                        "model": model,
                         "Dataset": dataset,
-                        "Index": sample["Index"],
-                        "Instance": sample["Instance"],
-                        "GroundTruth": sample["GroundTruth"],
-                        "Result": sample["Result"],
-                        "Score": sample["Score"]
+                        "Index": result["Index"],
+                        "Instance": result["Instance"],
+                        "GroundTruth": result["GroundTruth"],
+                        "Result": result["Result"],
+                        "Score": int(result["Score"])
                     }
-                    row_df = pd.DataFrame([row_dict], columns=sample_df.columns)
+                    row_df = pd.DataFrame([row], columns=samples_df.columns)
+                    samples_df = pd.concat([samples_df, row_df], ignore_index=True)
+        samples_df = samples_df.sort_values(by=["Dataset", "Index"])
+        samples_df["Score"] = samples_df["Score"].astype(int)
+        return samples_df
 
-                    # Concatenate the new row to the existing DataFrame
-                    sample_df = pd.concat([sample_df, row_df], ignore_index=True)
-        # create a df from the samples
-        # sort by dataset, index
-        sample_df = sample_df.sort_values(by=["Dataset", "Index"])
-        return sample_df
-
-    def save_samples(self, agg_df):
-        agg_df.to_csv("samples.csv", index=False)
-        pass
+    def save_aggregated_samples(self, aggregated_df):
+        aggregated_df.to_csv(self.output_path, index=False)
 
 
 if __name__ == '__main__':
-    import argparse
-
-    args = argparse.ArgumentParser()
-    models = ["Mistral-7B-Instruct-v0.2", "Llama-2-7b-chat-hf", "OLMo-1.7-7B-hf"]
-    args.add_argument("--models", type=list, help="List of models to visualize", default=models)
-    args.add_argument("--shot", type=str, help="Shot type", default="zero_shot", choices=["zero_shot", "three_shot"])
-    args = args.parse_args()
-    save_samples = SaveSamples(models=args.models, shot=args.shot)
-    save_samples.run()
+    parser = argparse.ArgumentParser()
+    models_default = ["Mistral-7B-Instruct-v0.2", "Llama-2-7b-chat-hf", "OLMo-7B-Instruct-hf"]
+    parser.add_argument("--models_to_save", type=list, default=models_default, help="List of models to visualize")
+    parser.add_argument("--shot", type=str, default="zero_shot", choices=["zero_shot", "three_shot"], help="Shot type")
+    parser.add_argument("--output_path", type=str, default=SamplesAnalysisConstants.SAMPLES_PATH, help="Path to save the samples")
+    args = parser.parse_args()
+    sample_saver = SampleSaver(models_to_save=args.models_to_save, shot=args.shot, output_path=args.output_path)
+    sample_saver.execute()
