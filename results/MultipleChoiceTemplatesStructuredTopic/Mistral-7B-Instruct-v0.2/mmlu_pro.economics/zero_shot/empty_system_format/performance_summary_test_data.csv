@@ -12,7 +12,7 @@ template_9,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.373,0.373,ac
 template_10,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.387,0.387,accuracy,0.353,0.421,0.353,0.421,844
 template_11,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.373,0.373,accuracy,0.341,0.408,0.341,0.408,844
 template_12,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.376,0.376,accuracy,0.341,0.408,0.341,0.408,844
-template_13,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.403,0.403,accuracy,0.347,0.458,0.347,0.458,288
+template_13,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.368,0.368,accuracy,0.338,0.403,0.338,0.403,844
 template_15,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.342,0.342,accuracy,0.315,0.379,0.315,0.379,844
 template_16,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.398,0.398,accuracy,0.367,0.434,0.367,0.434,844
 template_17,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.385,0.385,accuracy,0.354,0.423,0.354,0.423,844
@@ -40,9 +40,12 @@ template_38,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.347,0.347,a
 template_39,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.336,0.336,accuracy,0.306,0.372,0.306,0.372,844
 template_40,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.338,0.338,accuracy,0.305,0.370,0.305,0.370,844
 template_41,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.353,0.353,accuracy,0.320,0.386,0.320,0.386,844
-template_45,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.368,0.368,accuracy,0.340,0.404,0.340,0.404,844
-template_46,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.352,0.352,accuracy,0.320,0.384,0.320,0.384,844
-template_47,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.357,0.357,accuracy,0.326,0.392,0.326,0.392,844
-template_51,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.376,0.376,accuracy,0.344,0.412,0.344,0.412,844
-template_52,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.347,0.347,accuracy,0.318,0.380,0.318,0.380,844
-template_53,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.355,0.355,accuracy,0.323,0.386,0.323,0.386,844
+template_42,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.345,0.345,accuracy,0.311,0.381,0.311,0.381,646
+template_45,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.355,0.355,accuracy,0.325,0.392,0.325,0.392,844
+template_46,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.351,0.351,accuracy,0.319,0.385,0.319,0.385,844
+template_47,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.347,0.347,accuracy,0.316,0.382,0.316,0.382,844
+template_48,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.357,0.357,accuracy,0.317,0.395,0.317,0.395,597
+template_51,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.366,0.366,accuracy,0.333,0.402,0.333,0.402,844
+template_52,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.344,0.344,accuracy,0.312,0.378,0.312,0.378,844
+template_53,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.348,0.348,accuracy,0.316,0.382,0.316,0.382,844
+template_54,cards.mmlu_pro.economics,empty_system_format,0,1,14000,0.350,0.350,accuracy,0.317,0.391,0.317,0.391,654
