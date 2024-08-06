@@ -44,11 +44,14 @@ template_41,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.180,
 template_42,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.183,0.183,accuracy,0.146,0.224,0.146,0.224,410
 template_43,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.168,0.168,accuracy,0.132,0.207,0.132,0.207,410
 template_44,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.224,0.224,accuracy,0.185,0.271,0.185,0.271,410
-template_45,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.204,0.204,accuracy,0.163,0.246,0.163,0.246,362
+template_45,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.202,0.202,accuracy,0.161,0.241,0.161,0.241,410
+template_46,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.215,0.215,accuracy,0.178,0.259,0.178,0.259,410
+template_47,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.180,0.180,accuracy,0.144,0.217,0.144,0.217,410
 template_48,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.234,0.234,accuracy,0.193,0.277,0.193,0.277,410
 template_49,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.190,0.190,accuracy,0.152,0.227,0.152,0.227,410
 template_50,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.239,0.239,accuracy,0.200,0.283,0.200,0.283,410
 template_51,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.195,0.195,accuracy,0.159,0.237,0.159,0.237,410
-template_52,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.252,0.252,accuracy,0.190,0.319,0.190,0.319,163
+template_52,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.198,0.198,accuracy,0.161,0.239,0.161,0.239,410
+template_53,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.198,0.198,accuracy,0.159,0.237,0.159,0.237,410
 template_54,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.215,0.215,accuracy,0.176,0.255,0.176,0.255,410
 template_55,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.178,0.178,accuracy,0.141,0.217,0.141,0.217,410
