@@ -21,7 +21,12 @@ template_18,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.662,0.662,accu
 template_19,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.637,0.637,accuracy,0.579,0.687,0.579,0.687,311
 template_20,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.672,0.672,accuracy,0.621,0.723,0.621,0.723,311
 template_21,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.646,0.646,accuracy,0.592,0.698,0.592,0.698,311
-template_22,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.675,0.675,accuracy,0.596,0.747,0.596,0.747,166
+template_22,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.669,0.669,accuracy,0.614,0.717,0.614,0.717,311
+template_23,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.630,0.630,accuracy,0.576,0.682,0.576,0.682,311
+template_24,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.675,0.675,accuracy,0.624,0.730,0.624,0.730,311
+template_25,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.646,0.646,accuracy,0.595,0.698,0.595,0.698,311
+template_26,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.659,0.659,accuracy,0.608,0.711,0.608,0.711,311
+template_27,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.630,0.630,accuracy,0.572,0.682,0.572,0.682,311
 template_28,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.666,0.666,accuracy,0.613,0.717,0.613,0.717,311
 template_29,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.643,0.643,accuracy,0.588,0.691,0.588,0.691,311
 template_30,cards.mmlu.philosophy,empty_system_format,3,20,1600,0.662,0.662,accuracy,0.608,0.714,0.608,0.714,311

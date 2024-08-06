@@ -24,7 +24,9 @@ template_21,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,
 template_22,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.392,0.392,accuracy,0.346,0.444,0.346,0.444,390
 template_23,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.410,0.410,accuracy,0.359,0.459,0.359,0.459,390
 template_24,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.379,0.379,accuracy,0.333,0.426,0.333,0.426,390
-template_25,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.403,0.403,accuracy,0.353,0.461,0.353,0.461,295
+template_25,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.397,0.397,accuracy,0.346,0.446,0.346,0.446,390
+template_26,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.379,0.379,accuracy,0.335,0.428,0.335,0.428,390
+template_27,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.379,0.379,accuracy,0.331,0.426,0.331,0.426,390
 template_28,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.449,0.449,accuracy,0.403,0.500,0.403,0.500,390
 template_29,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.423,0.423,accuracy,0.374,0.474,0.374,0.474,390
 template_30,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.444,0.444,accuracy,0.392,0.490,0.392,0.490,390
@@ -49,4 +51,7 @@ template_48,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,
 template_49,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.474,0.474,accuracy,0.423,0.526,0.423,0.526,390
 template_50,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.444,0.444,accuracy,0.395,0.491,0.395,0.491,390
 template_51,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.454,0.454,accuracy,0.405,0.505,0.405,0.505,390
-template_52,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.444,0.444,accuracy,0.391,0.502,0.391,0.502,297
+template_52,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.444,0.444,accuracy,0.397,0.495,0.397,0.495,390
+template_53,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.433,0.433,accuracy,0.387,0.487,0.387,0.487,390
+template_54,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.433,0.433,accuracy,0.387,0.485,0.387,0.485,390
+template_55,cards.mmlu.high_school_macroeconomics,empty_system_format,3,20,1600,0.446,0.446,accuracy,0.397,0.495,0.397,0.495,390

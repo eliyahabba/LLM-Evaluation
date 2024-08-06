@@ -1,0 +1,5 @@
+template_name,card,system_format,num_demos,demos_pool_size,max_instances,accuracy,score,score_name,accuracy_ci_low,accuracy_ci_high,score_ci_low,score_ci_high,number_of_instances
+template_0,cards.mmlu.high_school_mathematics,empty_system_format,3,20,14000,0.270,0.270,accuracy,0.219,0.326,0.219,0.326,270
+template_1,cards.mmlu.high_school_mathematics,empty_system_format,3,20,14000,0.252,0.252,accuracy,0.198,0.309,0.198,0.309,242
+template_28,cards.mmlu.high_school_mathematics,empty_system_format,3,20,14000,0.289,0.289,accuracy,0.237,0.344,0.237,0.344,270
+template_29,cards.mmlu.high_school_mathematics,empty_system_format,3,20,14000,0.269,0.269,accuracy,0.212,0.328,0.212,0.328,212
