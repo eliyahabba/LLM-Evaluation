@@ -97,6 +97,6 @@ if __name__ == '__main__':
     shuffle_choices= False
     )
     loader = DatasetLoader("cards.mmlu_pro.biology", template, "empty_system_format",
-                           "train", 1000, 1000, 1000, "mmlu")
+                           "train", 1, 2, 1000, "mmlu")
     dataset = loader.load()
 
