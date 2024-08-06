@@ -86,6 +86,7 @@ class Constants:
         TRUST_REMOTE_CODE = False
         RETURN_TOKEN_TYPE_IDS = None
         PREDICT_PROB_OF_TOKENS = True
+        PREDICT_PERPLEXITY = True
 
         MAX_NEW_TOKENS = 10
 
@@ -182,3 +183,89 @@ class Constants:
 
         MMLU_PRO_NAME = "mmlu_pro"
         MMLU_PRO_CARDS_PREFIX = f"{MMLU_PRO_NAME}."
+
+    class DatasetsConstants:
+        MMLU = ['mmlu.abstract_algebra',
+                'mmlu.anatomy',
+                'mmlu.astronomy',
+                'mmlu.business_ethics',
+                'mmlu.clinical_knowledge',
+                'mmlu.college_biology',
+                'mmlu.college_chemistry',
+                'mmlu.college_computer_science',
+                'mmlu.college_mathematics',
+                'mmlu.college_medicine',
+                'mmlu.college_physics',
+                'mmlu.computer_security',
+                'mmlu.conceptual_physics',
+                'mmlu.econometrics',
+                'mmlu.electrical_engineering',
+                'mmlu.elementary_mathematics',
+                'mmlu.formal_logic',
+                'mmlu.global_facts',
+                'mmlu.high_school_biology',
+                'mmlu.high_school_chemistry',
+                'mmlu.high_school_computer_science',
+                'mmlu.high_school_european_history',
+                'mmlu.high_school_geography',
+                'mmlu.high_school_government_and_politics',
+                'mmlu.high_school_macroeconomics',
+                'mmlu.high_school_mathematics',
+                'mmlu.high_school_microeconomics',
+                'mmlu.high_school_physics',
+                'mmlu.high_school_psychology',
+                'mmlu.high_school_statistics',
+                'mmlu.high_school_us_history',
+                'mmlu.high_school_world_history',
+                'mmlu.human_aging',
+                'mmlu.human_sexuality',
+                'mmlu.international_law',
+                'mmlu.jurisprudence',
+                'mmlu.logical_fallacies',
+                'mmlu.machine_learning',
+                'mmlu.management',
+                'mmlu.marketing',
+                'mmlu.medical_genetics',
+                'mmlu.miscellaneous',
+                'mmlu.moral_disputes',
+                'mmlu.moral_scenarios',
+                'mmlu.nutrition',
+                'mmlu.philosophy',
+                'mmlu.prehistory',
+                'mmlu.professional_accounting',
+                'mmlu.professional_law',
+                'mmlu.professional_medicine',
+                'mmlu.professional_psychology',
+                'mmlu.public_relations',
+                'mmlu.security_studies',
+                'mmlu.sociology',
+                'mmlu.us_foreign_policy',
+                'mmlu.virology',
+                'mmlu.world_religions']
+        MMLU_PRO = ['mmlu_pro.biology',
+                    'mmlu_pro.business',
+                    'mmlu_pro.chemistry',
+                    'mmlu_pro.computer science',
+                    'mmlu_pro.computer_science',
+                    'mmlu_pro.culture',
+                    'mmlu_pro.economics',
+                    'mmlu_pro.engineering',
+                    'mmlu_pro.geography',
+                    'mmlu_pro.health',
+                    'mmlu_pro.history',
+                    'mmlu_pro.law',
+                    'mmlu_pro.math',
+                    'mmlu_pro.other',
+                    'mmlu_pro.philosophy',
+                    'mmlu_pro.physics',
+                    'mmlu_pro.politics',
+                    'mmlu_pro.psychology']
+        OTHER = ["boolq.multiple_choice", "ai2_arc.arc_challenge", "hellaswag"]
+        ALL_DATASETS = MMLU + MMLU_PRO + OTHER
+        MMLU_NAME = "mmlu"
+        MMLU_PRO_NAME = "mmlu_pro"
+
+    class SamplesAnalysisConstants:
+        SAMPLES_FILE = "samples.csv"
+        SAMPLES_FOLDER = Path(__file__).parents[1] / Path("analysis/HistogramAnalysis")
+        SAMPLES_PATH = SAMPLES_FOLDER / SAMPLES_FILE
