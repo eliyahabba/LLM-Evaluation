@@ -42,9 +42,12 @@ class HistogramOfSamples:
             merged_df = pd.DataFrame()
             if len(mmlu_files) > 0:
                 for mmlu_file in mmlu_files:
+                    if not mmlu_file.exists():
+                        continue
                     df = self.display_samples_prediction_accuracy(mmlu_file, display_results=False)
                     merged_df = pd.concat([merged_df, df])
-            self.plot_aggregated_histogram(merged_df, split_option, split_option_value)
+            if len(merged_df) > 0:
+                self.plot_aggregated_histogram(merged_df, split_option, split_option_value)
 
     def display_samples_prediction_accuracy(self, results_file: Path, display_results=True):
         """

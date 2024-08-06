@@ -1,6 +1,6 @@
+import pandas as pd
 import json
 import os
-from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,8 +14,9 @@ from src.utils.Constants import Constants
 
 MMLUConstants = Constants.MMLUConstants
 ResultConstants = Constants.ResultConstants
-
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
+DatasetsConstants = Constants.DatasetsConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 from src.streamlit_app.ui_components.SamplesNavigator import SamplesNavigator
 
@@ -41,36 +42,45 @@ class MetaHistogramOfSamples:
         selected_results_file = ResultsLoader.get_folder_selections_options(
             main_results_path, "Select results folder to visualize", reverse=True
         )
+        self.results_folder = main_results_path / selected_results_file
         shot = st.sidebar.selectbox("Select number of shots", ["zero_shot", "three_shot"])
         model_files = self.get_model_files(selected_results_file)
         return selected_results_file, model_files, shot
 
     def display_aggregated_results(self, selected_results_file, selected_models_files, shot):
-        split_option, split_option_value, datasets_names = self.get_dataset_split_options()
+        datasets_names = self.get_dataset_split_options()
         total_merge_df = MetaHistogramCalculator.aggregate_data_across_models(selected_results_file,
                                                                               selected_models_files, shot,
                                                                               datasets_names)
         total_merge_df = MetaHistogramCalculator.calculate_and_add_accuracy_columns(total_merge_df)
-        self.plot_aggregated_histogram(total_merge_df, split_option, split_option_value)
+        self.plot_aggregated_histogram(total_merge_df)
         self.display_examples(total_merge_df)
 
     def get_dataset_split_options(self):
-        split_option = st.selectbox(
-            "Aggregate the dataset by:",
-            MMLUConstants.SPLIT_OPTIONS,
-            index=MMLUConstants.SPLIT_OPTIONS.index(MMLUConstants.ALL_NAMES)
-        )
-        data_options = MMLUSplitter.get_data_options(split_option)
-        split_option_value = st.selectbox("Select the split option value:", data_options)
-        datasets_names = MMLUSplitter.get_data_files(split_option, split_option_value)
-        return split_option, split_option_value, datasets_names
+        other_datasets = DatasetsConstants.OTHER
+        data_type = st.selectbox("Select datasets", [DatasetsConstants.MMLU_NAME,
+                                                     DatasetsConstants.MMLU_PRO_NAME] + other_datasets)
+        ds_size = TemplatesGeneratorConstants.DATASET_SIZES_PATH
+        df_ds_size = pd.read_csv(ds_size)
+        if data_type == DatasetsConstants.MMLU_NAME:
+            df_ds_size = df_ds_size[
+            ~df_ds_size['Name'].str.startswith(
+                tuple(d for d in [DatasetsConstants.MMLU_NAME, DatasetsConstants.MMLU_PRO_NAME]
+                      if d != data_type)
+            )]
+        df_ds_size = df_ds_size[df_ds_size["Name"].str.startswith(data_type)]
+        datasets_names = df_ds_size["Name"].tolist()
+        # datasets_names = MMLUSplitter.get_data_files(MMLUConstants.ALL_NAMES,
+        #                                              MMLUSplitter.get_data_options(MMLUConstants.ALL_NAMES))
+        return datasets_names
 
-    def plot_aggregated_histogram(self, df, split_option, split_option_value):
+    def plot_aggregated_histogram(self, df):
         """
         Plot the histogram of the results.
         @param df: DataFrame containing the data to plot.
         """
-        title = f"Aggregated Histogram by {split_option} {split_option_value}"
+        # title = f"Aggregated Histogram by {split_option} {split_option_value}"
+        title = f"Aggregated Histogram by"
         st.markdown(f"There are {len(df)} examples in the dataset.")
         # Setting up the plot
         fig, ax = plt.subplots(figsize=(11, 6))
@@ -127,15 +137,16 @@ class MetaHistogramOfSamples:
 
     def display_text_examples(self, example_data):
         dataset = st.selectbox("Select dataset", example_data['dataset'].unique())
-        results_folder = ResultConstants.MAIN_RESULTS_PATH / Path("MultipleChoiceTemplatesStructured")
+        # results_folder = ResultConstants.MAIN_RESULTS_PATH / Path("MultipleChoiceTemplatesStructured")
         default_model = "Mistral-7B-Instruct-v0.2"
-        models = sorted([model for model in os.listdir(results_folder) if os.path.isdir(results_folder / model)])
+        models = sorted(
+            [model for model in os.listdir(self.results_folder) if os.path.isdir(self.results_folder / model)])
         model = st.selectbox("Select model", models,
                              index=models.index(default_model) if default_model in models else 0)
         selected_examples = example_data[example_data['dataset'] == dataset]
         # current_instance = selected_examples.iloc[st.session_state.get('file_index', 0)]
         current_instance = self.get_current_index(selected_examples, dataset)
-        full_results_path = results_folder / model / dataset / "zero_shot" / "empty_system_format" / "experiment_template_0.json"
+        full_results_path = self.results_folder / model / dataset / "zero_shot" / "empty_system_format" / "experiment_template_0.json"
         with open(full_results_path, "r") as file:
             template = json.load(file)
         sample = template["results"]["test"][current_instance]
@@ -166,7 +177,7 @@ class MetaHistogramOfSamples:
             st.button(label="Next sentence", on_click=SamplesNavigator.next_sentence)
         st.selectbox(
             "Sentences",
-            [f"sentence {i}" for i in range(0, st.session_state["files_number"])],
+            [f"sentence {i+1}" for i in range(0, st.session_state["files_number"])],
             index=st.session_state["file_index"],
             on_change=SamplesNavigator.go_to_sentence,
             key="selected_sentence",
