@@ -22,6 +22,7 @@ LLMProcessorConstants = Constants.LLMProcessorConstants
 class LLMPredictor:
     def __init__(self, llmp: LLMProcessor,
                  predict_prob_of_tokens: bool = LLMProcessorConstants.PREDICT_PROB_OF_TOKENS,
+                 predict_perplexity: bool = LLMProcessorConstants.PREDICT_PERPLEXITY,
                  batch_size: int = ExperimentConstants.BATCH_SIZE):
         """
         Initializes the LLMPredictor.
@@ -30,6 +31,7 @@ class LLMPredictor:
         """
         self.llmp = llmp
         self.predict_prob_of_tokens = predict_prob_of_tokens
+        self.predict_perplexity = predict_perplexity
         self.batch_size = batch_size
 
     def predict_on_single_dataset(self, eval_dataset, eval_value: str, results_file_path: Path,
@@ -42,9 +44,7 @@ class LLMPredictor:
 
         """
         # find the max_new_tokens parameter from the eval_set (the maximum number of tokens in the target)
-        max_new_tokens = max([len(instance["target"].split()) for instance in eval_dataset])
-        max_new_tokens = max(max_new_tokens, 12)
-        max_new_tokens = min(max_new_tokens, 25)
+        max_new_tokens = max([len(instance["target"].split()) for instance in eval_dataset])*2
 
         eval_set_indexes = list(range(len(eval_dataset)))
         filter_eval_set, filter_eval_set_indexes = self.filter_saved_instances(eval_dataset, eval_value,
@@ -90,9 +90,11 @@ class LLMPredictor:
             counter_idx += self.batch_size
             input_text = [batch_instance["source"] for batch_instance in batch_instances]
             ground_truth = [batch_instance["target"] for batch_instance in batch_instances]
-            generated_tokens_decoded, max_tokens, perplexities = self.llmp.predict(input_text, self.predict_prob_of_tokens,
-                                                                     max_new_tokens,
-                                                                     possible_gt_tokens=possible_gt_tokens)
+            generated_tokens_decoded, max_tokens, perplexities = self.llmp.predict(input_text,
+                                                                                   self.predict_prob_of_tokens,
+                                                                                   self.predict_perplexity,
+                                                                                   max_new_tokens,
+                                                                                   possible_gt_tokens=possible_gt_tokens)
             loaded_idxs.extend(batch_indexes)
             loaded_input_texts.extend(input_text)
             loaded_ground_truths.extend(ground_truth)
@@ -101,7 +103,7 @@ class LLMPredictor:
             loaded_perplexities.extend(perplexities)
             self.save_results(results_file_path, eval_value, loaded_idxs, loaded_input_texts, loaded_answers,
                               loaded_ground_truths, loaded_max_tokens_probability,
-                                loaded_perplexities, loaded_data)
+                              loaded_perplexities, loaded_data)
 
     def predict_dataset(self, llm_dataset: NLPDataset, evaluate_on: list,
                         results_file_path: Path, possible_gt_tokens: List[str] = None) -> None:
@@ -148,7 +150,7 @@ class LLMPredictor:
         """
 
         entries = self.create_entries(idxs, input_texts, results, loaded_max_tokens_probability,
-                                    loaded_perplexities, ground_truths)
+                                      loaded_perplexities, ground_truths)
         loaded_data['results'][eval_value] = entries
         with open(results_file_path, "w") as f:
             json.dump(loaded_data, f)
@@ -174,7 +176,7 @@ class LLMPredictor:
             "MaxTokenProbability": max_token,
             "Perplexity": perplexity,
             "GroundTruth": ground_truth
-        } for idx, instance, result, max_token, perplexity , ground_truth in
+        } for idx, instance, result, max_token, perplexity, ground_truth in
             zip(idxs, input_texts, results, loaded_max_tokens_probability, loaded_perplexities, ground_truths)]
         # sort the entries by the index
         entries = sorted(entries, key=lambda x: x["Index"])
