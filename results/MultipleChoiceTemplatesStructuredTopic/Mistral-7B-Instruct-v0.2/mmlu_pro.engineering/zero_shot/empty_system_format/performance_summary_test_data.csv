@@ -49,6 +49,7 @@ template_46,cards.mmlu_pro.engineering,empty_system_format,0,1,14000,0.111,0.111
 template_47,cards.mmlu_pro.engineering,empty_system_format,0,1,14000,0.108,0.108,accuracy,0.091,0.127,0.091,0.127,969
 template_48,cards.mmlu_pro.engineering,empty_system_format,0,1,14000,0.110,0.110,accuracy,0.093,0.131,0.093,0.131,969
 template_49,cards.mmlu_pro.engineering,empty_system_format,0,1,14000,0.110,0.110,accuracy,0.093,0.131,0.093,0.131,969
+template_50,cards.mmlu_pro.engineering,empty_system_format,0,1,14000,0.109,0.109,accuracy,0.091,0.129,0.091,0.129,969
 template_51,cards.mmlu_pro.engineering,empty_system_format,0,1,14000,0.112,0.112,accuracy,0.094,0.132,0.094,0.132,969
 template_52,cards.mmlu_pro.engineering,empty_system_format,0,1,14000,0.098,0.098,accuracy,0.080,0.118,0.080,0.118,969
 template_53,cards.mmlu_pro.engineering,empty_system_format,0,1,14000,0.106,0.106,accuracy,0.090,0.127,0.090,0.127,969
