@@ -81,7 +81,7 @@ class MetaHistogramOfSamples:
         """
         # title = f"Aggregated Histogram by {split_option} {split_option_value}"
         title = f"Aggregated Histogram by"
-        st.markdown(f"There are {len(df)} examples in the dataset.")
+        st.markdown(f"There are {len(df)} examples in the dataset across {int(df['number_of_predictions'].mean())} predictions (mean).")
         # Setting up the plot
         fig, ax = plt.subplots(figsize=(11, 6))
         ax.grid(True)  # Add grid lines for better readability
