@@ -26,7 +26,6 @@ class Constants:
 
         PHI_MODEL = "microsoft/phi-2"
 
-        OLMO_MODEL = "allenai/OLMo-7B-Instruct"
         OLMO_HF_MODEL = "allenai/OLMo-7B-Instruct-hf"
         OLMO_1_7_MODEL = "allenai/OLMo-1.7-7B-hf"
 
@@ -69,7 +68,6 @@ class Constants:
                             "GEMMA_2B": GEMMA_2B_MODEL,
                             "GEMMA2_9B": GEMMA2_9B,
                             "GEMMA2_27B": GEMMA2_27B,
-                            "OLMO": OLMO_MODEL,
                             "OLMO_HF": OLMO_HF_MODEL,
                             "OLMO_1_7": OLMO_1_7_MODEL,
                             "ALPACA": ALPACA,
