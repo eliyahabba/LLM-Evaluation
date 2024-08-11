@@ -56,8 +56,8 @@ class DatasetLoader:
             system_format = SystemFormat(
                 model_input_format=f"{self.system_format}\n{{source}}",
             )
-        # if self.num_demos:
-        #     self.demos_pool_size = self.get_validation_size(self.card) - 1
+        if self.num_demos:
+            self.demos_pool_size = self.get_validation_size(self.card) - 1
 
         recipe = StandardRecipe(
             card=self.card,
