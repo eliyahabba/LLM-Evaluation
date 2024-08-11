@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import time
 from pathlib import Path
 from typing import Tuple
@@ -28,14 +29,15 @@ class ExperimentRunner:
     def __init__(self, args):
         self.args = args
 
-    def load_template(self, template_num: int) -> Tuple[str, Template]:
+    def load_template(self, template_num: int, multiple_choice_path) -> \
+            Tuple[str, Template]:
         """
         Loads the template from the specified path.
         @return: The template
         """
         template_name = Utils.get_template_name(template_num)
         catalog_manager = CatalogManager(
-            Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH, self.args.card))
+            Utils.get_card_path(multiple_choice_path, self.args.card))
         template = catalog_manager.load_from_catalog(template_name)
         return template_name, template
 
@@ -49,7 +51,7 @@ class ExperimentRunner:
             "card": self.args.card,
             "template_name": template_name,
             "model_name": self.args.model_name,
-            "system_format": self.args.system_format,
+            "system_format": ExperimentConstants.SYSTEM_FORMATS_NAMES[self.args.system_format],
             "max_instances": self.args.max_instances,
             "num_demos": self.args.num_demos,
             "demos_pool_size": self.args.demos_pool_size,
@@ -65,18 +67,19 @@ class ExperimentRunner:
         @return: The path to the results file.
         """
         json_file_name = "experiment_" + template_name + ".json"
-        num_of_shot_str = "zero" if num_demos == 0 else "one" if num_demos == 1 else "two" if num_demos == 2 \
-            else None
+        num_of_shot_str = "zero" if num_demos == 0 else "one" if num_demos == 1 else \
+            "two" if num_demos == 2 else "three" if num_demos == 3 else None
         if num_of_shot_str is None:
             raise ValueError(f"num_demos should be between 0 and 2, but it is {num_demos}.")
-        num_of_shot_icl = f"{num_of_shot_str}_shot"
+        self.num_of_shot_icl = f"{num_of_shot_str}_shot"
 
-        system_foramt = Utils.get_system_format_class(self.args.system_format)
-
-        results_path = ExperimentConstants.MAIN_RESULTS_PATH / Path(
-            TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
-        results_file_path = results_path / self.args.card.split('cards.')[1] / num_of_shot_icl / system_foramt / \
-                            json_file_name
+        system_foramt_name = ExperimentConstants.SYSTEM_FORMATS_NAMES[self.args.system_format]
+        results_file_path = (self.args.results_path /
+                             Utils.get_model_name(self.args.model_name) /
+                             Utils.get_card_name(self.args.card) /
+                             self.num_of_shot_icl /
+                             system_foramt_name /
+                             json_file_name)
         results_file_path.parent.mkdir(parents=True, exist_ok=True)
         print(f"Results will be saved in {results_file_path}")
         return results_file_path
@@ -97,8 +100,16 @@ class ExperimentRunner:
                 for key in data:
                     if key != "results":
                         if data[key] != entry_experiment[key]:
-                            raise ValueError(f"The metadata of the experiment in {results_file_path} "
-                                             f"is different from the one in the current experiment.")
+                            if key == "max_instances":
+                                print(f"max_instances in the current experiment: {entry_experiment[key]}")
+                                print(f"max_instances in the previous experiment: {data[key]}")
+                            else:
+                                # print the key and the value of the key in the current experiment and the previous experiment
+                                print(f"{key} in the current experiment: {entry_experiment[key]}")
+                                print(f"{key} in the previous experiment: {data[key]}")
+
+                                raise ValueError(f"The metadata of the experiment in {results_file_path} "
+                                                 f"is different from the one in the current experiment.")
                 # print blue message
             print(colored(f"Results already exist in {results_file_path}", "blue"))
             return results_file_path
@@ -112,15 +123,21 @@ class ExperimentRunner:
         @return: The results of the experiment.
         """
         min_template, max_template = self.args.template_range
-        for template_num in range(min_template, max_template + 1):
+        # llm_proc = LLMProcessor(model_name=self.args.model_name,
+        #                         load_in_4bit=self.args.load_in_4bit,
+        #                         load_in_8bit=self.args.load_in_8bit,
+        #                         trust_remote_code=self.args.trust_remote_code,
+        #                         return_token_type_ids=self.args.not_return_token_type_ids)
+        llm_proc = None
+        for template_num in range(min_template, max_template):
             start = time.time()
-            self.run_single_experiment(template_num)
+            self.run_single_experiment(llm_proc, template_num)
             end = time.time()
             # print the time of the experiment in minutes (blue color)
             print(colored(f"Time of the experiment: {round((end - start) / 60, 2)} minutes", "blue"))
 
-    def run_single_experiment(self, template_num: int) -> None:
-        template_name, template = self.load_template(template_num)
+    def run_single_experiment(self, llm_proc: LLMProcessor, template_num: int) -> None:
+        template_name, template = self.load_template(template_num, multiple_choice_path=self.args.multiple_choice_path)
         llm_dataset_loader = DatasetLoader(card=self.args.card,
                                            template=template,
                                            system_format=self.args.system_format,
@@ -133,18 +150,23 @@ class ExperimentRunner:
         entry_experiment = self.create_entry_experiment(template_name)
         results_file_path = self.save_results_to_json(entry_experiment, template_name, self.args.num_demos)
 
-        llm_proc = LLMProcessor(self.args.model_name, self.args.load_in_4bit, self.args.load_in_8bit)
-        llm_pred = LLMPredictor(llm_proc)
-
-        enumerators = template.enumerator[:4]
+        num_of_possible_answers = 8 if "pro" in self.args.card else 2 if "boolq" in self.args.card else 4
+        enumerators = template.enumerator[:num_of_possible_answers]
         if isinstance(enumerators, str):
             # convrte each char tp an element in a list
             enumerators = list(enumerators)
         # for each element in the enumerator list add another token of " " + token
         enumerators_with_space = [f" {enumerator}" for enumerator in enumerators]
-        possible_gt_tokens = enumerators + enumerators_with_space
+        enumerators_with_space2 = [f"{enumerator} " for enumerator in enumerators]
+        enumerators_with_dot = [f"{enumerator}." for enumerator in enumerators]
+        possible_gt_tokens = enumerators + enumerators_with_space + enumerators_with_dot + enumerators_with_space2
 
-        llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path)
+        llm_pred = LLMPredictor(llm_proc, predict_prob_of_tokens=self.args.predict_prob_of_tokens,
+                                predict_perplexity=self.args.predict_perplexity,
+                                batch_size=self.args.batch_size)
+
+        llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path,
+                                 possible_gt_tokens=possible_gt_tokens)
 
 
 def parser_bit_precision(args: argparse.Namespace) -> Tuple[bool, bool]:
@@ -169,7 +191,11 @@ def main():
     args = argparse.ArgumentParser()
     args = ReadLLMParams.read_llm_params(args)
 
-    args.add_argument("--card", type=str, default="cards.mmlu.college_medicine")
+    args.add_argument("--predict_prob_of_tokens", default=LLMProcessorConstants.PREDICT_PROB_OF_TOKENS,
+                      help="Whether to predict the probability of each token.", action="store_false")
+    args.add_argument("--predict_perplexity", default=LLMProcessorConstants.PREDICT_PERPLEXITY,
+                      help="Whether to predict the perplexity of the token.", action="store_false")
+    args.add_argument("--card", type=str, default="cards.mmlu.world_religions")
     args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
     args.add_argument("--batch_size", type=int, default=ExperimentConstants.BATCH_SIZE, help="The batch size.")
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
@@ -194,6 +220,9 @@ def main():
     args.multiple_choice_path = TemplatesGeneratorConstants.DATA_PATH / Path(args.multiple_choice_name)
     args.results_path = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.multiple_choice_name)
     runner = ExperimentRunner(args)
+    # print the args for this experiment: model name, card name, template range, num of demos, demos_pool_size
+    print(f"Model name: {args.model_name}, Card name: {args.card}, Template range: {args.template_range}, "
+          f"Number of demos: {args.num_demos}, Demos pool size: {args.demos_pool_size}")
     runner.run_experiment()
 
 
