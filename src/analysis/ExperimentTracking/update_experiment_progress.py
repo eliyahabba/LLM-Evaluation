@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import subprocess
@@ -189,24 +190,44 @@ def save_update_list(update_list, filename):
     update_list.to_csv(filename, index=False, header=False)
 
 
+def run_model(model_name, results_folder_path, summarize_df_path, df, datasets):
+    for dataset in tqdm(datasets):
+        for shots in ResultConstants.SHOTS:
+            files_total_data, files_acquired_data = experiments_results. \
+                get_data_percentage_and_completed_of_all_experiments(results_folder_path, model_name, dataset,
+                                                                     shots)
+            if files_total_data is None:
+                continue
+            df = update_df_files(files_total_data, files_acquired_data, df, model_name, dataset, shots)
+            save_updated_summarize_df(df, summarize_df_path)
+
+
 if __name__ == "__main__":
     # Load the model and the dataset
-    base_results_folder = TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME
-    base_results_folder = TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME
-    base_results_folder = TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_TOPIC_FOLDER_NAME
-    results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(
-        base_results_folder)
+    args = argparse.ArgumentParser()
+    args.add_argument("--model_name", type=str, default="MISTRAL_V2")
+    args.add_argument("--results_folder", type=str,
+                      default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
+    args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
+    args = args.parse_args()
+    results_folder_path = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
+    model_name = LLMProcessorConstants.BASE_MODEL_NAMES[args.model_name].split('/')[1]
+    # Load the model and the dataset
 
     eval_on = ExperimentConstants.EVALUATE_ON_ANALYZE[0]
     experiments_results = ExperimentsResultsFolder(eval_on)
-    model_dataset_runner = ModelDatasetRunner(results_folder, eval_on)
+    model_dataset_runner = ModelDatasetRunner(results_folder_path, eval_on)
     # create a df
     summarize_df_path = ResultConstants.MAIN_RESULTS_PATH / Path(
-        base_results_folder) / ResultConstants.SUMMARIZE_DF_NAME
+        args.results_folder) / ResultConstants.SUMMARIZE_DF_NAME
     df = get_summarize_df(summarize_df_path)
     MMLUData.initialize()
     # run the function on all the models and datasets
 
+    models = LLMProcessorConstants.MODEL_NAMES
+    datasets = DatasetsConstants.ALL_DATASETS
+    # datasets = ["mmlu_pro.law"]
+    run_model(model_name, results_folder_path, summarize_df_path, df, datasets)
     # MODEL_TO_CHECK = ["OLMO_HF",
     #                   "OLMO_1_7",
     #                   "GEMMA",
@@ -214,17 +235,5 @@ if __name__ == "__main__":
     #                   "VICUNA"
     #                   ]
     # models = {k: v for k, v in LLMProcessorConstants.MODEL_NAMES.items() if k in MODEL_TO_CHECK}
-    models = LLMProcessorConstants.MODEL_NAMES
-    datasets = DatasetsConstants.ALL_DATASETS
-    # datasets = ["mmlu_pro.law"]
-    for model in tqdm(list(models.values())):
-        model_name = model.split("/")[-1]
-        for dataset in tqdm(datasets):
-            for shots in ResultConstants.SHOTS:
-                files_total_data, files_acquired_data = experiments_results. \
-                    get_data_percentage_and_completed_of_all_experiments(results_folder, model_name, dataset,
-                                                                         shots)
-                if files_total_data is None:
-                    continue
-                df = update_df_files(files_total_data, files_acquired_data, df, model_name, dataset, shots)
-                save_updated_summarize_df(df, summarize_df_path)
+    # for model in tqdm(list(models.values())):
+    #     run_model(model_name, results_folder_path, summarize_df_path, df, datasets)
