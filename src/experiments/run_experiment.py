@@ -161,6 +161,7 @@ class ExperimentRunner:
         possible_gt_tokens = enumerators + enumerators_with_space + enumerators_with_dot + enumerators_with_space2
 
         llm_pred = LLMPredictor(llm_proc, predict_prob_of_tokens=self.args.predict_prob_of_tokens,
+                                predict_perplexity=self.args.predict_perplexity,
                                 batch_size=self.args.batch_size)
 
         llm_pred.predict_dataset(llm_dataset, self.args.evaluate_on, results_file_path=results_file_path,
@@ -191,6 +192,8 @@ def main():
 
     args.add_argument("--predict_prob_of_tokens", default=LLMProcessorConstants.PREDICT_PROB_OF_TOKENS,
                       help="Whether to predict the probability of each token.", action="store_false")
+    args.add_argument("--predict_perplexity", default=LLMProcessorConstants.PREDICT_PERPLEXITY,
+                        help="Whether to predict the perplexity of the token.", action="store_false")
     args.add_argument("--card", type=str, default="cards.sciq")
     args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
     args.add_argument("--batch_size", type=int, default=ExperimentConstants.BATCH_SIZE, help="The batch size.")
