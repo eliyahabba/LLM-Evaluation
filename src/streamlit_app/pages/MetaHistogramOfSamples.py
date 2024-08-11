@@ -1,15 +1,15 @@
-import pandas as pd
 import json
 import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from src.experiments.data_loading.MMLUSplitter import MMLUSplitter
 from src.streamlit_app.ui_components.MetaHistogramCalculator import MetaHistogramCalculator
 from src.streamlit_app.ui_components.ResultsLoader import ResultsLoader
+from src.streamlit_app.ui_components.SamplesNavigator import SamplesNavigator
 from src.utils.Constants import Constants
 
 MMLUConstants = Constants.MMLUConstants
@@ -18,7 +18,6 @@ TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 DatasetsConstants = Constants.DatasetsConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
-from src.streamlit_app.ui_components.SamplesNavigator import SamplesNavigator
 
 
 class MetaHistogramOfSamples:
@@ -64,10 +63,10 @@ class MetaHistogramOfSamples:
         df_ds_size = pd.read_csv(ds_size)
         if data_type == DatasetsConstants.MMLU_NAME:
             df_ds_size = df_ds_size[
-            ~df_ds_size['Name'].str.startswith(
-                tuple(d for d in [DatasetsConstants.MMLU_NAME, DatasetsConstants.MMLU_PRO_NAME]
-                      if d != data_type)
-            )]
+                ~df_ds_size['Name'].str.startswith(
+                    tuple(d for d in [DatasetsConstants.MMLU_NAME, DatasetsConstants.MMLU_PRO_NAME]
+                          if d != data_type)
+                )]
         df_ds_size = df_ds_size[df_ds_size["Name"].str.startswith(data_type)]
         datasets_names = df_ds_size["Name"].tolist()
         # datasets_names = MMLUSplitter.get_data_files(MMLUConstants.ALL_NAMES,
@@ -81,7 +80,8 @@ class MetaHistogramOfSamples:
         """
         # title = f"Aggregated Histogram by {split_option} {split_option_value}"
         title = f"Aggregated Histogram by"
-        st.markdown(f"There are {len(df)} examples in the dataset across {int(df['number_of_predictions'].mean())} predictions (mean).")
+        st.markdown(
+            f"There are {len(df)} examples in the dataset across {int(df['number_of_predictions'].mean())} predictions (mean).")
         # Setting up the plot
         fig, ax = plt.subplots(figsize=(11, 6))
         ax.grid(True)  # Add grid lines for better readability
@@ -177,7 +177,7 @@ class MetaHistogramOfSamples:
             st.button(label="Next sentence", on_click=SamplesNavigator.next_sentence)
         st.selectbox(
             "Sentences",
-            [f"sentence {i+1}" for i in range(0, st.session_state["files_number"])],
+            [f"sentence {i + 1}" for i in range(0, st.session_state["files_number"])],
             index=st.session_state["file_index"],
             on_change=SamplesNavigator.go_to_sentence,
             key="selected_sentence",
