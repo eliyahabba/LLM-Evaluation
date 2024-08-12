@@ -36,11 +36,11 @@ template_33,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.4
 template_34,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.490,0.490,accuracy,0.451,0.533,0.451,0.533,612
 template_35,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.480,0.480,accuracy,0.443,0.522,0.443,0.522,612
 template_36,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.474,0.474,accuracy,0.438,0.513,0.438,0.513,612
-template_37,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.471,0.471,accuracy,0.433,0.513,0.433,0.513,612
-template_38,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.446,0.446,accuracy,0.405,0.485,0.405,0.485,612
-template_39,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.462,0.462,accuracy,0.425,0.505,0.425,0.505,612
-template_40,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.454,0.454,accuracy,0.418,0.492,0.418,0.492,612
-template_41,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.469,0.469,accuracy,0.430,0.511,0.430,0.511,612
+template_37,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.456,0.456,accuracy,0.417,0.497,0.417,0.497,612
+template_38,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.462,0.462,accuracy,0.422,0.503,0.422,0.503,612
+template_39,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.438,0.438,accuracy,0.399,0.478,0.399,0.478,612
+template_40,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.458,0.458,accuracy,0.422,0.497,0.422,0.497,612
+template_41,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.453,0.453,accuracy,0.415,0.497,0.415,0.497,612
 template_42,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.443,0.443,accuracy,0.407,0.482,0.407,0.482,612
 template_43,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.425,0.425,accuracy,0.387,0.467,0.387,0.467,612
 template_44,cards.mmlu.professional_psychology,empty_system_format,3,20,1600,0.471,0.471,accuracy,0.431,0.507,0.431,0.507,612

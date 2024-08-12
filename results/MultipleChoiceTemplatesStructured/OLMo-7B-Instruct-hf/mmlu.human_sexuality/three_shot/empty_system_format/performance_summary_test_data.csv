@@ -35,11 +35,11 @@ template_32,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.450,0.450
 template_33,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.458,0.458,accuracy,0.374,0.542,0.374,0.542,131
 template_34,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.443,0.443,accuracy,0.359,0.534,0.359,0.534,131
 template_35,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.435,0.435,accuracy,0.351,0.527,0.351,0.527,131
-template_36,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.481,0.481,accuracy,0.397,0.572,0.397,0.572,131
+template_36,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.473,0.473,accuracy,0.397,0.557,0.397,0.557,131
 template_37,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.450,0.450,accuracy,0.359,0.534,0.359,0.534,131
-template_38,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.504,0.504,accuracy,0.420,0.588,0.420,0.588,131
+template_38,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.489,0.489,accuracy,0.405,0.573,0.405,0.573,131
 template_39,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.427,0.427,accuracy,0.351,0.519,0.351,0.519,131
-template_40,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.473,0.473,accuracy,0.389,0.557,0.389,0.557,131
+template_40,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.458,0.458,accuracy,0.374,0.542,0.374,0.542,131
 template_41,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.481,0.481,accuracy,0.397,0.570,0.397,0.570,131
 template_42,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.435,0.435,accuracy,0.344,0.519,0.344,0.519,131
 template_43,cards.mmlu.human_sexuality,empty_system_format,3,20,1600,0.435,0.435,accuracy,0.351,0.519,0.351,0.519,131

@@ -12,7 +12,7 @@ template_9,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.461,0.461,ac
 template_10,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.455,0.455,accuracy,0.420,0.489,0.420,0.489,783
 template_11,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.437,0.437,accuracy,0.404,0.475,0.404,0.475,783
 template_12,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.499,0.499,accuracy,0.466,0.534,0.466,0.534,783
-template_13,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.441,0.441,accuracy,0.410,0.475,0.410,0.475,783
+template_13,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.439,0.439,accuracy,0.407,0.474,0.407,0.474,783
 template_14,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.447,0.447,accuracy,0.414,0.481,0.414,0.481,783
 template_15,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.406,0.406,accuracy,0.369,0.439,0.369,0.439,783
 template_16,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.473,0.473,accuracy,0.439,0.507,0.439,0.507,783
@@ -40,7 +40,7 @@ template_37,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.479,0.479,a
 template_38,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.489,0.489,accuracy,0.453,0.525,0.453,0.525,783
 template_39,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.487,0.487,accuracy,0.453,0.526,0.453,0.526,783
 template_40,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.507,0.507,accuracy,0.472,0.544,0.472,0.544,783
-template_41,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.478,0.478,accuracy,0.444,0.513,0.444,0.513,783
+template_41,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.474,0.474,accuracy,0.439,0.509,0.439,0.509,783
 template_42,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.374,0.374,accuracy,0.341,0.410,0.341,0.410,783
 template_43,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.356,0.356,accuracy,0.322,0.391,0.322,0.391,783
 template_44,cards.mmlu.miscellaneous,empty_system_format,0,10,1600,0.450,0.450,accuracy,0.416,0.485,0.416,0.485,783

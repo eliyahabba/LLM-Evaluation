@@ -49,9 +49,9 @@ template_46,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.647
 template_47,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.625,0.625,accuracy,0.566,0.680,0.566,0.680,272
 template_48,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.651,0.651,accuracy,0.592,0.699,0.592,0.699,272
 template_49,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.614,0.614,accuracy,0.559,0.673,0.559,0.673,272
-template_50,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.640,0.640,accuracy,0.583,0.695,0.583,0.695,272
+template_50,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.643,0.643,accuracy,0.588,0.699,0.588,0.699,272
 template_51,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.618,0.618,accuracy,0.562,0.676,0.562,0.676,272
-template_52,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.629,0.629,accuracy,0.570,0.684,0.570,0.684,272
+template_52,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.632,0.632,accuracy,0.574,0.689,0.574,0.689,272
 template_53,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.577,0.577,accuracy,0.518,0.636,0.518,0.636,272
-template_54,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.610,0.610,accuracy,0.555,0.665,0.555,0.665,272
+template_54,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.614,0.614,accuracy,0.555,0.669,0.555,0.669,272
 template_55,cards.mmlu.professional_medicine,empty_system_format,0,10,1600,0.585,0.585,accuracy,0.526,0.640,0.526,0.640,272

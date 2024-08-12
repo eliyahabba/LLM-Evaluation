@@ -44,4 +44,14 @@ template_41,cards.mmlu.high_school_european_history,empty_system_format,3,20,160
 template_42,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.558,0.558,accuracy,0.485,0.629,0.485,0.629,165
 template_43,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.606,0.606,accuracy,0.539,0.679,0.539,0.679,165
 template_44,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.552,0.552,accuracy,0.473,0.624,0.473,0.624,165
-template_45,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.629,0.629,accuracy,0.457,0.771,0.457,0.771,35
+template_45,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.594,0.594,accuracy,0.515,0.667,0.515,0.667,165
+template_46,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.558,0.558,accuracy,0.485,0.636,0.485,0.636,165
+template_47,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.582,0.582,accuracy,0.509,0.661,0.509,0.661,165
+template_48,cards.mmlu.high_school_european_history,empty_system_format,3,20,1600,0.570,0.570,accuracy,0.497,0.642,0.497,0.642,165
+template_49,cards.mmlu.high_school_european_history,empty_system_format,3,20,14000,0.588,0.588,accuracy,0.515,0.661,0.515,0.661,165
+template_50,cards.mmlu.high_school_european_history,empty_system_format,3,20,14000,0.588,0.588,accuracy,0.503,0.655,0.503,0.655,165
+template_51,cards.mmlu.high_school_european_history,empty_system_format,3,20,14000,0.570,0.570,accuracy,0.497,0.648,0.497,0.648,165
+template_52,cards.mmlu.high_school_european_history,empty_system_format,3,20,14000,0.576,0.576,accuracy,0.503,0.648,0.503,0.648,165
+template_53,cards.mmlu.high_school_european_history,empty_system_format,3,20,14000,0.545,0.545,accuracy,0.472,0.621,0.472,0.621,165
+template_54,cards.mmlu.high_school_european_history,empty_system_format,3,20,14000,0.606,0.606,accuracy,0.533,0.679,0.533,0.679,165
+template_55,cards.mmlu.high_school_european_history,empty_system_format,3,20,14000,0.570,0.570,accuracy,0.497,0.642,0.497,0.642,165

@@ -22,11 +22,11 @@ template_19,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.502,0.
 template_20,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.521,0.521,accuracy,0.460,0.581,0.460,0.581,265
 template_21,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.513,0.513,accuracy,0.460,0.577,0.460,0.577,265
 template_22,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.506,0.506,accuracy,0.445,0.570,0.445,0.570,265
-template_23,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.491,0.491,accuracy,0.437,0.551,0.437,0.551,265
-template_24,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.536,0.536,accuracy,0.479,0.600,0.479,0.600,265
-template_25,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.472,0.472,accuracy,0.411,0.536,0.411,0.536,265
-template_26,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.555,0.555,accuracy,0.498,0.619,0.498,0.619,265
-template_27,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.498,0.498,accuracy,0.438,0.558,0.438,0.558,265
+template_23,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.475,0.475,accuracy,0.415,0.536,0.415,0.536,265
+template_24,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.543,0.543,accuracy,0.483,0.608,0.483,0.608,265
+template_25,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.468,0.468,accuracy,0.408,0.532,0.408,0.532,265
+template_26,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.558,0.558,accuracy,0.502,0.623,0.502,0.623,265
+template_27,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.483,0.483,accuracy,0.420,0.543,0.420,0.543,265
 template_28,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.532,0.532,accuracy,0.472,0.589,0.472,0.589,265
 template_29,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.494,0.494,accuracy,0.430,0.555,0.430,0.555,265
 template_30,cards.mmlu.clinical_knowledge,empty_system_format,3,20,1600,0.528,0.528,accuracy,0.468,0.589,0.468,0.589,265

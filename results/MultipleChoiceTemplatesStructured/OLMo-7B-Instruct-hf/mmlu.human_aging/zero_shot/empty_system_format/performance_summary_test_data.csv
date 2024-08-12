@@ -32,7 +32,7 @@ template_37,cards.mmlu.human_aging,empty_system_format,0,1,1600,0.291,0.291,accu
 template_38,cards.mmlu.human_aging,empty_system_format,0,1,1600,0.395,0.395,accuracy,0.332,0.462,0.332,0.462,223
 template_39,cards.mmlu.human_aging,empty_system_format,0,1,1600,0.381,0.381,accuracy,0.314,0.444,0.314,0.444,223
 template_40,cards.mmlu.human_aging,empty_system_format,0,1,1600,0.323,0.323,accuracy,0.265,0.390,0.265,0.390,223
-template_41,cards.mmlu.human_aging,empty_system_format,0,1,1600,0.359,0.359,accuracy,0.300,0.430,0.300,0.430,223
+template_41,cards.mmlu.human_aging,empty_system_format,0,1,1600,0.363,0.363,accuracy,0.305,0.430,0.305,0.430,223
 template_42,cards.mmlu.human_aging,empty_system_format,0,1,1600,0.381,0.381,accuracy,0.318,0.439,0.318,0.439,223
 template_43,cards.mmlu.human_aging,empty_system_format,0,1,1600,0.368,0.368,accuracy,0.305,0.426,0.305,0.426,223
 template_44,cards.mmlu.human_aging,empty_system_format,0,1,1600,0.520,0.520,accuracy,0.457,0.592,0.457,0.592,223

@@ -26,7 +26,7 @@ template_23,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.472,0.472,accu
 template_24,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.503,0.503,accuracy,0.444,0.558,0.444,0.558,324
 template_25,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.481,0.481,accuracy,0.426,0.537,0.426,0.537,324
 template_26,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.503,0.503,accuracy,0.451,0.559,0.451,0.559,324
-template_27,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.481,0.481,accuracy,0.429,0.534,0.429,0.534,324
+template_27,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.475,0.475,accuracy,0.423,0.528,0.423,0.528,324
 template_28,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.528,0.528,accuracy,0.478,0.586,0.478,0.586,324
 template_29,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.512,0.512,accuracy,0.460,0.565,0.460,0.565,324
 template_30,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.525,0.525,accuracy,0.472,0.580,0.472,0.580,324
@@ -49,9 +49,9 @@ template_46,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.509,0.509,accu
 template_47,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.503,0.503,accuracy,0.451,0.556,0.451,0.556,324
 template_48,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.531,0.531,accuracy,0.478,0.590,0.478,0.590,324
 template_49,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.519,0.519,accuracy,0.469,0.571,0.469,0.571,324
-template_50,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.540,0.540,accuracy,0.491,0.599,0.491,0.599,324
-template_51,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.494,0.494,accuracy,0.438,0.544,0.438,0.544,324
-template_52,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.543,0.543,accuracy,0.491,0.602,0.491,0.602,324
-template_53,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.515,0.515,accuracy,0.460,0.565,0.460,0.565,324
-template_54,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.531,0.531,accuracy,0.475,0.590,0.475,0.590,324
-template_55,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.519,0.519,accuracy,0.469,0.571,0.469,0.571,324
+template_50,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.537,0.537,accuracy,0.488,0.596,0.488,0.596,324
+template_51,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.491,0.491,accuracy,0.438,0.540,0.438,0.540,324
+template_52,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.540,0.540,accuracy,0.488,0.599,0.488,0.599,324
+template_53,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.512,0.512,accuracy,0.460,0.562,0.460,0.562,324
+template_54,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.525,0.525,accuracy,0.469,0.582,0.469,0.582,324
+template_55,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.515,0.515,accuracy,0.465,0.568,0.465,0.568,324

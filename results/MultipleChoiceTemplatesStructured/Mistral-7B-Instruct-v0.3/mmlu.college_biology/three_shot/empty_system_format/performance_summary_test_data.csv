@@ -21,7 +21,12 @@ template_18,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.715,0.715
 template_19,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.701,0.701,accuracy,0.611,0.764,0.611,0.764,144
 template_20,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.722,0.722,accuracy,0.639,0.785,0.639,0.785,144
 template_21,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.694,0.694,accuracy,0.615,0.764,0.615,0.764,144
-template_22,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.734,0.734,accuracy,0.638,0.822,0.638,0.822,94
+template_22,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.736,0.736,accuracy,0.653,0.799,0.653,0.799,144
+template_23,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.708,0.708,accuracy,0.625,0.778,0.625,0.778,144
+template_24,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.708,0.708,accuracy,0.632,0.778,0.632,0.778,144
+template_25,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.715,0.715,accuracy,0.632,0.785,0.632,0.785,144
+template_26,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.729,0.729,accuracy,0.648,0.799,0.648,0.799,144
+template_27,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.708,0.708,accuracy,0.625,0.778,0.625,0.778,144
 template_28,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.729,0.729,accuracy,0.653,0.792,0.653,0.792,144
 template_29,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.722,0.722,accuracy,0.646,0.792,0.646,0.792,144
 template_30,cards.mmlu.college_biology,empty_system_format,3,20,1600,0.736,0.736,accuracy,0.653,0.799,0.653,0.799,144

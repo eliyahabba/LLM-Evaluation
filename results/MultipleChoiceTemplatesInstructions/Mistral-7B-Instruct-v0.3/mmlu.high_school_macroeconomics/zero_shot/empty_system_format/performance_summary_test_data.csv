@@ -38,4 +38,4 @@ template_35,cards.mmlu.high_school_macroeconomics,empty_system_format,0,10,1600,
 template_36,cards.mmlu.high_school_macroeconomics,empty_system_format,0,10,1600,0.446,0.446,accuracy,0.396,0.495,0.396,0.495,390
 template_37,cards.mmlu.high_school_macroeconomics,empty_system_format,0,10,1600,0.477,0.477,accuracy,0.426,0.526,0.426,0.526,390
 template_38,cards.mmlu.high_school_macroeconomics,empty_system_format,0,10,1600,0.426,0.426,accuracy,0.372,0.472,0.372,0.472,390
-template_39,cards.mmlu.high_school_macroeconomics,empty_system_format,0,10,1600,0.493,0.493,accuracy,0.437,0.548,0.437,0.548,272
+template_39,cards.mmlu.high_school_macroeconomics,empty_system_format,0,10,1600,0.478,0.478,accuracy,0.419,0.530,0.419,0.530,272

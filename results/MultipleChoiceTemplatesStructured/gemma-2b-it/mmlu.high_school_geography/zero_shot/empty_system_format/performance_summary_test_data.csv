@@ -26,7 +26,7 @@ template_23,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.465
 template_24,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.444,0.444,accuracy,0.379,0.514,0.379,0.514,198
 template_25,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.455,0.455,accuracy,0.384,0.530,0.384,0.530,198
 template_26,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.465,0.465,accuracy,0.394,0.535,0.394,0.535,198
-template_27,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.485,0.485,accuracy,0.419,0.561,0.419,0.561,198
+template_27,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.480,0.480,accuracy,0.414,0.552,0.414,0.552,198
 template_28,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.379,0.379,accuracy,0.308,0.449,0.308,0.449,198
 template_29,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.449,0.449,accuracy,0.374,0.515,0.374,0.515,198
 template_30,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.384,0.384,accuracy,0.323,0.454,0.323,0.454,198
@@ -49,9 +49,9 @@ template_46,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.379
 template_47,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.414,0.414,accuracy,0.343,0.485,0.343,0.485,198
 template_48,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.389,0.389,accuracy,0.318,0.455,0.318,0.455,198
 template_49,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.399,0.399,accuracy,0.333,0.470,0.333,0.470,198
-template_50,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.333,0.333,accuracy,0.270,0.404,0.270,0.404,198
+template_50,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.338,0.338,accuracy,0.273,0.405,0.273,0.405,198
 template_51,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.429,0.429,accuracy,0.364,0.505,0.364,0.505,198
-template_52,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.333,0.333,accuracy,0.278,0.400,0.278,0.400,198
-template_53,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.409,0.409,accuracy,0.343,0.475,0.343,0.475,198
-template_54,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.308,0.308,accuracy,0.247,0.379,0.247,0.379,198
-template_55,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.389,0.389,accuracy,0.323,0.455,0.323,0.455,198
+template_52,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.328,0.328,accuracy,0.268,0.397,0.268,0.397,198
+template_53,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.414,0.414,accuracy,0.343,0.480,0.343,0.480,198
+template_54,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.303,0.303,accuracy,0.242,0.374,0.242,0.374,198
+template_55,cards.mmlu.high_school_geography,empty_system_format,0,10,1600,0.394,0.394,accuracy,0.328,0.460,0.328,0.460,198

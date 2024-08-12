@@ -16,9 +16,9 @@ template_13,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.417,0.41
 template_14,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.424,0.424,accuracy,0.400,0.449,0.400,0.449,1534
 template_15,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.415,0.415,accuracy,0.389,0.440,0.389,0.440,1534
 template_16,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.411,0.411,accuracy,0.387,0.437,0.387,0.437,1534
-template_17,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.428,0.428,accuracy,0.404,0.452,0.404,0.452,1534
-template_18,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.414,0.414,accuracy,0.389,0.441,0.389,0.441,1534
-template_19,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.421,0.421,accuracy,0.395,0.447,0.395,0.447,1534
+template_17,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.428,0.428,accuracy,0.404,0.453,0.404,0.453,1534
+template_18,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.415,0.415,accuracy,0.389,0.441,0.389,0.441,1534
+template_19,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.422,0.422,accuracy,0.396,0.447,0.396,0.447,1534
 template_20,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.417,0.417,accuracy,0.393,0.442,0.393,0.442,1534
 template_21,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.425,0.425,accuracy,0.400,0.450,0.400,0.450,1534
 template_22,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.421,0.421,accuracy,0.395,0.447,0.395,0.447,1534
@@ -26,7 +26,7 @@ template_23,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.418,0.41
 template_24,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.416,0.416,accuracy,0.393,0.444,0.393,0.444,1534
 template_25,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.421,0.421,accuracy,0.396,0.446,0.396,0.446,1534
 template_26,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.419,0.419,accuracy,0.396,0.445,0.396,0.445,1534
-template_27,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.420,0.420,accuracy,0.396,0.445,0.396,0.445,1534
+template_27,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.420,0.420,accuracy,0.396,0.447,0.396,0.447,1534
 template_28,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.407,0.407,accuracy,0.383,0.433,0.383,0.433,1534
 template_29,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.414,0.414,accuracy,0.390,0.439,0.390,0.439,1534
 template_30,cards.mmlu.professional_law,empty_system_format,0,10,1600,0.401,0.401,accuracy,0.375,0.427,0.375,0.427,1534
