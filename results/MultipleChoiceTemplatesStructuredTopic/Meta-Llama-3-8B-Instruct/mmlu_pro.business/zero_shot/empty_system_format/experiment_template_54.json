@@ -1,0 +1,1 @@
+{"card": "cards.mmlu_pro.business", "template_name": "template_54", "model_name": "meta-llama/Meta-Llama-3-8B-Instruct", "system_format": "empty_system_format", "max_instances": 14000, "num_demos": 0, "demos_pool_size": 1, "results": {}}

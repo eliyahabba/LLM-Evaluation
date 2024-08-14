@@ -149,7 +149,7 @@ class ExperimentRunner:
         entry_experiment = self.create_entry_experiment(template_name)
         results_file_path = self.save_results_to_json(entry_experiment, template_name, self.args.num_demos)
 
-        num_of_possible_answers = 8 if "pro" in self.args.card else 2 if "boolq" in self.args.card else 4
+        num_of_possible_answers = 10 if "pro" in self.args.card else 2 if "boolq" in self.args.card else 4
         enumerators = template.enumerator[:num_of_possible_answers]
         if isinstance(enumerators, str):
             # convrte each char tp an element in a list
