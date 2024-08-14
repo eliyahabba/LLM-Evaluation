@@ -16,11 +16,11 @@ template_13,cards.mmlu.high_school_government_and_politics,empty_system_format,0
 template_14,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.518,0.518,accuracy,0.446,0.596,0.446,0.596,193
 template_15,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.503,0.503,accuracy,0.425,0.570,0.425,0.570,193
 template_16,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.585,0.585,accuracy,0.518,0.653,0.518,0.653,193
-template_17,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.585,0.585,accuracy,0.518,0.653,0.518,0.653,193
-template_18,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.508,0.508,accuracy,0.430,0.575,0.430,0.575,193
-template_19,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.575,0.575,accuracy,0.503,0.642,0.503,0.642,193
+template_17,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.570,0.570,accuracy,0.505,0.632,0.505,0.632,193
+template_18,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.523,0.523,accuracy,0.446,0.591,0.446,0.591,193
+template_19,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.580,0.580,accuracy,0.513,0.648,0.513,0.648,193
 template_20,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.539,0.539,accuracy,0.466,0.611,0.466,0.611,193
-template_21,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.492,0.492,accuracy,0.420,0.560,0.420,0.560,193
+template_21,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.497,0.497,accuracy,0.420,0.560,0.420,0.560,193
 template_22,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.492,0.492,accuracy,0.420,0.565,0.420,0.565,193
 template_23,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.472,0.472,accuracy,0.399,0.534,0.399,0.534,193
 template_24,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.523,0.523,accuracy,0.446,0.591,0.446,0.591,193
@@ -40,7 +40,7 @@ template_37,cards.mmlu.high_school_government_and_politics,empty_system_format,0
 template_38,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.497,0.497,accuracy,0.425,0.570,0.425,0.570,193
 template_39,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.508,0.508,accuracy,0.440,0.580,0.440,0.580,193
 template_40,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.492,0.492,accuracy,0.425,0.565,0.425,0.565,193
-template_41,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.492,0.492,accuracy,0.425,0.560,0.425,0.560,193
+template_41,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.456,0.456,accuracy,0.389,0.528,0.389,0.528,193
 template_42,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.518,0.518,accuracy,0.440,0.580,0.440,0.580,193
 template_43,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.508,0.508,accuracy,0.435,0.575,0.435,0.575,193
 template_44,cards.mmlu.high_school_government_and_politics,empty_system_format,0,1,1600,0.591,0.591,accuracy,0.520,0.658,0.520,0.658,193

@@ -19,7 +19,14 @@ template_16,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.39
 template_17,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.399,0.399,accuracy,0.352,0.447,0.352,0.447,378
 template_18,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.392,0.392,accuracy,0.344,0.439,0.344,0.439,378
 template_19,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.378,0.378,accuracy,0.331,0.429,0.331,0.429,378
-template_20,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.382,0.382,accuracy,0.321,0.448,0.321,0.448,212
+template_20,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.386,0.386,accuracy,0.341,0.437,0.341,0.437,378
+template_21,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.386,0.386,accuracy,0.341,0.437,0.341,0.437,378
+template_22,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.397,0.397,accuracy,0.352,0.450,0.352,0.450,378
+template_23,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.349,0.349,accuracy,0.307,0.402,0.307,0.402,378
+template_24,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.376,0.376,accuracy,0.325,0.422,0.325,0.422,378
+template_25,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.368,0.368,accuracy,0.325,0.417,0.325,0.417,378
+template_26,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.378,0.378,accuracy,0.336,0.425,0.336,0.425,378
+template_27,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.365,0.365,accuracy,0.317,0.413,0.317,0.413,375
 template_28,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.352,0.352,accuracy,0.306,0.399,0.306,0.399,378
 template_29,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.365,0.365,accuracy,0.317,0.413,0.317,0.413,378
 template_30,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.373,0.373,accuracy,0.323,0.423,0.323,0.423,378
@@ -44,4 +51,7 @@ template_48,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.37
 template_49,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.376,0.376,accuracy,0.333,0.431,0.333,0.431,378
 template_50,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.381,0.381,accuracy,0.333,0.432,0.333,0.432,378
 template_51,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.394,0.394,accuracy,0.347,0.442,0.347,0.442,378
-template_52,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.362,0.362,accuracy,0.312,0.419,0.312,0.419,320
+template_52,cards.mmlu.elementary_mathematics,empty_system_format,3,20,1600,0.368,0.368,accuracy,0.320,0.415,0.320,0.415,378
+template_53,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.357,0.357,accuracy,0.310,0.405,0.310,0.405,378
+template_54,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.344,0.344,accuracy,0.299,0.394,0.299,0.394,378
+template_55,cards.mmlu.elementary_mathematics,empty_system_format,3,20,14000,0.365,0.365,accuracy,0.320,0.418,0.320,0.418,378

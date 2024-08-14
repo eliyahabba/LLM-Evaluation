@@ -25,8 +25,8 @@ template_22,cards.mmlu.international_law,empty_system_format,3,20,1600,0.496,0.4
 template_23,cards.mmlu.international_law,empty_system_format,3,20,1600,0.479,0.479,accuracy,0.397,0.570,0.397,0.570,121
 template_24,cards.mmlu.international_law,empty_system_format,3,20,1600,0.529,0.529,accuracy,0.438,0.603,0.438,0.603,121
 template_25,cards.mmlu.international_law,empty_system_format,3,20,1600,0.479,0.479,accuracy,0.397,0.570,0.397,0.570,121
-template_26,cards.mmlu.international_law,empty_system_format,3,20,1600,0.488,0.488,accuracy,0.397,0.570,0.397,0.570,121
-template_27,cards.mmlu.international_law,empty_system_format,3,20,1600,0.446,0.446,accuracy,0.364,0.529,0.364,0.529,121
+template_26,cards.mmlu.international_law,empty_system_format,3,20,1600,0.496,0.496,accuracy,0.408,0.579,0.408,0.579,121
+template_27,cards.mmlu.international_law,empty_system_format,3,20,1600,0.438,0.438,accuracy,0.355,0.521,0.355,0.521,121
 template_28,cards.mmlu.international_law,empty_system_format,3,20,1600,0.380,0.380,accuracy,0.298,0.463,0.298,0.463,121
 template_29,cards.mmlu.international_law,empty_system_format,3,20,1600,0.355,0.355,accuracy,0.273,0.446,0.273,0.446,121
 template_30,cards.mmlu.international_law,empty_system_format,3,20,1600,0.537,0.537,accuracy,0.446,0.620,0.446,0.620,121

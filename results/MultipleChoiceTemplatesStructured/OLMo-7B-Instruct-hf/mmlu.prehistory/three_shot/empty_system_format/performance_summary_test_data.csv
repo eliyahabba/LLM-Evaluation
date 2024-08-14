@@ -12,7 +12,7 @@ template_9,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.522,0.522,accur
 template_10,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.491,0.491,accuracy,0.435,0.549,0.435,0.549,324
 template_11,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.478,0.478,accuracy,0.424,0.531,0.424,0.531,324
 template_12,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.494,0.494,accuracy,0.441,0.550,0.441,0.550,324
-template_13,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.491,0.491,accuracy,0.438,0.546,0.438,0.546,324
+template_13,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.488,0.488,accuracy,0.435,0.543,0.435,0.543,324
 template_14,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.506,0.506,accuracy,0.454,0.562,0.454,0.562,324
 template_15,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.478,0.478,accuracy,0.423,0.534,0.423,0.534,324
 template_16,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.485,0.485,accuracy,0.432,0.543,0.432,0.543,324
@@ -40,7 +40,7 @@ template_37,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.463,0.463,accu
 template_38,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.478,0.478,accuracy,0.423,0.537,0.423,0.537,324
 template_39,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.463,0.463,accuracy,0.404,0.515,0.404,0.515,324
 template_40,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.451,0.451,accuracy,0.398,0.506,0.398,0.506,324
-template_41,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.497,0.497,accuracy,0.443,0.546,0.443,0.546,324
+template_41,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.494,0.494,accuracy,0.441,0.543,0.441,0.543,324
 template_42,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.478,0.478,accuracy,0.429,0.537,0.429,0.537,324
 template_43,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.469,0.469,accuracy,0.414,0.516,0.414,0.516,324
 template_44,cards.mmlu.prehistory,empty_system_format,3,20,1600,0.472,0.472,accuracy,0.420,0.539,0.420,0.539,324

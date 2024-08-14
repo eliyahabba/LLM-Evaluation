@@ -20,6 +20,7 @@ class ModelDatasetRunner:
         models_names = [model.split('/')[1] for model in LLMProcessorConstants.MODEL_NAMES.values()]
         chosen_models_names = ["GEMMA_7B", "OLMo-1.7-7B-hf", "Mistral-7B-Instruct-v0.3", "Mistral-7B-Instruct-v0.2",
                                "Llama-2-13b-hf"]
+        chosen_models_names = ["Llama-2-13b-hf"]
         models_names = [model for model in models_names if model in chosen_models_names]
         # models_names = [model for model in models_names if  "Llama-2-13b-chat-hf" in model]
         models_folders = [Path(results_folder / model_name) for model_name in models_names]
@@ -55,4 +56,4 @@ if __name__ == "__main__":
     eval_on = ExperimentConstants.EVALUATE_ON_INFERENCE
     runner = ModelDatasetRunner(results_folder, eval_on)
     runner.run_function_on_all_models_and_datasets(check_comparison_matrix)
-    runner.run_function_on_all_models_and_datasets(check_results_files)
+    # runner.run_function_on_all_models_and_datasets(check_results_files)

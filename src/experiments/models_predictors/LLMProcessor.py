@@ -133,6 +133,7 @@ class LLMProcessor:
 
     def predict(self, input_text: Union[str, List[str]],
                 predict_prob_of_tokens: bool = False,
+                predict_perplexity: bool = False,
                 max_new_tokens: int = LLMProcessorConstants.MAX_NEW_TOKENS,
                 possible_gt_tokens: list = None,
                 is_print: bool = False) -> Tuple[List[str], List[str], List[float]]:
@@ -145,8 +146,10 @@ class LLMProcessor:
             max_tokens = self.get_max_token(outputs, possible_gt_tokens)
         else:
             max_tokens = [None] * outputs.scores[0].size(0)
-
-        perplexities = self.get_perplexity(input_tokenized) if self.is_get_perplexity else [None] * outputs.scores[0].size(0)
+        if predict_perplexity:
+            perplexities = self.get_perplexity(input_tokenized) if self.is_get_perplexity else [None] * outputs.scores[0].size(0)
+        else:
+            perplexities = [None] * outputs.scores[0].size(0)
         return generated_tokens_decoded, max_tokens, perplexities
 
     def get_max_token(self, outputs, tokens):

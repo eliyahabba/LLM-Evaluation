@@ -306,8 +306,12 @@ if __name__ == "__main__":
     eval_on_value = args.eval_on[0]
     templates_path = TemplatesGeneratorConstants.DATA_PATH / args.results_folder
     args_to_pass = [(dataset_folder, eval_on_value, templates_path) for dataset_folder in datasets]
+    import time
+    start = time.time()
     with Pool(processes=8) as pool:
         pool.map(evaluate_dataset, args_to_pass)
     for file, error in zip(error_files, errors_msgs):
         print(error)
         print(file)
+
+    print(f"Time taken: {time.time()-start}")

@@ -11,8 +11,8 @@ template_8,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.700,0.
 template_9,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.700,0.700,accuracy,0.645,0.745,0.645,0.745,310
 template_10,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.706,0.706,accuracy,0.655,0.755,0.655,0.755,310
 template_11,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.710,0.710,accuracy,0.658,0.755,0.658,0.755,310
-template_12,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.681,0.681,accuracy,0.623,0.729,0.623,0.729,310
-template_13,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.687,0.687,accuracy,0.632,0.733,0.632,0.733,310
+template_12,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.690,0.690,accuracy,0.634,0.739,0.634,0.739,310
+template_13,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.687,0.687,accuracy,0.635,0.732,0.635,0.732,310
 template_14,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.713,0.713,accuracy,0.658,0.758,0.658,0.758,310
 template_15,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.674,0.674,accuracy,0.613,0.719,0.613,0.719,310
 template_16,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.710,0.710,accuracy,0.655,0.758,0.655,0.758,310
@@ -53,4 +53,4 @@ template_50,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.710,0
 template_51,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.687,0.687,accuracy,0.629,0.735,0.629,0.735,310
 template_52,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.716,0.716,accuracy,0.661,0.761,0.661,0.761,310
 template_53,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.690,0.690,accuracy,0.635,0.735,0.635,0.735,310
-template_54,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.720,0.720,accuracy,0.644,0.788,0.644,0.788,132
+template_54,cards.mmlu.high_school_biology,empty_system_format,3,20,1600,0.707,0.707,accuracy,0.646,0.755,0.646,0.755,294

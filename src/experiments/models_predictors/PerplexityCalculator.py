@@ -55,6 +55,7 @@ class PerplexityCalculator:
             attn_mask = attn_masks[start_index:end_index]
 
             if add_start_token:
+                # print(tokenizer.bos_token_id)
                 bos_tokens_tensor = torch.tensor([[tokenizer.bos_token_id]] * encoded_batch.size(dim=0)).to(device)
                 encoded_batch = torch.cat([bos_tokens_tensor, encoded_batch], dim=1)
                 attn_mask = torch.cat(
@@ -86,8 +87,8 @@ if __name__ == "__main__":
     trust_remote_code = True
     load_in_4bit = True
     load_in_8bit = False
+    # model_name = "allenai/OLMo-1.7-7B-hf"  # Replace with the actual model name if different
     model_name = "mistralai/Mistral-7B-Instruct-v0.1"  # Replace with the actual model name if different
-
 
     texts = ["Your example text goes here.", "Another example text."]
     tokenizer = AutoTokenizer.from_pretrained(model_name,
@@ -107,8 +108,8 @@ if __name__ == "__main__":
 
     input_tokenized = datasets.Dataset.from_dict({"input_text": texts})
     perplexity_calculator = PerplexityCalculator()
-    perplexity = perplexity_calculator.compute(model, tokenizer, encodings)
+    perplexity = perplexity_calculator.compute(model, tokenizer, encodings, device=device)
     print(perplexity)
     text = "Your example text goes here."
-    perplexity = perplexity_calculator.compute(model, tokenizer, encodings)
+    perplexity = perplexity_calculator.compute(model, tokenizer, encodings, device=device)
     # Calculate and print perplexity

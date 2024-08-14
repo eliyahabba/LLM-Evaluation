@@ -34,13 +34,13 @@ template_31,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.29
 template_32,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.292,0.292,accuracy,0.231,0.352,0.231,0.352,216
 template_33,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.333,0.333,accuracy,0.269,0.389,0.269,0.389,216
 template_34,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.338,0.338,accuracy,0.282,0.403,0.282,0.403,216
-template_35,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.319,0.319,accuracy,0.259,0.380,0.259,0.380,216
+template_35,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.301,0.301,accuracy,0.241,0.356,0.241,0.356,216
 template_36,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.361,0.361,accuracy,0.296,0.431,0.296,0.431,216
-template_37,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.310,0.310,accuracy,0.250,0.370,0.250,0.370,216
-template_38,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.403,0.403,accuracy,0.338,0.468,0.338,0.468,216
-template_39,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.333,0.333,accuracy,0.273,0.398,0.273,0.398,216
-template_40,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.343,0.343,accuracy,0.287,0.407,0.287,0.407,216
-template_41,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.343,0.343,accuracy,0.282,0.403,0.282,0.403,216
+template_37,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.301,0.301,accuracy,0.241,0.356,0.241,0.356,216
+template_38,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.407,0.407,accuracy,0.347,0.477,0.347,0.477,216
+template_39,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.319,0.319,accuracy,0.264,0.384,0.264,0.384,216
+template_40,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.343,0.343,accuracy,0.278,0.403,0.278,0.403,216
+template_41,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.324,0.324,accuracy,0.265,0.389,0.265,0.389,216
 template_42,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.338,0.338,accuracy,0.278,0.401,0.278,0.401,216
 template_43,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.384,0.384,accuracy,0.324,0.449,0.324,0.449,216
 template_44,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.329,0.329,accuracy,0.270,0.389,0.270,0.389,216
@@ -54,4 +54,4 @@ template_51,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.33
 template_52,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.352,0.352,accuracy,0.292,0.412,0.292,0.412,216
 template_53,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.347,0.347,accuracy,0.287,0.407,0.287,0.407,216
 template_54,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.347,0.347,accuracy,0.290,0.412,0.290,0.412,216
-template_55,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.366,0.366,accuracy,0.301,0.426,0.301,0.426,216
+template_55,cards.mmlu.high_school_statistics,empty_system_format,3,20,1600,0.361,0.361,accuracy,0.296,0.421,0.296,0.421,216
