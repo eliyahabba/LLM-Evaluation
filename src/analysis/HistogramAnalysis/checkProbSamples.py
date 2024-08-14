@@ -1,14 +1,13 @@
 import argparse
-import json
 
 import numpy as np
 import pandas as pd
+import seaborn as sns
 from matplotlib import pyplot as plt
 
 from src.experiments.data_loading.MMLUSplitter import MMLUSplitter
 from src.streamlit_app.ui_components.MetaHistogramCalculator import MetaHistogramCalculator
 from src.utils.Constants import Constants
-import seaborn as sns
 
 MMLUConstants = Constants.MMLUConstants
 ResultConstants = Constants.ResultConstants
@@ -17,7 +16,7 @@ ExperimentConstants = Constants.ExperimentConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
 
-class SampleSaver:
+class checkProbSamples:
     def __init__(self, models_to_save, shot, output_path, num_models, num_samples):
         self.models_to_save = models_to_save
         self.shot = shot
@@ -37,46 +36,6 @@ class SampleSaver:
         self.plot_density(scores)
         self.plot_average_trend(scores)
 
-    def plot_heatmap(self, scores):
-        """Plot a heatmap of model success rates."""
-        # Convert scores to a DataFrame
-        score_matrix = pd.DataFrame(scores, columns=[f"{(i - 1) * 5}-{i * 5}" for i in range(20,   0, -1)])
-
-        plt.figure(figsize=(12, 8))
-        sns.heatmap(score_matrix, annot=True, cmap='coolwarm', fmt=".2f")
-        plt.title('Model Success Rates Across Bins')
-        plt.xlabel('Accuracy Bins')
-        plt.ylabel('Sample Index')
-        plt.show()
-
-    def plot_density(self, scores):
-        """Plot density of model success rates for each bin transition."""
-        # Convert scores to a DataFrame
-        score_matrix = pd.DataFrame(scores, columns=[f"{(i - 1) * 5}-{i * 5}" for i in range(20, 0, -1)])
-
-        plt.figure(figsize=(12, 8))
-        for column in score_matrix.columns:
-            sns.kdeplot(score_matrix[column], label=column, fill=True)
-        plt.title('Density of Model Success Rates Across Bins')
-        plt.xlabel('Success Rate')
-        plt.ylabel('Density')
-        plt.legend(title='Accuracy Bins')
-        plt.show()
-
-    def plot_average_trend(self, scores):
-        """Plot average trend line of model success rates across bins."""
-        # Convert scores to a DataFrame
-        score_matrix = pd.DataFrame(scores, columns=[f"{(i - 1) * 5}-{i * 5}" for i in range(20, 0, -1)])
-
-        average_scores = score_matrix.mean()
-
-        plt.figure(figsize=(12, 8))
-        plt.plot(average_scores.index, average_scores.values, marker='o', linestyle='-', color='b')
-        plt.title('Average Model Success Rates Across Bins')
-        plt.xlabel('Accuracy Bins')
-        plt.ylabel('Average Success Rate')
-        plt.grid(True)
-        plt.show()
     def retrieve_files(self):
         self.results_folder = ResultConstants.MAIN_RESULTS_PATH / "MultipleChoiceTemplatesStructured"
         model_files = [file for file in self.results_folder.iterdir() if file.is_dir()]
@@ -142,6 +101,48 @@ class SampleSaver:
             scores.append(row_score)
 
         return scores
+
+    def plot_heatmap(self, scores):
+        """Plot a heatmap of model success rates."""
+        # Convert scores to a DataFrame
+        score_matrix = pd.DataFrame(scores, columns=[f"{(i - 1) * 5}-{i * 5}" for i in range(20,   0, -1)])
+
+        plt.figure(figsize=(12, 8))
+        sns.heatmap(score_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+        plt.title('Model Success Rates Across Bins')
+        plt.xlabel('Accuracy Bins')
+        plt.ylabel('Sample Index')
+        plt.show()
+
+    def plot_density(self, scores):
+        """Plot density of model success rates for each bin transition."""
+        # Convert scores to a DataFrame
+        score_matrix = pd.DataFrame(scores, columns=[f"{(i - 1) * 5}-{i * 5}" for i in range(20, 0, -1)])
+
+        plt.figure(figsize=(12, 8))
+        for column in score_matrix.columns:
+            sns.kdeplot(score_matrix[column], label=column, fill=True)
+        plt.title('Density of Model Success Rates Across Bins')
+        plt.xlabel('Success Rate')
+        plt.ylabel('Density')
+        plt.legend(title='Accuracy Bins')
+        plt.show()
+
+    def plot_average_trend(self, scores):
+        """Plot average trend line of model success rates across bins."""
+        # Convert scores to a DataFrame
+        score_matrix = pd.DataFrame(scores, columns=[f"{(i - 1) * 5}-{i * 5}" for i in range(20, 0, -1)])
+
+        average_scores = score_matrix.mean()
+
+        plt.figure(figsize=(12, 8))
+        plt.plot(average_scores.index, average_scores.values, marker='o', linestyle='-', color='b')
+        plt.title('Average Model Success Rates Across Bins')
+        plt.xlabel('Accuracy Bins')
+        plt.ylabel('Average Success Rate')
+        plt.grid(True)
+        plt.show()
+
     # def sample_and_check_across_bins(self, df, start_bin, end_bin):
     #     """Samples rows across specified bins and checks model consistency across them."""
     #     # Add bins to the DataFrame
@@ -211,6 +212,6 @@ if __name__ == '__main__':
     parser.add_argument("--num_models", type=int, default=1, help="Number of models to sample")
     parser.add_argument("--num_samples", type=int, default=11, help="Number of samples to take from each bin")
     args = parser.parse_args()
-    sample_saver = SampleSaver(models_to_save=args.models_to_save, shot=args.shot, output_path=args.output_path,
+    check_prob_samples = checkProbSamples(models_to_save=args.models_to_save, shot=args.shot, output_path=args.output_path,
                                  num_models=args.num_models, num_samples=args.num_samples)
-    sample_saver.execute()
+    check_prob_samples.execute()
