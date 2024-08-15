@@ -228,7 +228,7 @@ def evaluate_dataset(args):
             comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
             for results_file in results_files:
                 try:
-                    if results_file.file_size() == 0:
+                    if results_file.stat().st_size == 0:
                         continue
                     eval_model = EvaluateModel(results_file, eval_on_value)
                     results = eval_model.load_results_from_experiment_file()
@@ -236,7 +236,7 @@ def evaluate_dataset(args):
                     if comparison_matrix_file.exists():
                         try:
                             comparison_df = pd.read_csv(comparison_matrix_file)
-                            if False and results_file_number in comparison_df.columns and \
+                            if results_file_number in comparison_df.columns and \
                                     not comparison_df[results_file_number].isna().any() and \
                                     size == comparison_df[results_file_number].shape[0] and \
                                     all(['Score' in result for result in results[eval_on_value]]):
