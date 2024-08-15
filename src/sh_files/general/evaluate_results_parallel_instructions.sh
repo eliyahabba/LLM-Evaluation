@@ -27,4 +27,8 @@ cd $dir
 
 echo ${SLURM_ARRAY_TASK_ID}
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
-CUDA_LAUNCH_BLOCKING=1 python evaluate_results.py --model_name $1
+CUDA_LAUNCH_BLOCKING=1 python evaluate_results_parallel.py --model_name $1 --results_folder MultipleChoiceTemplatesInstructions
+dir="/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/analysis/ExperimentTracking"
+absolute_path=$(readlink -f $dir)
+cd $dir
+python update_experiment_progress.py --model_name $1  --results_folder MultipleChoiceTemplatesInstructions

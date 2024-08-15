@@ -1,9 +1,12 @@
 import argparse
 import json
-from multiprocessing import Pool
+import os
+import traceback
 from pathlib import Path
 from typing import Union, Tuple
-import os
+
+import tqdm
+
 os.environ["UNITXT_ALLOW_UNVERIFIED_CODE"] = "True"
 
 import evaluate
@@ -225,6 +228,8 @@ def evaluate_dataset(args):
             comparison_matrix_file = format_folder / f"comparison_matrix_{eval_on_value}_data.csv"
             for results_file in results_files:
                 try:
+                    if results_file.file_size() == 0:
+                        continue
                     eval_model = EvaluateModel(results_file, eval_on_value)
                     results = eval_model.load_results_from_experiment_file()
                     results_file_number = results_file.name.split(".json")[0]
@@ -241,7 +246,8 @@ def evaluate_dataset(args):
                         except pd.errors.EmptyDataError:
                             # delete the file if it is empty
                             comparison_matrix_file.unlink()
-                    loaded_datasets, llm_dataset = load_dataset(results_file, loaded_datasets, templates_path, validation_size)
+                    loaded_datasets, llm_dataset = load_dataset(results_file, loaded_datasets, templates_path,
+                                                                validation_size)
                     if llm_dataset is None:
                         continue
                     # num_preds_samples = max([index['Index'] for index in experiment['results'][eval_on_value]])+1
@@ -257,6 +263,8 @@ def evaluate_dataset(args):
                     error_files.append(results_file)
                     errors_msgs.append(e)
                     print(f"Error in {results_file}: {e}")
+                    # print the stack trace
+                    traceback.print_exc()
                     continue
             for eval_on_value, results_df in summary_of_accuracy_results.items():
                 if results_df.empty:
@@ -280,12 +288,13 @@ def evaluate_dataset(args):
                 print(f"Number of templates: {results_df.shape[1]}")
     print(f"Finished evaluating {dataset_folder.name}")
 
+
 # or any result of processing
 
 if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
-    args.add_argument("--model_name", type=str, default="MISTRAL_V2")
+    args.add_argument("--model_name", type=str, default="LLAMA13B")  # LLAMA13b
     args.add_argument("--results_folder", type=str,
                       default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
@@ -307,11 +316,12 @@ if __name__ == "__main__":
     templates_path = TemplatesGeneratorConstants.DATA_PATH / args.results_folder
     args_to_pass = [(dataset_folder, eval_on_value, templates_path) for dataset_folder in datasets]
     import time
+
     start = time.time()
     with Pool(processes=8) as pool:
-        pool.map(evaluate_dataset, args_to_pass)
+        res = list(tqdm.tqdm(pool.imap(evaluate_dataset, args_to_pass), total=len(args_to_pass)))
     for file, error in zip(error_files, errors_msgs):
         print(error)
         print(file)
 
-    print(f"Time taken: {time.time()-start}")
+    print(f"Time taken: {time.time() - start}")
