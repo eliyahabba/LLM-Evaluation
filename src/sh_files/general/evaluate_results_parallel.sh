@@ -13,7 +13,6 @@ echo "Loading config with: " $config_bash
 source $config_bash
 
 # Now HF_HOME is available to use in this script
-echo "HF_HOME is set to: $HF_HOME"
 export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
 
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
@@ -27,3 +26,7 @@ cd $dir
 echo ${SLURM_ARRAY_TASK_ID}
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
 CUDA_LAUNCH_BLOCKING=1 python evaluate_results_parallel.py --model_name $1
+dir="/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/analysis/ExperimentTracking"
+absolute_path=$(readlink -f $dir)
+cd $dir
+python update_experiment_progress.py --model_name $1

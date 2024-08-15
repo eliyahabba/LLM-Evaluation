@@ -93,7 +93,7 @@ class ExperimentRunner:
         @return: The path to the results file.
         """
         results_file_path = self.get_result_file_path(template_name, num_demos)
-        if results_file_path.exists():
+        if results_file_path.exists() and not results_file_path.stat().st_size == 0:
             # check if the entry_experiment is equal to the one in the file
             with open(results_file_path, 'r') as json_file:
                 data = json.load(json_file)

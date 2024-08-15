@@ -7,7 +7,7 @@ class HellaSwagConfig(BaseDatasetConfig):
 
     def get_structured_instruction_text_with_topic(self):
         # Provide a default implementation if needed
-        return f"Context: {{context}}\nQuestion: [question]: Choices: [choices] Answer: [answer]\nQuestion: {{question}}: Choices: {{choices}} Answer:"
+        return f"Context: [context] Completion Choices: [choices] Answer: [answer]\nContext: {{context}} Completion Choices: {{choices}} Answer:"
 
 if __name__ == "__main__":
     config = HellaSwagConfig({"shuffle_choices": True})

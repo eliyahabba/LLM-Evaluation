@@ -157,13 +157,13 @@ def read_experiment(results_file: Path) -> dict:
     return experiment
 
 
-def load_dataset(results_file: Path, loaded_datasets: dict) -> NLPDataset:
+def load_dataset(results_file: Path, templates_path: Path, loaded_datasets: dict) -> NLPDataset:
     """
     Load the dataset from the experiment.
     """
     experiment = read_experiment(results_file)
     template_name = f"{experiment['template_name']}"
-    catalog_manager = CatalogManager(Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH,
+    catalog_manager = CatalogManager(Utils.get_card_path(templates_path,
                                                          experiment['card']))
     template = catalog_manager.load_from_catalog(template_name)
     if experiment['num_demos'] == 0:
@@ -197,15 +197,15 @@ def load_dataset(results_file: Path, loaded_datasets: dict) -> NLPDataset:
 if __name__ == "__main__":
     # Load the model and the dataset
     args = argparse.ArgumentParser()
-    args.add_argument("--model_name", type=str, default="MISTRAL_V2")
+    args.add_argument("--model_name", type=str, default="LLAMA13B")
     args.add_argument("--results_folder", type=str,
-                      default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME)
+                      default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_TOPIC_FOLDER_NAME)
     args.add_argument("--eval_on", type=str, default=ExperimentConstants.EVALUATE_ON_ANALYZE)
     args = args.parse_args()
-    args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
     model_name = LLMProcessorConstants.BASE_MODEL_NAMES[args.model_name].split('/')[1]
-
-    model_path = Path(args.results_folder / model_name)
+    model_path = ExperimentConstants.MAIN_RESULTS_PATH / args.results_folder / model_name
+    templates_path = TemplatesGeneratorConstants.DATA_PATH / args.results_folder
+    args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
 
     # models_names = [models_name for models_name in models_names if "Lla" in str(models_name)]
     error_files, errors_msgs = [], []
@@ -214,7 +214,7 @@ if __name__ == "__main__":
     datasets = sorted([file for file in model_path.glob("*") if file.is_dir()])
     # datasets = [dataset for dataset in datasets if "mmlu" in str(dataset)]
     # datasets = datasets[::-1]
-    datasets = [dataset for dataset in datasets if "mmlu_pro.law" in str(dataset)]
+    datasets = [dataset for dataset in datasets if "hell" in str(dataset)]
     for dataset_folder in datasets:
         print(f"Start evaluating {dataset_folder.name}")
         car_dataset_sizes = dataset_sizes[
@@ -251,7 +251,7 @@ if __name__ == "__main__":
                                 except pd.errors.EmptyDataError:
                                     # delete the file if it is empty
                                     comparison_matrix_file.unlink()
-                            llm_dataset = load_dataset(results_file, loaded_datasets)
+                            llm_dataset = load_dataset(results_file, templates_path, loaded_datasets)
                             if llm_dataset is None:
                                 continue
                             scores_by_index = eval_model.evaluate(results, llm_dataset)

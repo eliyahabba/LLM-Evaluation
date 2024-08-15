@@ -3,14 +3,14 @@ template_0,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.171,0
 template_1,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.161,0.161,accuracy,0.127,0.198,0.127,0.198,410
 template_2,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.185,0.185,accuracy,0.148,0.222,0.148,0.222,410
 template_3,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.197,0.197,accuracy,0.115,0.311,0.115,0.311,61
-template_6,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.183,0.183,accuracy,0.122,0.252,0.122,0.252,131
+template_6,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.182,0.182,accuracy,0.141,0.229,0.141,0.229,297
 template_12,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.198,0.198,accuracy,0.137,0.276,0.137,0.276,131
 template_18,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.166,0.166,accuracy,0.134,0.207,0.134,0.207,410
 template_19,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.168,0.168,accuracy,0.134,0.210,0.134,0.210,410
 template_20,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.168,0.168,accuracy,0.114,0.228,0.114,0.228,167
 template_24,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.198,0.198,accuracy,0.144,0.258,0.144,0.258,182
 template_30,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.173,0.173,accuracy,0.137,0.209,0.137,0.209,410
-template_31,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.199,0.199,accuracy,0.162,0.241,0.162,0.241,357
+template_31,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.190,0.190,accuracy,0.156,0.229,0.156,0.229,410
 template_36,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.180,0.180,accuracy,0.144,0.217,0.144,0.217,410
 template_37,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.238,0.238,accuracy,0.186,0.299,0.186,0.299,231
 template_42,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.132,0.132,accuracy,0.100,0.166,0.100,0.166,410
@@ -18,6 +18,6 @@ template_43,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.146,
 template_44,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.154,0.154,accuracy,0.122,0.192,0.122,0.192,410
 template_45,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.159,0.159,accuracy,0.116,0.211,0.116,0.211,232
 template_48,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.156,0.156,accuracy,0.122,0.190,0.122,0.190,410
-template_49,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.166,0.166,accuracy,0.128,0.210,0.128,0.210,290
+template_49,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.154,0.154,accuracy,0.122,0.190,0.122,0.190,410
 template_54,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.124,0.124,accuracy,0.095,0.161,0.095,0.161,410
 template_55,cards.mmlu_pro.computer_science,empty_system_format,0,1,14000,0.137,0.137,accuracy,0.105,0.171,0.105,0.171,410
