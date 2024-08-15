@@ -1,4 +1,6 @@
 import os
+
+import numpy as np
 import pandas as pd
 from unitxt.formats import SystemFormat
 from unitxt.standard import StandardRecipe
@@ -57,7 +59,11 @@ class DatasetLoader:
                 model_input_format=f"{self.system_format}\n{{source}}",
             )
         if self.num_demos:
-            self.demos_pool_size = self.get_validation_size(self.card) - 1
+            if not np.isnan(self.get_validation_size(self.card)):
+                self.demos_pool_size = self.get_validation_size(self.card) - 1
+            else:
+                self.demos_taken_from = 'train'
+
 
         recipe = StandardRecipe(
             card=self.card,
