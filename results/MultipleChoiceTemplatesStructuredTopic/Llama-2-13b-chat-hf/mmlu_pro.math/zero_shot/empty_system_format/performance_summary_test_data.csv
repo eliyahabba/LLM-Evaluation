@@ -10,14 +10,15 @@ template_16,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.124,0.124,accura
 template_18,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.111,0.111,accuracy,0.094,0.127,0.094,0.127,1351
 template_19,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.116,0.116,accuracy,0.084,0.154,0.084,0.154,344
 template_21,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.128,0.128,accuracy,0.111,0.146,0.111,0.146,1351
-template_22,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.118,0.118,accuracy,0.085,0.154,0.085,0.154,331
+template_22,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.111,0.111,accuracy,0.086,0.142,0.086,0.142,522
 template_24,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.113,0.113,accuracy,0.097,0.131,0.097,0.131,1351
-template_25,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.226,0.226,accuracy,0.097,0.419,0.097,0.419,31
+template_25,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.126,0.126,accuracy,0.087,0.179,0.087,0.179,207
 template_27,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.104,0.104,accuracy,0.088,0.121,0.088,0.121,1351
 template_28,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.168,0.168,accuracy,0.137,0.204,0.137,0.204,463
 template_30,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.139,0.139,accuracy,0.124,0.158,0.124,0.158,1351
-template_31,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.143,0.143,accuracy,0.036,0.321,0.036,0.321,28
-template_33,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.143,0.143,accuracy,0.126,0.164,0.126,0.164,1290
+template_31,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.120,0.120,accuracy,0.065,0.198,0.065,0.198,92
+template_33,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.144,0.144,accuracy,0.127,0.165,0.127,0.165,1351
+template_34,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.098,0.098,accuracy,0.057,0.156,0.057,0.156,122
 template_36,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.154,0.154,accuracy,0.136,0.174,0.136,0.174,1351
 template_37,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.135,0.135,accuracy,0.099,0.179,0.099,0.179,274
 template_39,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.112,0.112,accuracy,0.069,0.181,0.069,0.181,116
@@ -25,5 +26,5 @@ template_42,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.158,0.158,accura
 template_43,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.151,0.151,accuracy,0.120,0.185,0.120,0.185,465
 template_45,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.159,0.159,accuracy,0.116,0.217,0.116,0.217,207
 template_48,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.120,0.120,accuracy,0.080,0.171,0.080,0.171,175
-template_51,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.170,0.170,accuracy,0.124,0.221,0.124,0.221,241
+template_51,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.148,0.148,accuracy,0.116,0.184,0.116,0.184,413
 template_54,cards.mmlu_pro.math,empty_system_format,0,1,14000,0.122,0.122,accuracy,0.090,0.163,0.090,0.163,343
