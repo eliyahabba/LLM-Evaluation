@@ -60,7 +60,7 @@ class DatasetLoader:
             )
         if self.num_demos:
             if not np.isnan(self.get_validation_size(self.card)):
-                self.demos_pool_size = self.get_validation_size(self.card) - 1
+                self.demos_pool_size = min(self.get_validation_size(self.card) - 1, self.demos_pool_size)
             else:
                 self.demos_taken_from = 'train'
 
