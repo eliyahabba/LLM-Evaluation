@@ -10,7 +10,7 @@ import plotly.express as px
 from src.experiments.data_loading.MMLUSplitter import MMLUSplitter
 from src.streamlit_app.ui_components.MetaHistogramCalculator import MetaHistogramCalculator
 from src.utils.Constants import Constants
-
+import streamlit as st
 MMLUConstants = Constants.MMLUConstants
 ResultConstants = Constants.ResultConstants
 SamplesAnalysisConstants = Constants.SamplesAnalysisConstants
@@ -26,12 +26,13 @@ def format_integer(value):
         return f"{int(value)}"
 
 
-class checkProbSamples:
+class BinSampleTrackerAvg:
     def __init__(self, models_to_save, shot, output_path, num_models, num_samples):
         self.models_to_save = models_to_save
         self.shot = shot
         self.output_path = output_path
         self.num_models = num_models
+        self.num_models = st.number_input("Enter the number of models", 1, 1000, 3)
         self.num_samples = num_samples
 
     def execute(self):
@@ -40,8 +41,12 @@ class checkProbSamples:
         self.add_bins(total_aggregated_df)
         # Adjust to multiple start bins
         all_scores = []
+        self.remove_nan = st.checkbox("Remove models with NaN values", value=True)
+
         scores_df = self.evaluate_models_across_bins(total_aggregated_df, start_bin=20, end_bin=0,
                                                    num_models=self.num_models)
+        st.write(scores_df)
+        self.plot_heatmap(scores_df)
 
         # Normalize length of scores to max length (20 elements)
         # sample_plus_model_col = "Sample + Model"
@@ -49,6 +54,28 @@ class checkProbSamples:
         # scores_df.columns = [sample_plus_model_col] + scores_columns
         # scores_df.set_index(sample_plus_model_col, inplace=True)
         # convert all the non nan values to int
+
+    def plot_heatmap(self, score_matrix: pd.DataFrame):
+        st.write('Plotting heatmap')
+        """Plot a heatmap of model success rates."""
+        # Set up the figure size for a better display in Streamlit
+        plt.figure(figsize=(20, 15))  # Adjusted to a more reasonable size for web display
+        # Create the heatmap with seaborn
+        data_for_plot = np.nan_to_num(score_matrix.values, nan=-1)  # Replace NaN with -1
+        mask = np.isclose(data_for_plot, -1)  # Create a mask where the data was NaN
+
+        plt.figure(figsize=(20, 15))  # Adjust size as needed
+
+        # Create the heatmap with seaborn, using the adjusted data and mask
+        ax = sns.heatmap(data_for_plot, annot=True, cmap='coolwarm', fmt=".0f", mask=mask,
+                         xticklabels=score_matrix.columns,  # Set x labels to DataFrame columns
+                         yticklabels=score_matrix.index)
+        # ax = sns.heatmap(score_matrix, annot=True, cmap='coolwarm', fmt="d", mask=score_matrix.isna())
+        # Set titles and labels
+        plt.title('Model Success Rates Across Bins')
+        plt.xlabel('Accuracy Bins')
+        plt.ylabel('Sample Index')
+        st.pyplot(plt)
 
     def retrieve_files(self):
         self.results_folder = ResultConstants.MAIN_RESULTS_PATH / "MultipleChoiceTemplatesStructured"
@@ -76,46 +103,46 @@ class checkProbSamples:
         total_aggregated_df['accuracy_bin'] = pd.cut(total_aggregated_df['accuracy'], bins=bins, labels=labels,
                                                      right=False)
 
-    def evaluate_models_across_bins(self, df, start_bin, end_bin, num_models, num_samples=1000):
-        """Evaluates model performance across bins."""
-        scores = []
+    # def evaluate_models_across_bins(self, df, start_bin, end_bin, num_models, num_samples=1000):
+    #     """Evaluates model performance across bins."""
+    #     scores = []
+    #
+    #     current_label = f"{(start_bin - 1) * 5}-{start_bin * 5}"
+    #     current_bin_rows = df[df['accuracy_bin'] == current_label]
+    #     num_samples = min(num_samples, len(current_bin_rows))
+    #     sample_current_bin_rows = current_bin_rows.sample(n=num_samples)
+    #
+    #     for index, row in sample_current_bin_rows.iterrows():
+    #         # Filter for models that scored 1 in the current example
+    #         successful_models = [col for col in df.columns if 'template' in col and row[col] == 1]
+    #
+    #         # Determine the number of models to sample
+    #         sample_size = min(num_models, len(successful_models))
+    #
+    #         if sample_size == 0:
+    #             continue  # If no successful models, continue to next row
+    #
+    #         # Sample models from the successful ones
+    #         sampled_models = np.random.choice(successful_models, sample_size, replace=False)
+    #         for model in sampled_models:
+    #             row_score = [1]
+    #             sample_plus_model = f"{index}_{model}"
+    #             for current_bin in range(start_bin - 1, end_bin, -1):
+    #                 # Convert bins to labels
+    #                 previous_label = f"{(current_bin - 1) * 5}-{current_bin * 5}"
+    #                 previous_bin_rows = df[df['accuracy_bin'] == previous_label]
+    #                 # Count successful models
+    #                 success_count = 0
+    #                 if row[model] == 1 and not previous_bin_rows[model].empty and previous_bin_rows[model].iloc[0] == 1:
+    #                     success_count = 1
+    #                 row_score.append(success_count)
+    #             # add sample_plus_model to first position of the row_score and move the rest to the right
+    #             row_score = [sample_plus_model] + row_score
+    #             scores.append(row_score)
+    #
+    #     return scores
 
-        current_label = f"{(start_bin - 1) * 5}-{start_bin * 5}"
-        current_bin_rows = df[df['accuracy_bin'] == current_label]
-        num_samples = min(num_samples, len(current_bin_rows))
-        sample_current_bin_rows = current_bin_rows.sample(n=num_samples)
-
-        for index, row in sample_current_bin_rows.iterrows():
-            # Filter for models that scored 1 in the current example
-            successful_models = [col for col in df.columns if 'template' in col and row[col] == 1]
-
-            # Determine the number of models to sample
-            sample_size = min(num_models, len(successful_models))
-
-            if sample_size == 0:
-                continue  # If no successful models, continue to next row
-
-            # Sample models from the successful ones
-            sampled_models = np.random.choice(successful_models, sample_size, replace=False)
-            for model in sampled_models:
-                row_score = [1]
-                sample_plus_model = f"{index}_{model}"
-                for current_bin in range(start_bin - 1, end_bin, -1):
-                    # Convert bins to labels
-                    previous_label = f"{(current_bin - 1) * 5}-{current_bin * 5}"
-                    previous_bin_rows = df[df['accuracy_bin'] == previous_label]
-                    # Count successful models
-                    success_count = 0
-                    if row[model] == 1 and not previous_bin_rows[model].empty and previous_bin_rows[model].iloc[0] == 1:
-                        success_count = 1
-                    row_score.append(success_count)
-                # add sample_plus_model to first position of the row_score and move the rest to the right
-                row_score = [sample_plus_model] + row_score
-                scores.append(row_score)
-
-        return scores
-
-    def evaluate_models_across_bins2(self, df, start_bin, end_bin, num_models):
+    def evaluate_models_across_bins(self, df, start_bin, end_bin, num_models):
         """Evaluates model performance across bins for a sampled subset of models."""
         model_columns = [col for col in df.columns if 'template' in col]
         sampled_models = np.random.choice(model_columns, min(num_models, len(model_columns)), replace=False)
@@ -148,11 +175,18 @@ class checkProbSamples:
         # Add baseline model data
         baseline_data = [(b - 1) * 5 + 2.5 for b in range(start_bin, end_bin, -1)]
         accuracy_data['Baseline Model'] = baseline_data
+        # put the base line model in the first position
+        accuracy_data = {key: accuracy_data[key] for key in ['Baseline Model'] + list(accuracy_data.keys())}
+
         accuracy_df = pd.DataFrame.from_dict(accuracy_data, orient='index', columns=[f"{(b - 1) * 5}-{b * 5}" for b in
                                                                                      range(start_bin, end_bin , -1)])
 
         # remove the models with nan values base on the  models_with_nan list
-        accuracy_df = accuracy_df.drop(models_with_nan, axis=0)
+        # ask the user if remove the models with nan values
+        if self.remove_nan:
+            accuracy_df = accuracy_df.drop(models_with_nan, axis=0)
+        # sort the rows  by the values of the first column
+        accuracy_df = accuracy_df.sort_values(by=[f"{(start_bin - 1) * 5}-{start_bin * 5}"], ascending=False)
         return accuracy_df
 
 
@@ -166,7 +200,7 @@ if __name__ == '__main__':
     parser.add_argument("--num_models", type=int, default=3, help="Number of models to sample")
     parser.add_argument("--num_samples", type=int, default=4, help="Number of samples to take from each bin")
     args = parser.parse_args()
-    check_prob_samples = checkProbSamples(models_to_save=args.models_to_save, shot=args.shot,
+    check_prob_samples = BinSampleTrackerAvg(models_to_save=args.models_to_save, shot=args.shot,
                                           output_path=args.output_path,
                                           num_models=args.num_models, num_samples=args.num_samples)
     check_prob_samples.execute()
