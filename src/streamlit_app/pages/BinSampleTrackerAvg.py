@@ -45,7 +45,6 @@ class BinSampleTrackerAvg:
 
         scores_df = self.evaluate_models_across_bins(total_aggregated_df, start_bin=20, end_bin=0,
                                                    num_models=self.num_models)
-        st.write(scores_df)
         self.plot_heatmap(scores_df)
 
         # Normalize length of scores to max length (20 elements)
