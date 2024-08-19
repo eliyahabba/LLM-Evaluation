@@ -34,7 +34,7 @@ class DatasetLoader:
         dataset_sizes = pd.read_csv(TemplatesGeneratorConstants.DATASET_SIZES_PATH)
         return dataset_sizes
 
-    def get_validation_size(self, card: str):
+    def get_data_size(self, card: str, data_type:str):
         """
         Gets the validation size for the specified card.
 
@@ -43,7 +43,7 @@ class DatasetLoader:
         """
         dataset_sizes = self.read_dataset_sizes()
         validation_size = \
-            dataset_sizes[dataset_sizes["Name"] == card.split("cards.")[1]]["validation"].values[0]
+            dataset_sizes[dataset_sizes["Name"] == card.split("cards.")[1]][data_type].values[0]
         return validation_size
 
     def load(self) -> NLPDataset:
@@ -59,10 +59,13 @@ class DatasetLoader:
                 model_input_format=f"{self.system_format}\n{{source}}",
             )
         if self.num_demos:
-            if not np.isnan(self.get_validation_size(self.card)):
-                self.demos_pool_size = min(self.get_validation_size(self.card) - 1, self.demos_pool_size)
+            validation_size = self.get_data_size(self.card, data_type="validation")
+            if not np.isnan(validation_size):
+                self.demos_pool_size = min(validation_size - 1, self.demos_pool_size)
             else:
                 self.demos_taken_from = 'train'
+                train_size = self.get_data_size(self.card,data_type="train") - 1
+                self.demos_pool_size = min(train_size, self.demos_pool_size)
 
 
         recipe = StandardRecipe(
