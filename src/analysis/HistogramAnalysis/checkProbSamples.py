@@ -16,6 +16,7 @@ ResultConstants = Constants.ResultConstants
 SamplesAnalysisConstants = Constants.SamplesAnalysisConstants
 ExperimentConstants = Constants.ExperimentConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
+LLMProcessorConstants = Constants.LLMProcessorConstants
 
 
 def format_integer(value):
@@ -40,7 +41,7 @@ class checkProbSamples:
         self.add_bins(total_aggregated_df)
         # Adjust to multiple start bins
         all_scores = []
-        scores_df = self.evaluate_models_across_bins(total_aggregated_df, start_bin=20, end_bin=0,
+        scores_df = self.evaluate_models_across_bins2(total_aggregated_df, start_bin=20, end_bin=0,
                                                    num_models=self.num_models)
 
         # Normalize length of scores to max length (20 elements)
@@ -118,6 +119,9 @@ class checkProbSamples:
     def evaluate_models_across_bins2(self, df, start_bin, end_bin, num_models):
         """Evaluates model performance across bins for a sampled subset of models."""
         model_columns = [col for col in df.columns if 'template' in col]
+        model_names = [model.split("/")[-1] for model in  list(LLMProcessorConstants.MODEL_NAMES.values())]
+        model_columns_names = list(set([col.split('_experiment')[0] for col in model_columns]))
+        model_names = [model for model in model_names if model in model_columns_names]
         sampled_models = np.random.choice(model_columns, min(num_models, len(model_columns)), replace=False)
 
         # Initialize a dictionary to hold accuracy data for each model across bins

@@ -16,7 +16,7 @@ ResultConstants = Constants.ResultConstants
 SamplesAnalysisConstants = Constants.SamplesAnalysisConstants
 ExperimentConstants = Constants.ExperimentConstants
 MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
-
+LLMProcessorConstants = Constants.LLMProcessorConstants
 
 def format_integer(value):
     """Format the value as an integer if not NaN, otherwise as an empty string."""
@@ -32,7 +32,7 @@ class BinSampleTrackerAvg:
         self.shot = shot
         self.output_path = output_path
         self.num_models = num_models
-        self.num_models = st.number_input("Enter the number of models", 1, 1000, 3)
+        self.num_models = st.number_input("Enter the number of configurations", 1, 1000, 3)
         self.num_samples = num_samples
 
     def execute(self):
@@ -41,12 +41,13 @@ class BinSampleTrackerAvg:
         self.add_bins(total_aggregated_df)
         # Adjust to multiple start bins
         all_scores = []
+        # self.select_only_models
         self.remove_nan = st.checkbox("Remove models with NaN values", value=True)
 
         scores_df = self.evaluate_models_across_bins(total_aggregated_df, start_bin=20, end_bin=0,
                                                    num_models=self.num_models)
         self.plot_heatmap(scores_df)
-
+        # self.plot_heatmap2(scores_df)
         # Normalize length of scores to max length (20 elements)
         # sample_plus_model_col = "Sample + Model"
         # scores_columns = [f"{i * 5}-{(i - 1) * 5}" for i in range(20, 0, -1)]
@@ -54,23 +55,72 @@ class BinSampleTrackerAvg:
         # scores_df.set_index(sample_plus_model_col, inplace=True)
         # convert all the non nan values to int
 
-    def plot_heatmap(self, score_matrix: pd.DataFrame):
+    def plot_heatmap2(self, score_matrix: pd.DataFrame):
         st.write('Plotting heatmap')
-        """Plot a heatmap of model success rates."""
-        # Set up the figure size for a better display in Streamlit
-        plt.figure(figsize=(20, 15))  # Adjusted to a more reasonable size for web display
-        # Create the heatmap with seaborn
+        import plotly.graph_objects as go
+        # Replace NaN with a specific value and set up the mask
         data_for_plot = np.nan_to_num(score_matrix.values, nan=-1)  # Replace NaN with -1
         mask = np.isclose(data_for_plot, -1)  # Create a mask where the data was NaN
 
-        plt.figure(figsize=(20, 15))  # Adjust size as needed
+        # Create the heatmap using Plotly
+        fig = go.Figure(data=go.Heatmap(
+            z=data_for_plot,
+            x=score_matrix.columns,
+            y=score_matrix.index,
+            showscale=True,  # To show the color scale
+            zmin=-1,  # Set the scale minimum to -1 to manage the masking
+            zmax=score_matrix.values.max(),  # Set the scale maximum based on your data
+            colorscale='RdBu',  # Color scale
+            hoverongaps=False  # Shows hover information even for masked values
+        ))
+
+        # Update the layout to add scrolling
+        fig.update_layout(
+            title='Model Success Rates Across Bins',
+            xaxis_title='Accuracy Bins',
+            yaxis_title='Sample Index',
+            autosize=False,
+            height=600,  # Set a fixed height for the chart area
+            width=900,  # Set a fixed width for the chart area
+            margin=dict(t=50, l=50, r=50, b=50),  # Adjust margins to fit labels
+            yaxis=dict(  # Adjust y-axis configuration for vertical scrolling
+                autorange=True,
+                showgrid=True,  # To show grid lines
+                dtick=1,  # Distance between ticks
+                tickmode='array',  # Allows for an array of tickvals if needed
+                tickvals=score_matrix.index  # Use index for tick values if your index is non-numeric
+            )
+        )
+
+        # Display the Plotly heatmap in Streamlit
+        st.plotly_chart(fig, use_container_width=True)
+
+    def plot_heatmap(self, score_matrix: pd.DataFrame):
+        st.write('Plotting heatmap')
+        # """Plot a heatmap of model success rates."""
+        # Set up the figure size for a better display in Streamlit
+        plt.figure(figsize=(60, 60))  # Adjusted to a more reasonable size for web display
+        # Create the heatmap with seaborn
+        data_for_plot = np.nan_to_num(score_matrix.values, nan=-1)  # Replace NaN with -1
+        mask = np.isclose(data_for_plot, -1)  # Create a mask where the data was NaN
+        # sns.set(font_scale=1.5)  # Adjust this to scale font sizes of labels and annotations
 
         # Create the heatmap with seaborn, using the adjusted data and mask
-        ax = sns.heatmap(data_for_plot, annot=True, cmap='coolwarm', fmt=".0f", mask=mask,
+        ax = sns.heatmap(data_for_plot, annot=True, cmap='coolwarm', fmt=".1f", mask=mask,
                          xticklabels=score_matrix.columns,  # Set x labels to DataFrame columns
-                         yticklabels=score_matrix.index)
+                         yticklabels=score_matrix.index,
+                         annot_kws={"fontsize": 24}
+                         )
         # ax = sns.heatmap(score_matrix, annot=True, cmap='coolwarm', fmt="d", mask=score_matrix.isna())
         # Set titles and labels
+        # plt.title('Model Success Rates Across Bins', fontsize=24)  # Set the size of the title
+        # plt.xlabel('Accuracy Bins', fontsize=20)  # Set the size of the x-axis label
+        # plt.ylabel('Sample Index', fontsize=20)  # Set the size of the y-axis label
+
+        # Adjust the tick label size
+        ax.tick_params(axis='x', labelsize=33)  # Set the fontsize of the x-axis tick labels
+        ax.tick_params(axis='y', labelsize=33)  # Set the fontsize of the y-axis tick labels
+
         plt.title('Model Success Rates Across Bins')
         plt.xlabel('Accuracy Bins')
         plt.ylabel('Sample Index')
@@ -144,7 +194,29 @@ class BinSampleTrackerAvg:
     def evaluate_models_across_bins(self, df, start_bin, end_bin, num_models):
         """Evaluates model performance across bins for a sampled subset of models."""
         model_columns = [col for col in df.columns if 'template' in col]
-        sampled_models = np.random.choice(model_columns, min(num_models, len(model_columns)), replace=False)
+
+        model_columns = [col for col in df.columns if 'template' in col]
+        model_columns_names = list(set([col.split('_experiment')[0] for col in model_columns]))
+        model_names = [model.split("/")[-1] for model in list(LLMProcessorConstants.MODEL_NAMES.values())]
+        model_names = [model for model in model_names if model in model_columns_names]
+
+        # Streamlit widget to allow users to select models from a list
+        st.subheader("Select Models for Analysis")
+        selected_models = st.multiselect("Choose models to include in the sampling:", options=model_names,
+                                         default=model_names)
+
+        # Filter model_columns to include only those selected by the user
+        # This assumes each selected model is a prefix in the respective column names
+        filtered_model_columns = [col for col in model_columns if any(model in col for model in selected_models)]
+
+        #add exapnder of slecet specific models:
+        #model_names = [model.split("/")[-1] for model in  list(LLMProcessorConstants.MODEL_NAMES.values())]
+        #model_columns_names = list(set([col.split('_experiment')[0] for col in model_columns]))
+        #model_names = [model for model in model_names if model in model_columns_names]
+        # ask the user to select the models(in exapnder) to save and the before sampling filter the columns that are not in the selected models (need the prefix of the columns)
+        # sampled_models = np.random.choice(model_columns, min(num_models, len(model_columns)), replace=False)
+        sampled_models = np.random.choice(filtered_model_columns, min(num_models, len(filtered_model_columns)),
+                                          replace=False)
 
         # Initialize a dictionary to hold accuracy data for each model across bins
         accuracy_data = {model: [] for model in sampled_models}
@@ -172,10 +244,10 @@ class BinSampleTrackerAvg:
         # Convert the dictionary to a DataFrame for easier viewing/manipulation
         # accuracy_df = accuracy_df.transpose()  # Transpose to have bins as rows and models as columns
         # Add baseline model data
-        baseline_data = [(b - 1) * 5 + 2.5 for b in range(start_bin, end_bin, -1)]
-        accuracy_data['Baseline Model'] = baseline_data
+        # baseline_data = [(b - 1) * 5 + 2.5 for b in range(start_bin, end_bin, -1)]
+        # accuracy_data['Baseline Model'] = baseline_data
         # put the base line model in the first position
-        accuracy_data = {key: accuracy_data[key] for key in ['Baseline Model'] + list(accuracy_data.keys())}
+        # accuracy_data = {key: accuracy_data[key] for key in ['Baseline Model'] + list(accuracy_data.keys())}
 
         accuracy_df = pd.DataFrame.from_dict(accuracy_data, orient='index', columns=[f"{(b - 1) * 5}-{b * 5}" for b in
                                                                                      range(start_bin, end_bin , -1)])
@@ -186,6 +258,13 @@ class BinSampleTrackerAvg:
             accuracy_df = accuracy_df.drop(models_with_nan, axis=0)
         # sort the rows  by the values of the first column
         accuracy_df = accuracy_df.sort_values(by=[f"{(start_bin - 1) * 5}-{start_bin * 5}"], ascending=False)
+        # put the base line model (row) in the first position
+        # add new row in the first position
+        baseline_data = [(b - 1) * 5 + 2.5 for b in range(start_bin, end_bin, -1)]
+        accuracy_df.loc['Baseline Model'] = baseline_data
+
+        accuracy_df = accuracy_df.reindex(['Baseline Model'] + list(accuracy_df.index))
+
         return accuracy_df
 
 
