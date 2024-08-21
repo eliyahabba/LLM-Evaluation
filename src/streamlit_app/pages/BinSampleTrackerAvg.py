@@ -1,4 +1,5 @@
 import argparse
+from io import BytesIO
 
 import numpy as np
 import pandas as pd
@@ -47,7 +48,9 @@ class BinSampleTrackerAvg:
         scores_df = self.evaluate_models_across_bins(total_aggregated_df, start_bin=20, end_bin=0,
                                                    num_models=self.num_models)
         self.plot_heatmap(scores_df)
-        # self.plot_heatmap2(scores_df)
+        selected_rows, start_bin, end_bin = self.filter_dataset(scores_df)
+        self.plot_heatmap(selected_rows,start_bin, end_bin)
+        # self.plot_heatmap_px(scores_df)
         # Normalize length of scores to max length (20 elements)
         # sample_plus_model_col = "Sample + Model"
         # scores_columns = [f"{i * 5}-{(i - 1) * 5}" for i in range(20, 0, -1)]
@@ -55,8 +58,37 @@ class BinSampleTrackerAvg:
         # scores_df.set_index(sample_plus_model_col, inplace=True)
         # convert all the non nan values to int
 
+    def filter_dataset(self, scores_df):
+        pass
+        # ask the user if to chosee above to beloew base line
+        above_below = st.radio("Choose the models above or below the baseline", ["above", "below"])
+        # ask the user to select unitl wich bin to filter models that abow q beloew the base line
+        # ask the user to select the number of bins to filter the models that are above or below the base line
+        bins = scores_df.columns
+        end_bin, start_bin  = st.select_slider("Select the bins to filter the configurations that are above or below the base line", bins[::-1], value=(bins[len(bins)//2], bins[0]))
+        # filter the scores_df based on the above and below the baseline row (this is the first row in the df)
+        base_line = scores_df.iloc[0]
+        start_bin = bins.values.tolist().index(start_bin)
+        end_bin = bins.values.tolist().index(end_bin)
+        # remove the row from the df that there index is base lien (can bw more the one row)
+        scores_df = scores_df.drop(index='Baseline')
+        if above_below == "above":
+            # check the models that are above the base line (in all the columns from select_bins)
+            a = scores_df.iloc[:, start_bin:end_bin].apply(lambda x: x >= base_line[start_bin:end_bin], axis=1)
+        else:
+            a = scores_df.iloc[:, start_bin:end_bin].apply(lambda x: x <= base_line[start_bin:end_bin], axis=1)
+        indices_all_true = a[a.all(axis=1)].index.tolist()
+        selected_rows = scores_df.loc[indices_all_true]
+        # add the base line as the first row
+        baseline_df = pd.DataFrame([base_line], index=['Baseline'])
+        selected_rows = pd.concat([baseline_df, selected_rows], axis=0)
+        return selected_rows, start_bin, end_bin
+
+
+
+
     def plot_heatmap2(self, score_matrix: pd.DataFrame):
-        st.write('Plotting heatmap')
+        st.write(f'Plotting heatmap- {score_matrix.shape[0]} samples')
         import plotly.graph_objects as go
         # Replace NaN with a specific value and set up the mask
         data_for_plot = np.nan_to_num(score_matrix.values, nan=-1)  # Replace NaN with -1
@@ -95,11 +127,15 @@ class BinSampleTrackerAvg:
         # Display the Plotly heatmap in Streamlit
         st.plotly_chart(fig, use_container_width=True)
 
-    def plot_heatmap(self, score_matrix: pd.DataFrame):
-        st.write('Plotting heatmap')
+    def plot_heatmap(self, score_matrix: pd.DataFrame,start_bin=None, end_bin=None):
+        st.write(f'Plotting heatmap- {score_matrix.shape[0]} samples')
+
         # """Plot a heatmap of model success rates."""
         # Set up the figure size for a better display in Streamlit
-        plt.figure(figsize=(60, 60))  # Adjusted to a more reasonable size for web display
+
+        plt.figure(figsize=(60, 60))
+
+        # Adjusted to a more reasonable size for web display
         # Create the heatmap with seaborn
         data_for_plot = np.nan_to_num(score_matrix.values, nan=-1)  # Replace NaN with -1
         mask = np.isclose(data_for_plot, -1)  # Create a mask where the data was NaN
@@ -118,14 +154,57 @@ class BinSampleTrackerAvg:
         # plt.ylabel('Sample Index', fontsize=20)  # Set the size of the y-axis label
 
         # Adjust the tick label size
-        ax.tick_params(axis='x', labelsize=33)  # Set the fontsize of the x-axis tick labels
-        ax.tick_params(axis='y', labelsize=33)  # Set the fontsize of the y-axis tick labels
+        ax.tick_params(axis='x', labelsize=42)  # Set the fontsize of the x-axis tick labels
+        ax.tick_params(axis='y', labelsize=42)  # Set the fontsize of the y-axis tick labels
+        if start_bin is not None and end_bin is not None:
+            ax.axvline(x=end_bin, color='black', linestyle='--', linewidth=6)
+        ax.axhline(y=0, color='black', linestyle='--', linewidth=4)
+        ax.axhline(y=1, color='black', linestyle='--', linewidth=4)
+        plt.title('Model Success Rates Across Bins', fontsize=34)
+        plt.xlabel('Accuracy Bins', fontsize=30)
+        plt.ylabel('Sample Index', fontsize=30)
+        # save the figure
+        # Improve layout adjustments
+        plt.subplots_adjust(left=0.3, right=0.9)  # Adjust these values to prevent label cut-off
+        plt.tight_layout()  # Auto-adjust layout to fit elements
 
-        plt.title('Model Success Rates Across Bins')
-        plt.xlabel('Accuracy Bins')
-        plt.ylabel('Sample Index')
+        plt.savefig("heatmap.png", bbox_inches='tight')
         st.pyplot(plt)
+    def plot_heatmap_px(self, score_matrix: pd.DataFrame):
+        """Plot a heatmap of model success rates using Plotly for better interactivity and readability."""
+        import plotly.graph_objects as go
+        x_labels_reversed = score_matrix.columns  # Reverses the label order
+        x_positions = list(range(len(x_labels_reversed)))[::-1]
 
+        fig = go.Figure(data=go.Heatmap(
+            x=x_positions,
+            y=score_matrix.index,
+            z=score_matrix.values,
+            colorscale='Viridis'))
+        # fig.update_xaxes(autorange="reversed")  # Automatically reverse the x-axis range
+        fig.update_xaxes(
+            autorange="reversed",
+            tickvals=x_positions,  # Set tick positions
+            ticktext=[f"{label}" for label in x_labels_reversed]  # Set custom tick labels
+        )
+        fig.update_yaxes(
+            autorange="reversed",
+            # tickvals=x_positions,  # Set tick positions
+            # ticktext=[f"Label {label}" for label in x_labels_reversed]  # Set custom tick labels
+        )
+
+        fig.update_layout(
+            title='Model Success Rates Across Bins',
+            xaxis_title='Accuracy Bins (20 to 1)',
+            yaxis_title='Sample Index',
+            width=1800,  # You can adjust the width and height to suit your display
+            height=1600,
+            paper_bgcolor='white',  # Background color for the outer area
+            plot_bgcolor='white',  # Background color for the plot area
+            margin=dict(l=70, r=70, t=70, b=70)  # Adjust margins to fit labels
+        )
+
+        st.plotly_chart(fig)
     def retrieve_files(self):
         self.results_folder = ResultConstants.MAIN_RESULTS_PATH / "MultipleChoiceTemplatesStructured"
         model_files = [file for file in self.results_folder.iterdir() if file.is_dir()]
@@ -194,8 +273,6 @@ class BinSampleTrackerAvg:
     def evaluate_models_across_bins(self, df, start_bin, end_bin, num_models):
         """Evaluates model performance across bins for a sampled subset of models."""
         model_columns = [col for col in df.columns if 'template' in col]
-
-        model_columns = [col for col in df.columns if 'template' in col]
         model_columns_names = list(set([col.split('_experiment')[0] for col in model_columns]))
         model_names = [model.split("/")[-1] for model in list(LLMProcessorConstants.MODEL_NAMES.values())]
         model_names = [model for model in model_names if model in model_columns_names]
@@ -229,7 +306,7 @@ class BinSampleTrackerAvg:
             # Calculate the accuracy for each model in the current bin
             for model in sampled_models:
                 model_data = current_bin_rows[model].dropna()  # Drop NaN values from the model's data
-                if len(current_bin_rows) > 0:
+                if len(model_data) > 0:
                     # Count successes and calculate accuracy
                     success_count = model_data.sum()
                     total_possible = len(model_data)
@@ -261,9 +338,19 @@ class BinSampleTrackerAvg:
         # put the base line model (row) in the first position
         # add new row in the first position
         baseline_data = [(b - 1) * 5 + 2.5 for b in range(start_bin, end_bin, -1)]
-        accuracy_df.loc['Baseline Model'] = baseline_data
+        # accuracy_df.loc['Baseline'] = baseline_data
+        # accuracy_df = accuracy_df.reindex(['Baseline'] + list(accuracy_df.index))
+        baseline_index = 'Baseline'
 
-        accuracy_df = accuracy_df.reindex(['Baseline Model'] + list(accuracy_df.index))
+        accuracy_df.loc[baseline_index] = baseline_data
+
+        # Reorder the DataFrame to put 'Baseline' at the top
+        accuracy_df = pd.concat([accuracy_df.loc[[baseline_index]], accuracy_df.drop(baseline_index)])
+
+        # Now sort the DataFrame (excluding the 'Baseline' row) and reinsert 'Baseline' at the top
+        sorted_accuracy_df = accuracy_df.drop(baseline_index).sort_values(by=[f"{(start_bin - 1) * 5}-{start_bin * 5}"],
+                                                                          ascending=False)
+        accuracy_df = pd.concat([accuracy_df.loc[[baseline_index]], sorted_accuracy_df])
 
         return accuracy_df
 
