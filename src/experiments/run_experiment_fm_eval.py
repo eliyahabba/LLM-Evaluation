@@ -223,7 +223,7 @@ def main():
                       help="Whether to predict the probability of each token.", action="store_false")
     args.add_argument("--predict_perplexity", default=LLMProcessorConstants.PREDICT_PERPLEXITY,
                       help="Whether to predict the perplexity of the token.", action="store_false")
-    args.add_argument("--card", type=str, default="cards.sciq")
+    args.add_argument("--card", type=str, default="cards.mmlu.anatomy")
     args.add_argument("--system_format_index", type=int, default=ExperimentConstants.SYSTEM_FORMAT_INDEX)
     args.add_argument("--batch_size", type=int, default=ExperimentConstants.BATCH_SIZE, help="The batch size.")
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
