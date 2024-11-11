@@ -61,7 +61,7 @@ class _DefaultGenerationArgs(GenerationArgs):
 
 
 
-templates_nums = [f"template_{i}" for i in range(1, 11)]
+templates_nums = [f"template_{i}" for i in range(0, 56)]
 unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
     "Knowledge": [
         _DefaultUnitxtRecipeArgs(
