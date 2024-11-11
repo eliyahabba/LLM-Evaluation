@@ -15,30 +15,10 @@ from src.experiments.models_predictors.LLMProcessor import LLMProcessor
 from src.utils.Constants import Constants
 from src.utils.ReadLLMParams import ReadLLMParams
 from src.utils.Utils import Utils
-from fm_eval.benchmarks.basic.benchmarks_definitions.utils.benchmark_function import (
-    default_system_prompt_and_formatter_mapper,
-    get_basic_benchmark_function,
-)
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 ExperimentConstants = Constants.ExperimentConstants
 LLMProcessorConstants = Constants.LLMProcessorConstants
-
-@dataclass
-class _DefaultGenerationArgs(GenerationArgs):
-    max_new_tokens: int = 64
-    seed: List[int] = field(default_factory=lambda: [42])
-    top_p: List[float] = field(default_factory=lambda: [])
-    top_k: List[int] = field(default_factory=lambda: [])
-    temperature: List[float] = field(default_factory=lambda: [])
-    do_sample: bool = False
-    num_beams: int = 1
-    stop_sequences: List[List[str]] = field(default_factory=lambda: [["\n\n"]])
-    max_predict_samples: int = 20
-
-
-def get_generation_args(unitxt_args: UnitxtSingleRecipeArgs) -> GenerationArgs:
-    return _DefaultGenerationArgs()
 
 class ExperimentRunner:
     """
@@ -179,20 +159,6 @@ class ExperimentRunner:
         enumerators_with_dot = [f"{enumerator}." for enumerator in enumerators]
         possible_gt_tokens = enumerators + enumerators_with_space + enumerators_with_dot + enumerators_with_space2
 
-        unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
-            "classification": [
-                unitxt_recipe_args,
-            ],
-        }
-
-        get_single_runs_args_list = get_basic_benchmark_function(
-            unitxt_recipe_args_by_groupings,
-            get_run_generation_args_func=get_generation_args,
-            get_train_args_func=None,
-            system_prompts_and_formatters_mapper=default_system_prompt_and_formatter_mapper,
-        )
-
-        #TODO: Implement the code that runs the experiment
 
 
 
