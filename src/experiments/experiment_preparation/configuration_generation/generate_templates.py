@@ -70,8 +70,7 @@ if __name__ == "__main__":
     ]
     ############################################################################################################
 
-
-    # This is peace of code that we need to copy for running the experiment
+    # This is a piece of code that we need to copy to run the experiment
     templates_names = [f"template_{i}" for i in range(len(possible_templates))]
 
     # Define the local catalog path
