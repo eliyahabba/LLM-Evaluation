@@ -86,7 +86,7 @@ subsets = {  # the key must appear in the card name
 
 templates_nums = [f"template_{i}" for i in range(0, 56)]
 
-def priroty_order():
+def priority_order():
     return [
         "mmlu_pro",
         "mmlu",
@@ -100,6 +100,6 @@ unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
             demos_pool_size=0,
             demos_taken_from="validation",
         )
-        for subset in subsets[x] for x in priroty_order()
+        for x in priority_order() for subset in subsets[x]
     ]
 }
