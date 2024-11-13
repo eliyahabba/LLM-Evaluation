@@ -23,6 +23,6 @@ class ReadLLMParams:
                           default=LLMProcessorConstants.RETURN_TOKEN_TYPE_IDS,
                           help="True if the model should not return token type ids.")
         args.add_argument("--multiple_choice_name", type=str,
-                          default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME,
+                          default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME,
                           help="Name of the multiple choice folder.")
         return args
