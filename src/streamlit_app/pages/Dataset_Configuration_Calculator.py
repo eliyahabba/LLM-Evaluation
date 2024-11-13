@@ -2,6 +2,7 @@ import itertools
 
 import pandas as pd
 import streamlit as st
+from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 
 
 def calculate_combinations(dataset_configs, selected_datasets, selected_models, selected_quant,
@@ -43,11 +44,10 @@ def calculate_combinations(dataset_configs, selected_datasets, selected_models, 
 
 def main():
     st.set_page_config(page_title="Dataset Configuration Calculator", layout="wide")
-    PROMPT_OPTIONS = {
-        "enumerator": ["capitals", "lowercase", "numbers", "roman"],
-        "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
-        "shuffle_choices": [False, True]
-    }
+    PROMPT_OPTIONS = ConfigParams.override_options
+    GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
+    RARE_CHARS = "œ§Жüϡʘϗѯ₿⊗"  # 10 rare characters
+    PROMPT_OPTIONS['enumerator'].extend([GREEK_CHARS, RARE_CHARS])
 
     st.title("Dataset Configuration Calculator")
 
