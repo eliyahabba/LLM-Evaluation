@@ -4,6 +4,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, List
 
+from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -17,11 +19,8 @@ class FewShotNum(Enum):
 
 
 class TemplateConfig:
-    OVERRIDE_OPTIONS = {
-        "enumerator": ["capitals", "lowercase", "numbers", "roman"],
-        "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
-        "shuffle_choices": [False, True],
-    }
+    prompt_variations = ConfigParams.override_options
+
     DATASETS = {MMLU: "mmlu", MMLU_PRO: "mmlu_pro"}
 
     SUBSETS = {
