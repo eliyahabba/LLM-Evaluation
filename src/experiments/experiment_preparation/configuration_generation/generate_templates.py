@@ -1,10 +1,19 @@
 import itertools
 import os
+from enum import Enum
+from pathlib import Path
 from typing import Dict, List
 
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
+MMLU = "MMLU"
+MMLU_PRO = "MMLU_PRO"
+
+
+class FewShotNum(Enum):
+    ZERO_SHOT = 0
+    FEW_SHOT = 4  # or whatever other values you want to support
 
 
 class TemplateConfig:
@@ -13,13 +22,14 @@ class TemplateConfig:
         "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
         "shuffle_choices": [False, True],
     }
+    DATASETS = {MMLU: "mmlu", MMLU_PRO: "mmlu_pro"}
 
-    SUBSETS = {
-        "mmlu_pro": [
-            "history", "law", "health", "physics", "business", "other",
-            "philosophy", "psychology", "economics", "math", "biology",
-            "chemistry", "computer_science", "engineering",
-        ],
+    SUBSETS = {`
+    "mmlu_pro": [
+        "history", "law", "health", "physics", "business", "other",
+        "philosophy", "psychology", "economics", "math", "biology",
+        "chemistry", "computer_science", "engineering",
+    ],
         "mmlu": [
             "abstract_algebra", "anatomy", "astronomy", "business_ethics",
             "clinical_knowledge", "college_biology", "college_chemistry",
@@ -124,10 +134,14 @@ class TemplateConfig:
         return prioritized_paths
 
     @staticmethod
-    def priority_datasets_order():
+    def priority_few_shots_params():
+        return [shot.value for shot in FewShotNum]
+
+    @staticmethod
+    def priority_prompt_paraphrase_params() -> List[Path]:
         return [
-            "mmlu_pro",
-            "mmlu",
+            TemplatesGeneratorConstants.DATA_PATH / TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME,
+            TemplatesGeneratorConstants.DATA_PATH / TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_FOLDER_NAME
         ]
 
 
@@ -139,42 +153,50 @@ if __name__ == "__main__":
         for values in itertools.product(*TemplateConfig.OVERRIDE_OPTIONS.values())
     ]
     ############################################################################################################
-
     # This is a piece of code that we need to copy to run the experiment
     templates_names = [f"template_{i}" for i in range(len(possible_templates))]
 
-    # Define the local catalog path
-    multiple_choice_instructions_with_topic_folder_name_local_catalog_path = TemplatesGeneratorConstants.DATA_PATH / TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME
-    # each catalog path contains different prompt paraphrase
-    os.environ[
-        "UNITXT_ARTIFACTORIES"] = f"{str(multiple_choice_instructions_with_topic_folder_name_local_catalog_path)}"
-
+    ## MMLU Pro
+    # Select the prompt paraphrase
+    for local_prompt_path in TemplateConfig.priority_prompt_paraphrase_params():
+        # Define the local catalog path
+        os.environ["UNITXT_ARTIFACTORIES"] = f"{str(local_prompt_path)}"
+        # Select the few shots value
+        for few_shots_value in TemplateConfig.priority_few_shots_params():
+            # Generate args for each dataset and its subsets
+            unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
+                "Knowledge": [
+                    _DefaultUnitxtRecipeArgs(
+                        card=f"cards.{TemplateConfig.DATASETS[MMLU_PRO]}.{subset}",
+                        template=[f"{TemplateConfig.DATASETS[MMLU_PRO]}.{subset}.{templates_name}" for templates_name in
+                                  templates_names],
+                        demos_pool_size=few_shots_value,
+                        max_test_instances=100,
+                        max_train_instances=100,
+                        max_validation_instances=100,
+                    )
+                    for subset in TemplateConfig.SUBSETS[TemplateConfig.DATASETS[MMLU_PRO]]
+                ]
+            }
     ## MMLU
-    unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
-        "Knowledge": [
-            _DefaultUnitxtRecipeArgs(
-                card=f"cards.mmlu.{subset}",
-                template=[f"mmlu.{subset}.{templates_name}" for templates_name in templates_names],
-                demos_pool_size=0,
-                max_test_instances=100,
-                max_train_instances=100,
-                max_validation_instances=100,
-            )
-            for x in TemplateConfig.priority_datasets_order() for subset in TemplateConfig.SUBSETS[x]
-        ]
-    }
-
-    ## MMLU-PRO
-    unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
-        "Knowledge": [
-            _DefaultUnitxtRecipeArgs(
-                card=f"cards.mmlu_pro.{subset}",
-                template=[f"mmlu_pro.{subset}.{templates_name}" for templates_name in templates_names],
-                demos_pool_size=0,
-                max_test_instances=100,
-                max_train_instances=100,
-                max_validation_instances=100,
-            )
-            for x in TemplateConfig.priority_datasets_order() for subset in TemplateConfig.SUBSETS[x]
-        ]
-    }
+    # Select the prompt paraphrase
+    for local_prompt_path in TemplateConfig.priority_prompt_paraphrase_params():
+        # Define the local catalog path
+        os.environ["UNITXT_ARTIFACTORIES"] = f"{str(local_prompt_path)}"
+        # Select the few shots value
+        for few_shots_value in TemplateConfig.priority_few_shots_params():
+            # Generate args for each dataset and its subsets
+            unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
+                "Knowledge": [
+                    _DefaultUnitxtRecipeArgs(
+                        card=f"cards.{TemplateConfig.DATASETS[MMLU]}.{subset}",
+                        template=[f"{TemplateConfig.DATASETS[MMLU]}.{subset}.{templates_name}" for templates_name in
+                                  templates_names],
+                        demos_pool_size=few_shots_value,
+                        max_test_instances=100,
+                        max_train_instances=100,
+                        max_validation_instances=100,
+                    )
+                    for subset in TemplateConfig.SUBSETS[TemplateConfig.DATASETS[MMLU]]
+                ]
+            }
