@@ -74,12 +74,13 @@ def main():
         'Gemma-2B-Instruct', 'Gemma-7B-Instruct'
     ]
     default_models = [model for model in models if "Llama" in model]
+    default_models = models[:1]
     quantizations = ["None", '4int', '8int']
     default_quant = ["None"]
     shots = ["zero_shot", "tow_shot", "four_shot"]
     default_shots = ["zero_shot"]
     Additional_features = ["None",
-        "Spelling_errors", "Random spaces"]
+                           "Spelling_errors", "Random spaces"]
     default_features = ["None"]
 
     # Create columns for different parameter selections
@@ -145,8 +146,8 @@ def main():
         num_prompt_paraphrasing = st.slider(
             "Number of Prompt Paraphrasing",
             min_value=1,
-            max_value=5,
-            value=1,
+            max_value=10,
+            value=2,
             help="Select number of prompt paraphrasing"
         )
         st.subheader("Prompt Variations")
@@ -235,7 +236,8 @@ def main():
             # Show sample of combinations
             st.subheader("Sample Configurations")
             df = pd.DataFrame(combinations[:1000], columns=['Dataset', 'Model', 'Quantization', 'Prompt Variation',
-                                                            'Prompt Paraphrasing', 'Shots', 'Additional Features'])
+                                                            ''
+                                                            'ng', 'Shots', 'Additional Features'])
             st.dataframe(df, height=400)
 
             # Download button for full configuration
