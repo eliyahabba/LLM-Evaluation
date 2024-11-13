@@ -184,6 +184,7 @@ if __name__ == "__main__":
         # Define the local catalog path
         os.environ["UNITXT_ARTIFACTORIES"] = f"{str(local_prompt_path)}"
         # Select the few shots value
+        # TODO: Is unixt known to take th template from the new catalog?
         for few_shots_value in TemplateConfig.priority_few_shots_params():
             # Generate args for each dataset and its subsets
             unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
