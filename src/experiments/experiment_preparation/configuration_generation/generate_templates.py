@@ -24,12 +24,12 @@ class TemplateConfig:
     }
     DATASETS = {MMLU: "mmlu", MMLU_PRO: "mmlu_pro"}
 
-    SUBSETS = {`
-    "mmlu_pro": [
-        "history", "law", "health", "physics", "business", "other",
-        "philosophy", "psychology", "economics", "math", "biology",
-        "chemistry", "computer_science", "engineering",
-    ],
+    SUBSETS = {
+        "mmlu_pro": [
+            "history", "law", "health", "physics", "business", "other",
+            "philosophy", "psychology", "economics", "math", "biology",
+            "chemistry", "computer_science", "engineering",
+        ],
         "mmlu": [
             "abstract_algebra", "anatomy", "astronomy", "business_ethics",
             "clinical_knowledge", "college_biology", "college_chemistry",
@@ -184,7 +184,7 @@ if __name__ == "__main__":
         # Define the local catalog path
         os.environ["UNITXT_ARTIFACTORIES"] = f"{str(local_prompt_path)}"
         # Select the few shots value
-        # TODO: Is unixt known to take th template from the new catalog?
+        # TODO: Is unixt known to take the template from the new catalog?
         for few_shots_value in TemplateConfig.priority_few_shots_params():
             # Generate args for each dataset and its subsets
             unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
