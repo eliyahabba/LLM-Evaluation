@@ -5,7 +5,8 @@ random.seed(42)
 
 class ConfigParams:
     override_options = {
-        "enumerator": ["capitals", "lowercase", "numbers", "roman"],
+        "enumerator": ["capitals", "lowercase", "numbers", "roman", "!@#$%^₪*)("],
+
         "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
         "shuffle_choices": [False, True],
         # Add more parameters and their possible values as needed
