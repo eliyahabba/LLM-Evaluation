@@ -92,17 +92,6 @@ class TemplateConfig:
                 }
             },
 
-            "Gemma": {
-                "Gemma-2-2B-Instruct": {
-                    "path": "google/gemma-2-2b-it",
-                    "size": "2B"
-                },
-                "Gemma-2-9B-Instruct": {
-                    "path": "google/gemma-2-9b-it",
-                    "size": "9B"
-                }
-            },
-
             "Qwen": {
                 "Qwen2.5-0.5B-Instruct": {
                     "path": "Qwen/Qwen2.5-0.5B-Instruct",
@@ -160,7 +149,22 @@ if __name__ == "__main__":
     os.environ[
         "UNITXT_ARTIFACTORIES"] = f"{str(multiple_choice_instructions_with_topic_folder_name_local_catalog_path)}"
 
-    # Define the configurations for the experiment
+    ## MMLU
+    unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
+        "Knowledge": [
+            _DefaultUnitxtRecipeArgs(
+                card=f"cards.mmlu.{subset}",
+                template=[f"mmlu.{subset}.{templates_name}" for templates_name in templates_names],
+                demos_pool_size=0,
+                max_test_instances=100,
+                max_train_instances=100,
+                max_validation_instances=100,
+            )
+            for x in TemplateConfig.priority_datasets_order() for subset in TemplateConfig.SUBSETS[x]
+        ]
+    }
+
+    ## MMLU-PRO
     unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
         "Knowledge": [
             _DefaultUnitxtRecipeArgs(
