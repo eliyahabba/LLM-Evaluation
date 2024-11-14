@@ -44,10 +44,12 @@ def calculate_combinations(dataset_configs, selected_datasets, selected_models, 
 
 def main():
     st.set_page_config(page_title="Dataset Configuration Calculator", layout="wide")
-    PROMPT_OPTIONS = ConfigParams.override_options
-    GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
-    RARE_CHARS = "œ§Жüϡʘϗѯ₿⊗"  # 10 rare characters
-    PROMPT_OPTIONS['enumerator'].extend([GREEK_CHARS, RARE_CHARS])
+    if "prompt_variations" not in st.session_state:
+        from copy import deepcopy
+        st.session_state.prompt_variations = deepcopy(ConfigParams.override_options)
+        GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
+        RARE_CHARS = "œ§Жüϡʘϗѯ₿⊗"  # 10 rare characters
+        st.session_state.prompt_variations['enumerator'].extend([GREEK_CHARS, RARE_CHARS])
 
     st.title("Dataset Configuration Calculator")
 
@@ -155,15 +157,15 @@ def main():
         with st.expander("Configure Prompt Variations", expanded=True):
             selected_enumerators = st.multiselect(
                 "Select Enumerators",
-                options=PROMPT_OPTIONS["enumerator"],
-                default=PROMPT_OPTIONS["enumerator"],
+                options=st.session_state.prompt_variations["enumerator"],
+                default=st.session_state.prompt_variations["enumerator"],
                 help="How to enumerate choices (e.g., A,B,C or 1,2,3)"
             )
 
             selected_separators = st.multiselect(
                 "Select Choice Separators",
-                options=PROMPT_OPTIONS["choices_separator"],
-                default=PROMPT_OPTIONS["choices_separator"],
+                options=st.session_state.prompt_variations["choices_separator"],
+                default=st.session_state.prompt_variations["choices_separator"],
                 help="How to separate choices"
             )
             selected_shuffle = st.multiselect(
