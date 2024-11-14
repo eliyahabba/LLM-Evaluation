@@ -11,6 +11,12 @@ class MMLUConfig(BaseDatasetConfig):
     def get_mmlu_instructions_without_topic(self) -> str:
         return f"The following are multiple choice questions (with answers).\n\n{{question}}\n{{choices}}\nAnswer:"
 
+    def get_mmlu_instructions_with_topic_helm(self) -> str:
+        return f"The following are multiple choice questions (with answers) about {{topic}}.\n\nQuestion: {{question}}\n{{choices}}\nAnswer:"
+
+    def get_mmlu_instructions_without_topic_helm(self) -> str:
+        return f"The following are multiple choice questions (with answers).\n\nQuestion: {{question}}\n\n{{choices}}\nAnswer:"
+
     def get_mmlu_instructions_with_topic_and_cot(self):
         return (f"The following are multiple choice questions (with answers) about {{topic}}. Think step by"
                   f" step and then output the answer in the format of \"The answer is (X)\" at the end.\n\n")
