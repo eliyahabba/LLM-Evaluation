@@ -1,6 +1,6 @@
 {
     "__type__": "multiple_choice_template",
-    "input_format": "The following are multiple choice questions (with answers) about {topic}.\nQuestion: {question}\n{choices}\nAnswer: ",
+    "input_format": "The following are multiple choice questions (with answers) about {topic}.\n\n{question}\n{choices}\nAnswer:",
     "choices_field": "choices",
     "target_field": "answer",
     "choices_separator": " ",
