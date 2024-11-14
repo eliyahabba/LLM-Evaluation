@@ -112,4 +112,4 @@ if __name__ == "__main__":
     print(perplexity)
     text = "Your example text goes here."
     perplexity = perplexity_calculator.compute(model, tokenizer, encodings, device=device)
-    # Calculate and print perplexity
+    print(perplexity)
