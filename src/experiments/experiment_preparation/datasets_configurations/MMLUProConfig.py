@@ -6,10 +6,14 @@ class MMLUConfig(BaseDatasetConfig):
         super().__init__(kwargs)
 
     def get_mmlu_instructions_with_topic(self) -> str:
-        return f"The following are multiple choice questions (with answers) about {{topic}}.\nQuestion: {{question}}\n{{choices}}\nAnswer: "
+        return f"The following are multiple choice questions (with answers) about {{topic}}.\n\n{{question}}\n{{choices}}\nAnswer:"
 
     def get_mmlu_instructions_without_topic(self) -> str:
-        return f"The following are multiple choice questions (with answers).\nQuestion: {{question}}\n{{choices}}\nAnswer: "
+        return f"The following are multiple choice questions (with answers).\n\n{{question}}\n{{choices}}\nAnswer:"
+
+    def get_mmlu_instructions_with_topic_and_cot(self):
+        return (f"The following are multiple choice questions (with answers) about {{topic}}. Think step by"
+                  f" step and then output the answer in the format of \"The answer is (X)\" at the end.\n\n")
 
     def get_structured_instruction_text_with_topic(self):
         # Provide a default implementation if needed
