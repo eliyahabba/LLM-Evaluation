@@ -21,11 +21,9 @@ class MMLUConfig(BaseDatasetConfig):
         return f"Question: {{question}}\n\nChoices: {{choices}}\nAnswer:"
 
     def get_structured_instruction_text_with_topic(self):
-        # Provide a default implementation if needed
         return f"Topic: {{topic}}\nQuestion: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
 
     def get_structured_instruction_text_without_topic(self):
-        # Provide a default implementation if needed
         return f"Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
 
 
