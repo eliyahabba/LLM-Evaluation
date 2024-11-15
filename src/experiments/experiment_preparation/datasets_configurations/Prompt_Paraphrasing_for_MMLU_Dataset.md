@@ -105,7 +105,7 @@ def get_mmlu_instructions_with_topic_and_cot(self):
 An underexplored aspect is the impact of the "topic" on responses. I think that it an interesting axis for investigation so 
 I recommend testing prompts where the only variation is the presence or absence of the topic.
 
-## Recommended prompts for testing
+## Recommended prompts for experiments
 [Link to code](https://github.com/eliyahabba/LLM-Evaluation/blob/main/src/experiments/experiment_preparation/datasets_configurations/MMLUProConfig.py)
 
 ### 1. Basic with/without topic
