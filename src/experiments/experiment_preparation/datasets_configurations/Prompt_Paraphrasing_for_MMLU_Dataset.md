@@ -53,6 +53,8 @@ Andrej Karpathy identified this issue, but it was decided to maintain the bug to
 
 ### 2. Few-shot format and space impact
 Another consideration relates to few-shot formatting. Consider this input example:
+- `Answer:` or `Answer:[space]`
+
 ```
 {{Question}}:
 1. cat
@@ -66,7 +68,7 @@ Answer: 1.
 2. two
 3. three
 4. four
-Answer: or maybe Answer:  
+Answer: or maybe Answer:[space]  
 ```
 
 The original code didn't include an additional space after the last "Answer:", leading to concerns about model prediction. If the evaluation method checks token probabilities for ["1","2","3","4"], it's incorrect. The proper approach should examine probabilities for [" 1", " 2", " 3", " 4"] (with spaces).
