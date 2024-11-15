@@ -1,4 +1,4 @@
-# Prompt Paraphrasing Analysis for MMLU Dataset
+# Prompt Paraphrasing for MMLU Dataset
 
 ## Background
 Our goal is to publish a large-scale dataset containing extensive examples from different datasets, with a particular focus on MMLU (Massive Multitask Language Understanding). While the core value of our dataset - its ability to test various phenomena like model robustness and capabilities - doesn't strictly depend on how we word the instructions, and we technically have the freedom to choose any prompt format, it makes sense to align with the conventions established in the literature. This is especially important since we know (from our own research!) how significantly different prompt formulations can affect model performance.
