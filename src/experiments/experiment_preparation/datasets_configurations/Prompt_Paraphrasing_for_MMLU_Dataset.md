@@ -25,7 +25,7 @@ Based on my experience working with our defined prompt format, models consistent
 
 ### 1. MMLU paper (GitHub)
 ```python
-f"The following are multiple choice questions (with answers) about {{topic}}.\n\n{{question}}\n{{choices}}\nAnswer:"
+f"The following are multiple choice questions (with answers) about  {{topic}}.\n\n{{question}}\n{{choices}}\nAnswer:"
 ```
 
 ### 2. HELM implementation
@@ -45,6 +45,7 @@ This was later identified as inconsistent with the original prompt format and wa
 ## Notable technical considerations
 
 ### 1. Double space bug
+The original code contains an extra space issue:
 The original code contains an extra space issue:
 - `about {{topic}}` -> `about  {{topic}}`
 
