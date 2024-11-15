@@ -39,7 +39,7 @@ Initially, they used:
 f"Question: {{question}}\n\nChoices: {{choices}}\nAnswer:"
 ```
 
-This was later identified as inconsistent with the original prompt format and was corrected on May 13, 2023, to align with version 1 of the paper:
+This was later identified as inconsistent with the original prompt format and was corrected on May 13, 2023, to align with the version of MMLU paper:
 [Link to commit](https://github.com/EleutherAI/lm-evaluation-harness/pull/497/commits/48c6bd6580d03005f67e87015bb1e172a4b0f76d)
 
 ## Notable technical considerations
