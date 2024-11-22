@@ -139,8 +139,10 @@ class TemplateConfig:
     @staticmethod
     def priority_prompt_paraphrase_params() -> List[Path]:
         return [
-            TemplatesGeneratorConstants.DATA_PATH / TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME,
-            TemplatesGeneratorConstants.DATA_PATH / TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_FOLDER_NAME
+            TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME,
+            TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_FOLDER_NAME,
+            TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_HELM,
+            TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_HELM
         ]
 
 
@@ -177,12 +179,11 @@ if __name__ == "__main__":
                     for subset in TemplateConfig.SUBSETS[TemplateConfig.DATASETS[MMLU_PRO]]
                 ]
             }
+
     ## MMLU
     # Select the prompt paraphrase
-    for local_prompt_path in TemplateConfig.priority_prompt_paraphrase_params():
-        # Define the local catalog path
+    for prompt_paraphrase in TemplateConfig.priority_prompt_paraphrase_params():
         # Select the few shots value
-        # TODO: Is unixt known to take the template from the new catalog?
         for few_shots_value in TemplateConfig.priority_few_shots_params():
             # Generate args for each dataset and its subsets
             unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {

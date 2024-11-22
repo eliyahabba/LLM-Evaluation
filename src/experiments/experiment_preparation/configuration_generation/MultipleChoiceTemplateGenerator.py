@@ -62,32 +62,46 @@ if __name__ == "__main__":
 
     # add input format to the parser
     data_path = TemplatesGeneratorConstants.DATA_PATH
+    catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
     parser = argparse.ArgumentParser(description='Generate multiple choice templates')
-    parser.add_argument('--input_format_func', type=str, default="get_structured_instruction_text_with_topic",
+    parser.add_argument('--input_format_func', type=str, default="get_mmlu_instructions_with_topic",
                         help='The input format for the templates')
     parser.add_argument('--data_folder', type=str,
-                        default=TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_TOPIC_FOLDER_NAME,
+                        default="MultipleChoiceTemplatesInstructionsWithTopic",
                         help='The data folder for the templates')
+    input_format_funcs = [
+        "get_mmlu_instructions_with_topic",
+        "get_mmlu_instructions_without_topic",
+        "get_mmlu_instructions_with_topic_helm",
+        "get_mmlu_instructions_without_topic_helm"]
+    data_folders  = \
+        ["MultipleChoiceTemplatesInstructionsWithTopic",
+        "MultipleChoiceTemplatesInstructionsWithoutTopic",
+        "MultipleChoiceTemplatesInstructionsWithTopicHelm",
+        "MultipleChoiceTemplatesInstructionsWithoutTopicHelm"]
+
     args = parser.parse_args()
-    args.data_folder = data_path / args.data_folder
     dataset_names_to_configs = DatasetConfigFactory.get_all_datasets()
     override_options = ConfigParams.override_options
-    for dataset_name, datasetConfig in dataset_names_to_configs.items():
-        try:
-            print(colored(f"Creating templates for {dataset_name}", "blue"))
-            # Override options for different parameters and create templates
-            generator = MultipleChoiceTemplateGenerator(datasetConfig, override_options, args.input_format_func)
-            created_templates = generator.create_templates()
+    for input_format_func, data_folder in zip(input_format_funcs, data_folders):
+        for dataset_name, datasetConfig in dataset_names_to_configs.items():
+            if "mmlu" not in dataset_name:
+                continue
+            try:
+                print(colored(f"Creating templates for {dataset_name}", "blue"))
+                # Override options for different parameters and create templates
+                generator = MultipleChoiceTemplateGenerator(datasetConfig, override_options, input_format_func)
+                created_templates = generator.create_templates()
 
-            # Save templates to local catalog
-            catalog_manager = CatalogManager(args.data_folder / dataset_name)
-            for i, template in tqdm(enumerate(created_templates)):
-                catalog_manager.save_to_catalog(template, f"template_{i}")
+                # Save templates to local catalog
+                catalog_manager = CatalogManager(catalog_path)
+                for i, template in tqdm(enumerate(created_templates)):
+                    catalog_manager.save_to_catalog(template, f"{data_folder}.{dataset_name}.template_{i}")
 
-            # add a df that contains the templates and their parameter
-            generator.create_and_process_metadata(created_templates, dataset_name, override_options)
-            print(colored(f"Templates for {dataset_name} created successfully", "green"))
-        except Exception as e:
-            print(colored(f"Error in creating templates for {dataset_name} with function {args.input_format_func}: {e}",
-                          "red"))
-            continue
+                # add a df that contains the templates and their parameter
+                generator.create_and_process_metadata(created_templates, dataset_name, override_options)
+                print(colored(f"Templates for {dataset_name} created successfully", "green"))
+            except Exception as e:
+                print(colored(f"Error in creating templates for {dataset_name} with function {args.input_format_func}: {e}",
+                              "red"))
+                continue

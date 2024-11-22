@@ -47,9 +47,8 @@ def main():
     if "prompt_variations" not in st.session_state:
         from copy import deepcopy
         st.session_state.prompt_variations = deepcopy(ConfigParams.override_options)
-        GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
-        RARE_CHARS = "œ§Жüϡʘϗѯ₿⊗"  # 10 rare characters
-        st.session_state.prompt_variations['enumerator'].extend([GREEK_CHARS, RARE_CHARS])
+        RARE_CHARS = "⊗œ§Жüϡʘϗѯ₿"  # 10 rare characters
+        st.session_state.prompt_variations['enumerator'].extend([RARE_CHARS])
 
     st.title("Dataset Configuration Calculator")
 
@@ -149,7 +148,7 @@ def main():
             "Number of Prompt Paraphrasing",
             min_value=1,
             max_value=10,
-            value=2,
+            value=4,
             help="Select number of prompt paraphrasing"
         )
         st.subheader("Prompt Variations")

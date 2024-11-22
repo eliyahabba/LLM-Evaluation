@@ -94,9 +94,12 @@ class Constants:
         MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME = "MultipleChoiceTemplatesInstructions"
         MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME = "MultipleChoiceTemplatesInstructionsWithTopic"
         MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_FOLDER_NAME = "MultipleChoiceTemplatesInstructionsWithoutTopic"
+        MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithTopicHelm"
+        MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithoutTopicHelm"
 
         MULTIPLE_CHOICE_PATH = Path(__file__).parents[2] / "Data" / MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME
         DATA_PATH = Path(__file__).parents[2] / "Data"
+        CATALOG_PATH = DATA_PATH / "Catalog"
         TEMPLATES_METADATA = "templates_metadata.csv"
         DATASET_SIZES_PATH = DATA_PATH / "datasets_sizes.csv"
         MMLU_METADATA_PATH = DATA_PATH / "mmlu_metadata.csv"
