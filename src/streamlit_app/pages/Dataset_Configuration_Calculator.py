@@ -2,6 +2,7 @@ import itertools
 
 import pandas as pd
 import streamlit as st
+
 from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 
 
@@ -65,15 +66,19 @@ def main():
     }
 
     # Replace the dataset selection section in the main() function with:
-    models = [
-        "Llama-3.2-1B-Instruct", "Llama-3.2-3B-Instruct",
-        "Llama-3-8B-Instruct",
-        "Llama-3-70B-Instruct",
-        'Llama2-7B-Instruct', 'Llama2-13B-Instruct', 'Llama2-70B',
-        'Mistral-V1', 'Mistral-V2', 'Mistral-V3',
-        'Mixtral',
-        'Gemma-2B-Instruct', 'Gemma-7B-Instruct'
-    ]
+    models = ["Llama-3.2-1B-Instruct",
+              "Llama-3.2-3B-Instruct",
+              "Meta-Llama-3-8B-Instruct",
+              "Meta-Llama-3-70B-Instruct",
+              "Mistral-7B-Instruct-v0.3",
+              "Mixtral-8x7B-Instruct-v0.1",
+              "Mixtral-8x22B-Instruct-v0.1",
+              "OLMo-7B-Instruct",
+              "OLMoE-1B-7B-0924-Instruct",
+              "Qwen2.5-0.5B-Instruct",
+              "Qwen2.5-3B-Instruct",
+              "Qwen2.5-7B-Instruct",
+              "Qwen2.5-72B-Instruct"]
     default_models = [model for model in models if "Llama" in model]
     default_models = models[:1]
     quantizations = ["None", '4int', '8int']
