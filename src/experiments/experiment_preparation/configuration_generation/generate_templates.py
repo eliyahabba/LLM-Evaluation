@@ -148,8 +148,8 @@ if __name__ == "__main__":
     ############################################################################################################
     # (just for reference, there are already defined in the MultipleChoiceTemplateGenerator class)
     possible_templates = [
-        {key: value for key, value in zip(TemplateConfig.OVERRIDE_OPTIONS.keys(), values)}
-        for values in itertools.product(*TemplateConfig.OVERRIDE_OPTIONS.values())
+        {key: value for key, value in zip(TemplateConfig.prompt_variations.keys(), values)}
+        for values in itertools.product(*TemplateConfig.prompt_variations.values())
     ]
     ############################################################################################################
     # This is a piece of code that we need to copy to run the experiment
