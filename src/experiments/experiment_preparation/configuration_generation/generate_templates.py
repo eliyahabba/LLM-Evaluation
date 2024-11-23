@@ -169,7 +169,7 @@ if __name__ == "__main__":
                 "Knowledge": [
                     _DefaultUnitxtRecipeArgs(
                         card=f"cards.{TemplateConfig.DATASETS[MMLU_PRO]}.{subset}",
-                        template=[f"{prompt_paraphrase}.{TemplateConfig.DATASETS[MMLU_PRO]}.{subset}.{templates_name}" for templates_name in
+                        template=[f"{prompt_paraphrase}.{TemplateConfig.DATASETS[MMLU_PRO]}.{templates_name}" for templates_name in
                                   templates_names],
                         demos_pool_size=few_shots_value,
                         max_test_instances=100,
@@ -190,7 +190,7 @@ if __name__ == "__main__":
                 "Knowledge": [
                     _DefaultUnitxtRecipeArgs(
                         card=f"cards.{TemplateConfig.DATASETS[MMLU]}.{subset}",
-                        template=[f"{prompt_paraphrase}.{TemplateConfig.DATASETS[MMLU]}.{subset}.{templates_name}" for templates_name in
+                        template=[f"{prompt_paraphrase}.{TemplateConfig.DATASETS[MMLU]}.{templates_name}" for templates_name in
                                   templates_names],
                         demos_pool_size=few_shots_value,
                         max_test_instances=100,
