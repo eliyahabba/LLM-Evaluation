@@ -52,7 +52,7 @@ class BaseConfig:
                 ]
             }
 
-    class PromptTemplates:
+    class PromptParaphrases:
         """Prompt template constants"""
         MC_WITH_TOPIC = "MultipleChoiceTemplatesInstructionsWithTopic"
         MC_WITHOUT_TOPIC = "MultipleChoiceTemplatesInstructionsWithoutTopic"
@@ -60,7 +60,7 @@ class BaseConfig:
         MC_WITHOUT_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithoutTopicHelm"
 
         @classmethod
-        def get_all_templates(cls) -> List[str]:
+        def get_all_prompt_paraphrases(cls) -> List[str]:
             return [
                 cls.MC_WITH_TOPIC,
                 cls.MC_WITHOUT_TOPIC,
@@ -151,7 +151,7 @@ def run_experiment(local_catalog_path: str):
 
     # Generate experiments for each dataset type
     for dataset_name in datasets:
-        for prompt_template in BaseConfig.PromptTemplates.get_all_templates():
+        for prompt_template in BaseConfig.PromptParaphrases.get_all_prompt_paraphrases():
             for few_shots in BaseConfig.FewShot.get_values():
                 unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
                     "Knowledge": [
