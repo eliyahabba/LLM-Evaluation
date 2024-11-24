@@ -55,3 +55,31 @@ template_52,roman, OR ,False
 template_53,roman, OR ,True
 template_54,roman, or ,False
 template_55,roman, or ,True
+template_56,!@#$%^₪*)(,\s,False
+template_57,!@#$%^₪*)(,\s,True
+template_58,!@#$%^₪*)(,\n,False
+template_59,!@#$%^₪*)(,\n,True
+template_60,!@#$%^₪*)(,", ",False
+template_61,!@#$%^₪*)(,", ",True
+template_62,!@#$%^₪*)(,; ,False
+template_63,!@#$%^₪*)(,; ,True
+template_64,!@#$%^₪*)(, | ,False
+template_65,!@#$%^₪*)(, | ,True
+template_66,!@#$%^₪*)(, OR ,False
+template_67,!@#$%^₪*)(, OR ,True
+template_68,!@#$%^₪*)(, or ,False
+template_69,!@#$%^₪*)(, or ,True
+template_70,αβγδεζηθικ,\s,False
+template_71,αβγδεζηθικ,\s,True
+template_72,αβγδεζηθικ,\n,False
+template_73,αβγδεζηθικ,\n,True
+template_74,αβγδεζηθικ,", ",False
+template_75,αβγδεζηθικ,", ",True
+template_76,αβγδεζηθικ,; ,False
+template_77,αβγδεζηθικ,; ,True
+template_78,αβγδεζηθικ, | ,False
+template_79,αβγδεζηθικ, | ,True
+template_80,αβγδεζηθικ, OR ,False
+template_81,αβγδεζηθικ, OR ,True
+template_82,αβγδεζηθικ, or ,False
+template_83,αβγδεζηθικ, or ,True

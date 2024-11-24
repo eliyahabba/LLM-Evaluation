@@ -1,3 +1,0 @@
-"statistic, pvalue, row is better than column",best set: template_0,template_1,group,accuracy
-template_0,None,"51.00, 0.01, True",A,0.644
-template_1,"51.00, 0.01, False",None,B,0.578

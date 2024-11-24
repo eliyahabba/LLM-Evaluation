@@ -1,25 +1,45 @@
+import argparse
 import itertools
 import os
 from enum import Enum
-from pathlib import Path
 from typing import Dict, List
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 
-from src.utils.Constants import Constants
+class Constants:
+    class datasets:
+        MMLU = "mmlu"
+        MMLU_PRO = "mmlu_pro"
 
-TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
-MMLU = "MMLU"
-MMLU_PRO = "MMLU_PRO"
+    class PromptParaphrase:
+        MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME = "MultipleChoiceTemplatesInstructionsWithTopic"
+        MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_FOLDER_NAME = "MultipleChoiceTemplatesInstructionsWithoutTopic"
+        MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithTopicHelm"
+        MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithoutTopicHelm"
 
+    class ConfigParams:
+        GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
+        override_options = {
+            "enumerator": ["capitals", "lowercase", "numbers", "roman", "!@#$%^₪*)(", GREEK_CHARS],
+            "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
+            "shuffle_choices": [False, True],
+            # Add more parameters and their possible values as needed
+        }
 
-class FewShotNum(Enum):
-    ZERO_SHOT = 0
-    FEW_SHOT = 4  # or whatever other values you want to support
+        map_enumerator = {"ABCDEFGHIJKLMNOP": "capitals",
+                          "abcdefghijklmnop": "lowercase",
+                          str(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16',
+                               '17',
+                               '18', '19', '20']): "numbers",
+                          str(['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV',
+                               'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX']): "roman"}
+
+    class FewShotNum(Enum):
+        ZERO_SHOT = 0
+        FEW_SHOT = 4  # or whatever other values you want to support
 
 
 class TemplateConfig:
-    prompt_variations = ConfigParams.override_options
+    prompt_variations = Constants.ConfigParams.override_options
 
     DATASETS = {MMLU: "mmlu", MMLU_PRO: "mmlu_pro"}
 
@@ -134,19 +154,26 @@ class TemplateConfig:
 
     @staticmethod
     def priority_few_shots_params():
-        return [shot.value for shot in FewShotNum]
+        return [shot.value for shot in Constants.FewShotNum]
 
     @staticmethod
-    def priority_prompt_paraphrase_params() -> List[Path]:
+    def priority_prompt_paraphrase_params() -> List[str]:
         return [
-            TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME,
-            TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_FOLDER_NAME,
-            TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_HELM,
-            TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_HELM
+            Constants.PromptParaphrase.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME,
+            Constants.PromptParaphrase.MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_FOLDER_NAME,
+            Constants.PromptParaphrase.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_HELM,
+            Constants.PromptParaphrase.MULTIPLE_CHOICE_INSTRUCTIONS_WITHOUT_TOPIC_HELM
         ]
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Generate multiple choice templates')
+    parser.add_argument('--local_catalog_path', type=str, default="local_catalog_path",
+                        help='The local catalog path')
+    args = parser.parse_args()
+    local_catalog_path = args.local_catalog_path
+    os.environ["UNITXT_ARTIFACTORIES"] = f"{local_catalog_path}"
+
     ############################################################################################################
     # (just for reference, there are already defined in the MultipleChoiceTemplateGenerator class)
     possible_templates = [
@@ -156,8 +183,6 @@ if __name__ == "__main__":
     ############################################################################################################
     # This is a piece of code that we need to copy to run the experiment
     templates_names = [f"template_{i}" for i in range(len(possible_templates))]
-
-    os.environ["UNITXT_ARTIFACTORIES"] = f"{str(TemplatesGeneratorConstants.CATALOG_PATH)}"
 
     ## MMLU Pro
     # Select the prompt paraphrase
@@ -169,7 +194,8 @@ if __name__ == "__main__":
                 "Knowledge": [
                     _DefaultUnitxtRecipeArgs(
                         card=f"cards.{TemplateConfig.DATASETS[MMLU_PRO]}.{subset}",
-                        template=[f"{prompt_paraphrase}.{TemplateConfig.DATASETS[MMLU_PRO]}.{templates_name}" for templates_name in
+                        template=[f"{prompt_paraphrase}.{TemplateConfig.DATASETS[MMLU_PRO]}.{templates_name}" for
+                                  templates_name in
                                   templates_names],
                         demos_pool_size=few_shots_value,
                         max_test_instances=100,
@@ -190,7 +216,8 @@ if __name__ == "__main__":
                 "Knowledge": [
                     _DefaultUnitxtRecipeArgs(
                         card=f"cards.{TemplateConfig.DATASETS[MMLU]}.{subset}",
-                        template=[f"{prompt_paraphrase}.{TemplateConfig.DATASETS[MMLU]}.{templates_name}" for templates_name in
+                        template=[f"{prompt_paraphrase}.{TemplateConfig.DATASETS[MMLU]}.{templates_name}" for
+                                  templates_name in
                                   templates_names],
                         demos_pool_size=few_shots_value,
                         max_test_instances=100,

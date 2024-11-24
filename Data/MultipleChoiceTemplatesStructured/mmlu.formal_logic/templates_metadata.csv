@@ -69,3 +69,17 @@ template_66,!@#$%^₪*)(, OR ,False
 template_67,!@#$%^₪*)(, OR ,True
 template_68,!@#$%^₪*)(, or ,False
 template_69,!@#$%^₪*)(, or ,True
+template_70,αβγδεζηθικ,\s,False
+template_71,αβγδεζηθικ,\s,True
+template_72,αβγδεζηθικ,\n,False
+template_73,αβγδεζηθικ,\n,True
+template_74,αβγδεζηθικ,", ",False
+template_75,αβγδεζηθικ,", ",True
+template_76,αβγδεζηθικ,; ,False
+template_77,αβγδεζηθικ,; ,True
+template_78,αβγδεζηθικ, | ,False
+template_79,αβγδεζηθικ, | ,True
+template_80,αβγδεζηθικ, OR ,False
+template_81,αβγδεζηθικ, OR ,True
+template_82,αβγδεζηθικ, or ,False
+template_83,αβγδεζηθικ, or ,True

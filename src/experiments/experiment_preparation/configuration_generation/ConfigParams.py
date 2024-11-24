@@ -2,9 +2,9 @@ import random
 
 random.seed(42)
 
-GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
 
 class ConfigParams:
+    GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
     override_options = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman", "!@#$%^₪*)(", GREEK_CHARS],
 

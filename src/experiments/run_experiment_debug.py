@@ -36,9 +36,9 @@ class ExperimentRunner:
         @return: The template
         """
         template_name = Utils.get_template_name(template_num)
-        catalog_manager = CatalogManager(
-            Utils.get_card_path(multiple_choice_path, self.args.card))
-        template = catalog_manager.load_from_catalog(template_name)
+        catalog_manager = CatalogManager(multiple_choice_path)
+        name =f"{(self.args.card).split('cards.')[1]}.{template_name}"
+        template = catalog_manager.load_from_catalog(name)
         return template_name, template
 
     def create_entry_experiment(self, template_name: str) -> dict:
@@ -206,7 +206,7 @@ def main():
     args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
     # args.add_argument("--template_num", type=int, default=ExperimentConstants.TEMPLATE_NUM)
     # # option to give a range of templates to run the experiment on (e.g. 1 10). with 2 parameters min and max template
-    args.add_argument("--template_range", nargs=2, type=int, default=ExperimentConstants.TEMPLATES_RANGE,
+    args.add_argument("--template_range", nargs=2, type=int, default=[60, 65],
                       help="Specify the range of templates to run the experiment on (e.g., 1 10).")
     # add param
     args = args.parse_args()

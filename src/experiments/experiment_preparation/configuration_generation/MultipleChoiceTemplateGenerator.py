@@ -96,7 +96,7 @@ if __name__ == "__main__":
                 # Save templates to local catalog
                 catalog_manager = CatalogManager(catalog_path)
                 for i, template in tqdm(enumerate(created_templates)):
-                    catalog_manager.save_to_catalog(template, f"{data_folder}.{dataset_name}.template_{i}")
+                    catalog_manager.save_to_catalog(template, f"{data_folder}.template_{i}")
 
                 # add a df that contains the templates and their parameter
                 generator.create_and_process_metadata(created_templates, dataset_name, override_options)
