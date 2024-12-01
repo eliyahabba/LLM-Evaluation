@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --mem=12g
-#SBATCH --time=3:0:0
+#SBATCH --time=12:0:0
 #SBATCH --gres=gpu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
@@ -42,9 +42,9 @@ function set_parameters {
         ["mmlu.high_school_psychology"]="56 10"
         ["mmlu.professional_psychology"]="56 10"
         ["mmlu.miscellaneous"]="56 6"
-        ["ai2_arc.arc_challenge"]="56 1"
-        ["boolq.multiple_choice"]="56 1"
-        ["hellaswag"]="56 1"
+#        ["ai2_arc.arc_challenge"]="56 1"
+#        ["boolq.multiple_choice"]="56 1"
+#        ["hellaswag"]="56 1"
        )
 
     # Apply custom configurations
@@ -92,4 +92,4 @@ read -r card start end <<< "${PARAMS}"
 echo "Card: $card"
 echo "Starting configuration: $start"
 echo "Ending configuration: $end"
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name MISTRAL_V3 --card $card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name MISTRAL_V3 --card $card --template_range $start $end --load_in_8bit   --num_demos 3 --demos_pool_size 20

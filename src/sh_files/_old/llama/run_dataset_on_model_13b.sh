@@ -1,11 +1,13 @@
 #!/bin/bash
 
 #SBATCH --mem=10g
-#SBATCH --time=3:0:0
+#SBATCH --time=12:0:0
 #SBATCH --gres=gpu:1,vmem:20g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
+#SBATCH --killable
+#SBATCH --requeue
 
 load_config_path="load_config.sh"
 config_bash=$(readlink -f $load_config_path)
@@ -13,7 +15,6 @@ echo "Loading config with: " $config_bash
 source $config_bash
 
 # Now HF_HOME is available to use in this script
-echo "HF_HOME is set to: $HF_HOME"
 python_path="../../../"
 absolute_python_path=$(readlink -f $python_path)
 export PYTHONPATH=$absolute_python_path
@@ -31,4 +32,4 @@ cd $dir
 
 echo ${SLURM_ARRAY_TASK_ID}
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA13B --card $1 --template_range $2 $3
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA13B --card $1 --template_range $2 $3  --num_demos 3 --demos_pool_size 20

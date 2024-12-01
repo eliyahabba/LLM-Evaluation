@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #SBATCH --mem=12g
-#SBATCH --time=3:0:0
+#SBATCH --time=12:0:0
 #SBATCH --gres=gpu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 #SBATCH --job-name=mmlu_job_array
-#SBATCH --array=0-317%50   # Full data is 246 configurations
+#SBATCH --array=0-246%50   # Full data is 246 configurations
 #SBATCH --output=logs/slurm_output_%A_%a.log
 #SBATCH --killable
 #SBATCH --requeue
@@ -42,9 +42,9 @@ function set_parameters {
         ["mmlu.high_school_psychology"]="56 10"
         ["mmlu.professional_psychology"]="56 10"
         ["mmlu.miscellaneous"]="56 6"
-        ["ai2_arc.arc_challenge"]="56 2"
-        ["boolq.multiple_choice"]="56 2"
-        ["hellaswag"]="56 1"
+#        ["ai2_arc.arc_challenge"]="56 2"
+#        ["boolq.multiple_choice"]="56 2"
+#        ["hellaswag"]="56 1"
        )
 
     # Apply custom configurations
@@ -92,4 +92,4 @@ read -r card start end <<< "${PARAMS}"
 echo "Card: $card"
 echo "Starting configuration: $start"
 echo "Ending configuration: $end"
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA3_8B --card $card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA3_8B --card $card --template_range $start $end --load_in_8bit   --num_demos 3 --demos_pool_size 20
