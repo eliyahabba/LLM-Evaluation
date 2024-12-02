@@ -1,11 +1,12 @@
 from abc import abstractmethod
 from itertools import product
-from typing import List
+from typing import List, Dict
 
 import pandas as pd
 from tqdm import tqdm
 from unitxt.templates import Template
 
+from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.experiments.experiment_preparation.datasets_configurations.BaseDatasetConfig import BaseDatasetConfig
 from src.utils.Constants import Constants
 
@@ -24,18 +25,20 @@ class TemplateGenerator:
         self.override_options = override_options
         self.input_format_func = input_format_func
 
-    def create_templates(self) -> list:
+    def create_templates(self) -> Dict[str, Template]:
         """
         Creates a list of MultipleChoiceTemplate instances with different parameters.
 
         @return: A list of the created templates.
         """
-        templates = []
+        templates = {}
         for options in tqdm(product(*self.override_options.values())):
             override_args = dict(zip(self.override_options.keys(), options))
+            # create a name for the template
+            template_name = ConfigParams.generate_template_name(override_args)
             override_args['input_format_func'] = self.input_format_func
             template = self.create_template(**override_args)
-            templates.append(template)
+            templates[template_name] = template
             print(f"Created template with options: {override_args}")
         print("All templates created!")
         return templates

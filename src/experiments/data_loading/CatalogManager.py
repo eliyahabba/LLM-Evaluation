@@ -24,7 +24,7 @@ class CatalogManager:
         """
         self.catalog_path = catalog_path
 
-    def save_to_catalog(self, template: MultipleChoiceTemplate, name: str) -> None:
+    def save_to_catalog(self, template: Template, name: str) -> None:
         """
         Saves the provided dataset to the local catalog.
 

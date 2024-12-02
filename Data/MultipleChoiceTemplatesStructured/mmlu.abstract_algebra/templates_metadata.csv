@@ -55,31 +55,31 @@ template_52,roman, OR ,False
 template_53,roman, OR ,True
 template_54,roman, or ,False
 template_55,roman, or ,True
-template_56,!@#$%^₪*)(,\s,False
-template_57,!@#$%^₪*)(,\s,True
-template_58,!@#$%^₪*)(,\n,False
-template_59,!@#$%^₪*)(,\n,True
-template_60,!@#$%^₪*)(,", ",False
-template_61,!@#$%^₪*)(,", ",True
-template_62,!@#$%^₪*)(,; ,False
-template_63,!@#$%^₪*)(,; ,True
-template_64,!@#$%^₪*)(, | ,False
-template_65,!@#$%^₪*)(, | ,True
-template_66,!@#$%^₪*)(, OR ,False
-template_67,!@#$%^₪*)(, OR ,True
-template_68,!@#$%^₪*)(, or ,False
-template_69,!@#$%^₪*)(, or ,True
-template_70,αβγδεζηθικ,\s,False
-template_71,αβγδεζηθικ,\s,True
-template_72,αβγδεζηθικ,\n,False
-template_73,αβγδεζηθικ,\n,True
-template_74,αβγδεζηθικ,", ",False
-template_75,αβγδεζηθικ,", ",True
-template_76,αβγδεζηθικ,; ,False
-template_77,αβγδεζηθικ,; ,True
-template_78,αβγδεζηθικ, | ,False
-template_79,αβγδεζηθικ, | ,True
-template_80,αβγδεζηθικ, OR ,False
-template_81,αβγδεζηθικ, OR ,True
-template_82,αβγδεζηθικ, or ,False
-template_83,αβγδεζηθικ, or ,True
+template_56,keyboard,\s,False
+template_57,keyboard,\s,True
+template_58,keyboard,\n,False
+template_59,keyboard,\n,True
+template_60,keyboard,", ",False
+template_61,keyboard,", ",True
+template_62,keyboard,; ,False
+template_63,keyboard,; ,True
+template_64,keyboard, | ,False
+template_65,keyboard, | ,True
+template_66,keyboard, OR ,False
+template_67,keyboard, OR ,True
+template_68,keyboard, or ,False
+template_69,keyboard, or ,True
+template_70,greek,\s,False
+template_71,greek,\s,True
+template_72,greek,\n,False
+template_73,greek,\n,True
+template_74,greek,", ",False
+template_75,greek,", ",True
+template_76,greek,; ,False
+template_77,greek,; ,True
+template_78,greek, | ,False
+template_79,greek, | ,True
+template_80,greek, OR ,False
+template_81,greek, OR ,True
+template_82,greek, or ,False
+template_83,greek, or ,True

@@ -51,7 +51,7 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
         # replace the enumerator values with their names
         # convert the enumerator to string to be able to replace the values with their names
         metadata_df['enumerator'] = metadata_df['enumerator'].astype(str)
-        metadata_df.replace({"enumerator": ConfigParams.map_enumerator}, inplace=True)
+        metadata_df.replace({"enumerator": ConfigParams.ENUM_CHARS}, inplace=True)
         # save the metadata to a csv file
         metadata_df.to_csv(
             TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / dataset_name / TemplatesGeneratorConstants.TEMPLATES_METADATA)
@@ -95,12 +95,13 @@ if __name__ == "__main__":
 
                 # Save templates to local catalog
                 catalog_manager = CatalogManager(catalog_path)
-                for i, template in tqdm(enumerate(created_templates)):
-                    catalog_manager.save_to_catalog(template, f"{data_folder}.template_{i}")
+                for template_name, template in tqdm(created_templates.items()):
+                    catalog_manager.save_to_catalog(template, f"{data_folder}.{template_name}")
 
                 # add a df that contains the templates and their parameter
-                generator.create_and_process_metadata(created_templates, dataset_name, override_options)
+                generator.create_and_process_metadata(created_templates.values(), dataset_name, override_options)
                 print(colored(f"Templates for {dataset_name} created successfully", "green"))
+                break
             except Exception as e:
                 print(colored(f"Error in creating templates for {dataset_name} with function {args.input_format_func}: {e}",
                               "red"))
