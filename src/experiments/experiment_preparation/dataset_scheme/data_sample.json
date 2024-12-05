@@ -15,6 +15,13 @@
         "TokenIds": [123, 456, 789, 234, 567, 890]
     },
     "Instance": {
+        "RawInput": "What size of cannula is most appropriate for rapid fluid resuscitation in an adult patient?\nA. 18 gauge\nB. 20 gauge\nC. 22 gauge\nD. 24 gauge",
+        "SampleIdentifier": {
+            "dataset_name": "mmlu/clinical_knowledge",
+            "split": "test",
+            "hf_repo": "cais/mmlu",
+            "hf_index": 1876
+        },
         "Topic": "clinical_knowledge",
         "Question": "What size of cannula is most appropriate for rapid fluid resuscitation in an adult patient?",
         "Choices": "A. 18 gauge, B. 20 gauge, C. 22 gauge, D. 24 gauge",

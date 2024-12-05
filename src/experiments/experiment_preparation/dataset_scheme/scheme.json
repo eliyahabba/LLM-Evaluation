@@ -91,8 +91,36 @@
         "Instance": {
             "type": "object",
             "description": "Specific question instance and its metadata",
-            "required": ["Question", "Choices", "Perplexity", "GroundTruth"],
+           "required": ["Question", "Choices", "Perplexity", "GroundTruth", "RawInput", "SampleIdentifier"],
             "properties": {
+                "RawInput": {
+                    "type": "string",
+                    "description": "Original input text as it appears in the dataset, without any formatting or prompting"
+                },
+                "SampleIdentifier": {
+                    "type": "object",
+                    "description": "Metadata to help identify and match the sample to the dataset",
+                    "required": ["dataset_name", "split"],
+                    "properties": {
+                        "dataset_name": {
+                            "type": "string",
+                            "description": "Name of the source dataset"
+                        },
+                        "split": {
+                            "type": "string",
+                            "description": "Dataset split (e.g., train, test, validation)",
+                            "enum": ["train", "test", "validation"]
+                        },
+                        "hf_repo": {
+                            "type": "string",
+                            "description": "HuggingFace repository identifier"
+                        },
+                        "hf_index": {
+                            "type": "integer",
+                            "description": "Index in the HuggingFace dataset"
+                        }
+                    }
+                },
                 "Topic": {
                     "type": "string",
                     "description": "Optional category or subject domain of the question"
