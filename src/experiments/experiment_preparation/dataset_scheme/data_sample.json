@@ -4,11 +4,16 @@
         "Quantization": {
             "QuantizationBit": "8bit",
             "QuantizationMethod": "dynamic"
+        },
+       "GenerationArgs": {
+            "temperature": 0.7,
+            "max_tokens": 15,
+            "top_p": 1
         }
     },
     "Prompt": {
         "Instruct Template": "Topic: {topic}\nQuestion: [question]\nChoices: [choices]\nAnswer: [answer]",
-        "Separator": ",",
+        "Separator": " ",
         "Enumerator": "capitals",
         "ShuffleChoices": false,
         "Shots": "zero",
@@ -24,7 +29,24 @@
         },
         "Topic": "clinical_knowledge",
         "Question": "What size of cannula is most appropriate for rapid fluid resuscitation in an adult patient?",
-        "Choices": "A. 18 gauge, B. 20 gauge, C. 22 gauge, D. 24 gauge",
+        "Choices": [
+            {
+                "id": "A",
+                "text": "18 gauge"
+            },
+            {
+                "id": "B",
+                "text": "20 gauge"
+            },
+            {
+                "id": "C",
+                "text": "22 gauge"
+            },
+            {
+                "id": "D",
+                "text": "24 gauge"
+            }
+        ],
         "Perplexity": 10.75,
         "GroundTruth": "A. 18 gauge"
     },

@@ -47,7 +47,39 @@
                             ]
                         }
                     }
+                },
+                "GenerationArgs": {
+                    "type": "object",
+                    "description": "Generation parameters used for model inference",
+                    "additionalProperties": true,
+                    "properties": {
+                        "temperature": {
+                            "type": "number",
+                            "description": "Sampling temperature"
+                        },
+                        "top_p": {
+                            "type": "number",
+                            "description": "Nucleus sampling parameter"
+                        },
+                        "do_sample": {
+                            "type": "boolean",
+                            "description": "Whether to use sampling for generation"
+                        },
+                        "max_tokens": {
+                            "type": "integer",
+                            "description": "Maximum number of tokens to generate"
+                        },
+                        "stop_sequences": {
+                            "type": "array",
+                            "description": "Sequences that stop generation",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": []
+                        }
+                    }
                 }
+
             }
         },
         "Prompt": {
@@ -62,12 +94,12 @@
                 "Separator": {
                     "type": "string",
                     "description": "Character(s) used to separate multiple choice options",
-                    "enum": ["\n", ",", ";", "."]
+                    "enum": [" ", "\n", ", ", "; ", " | ", " OR ", " or "]
                 },
                 "Enumerator": {
                     "type": "string",
                     "description": "Style of enumeration for multiple choice options",
-                    "enum": ["capitals", "lowercase", "numbers", "roman"]
+                    "enum": ["capitals", "lowercase", "numbers", "roman", "αβγδεζηθικ" ,"!@#$%^₪*)("]
                 },
                 "ShuffleChoices": {
                     "type": "boolean",
@@ -91,7 +123,8 @@
         "Instance": {
             "type": "object",
             "description": "Specific question instance and its metadata",
-           "required": ["Question", "Choices", "Perplexity", "GroundTruth", "RawInput", "SampleIdentifier"],
+            "required": ["Question", "Choices", "Perplexity", "GroundTruth", "RawInput", "SampleIdentifier"],
+            "additionalProperties": true,
             "properties": {
                 "RawInput": {
                     "type": "string",
@@ -121,17 +154,27 @@
                         }
                     }
                 },
-                "Topic": {
-                    "type": "string",
-                    "description": "Optional category or subject domain of the question"
-                },
                 "Question": {
                     "type": "string",
                     "description": "The actual question"
                 },
                 "Choices": {
-                    "type": "string",
-                    "description": "Formatted string containing all multiple choice options"
+                    "type": "array",
+                    "description": "Array of all multiple choice options",
+                    "items": {
+                        "type": "object",
+                        "required": ["id", "text"],
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Choice identifier (e.g., 'A', '1', etc.)"
+                            },
+                            "text": {
+                                "type": "string",
+                                "description": "Choice text"
+                            }
+                        }
+                    }
                 },
                 "Perplexity": {
                     "type": "number",

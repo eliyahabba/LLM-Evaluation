@@ -23,7 +23,12 @@ def validate_json_file(json_file_path, schema_file_path):
             schema_data = json.load(file)
 
         # Validate the JSON against the schema
-        validate(instance=json_data, schema=schema_data)
+        if isinstance(json_data, list):
+            for idx, item in enumerate(json_data):
+                validate(instance=item, schema=schema_data)
+        else:
+            assert isinstance(json_data, dict)
+            validate(instance=json_data, schema=schema_data)
         return True, "JSON is valid according to the schema."
 
     except FileNotFoundError as e:
@@ -40,6 +45,7 @@ def validate_json_file(json_file_path, schema_file_path):
 if __name__ == "__main__":
     # Example paths - replace with your actual file paths
     json_file = "data_sample.json"
+    # json_file = "converted_data.json"
     schema_file = "scheme.json"
 
     is_valid, message = validate_json_file(json_file, schema_file)
