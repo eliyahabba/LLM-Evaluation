@@ -1,0 +1,210 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "description": "Schema for storing and validating LLMs evaluation data, including model configuration, prompts, instances, Output, and evaluation metrics",
+    "required": ["Model", "Prompt", "Instance", "Output", "Evaluation"],
+    "properties": {
+        "Model": {
+            "type": "object",
+            "description": "Information about the model and its configuration",
+            "required": ["Name", "Quantization"],
+            "properties": {
+                "Name": {
+                    "type": "string",
+                    "description": "Name and version of the model (e.g., 'Llama-2-13b-chat-hf')"
+                },
+                "Quantization": {
+                    "type": "object",
+                    "description": "Model quantization settings for optimized inference",
+                    "required": ["QuantizationBit", "QuantizationMethod"],
+                    "properties": {
+                        "QuantizationBit": {
+                            "type": "string",
+                            "description": "Bit precision used for quantization. Must be 'none' if no quantization is applied",
+                            "enum": ["none", "4bit", "8bit", "16bit"]
+                        },
+                        "QuantizationMethod": {
+                            "type": "string",
+                            "description": "Method used for quantization. Must be 'none' if no quantization is applied",
+                            "enum": ["none", "dynamic", "static"]
+                        }
+                    },
+                    "dependencies": {
+                        "QuantizationMethod": {
+                            "oneOf": [
+                                {
+                                    "properties": {
+                                        "QuantizationMethod": { "enum": ["none"] },
+                                        "QuantizationBit": { "enum": ["none"] }
+                                    }
+                                },
+                                {
+                                    "properties": {
+                                        "QuantizationMethod": { "enum": ["dynamic", "static"] },
+                                        "QuantizationBit": { "enum": ["4bit", "8bit", "16bit"] }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "Prompt": {
+            "type": "object",
+            "description": "Configuration of the prompt template and formatting",
+            "required": ["Instruct Template", "Separator", "Enumerator", "ShuffleChoices", "Shots", "TokenIds"],
+            "properties": {
+                "Instruct Template": {
+                    "type": "string",
+                    "description": "Base template format with placeholders for topic, question, choices, and answer"
+                },
+                "Separator": {
+                    "type": "string",
+                    "description": "Character(s) used to separate multiple choice options",
+                    "enum": ["\n", ",", ";", "."]
+                },
+                "Enumerator": {
+                    "type": "string",
+                    "description": "Style of enumeration for multiple choice options",
+                    "enum": ["capitals", "lowercase", "numbers", "roman"]
+                },
+                "ShuffleChoices": {
+                    "type": "boolean",
+                    "description": "Whether the order of choices is randomized",
+                    "enum": [true, false]
+                },
+                "Shots": {
+                    "type": "string",
+                    "description": "Number of examples provided in the prompt",
+                    "enum": ["zero", "tow", "for", "five"]
+                },
+                "TokenIds": {
+                    "type": "array",
+                    "description": "Array of token IDs representing the tokenized prompt",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "Instance": {
+            "type": "object",
+            "description": "Specific question instance and its metadata",
+            "required": ["Question", "Choices", "Perplexity", "GroundTruth"],
+            "properties": {
+                "Topic": {
+                    "type": "string",
+                    "description": "Optional category or subject domain of the question"
+                },
+                "Question": {
+                    "type": "string",
+                    "description": "The actual question"
+                },
+                "Choices": {
+                    "type": "string",
+                    "description": "Formatted string containing all multiple choice options"
+                },
+                "Perplexity": {
+                    "type": "number",
+                    "description": "Perplexity score measuring the complexity of the input text"
+                },
+                "GroundTruth": {
+                    "type": "string",
+                    "description": "The correct answer for the question"
+                }
+            }
+        },
+        "Output": {
+            "type": "object",
+            "description": "Model's response and associated probability metrics",
+            "required": ["Response", "GeneratedTokenIds", "TokenLogprobs", "MaxProb"],
+            "properties": {
+                "Response": {
+                    "type": "string",
+                    "description": "The model's complete text response"
+                },
+                "CumulativeLogprob": {
+                    "type": "number",
+                    "description": "Cumulative log probability of the generated sequence from VLLM"
+                },
+                "GeneratedTokenIds": {
+                    "type": "array",
+                    "description": "Array of token IDs for the model's response",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "TokenLogprobs": {
+                    "type": "array",
+                    "description": "Per-token probabilities and top alternatives",
+                    "items": {
+                        "type": "object",
+                        "required": ["token", "token_id", "top_5"],
+                        "properties": {
+                            "token": {
+                                "type": "string",
+                                "description": "The actual token string"
+                            },
+                            "token_id": {
+                                "type": "integer",
+                                "description": "ID of the token"
+                            },
+                            "top_5": {
+                                "type": "array",
+                                "description": "Top 5 most probable next tokens and their probabilities",
+                                "minItems": 5,
+                                "maxItems": 5,
+                                "items": {
+                                    "type": "object",
+                                    "required": ["token", "token_id", "logprob"],
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "description": "Candidate token string"
+                                        },
+                                        "token_id": {
+                                            "type": "integer",
+                                            "description": "ID of the candidate token"
+                                        },
+                                        "logprob": {
+                                            "type": "number",
+                                            "description": "Log probability of the candidate token"
+                                        },
+                                        "rank": {
+                                            "type": "integer",
+                                            "description": "Rank of this token in the top 5 (1-5, where 1 is highest probability)",
+                                            "minimum": 1,
+                                            "maximum": 5
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "MaxProb": {
+                    "type": "string",
+                    "description": "The answer choice with the highest probability"
+                }
+            }
+        },
+        "Evaluation": {
+            "type": "object",
+            "description": "Evaluation metrics and ground truth",
+            "required": ["GroundTruth", "Score"],
+            "properties": {
+                "GroundTruth": {
+                    "type": "string",
+                    "description": "The correct answer for evaluation"
+                },
+                "Score": {
+                    "type": "number",
+                    "description": "Binary score indicating whether the model's answer was correct (1.0) or incorrect (0.0)",
+                    "minimum": 0,
+                    "maximum": 1
+                }
+            }
+        }
+    }
+}
