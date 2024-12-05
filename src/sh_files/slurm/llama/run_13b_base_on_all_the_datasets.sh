@@ -5,7 +5,6 @@
 #SBATCH --gres=gpu:1,vmem:12g
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
-#SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
 #SBATCH --job-name=mmlu_job_array
 #SBATCH --array=0-317%50   # Full data is 246 configurations
 #SBATCH --output=logs/slurm_output_%A_%a.log
@@ -92,4 +91,4 @@ read -r card start end <<< "${PARAMS}"
 echo "Card: $card"
 echo "Starting configuration: $start"
 echo "Ending configuration: $end"
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA13B_BASE --card $card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name LLAMA13B_BASE --card $card --template_range $start $end --load_in_8bit    --num_demos 3 --demos_pool_size 20

@@ -1,0 +1,1 @@
+{"card": "cards.mmlu.college_biology", "template_name": "template_39", "model_name": "meta-llama/Llama-2-13b-chat-hf", "system_format": "empty_system_format", "max_instances": 14000, "num_demos": 3, "demos_pool_size": 20, "results": {}}

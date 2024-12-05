@@ -92,4 +92,4 @@ read -r card start end <<< "${PARAMS}"
 echo "Card: $card"
 echo "Starting configuration: $start"
 echo "Ending configuration: $end"
-CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name OLMO_HF --card $card --template_range $start $end --load_in_8bit
+CUDA_LAUNCH_BLOCKING=1 python run_experiment.py --model_name OLMO_HF --card $card --template_range $start $end --load_in_8bit  --predict_prob_of_tokens --predict_perplexity --trust_remote_code
