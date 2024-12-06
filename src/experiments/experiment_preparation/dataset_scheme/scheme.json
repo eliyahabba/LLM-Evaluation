@@ -2,8 +2,12 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "description": "Schema for storing and validating LLMs evaluation data, including model configuration, prompts, instances, Output, and evaluation metrics",
-    "required": ["Model", "Prompt", "Instance", "Output", "Evaluation"],
+    "required": ["EvaluationId","Model", "Prompt", "Instance", "Output", "Evaluation"],
     "properties": {
+        "EvaluationId": {
+            "type": "string",
+            "description": "Unique identifier for this specific evaluation run, including the model configuration, prompt, instance, output and evaluation results"
+        },
         "Model": {
             "type": "object",
             "description": "Information about the model and its configuration",
