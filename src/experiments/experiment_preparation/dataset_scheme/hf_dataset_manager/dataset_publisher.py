@@ -120,31 +120,31 @@ def main():
 
     # Create README content
     readme_content = """
-    # LLM Evaluation Dataset
+# LLM Evaluation Dataset
 
-    This dataset contains evaluation results for Large Language Models on multiple choice questions.
+This dataset contains evaluation results for Large Language Models on multiple choice questions.
 
-    ## Dataset Structure
+## Dataset Structure
 
-    The dataset contains the following main components:
-    - Model configuration
-    - Prompt information
-    - Instance details
-    - Model outputs
-    - Evaluation metrics
+The dataset contains the following main components:
+- Model configuration
+- Prompt information
+- Instance details
+- Model outputs
+- Evaluation metrics
 
-    ## Usage
+## Usage
 
-    ```python
-    from datasets import load_dataset
+```python
+from datasets import load_dataset
 
-    dataset = load_dataset("eliyahabba/llm-evaluation-dataset")
-    ```
+dataset = load_dataset("eliyahabba/llm-evaluation-dataset")
+```
 
-    ## Citation
+## Citation
 
-    If you use this dataset, please cite:
-    [TODO: Add citation]
+If you use this dataset, please cite:
+[TODO: Add citation]
     """
 
     try:
