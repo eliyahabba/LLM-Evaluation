@@ -126,10 +126,15 @@
         },
         "Instance": {
             "type": "object",
-            "description": "Specific question instance and its metadata",
-            "required": ["Question", "Choices", "Perplexity", "GroundTruth", "RawInput", "SampleIdentifier"],
+            "description": "Specific instance and its metadata",
+            "required": ["TaskType", "RawInput", "SampleIdentifier", "Perplexity"],
             "additionalProperties": true,
             "properties": {
+                "TaskType": {
+                    "type": "string",
+                    "description": "Type of the task",
+                    "enum": ["classification", "generation"]
+                },
                 "RawInput": {
                     "type": "string",
                     "description": "Original input text as it appears in the dataset, without any formatting or prompting"
@@ -158,35 +163,47 @@
                         }
                     }
                 },
-                "Question": {
-                    "type": "string",
-                    "description": "The actual question"
-                },
-                "Choices": {
-                    "type": "array",
-                    "description": "Array of all multiple choice options",
-                    "items": {
-                        "type": "object",
-                        "required": ["id", "text"],
-                        "properties": {
-                            "id": {
-                                "type": "string",
-                                "description": "Choice identifier (e.g., 'A', '1', etc.)"
-                            },
-                            "text": {
-                                "type": "string",
-                                "description": "Choice text"
-                            }
-                        }
-                    }
-                },
                 "Perplexity": {
                     "type": "number",
                     "description": "Perplexity score measuring the complexity of the input text"
                 },
-                "GroundTruth": {
-                    "type": "string",
-                    "description": "The correct answer for the question"
+                "ClassificationFields": {
+                    "type": "object",
+                    "description": "Fields specific to classification tasks",
+                    "if": {
+                        "properties": { "TaskType": { "const": "classification" } }
+                    },
+                    "then": {
+                        "required": ["Question", "Choices", "GroundTruth"],
+                        "properties": {
+                            "Question": {
+                                "type": "string",
+                                "description": "The actual question"
+                            },
+                            "Choices": {
+                                "type": "array",
+                                "description": "Array of all multiple choice options",
+                                "items": {
+                                    "type": "object",
+                                    "required": ["id", "text"],
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "description": "Choice identifier (e.g., 'A', '1', etc.)"
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "description": "Choice text"
+                                        }
+                                    }
+                                }
+                            },
+                            "GroundTruth": {
+                                "type": "string",
+                                "description": "The correct answer for the classification task"
+                            }
+                        }
+                    }
                 }
             }
         },

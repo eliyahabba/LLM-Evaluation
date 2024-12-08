@@ -1,5 +1,5 @@
 {
-    "EvaluationId": 123456,
+    "EvaluationId": "123456",
     "Model": {
         "Name": "Llama-2-13b-chat-hf",
         "Quantization": {
@@ -28,28 +28,31 @@
             "hf_repo": "cais/mmlu",
             "hf_index": 1876
         },
-        "Topic": "clinical_knowledge",
-        "Question": "What size of cannula is most appropriate for rapid fluid resuscitation in an adult patient?",
-        "Choices": [
-            {
-                "id": "A",
-                "text": "18 gauge"
-            },
-            {
-                "id": "B",
-                "text": "20 gauge"
-            },
-            {
-                "id": "C",
-                "text": "22 gauge"
-            },
-            {
-                "id": "D",
-                "text": "24 gauge"
-            }
-        ],
         "Perplexity": 10.75,
-        "GroundTruth": "A. 18 gauge"
+        "TaskType": "classification",
+        "ClassificationFields": {
+            "Topic": "clinical_knowledge",
+            "Question": "What size of cannula is most appropriate for rapid fluid resuscitation in an adult patient?",
+            "Choices": [
+                {
+                    "id": "A",
+                    "text": "18 gauge"
+                },
+                {
+                    "id": "B",
+                    "text": "20 gauge"
+                },
+                {
+                    "id": "C",
+                    "text": "22 gauge"
+                },
+                {
+                    "id": "D",
+                    "text": "24 gauge"
+                }
+            ],
+            "GroundTruth": "A. 18 gauge"
+        }
     },
     "Output": {
         "Response": "B. 20 gauge\nExplanation: While larger bore cannulas allow for faster fluid administration, a 20-gauge cannula provides a good balance between flow rate and ease of insertion...",
