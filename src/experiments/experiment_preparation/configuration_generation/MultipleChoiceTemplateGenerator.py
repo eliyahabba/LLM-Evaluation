@@ -74,7 +74,8 @@ if __name__ == "__main__":
         "get_mmlu_instructions_without_topic",
         "get_mmlu_instructions_with_topic_helm",
         "get_mmlu_instructions_without_topic_helm",
-        "get_structured_instruction_text_with_topic"
+        "get_structured_instruction_with_topic",
+        "get_structured_instruction_without_topic"
     ]
         
     data_folders  = \
@@ -82,7 +83,8 @@ if __name__ == "__main__":
         "MultipleChoiceTemplatesInstructionsWithoutTopic",
         "MultipleChoiceTemplatesInstructionsWithTopicHelm",
         "MultipleChoiceTemplatesInstructionsWithoutTopicHelm",
-         "MultipleChoiceTemplatesStructuredTopic"]
+         "MultipleChoiceTemplatesStructuredWithTopic",
+         "MultipleChoiceTemplatesStructuredWithoutTopic"]
 
     args = parser.parse_args()
     dataset_names_to_configs = DatasetConfigFactory.get_all_datasets()
