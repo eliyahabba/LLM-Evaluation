@@ -64,6 +64,8 @@ class ConfigParams:
     def generate_template_name(cls, combination: Dict[str, Any]) -> str:
         """Generate a descriptive template name from a combination of options"""
         parts = []
+        # sort the keys to ensure consistent order. Use the order of keys in cls.get_options()
+        combination = {key: combination[key] for key in cls.get_options().keys()}
         for key, value in combination.items():
             formatted_value = cls.format_value(value)
             camel_key = cls.to_camel_case(key)
