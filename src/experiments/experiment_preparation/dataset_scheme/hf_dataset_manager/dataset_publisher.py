@@ -1,5 +1,6 @@
 import json
 from collections import defaultdict
+from pathlib import Path
 
 from datasets import DatasetDict, Dataset, Features, Sequence, Value
 from huggingface_hub import HfApi, create_repo
@@ -113,7 +114,7 @@ def upload_to_huggingface(
 
 def main():
     # Configuration
-    DATA_PATH = "../converted_data.json"  # Path to your converted data
+    DATA_PATH = Path(__file__).parents[1] / "converted_data.json"  # Path to your converted data
     REPO_NAME = "eliyahabba/llm-evaluation-dataset"  # Replace with your desired repo name
     config = Config()
     TOKEN = config.config_values.get("hf_access_token", "")
