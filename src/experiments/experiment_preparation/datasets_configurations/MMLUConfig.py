@@ -20,12 +20,11 @@ class MMLUConfig(BaseDatasetConfig):
     def get_mmlu_instructions_without_topic_lm_evaluation_harness(self) -> str:
         return f"Question: {{question}}\n\nChoices: {{choices}}\nAnswer:"
 
-    def get_structured_instruction_text_with_topic(self):
+    def get_structured_instruction_with_topic(self):
         return f"Topic: {{topic}}\nQuestion: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
 
-    def get_structured_instruction_text_without_topic(self):
+    def get_structured_instruction_without_topic(self):
         return f"Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
-
 
 if __name__ == "__main__":
     config = MMLUConfig({"shuffle_choices": True})
