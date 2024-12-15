@@ -116,7 +116,7 @@
                     "enum": ["zero", "tow", "for", "five"]
                 },
                 "TokenIds": {
-                    "type": "array",
+                    "type": ["array", "null"],
                     "description": "Array of token IDs representing the tokenized prompt",
                     "items": {
                         "type": "integer"
@@ -164,7 +164,7 @@
                     }
                 },
                 "Perplexity": {
-                    "type": "number",
+                    "type": ["number", "null"],
                     "description": "Perplexity score measuring the complexity of the input text"
                 },
                 "ClassificationFields": {
@@ -217,18 +217,18 @@
                     "description": "The model's complete text response"
                 },
                 "CumulativeLogprob": {
-                    "type": "number",
+                    "type": ["number", "null"],
                     "description": "Cumulative log probability of the generated sequence from VLLM"
                 },
                 "GeneratedTokenIds": {
-                    "type": "array",
+                    "type": ["array", "null"],
                     "description": "Array of token IDs for the model's response",
                     "items": {
                         "type": "integer"
                     }
                 },
                 "TokenLogprobs": {
-                    "type": "array",
+                    "type": ["array", "null"],
                     "description": "Per-token probabilities and top alternatives",
                     "items": {
                         "type": "object",
