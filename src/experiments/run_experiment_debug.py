@@ -29,16 +29,15 @@ class ExperimentRunner:
     def __init__(self, args):
         self.args = args
 
-    def load_template(self, template_num: int, multiple_choice_path) -> \
+    def load_template(self, template_num: int, multiple_choice_name:str, catalog_path) -> \
             Tuple[str, Template]:
         """
         Loads the template from the specified path.
         @return: The template
         """
         template_name = Utils.get_template_name(template_num)
-        catalog_manager = CatalogManager(multiple_choice_path)
-        name =f"{(self.args.card).split('cards.')[1]}.{template_name}"
-        template = catalog_manager.load_from_catalog(name)
+        catalog_manager = CatalogManager(catalog_path)
+        template = catalog_manager.load_from_catalog(f"{multiple_choice_name}/{template_name}")
         return template_name, template
 
     def create_entry_experiment(self, template_name: str) -> dict:
@@ -137,7 +136,8 @@ class ExperimentRunner:
             print(colored(f"Time of the experiment: {round((end - start) / 60, 2)} minutes", "blue"))
 
     def run_single_experiment(self, llm_proc: LLMProcessor, template_num: int) -> None:
-        template_name, template = self.load_template(template_num, multiple_choice_path=self.args.multiple_choice_path)
+        template_name, template = self.load_template(template_num, multiple_choice_name=self.args.multiple_choice_name,
+                                                     catalog_path=self.args.cah)
         llm_dataset_loader = DatasetLoader(card=self.args.card,
                                            template=template,
                                            system_format=self.args.system_format,
@@ -217,7 +217,8 @@ def main():
     args.system_format = ExperimentConstants.SYSTEM_FORMATS[args.system_format_index]
     # map between the model name to the real model name from the constants
     args.model_name = LLMProcessorConstants.MODEL_NAMES[args.model_name]
-    args.multiple_choice_path = TemplatesGeneratorConstants.DATA_PATH / Path(args.multiple_choice_name)
+    args.multiple_choice_name = TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_WITH_TOPIC_FOLDER_NAME
+    args.catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
     args.results_path = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.multiple_choice_name)
     runner = ExperimentRunner(args)
     # print the args for this experiment: model name, card name, template range, num of demos, demos_pool_size

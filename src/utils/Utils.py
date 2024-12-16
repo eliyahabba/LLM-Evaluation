@@ -1,9 +1,13 @@
 from pathlib import Path
 
+import pandas as pd
+
 from config.get_config import Config
+from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.utils.Constants import Constants
 
 ExperimentConstants = Constants.ExperimentConstants
+TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class Utils:
@@ -42,7 +46,12 @@ class Utils:
         @param template_num: The number of the template
         @return: The name of the template
         """
-        return f"template_{template_num}"
+        templates_metadata = pd.read_csv(TemplatesGeneratorConstants.TEMPLATES_METADATA_PATH, index_col='template_name')
+        template = templates_metadata.loc[f"template_{template_num}"]
+        # convert template to dictionary
+        template_dict = template.to_dict()
+        template_name = ConfigParams.generate_template_name(template_dict)
+        return template_name
 
     @staticmethod
     def get_system_format_class(system_format: str) -> str:

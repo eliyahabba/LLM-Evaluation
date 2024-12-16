@@ -120,7 +120,8 @@ class Constants:
         MAX_INSTANCES = 14000
         EVALUATE_ON_INFERENCE = ['test']
         EVALUATE_ON_ANALYZE = ['test']
-        TEMPLATE_NUM = 0
+        TEMPLATE_EXAMPLE = "MultipleChoiceTemplatesInstructionsWithTopic/enumerator_capitals_choicesSeparator_comma_shuffleChoices_False"
+
         NUM_DEMOS = 0
         DEMOS_POOL_SIZE = 1
         # NUM_DEMOS = 3

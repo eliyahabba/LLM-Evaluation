@@ -218,7 +218,7 @@ if __name__ == "__main__":
     args.add_argument("--card", type=str)
     args.add_argument("--system_format", type=str, default="unitxt")
     args.add_argument("--max_instances", type=int, default=ExperimentConstants.MAX_INSTANCES)
-    args.add_argument("--template_num", type=int, default=ExperimentConstants.TEMPLATE_NUM)
+    args.add_argument("--template_example", type=str, default=ExperimentConstants.TEMPLATE_EXAMPLE)
     args.add_argument("--demos_taken_from", type=str, default=ExperimentConstants.DEMOS_TAKEN_FROM)
     args.add_argument("--num_demos", type=int, default=ExperimentConstants.NUM_DEMOS)
     args.add_argument("--demos_pool_size", type=int, default=ExperimentConstants.DEMOS_POOL_SIZE)
@@ -226,9 +226,8 @@ if __name__ == "__main__":
     args = args.parse_args()
 
     # Save templates to local catalog
-    catalog_manager = CatalogManager(Utils.get_card_path(TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH,
-                                                         args.card))
-    template = catalog_manager.load_from_catalog(args.template_name)
+    catalog_manager = CatalogManager(TemplatesGeneratorConstants.CATALOG_PATH)
+    template = catalog_manager.load_from_catalog(args.template_example)
 
     llm_dataset_loader = DatasetLoader(card=args.card,
                                        template=template,
@@ -237,7 +236,7 @@ if __name__ == "__main__":
                                        num_demos=args.num_demos,
                                        demos_pool_size=args.demos_pool_size,
                                        max_instances=args.max_instances,
-                                       template_name=args.template_name)
+                                       template_name=args.template_example)
 
     llm_dataset = llm_dataset_loader.load()
     llm_proc = LLMProcessor(args.model_name)

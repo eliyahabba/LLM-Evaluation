@@ -60,7 +60,6 @@ if __name__ == "__main__":
     # Base arguments for all templates
 
     # add input format to the parser
-    data_path = TemplatesGeneratorConstants.DATA_PATH
     catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
     parser = argparse.ArgumentParser(description='Generate multiple choice templates')
     parser.add_argument('--input_format_func', type=str, default="get_mmlu_instructions_with_topic",

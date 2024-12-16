@@ -157,14 +157,13 @@ def read_experiment(results_file: Path) -> dict:
     return experiment
 
 
-def load_dataset(results_file: Path, templates_path: Path, loaded_datasets: dict) -> NLPDataset:
+def load_dataset(results_file: Path, catalog_path: Path, loaded_datasets: dict) -> NLPDataset:
     """
     Load the dataset from the experiment.
     """
     experiment = read_experiment(results_file)
     template_name = f"{experiment['template_name']}"
-    catalog_manager = CatalogManager(Utils.get_card_path(templates_path,
-                                                         experiment['card']))
+    catalog_manager = CatalogManager(catalog_path)
     template = catalog_manager.load_from_catalog(template_name)
     if experiment['num_demos'] == 0:
         template.postprocessors = [
@@ -204,7 +203,7 @@ if __name__ == "__main__":
     args = args.parse_args()
     model_name = LLMProcessorConstants.BASE_MODEL_NAMES[args.model_name].split('/')[1]
     model_path = ExperimentConstants.MAIN_RESULTS_PATH / args.results_folder / model_name
-    templates_path = TemplatesGeneratorConstants.DATA_PATH / args.results_folder
+    catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
     args.results_folder = ExperimentConstants.MAIN_RESULTS_PATH / Path(args.results_folder)
 
     # models_names = [models_name for models_name in models_names if "Lla" in str(models_name)]
@@ -251,7 +250,7 @@ if __name__ == "__main__":
                                 except pd.errors.EmptyDataError:
                                     # delete the file if it is empty
                                     comparison_matrix_file.unlink()
-                            llm_dataset = load_dataset(results_file, templates_path, loaded_datasets)
+                            llm_dataset = load_dataset(results_file, catalog_path, loaded_datasets)
                             if llm_dataset is None:
                                 continue
                             scores_by_index = eval_model.evaluate(results, llm_dataset)

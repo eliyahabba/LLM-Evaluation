@@ -39,6 +39,7 @@ class ConfigParams:
             # Special characters mapping
             separator_names = {
                 " ": "space",
+                "\s": "space",
                 "\n": "newline",
                 " | ": "pipe",
                 " OR ": "OrCapital",

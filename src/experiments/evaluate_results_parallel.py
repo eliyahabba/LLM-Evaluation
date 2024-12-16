@@ -161,14 +161,14 @@ def read_experiment(results_file: Path) -> dict:
 
 
 def load_dataset(results_file: Path, loaded_datasets: dict,
-                 templates_path: Path,
+                 catalog_path: Path,
                  validation_size=None) -> Tuple[dict, NLPDataset]:
     """
     Load the dataset from the experiment.
     """
     experiment = read_experiment(results_file)
     template_name = f"{experiment['template_name']}"
-    catalog_manager = CatalogManager(Utils.get_card_path(templates_path, experiment['card']))
+    catalog_manager = CatalogManager(catalog_path)
     template = catalog_manager.load_from_catalog(template_name)
     if experiment['num_demos'] == 0:
         template.postprocessors = [
@@ -202,7 +202,7 @@ def load_dataset(results_file: Path, loaded_datasets: dict,
 
 
 def evaluate_dataset(args):
-    dataset_folder, eval_on_value, templates_path = args
+    dataset_folder, eval_on_value, catalog_path = args
     print(f"Start evaluating {dataset_folder.name}")
     car_dataset_sizes = dataset_sizes[
         dataset_sizes["Name"] == dataset_folder.name]
@@ -246,7 +246,7 @@ def evaluate_dataset(args):
                         except pd.errors.EmptyDataError:
                             # delete the file if it is empty
                             comparison_matrix_file.unlink()
-                    loaded_datasets, llm_dataset = load_dataset(results_file, loaded_datasets, templates_path,
+                    loaded_datasets, llm_dataset = load_dataset(results_file, loaded_datasets, catalog_path,
                                                                 validation_size)
                     if llm_dataset is None:
                         continue
@@ -313,8 +313,8 @@ if __name__ == "__main__":
 
     # for dataset_folder in datasets:
     eval_on_value = args.eval_on[0]
-    templates_path = TemplatesGeneratorConstants.DATA_PATH / args.results_folder
-    args_to_pass = [(dataset_folder, eval_on_value, templates_path) for dataset_folder in datasets]
+    catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
+    args_to_pass = [(dataset_folder, eval_on_value, catalog_path) for dataset_folder in datasets]
     import time
 
     start = time.time()
