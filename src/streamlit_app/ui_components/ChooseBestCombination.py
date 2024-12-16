@@ -23,9 +23,7 @@ class ChooseBestCombination:
         Choose the best combination of the values of the axes.
         @return: The best combination of the values of the axes.
         """
-        templates_path = TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH
-        metadata_file = templates_path / self.dataset_file_name / TemplatesGeneratorConstants.TEMPLATES_METADATA
-        metadata_df = pd.read_csv(metadata_file, index_col=ResultConstants.TEMPLATE_NAME)
+        metadata_df = pd.read_csv(TemplatesGeneratorConstants.TEMPLATES_METADATA_PATH, index_col=ResultConstants.TEMPLATE_NAME)
         grouped_metadata_df = self.get_grouped_metadata_df(metadata_df=metadata_df, exclude_templates=exclude_templates)
         if is_choose_across_axes:
             best_row = self.choose_across_axes(grouped_metadata_df)

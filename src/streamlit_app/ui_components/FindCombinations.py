@@ -77,9 +77,7 @@ class FindCombinations:
         return pd.read_csv(self.best_combinations_file_path)
 
     def _read_templates_metadata(self):
-        templates_path = TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH
-        metadata_file = templates_path / TemplatesGeneratorConstants.TEMPLATES_METADATA
-        self.templates_metadata = pd.read_csv(metadata_file, index_col='template_name')
+        self.templates_metadata = pd.read_csv(TemplatesGeneratorConstants.TEMPLATES_METADATA_PATH, index_col='template_name')
 
     def _filter_best_combinations(self) -> None:
         """

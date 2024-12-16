@@ -33,6 +33,8 @@ class MetaHistogramOfSamples:
         sorted_folders = dict(sorted(models_names.items(), key=lambda x: (x[0].lower(), x[0]), reverse=False))
         models = st.sidebar.multiselect("Select models to visualize", list(sorted_folders.keys()),
                                         default=list(sorted_folders.keys()))
+        # add the model to st.session_state
+        st.session_state["models"] = models
         selected_models_files = [models_names[model] for model in models]
         return selected_models_files
 
@@ -81,7 +83,10 @@ class MetaHistogramOfSamples:
         # title = f"Aggregated Histogram by {split_option} {split_option_value}"
         title = f"Aggregated Histogram by"
         st.markdown(
-            f"There are {len(df)} examples in the dataset across {int(df['number_of_predictions'].mean())} predictions (mean).")
+            f"There are {len(df)} examples in the dataset across {int(df['number_of_predictions'].mean())} configurations "
+            f"(configuration - combination of model and prompt variation).")
+        st.markdown(
+            f"The models in the plots are {', '.join(st.session_state['models'])}")
         # Setting up the plot
         fig, ax = plt.subplots(figsize=(11, 6))
         ax.grid(True)  # Add grid lines for better readability

@@ -37,9 +37,7 @@ class RandomForest:
         return template_groups
 
     def convert_templates_to_configurations(self, dfs_of_the_cur_group: List[pd.DataFrame]) -> pd.DataFrame:
-        templates_path = TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH
-        metadata_file = templates_path / TemplatesGeneratorConstants.TEMPLATES_METADATA
-        templates_metadata = pd.read_csv(metadata_file, index_col='template_name')
+        templates_metadata = pd.read_csv(TemplatesGeneratorConstants.TEMPLATES_METADATA_PATH, index_col='template_name')
         confs_from_templates = []
         for df in dfs_of_the_cur_group:
             template_cols = df.index.values.tolist()

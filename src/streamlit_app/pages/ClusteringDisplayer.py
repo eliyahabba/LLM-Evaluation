@@ -82,9 +82,7 @@ class ClusteringDisplayer:
         Read the metadata of the templates
         @return: a DataFrame containing the metadata of the templates
         """
-        templates_path = TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH
-        metadata_file = templates_path / self.dataset_file_name / TemplatesGeneratorConstants.TEMPLATES_METADATA
-        metadata_df = pd.read_csv(metadata_file, index_col='template_name')
+        metadata_df = pd.read_csv(TemplatesGeneratorConstants.TEMPLATES_METADATA_PATH, index_col='template_name')
         return metadata_df
 
     def plot_clusters(self, data: pd.DataFrame, performance_summary_df2) -> None:

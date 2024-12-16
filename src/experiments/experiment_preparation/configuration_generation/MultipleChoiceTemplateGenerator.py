@@ -53,8 +53,7 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
         metadata_df['enumerator'] = metadata_df['enumerator'].astype(str)
         metadata_df.replace({"enumerator": ConfigParams.ENUM_CHARS}, inplace=True)
         # save the metadata to a csv file
-        metadata_df.to_csv(
-            TemplatesGeneratorConstants.MULTIPLE_CHOICE_PATH / dataset_name / TemplatesGeneratorConstants.TEMPLATES_METADATA)
+        metadata_df.to_csv(TemplatesGeneratorConstants.TEMPLATES_METADATA_PATH)
 
 
 if __name__ == "__main__":

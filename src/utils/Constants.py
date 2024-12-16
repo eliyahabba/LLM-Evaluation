@@ -103,6 +103,7 @@ class Constants:
         TEMPLATES_METADATA = "templates_metadata.csv"
         DATASET_SIZES_PATH = DATA_PATH / "datasets_sizes.csv"
         MMLU_METADATA_PATH = DATA_PATH / "mmlu_metadata.csv"
+        TEMPLATES_METADATA_PATH = DATA_PATH / TEMPLATES_METADATA
 
     class ExperimentConstants:
         TEMPLATES_RANGE = [0, 1]
