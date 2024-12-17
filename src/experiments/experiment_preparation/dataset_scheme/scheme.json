@@ -176,6 +176,10 @@
                     "then": {
                         "required": ["Question", "Choices", "GroundTruth"],
                         "properties": {
+                            "FullInput": {
+                                "type": "string",
+                                "description": "Full input text, including few shot examples and question"
+                            },
                             "Question": {
                                 "type": "string",
                                 "description": "The actual question"
