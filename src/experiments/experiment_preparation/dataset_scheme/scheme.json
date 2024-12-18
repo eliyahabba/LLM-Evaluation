@@ -59,15 +59,15 @@
                     "properties": {
                         "temperature": {
                             "type": "number",
-                            "description": "Sampling temperature"
+                            "description": "Sampling temperature. Set to 0 for deterministic generation"
                         },
                         "top_p": {
                             "type": "number",
                             "description": "Nucleus sampling parameter"
                         },
-                        "do_sample": {
-                            "type": "boolean",
-                            "description": "Whether to use sampling for generation"
+                        "top_k": {
+                            "type": "integer",
+                            "description": "Limits sampling to k most likely tokens"
                         },
                         "max_tokens": {
                             "type": "integer",
@@ -89,45 +89,59 @@
         "Prompt": {
             "type": "object",
             "description": "Configuration of the prompt template and formatting",
-            "required": ["Instruct Template", "Separator", "Enumerator", "ShuffleChoices", "Shots", "TokenIds"],
+            "required": ["promptClass", "format"],
             "properties": {
-                "Instruct Template": {
+                "promptClass": {
                     "type": "string",
-                    "description": "Base template format with placeholders for topic, question, choices, and answer"
+                    "description": "Type of prompt template and its formatting requirements",
+                    "enum": ["MultipleChoice", "OpenEnded", "Completion"]
                 },
-                "Separator": {
-                    "type": "string",
-                    "description": "Character(s) used to separate multiple choice options",
-                    "enum": [" ", "\n", ", ", "; ", " | ", " OR ", " or "]
-                },
-                "Enumerator": {
-                    "type": "string",
-                    "description": "Style of enumeration for multiple choice options",
-                    "enum": ["capitals", "lowercase", "numbers", "roman", "αβγδεζηθικ" ,"!@#$%^₪*)("]
-                },
-                "ShuffleChoices": {
-                    "type": "boolean",
-                    "description": "Whether the order of choices is randomized",
-                    "enum": [true, false]
-                },
-                "Shots": {
-                    "type": "string",
-                    "description": "Number of examples provided in the prompt",
-                    "enum": ["zero", "tow", "for", "five"]
-                },
-                "TokenIds": {
-                    "type": ["array", "null"],
-                    "description": "Array of token IDs representing the tokenized prompt",
-                    "items": {
-                        "type": "integer"
-                    }
+                "format": {
+                    "type": "object",
+                    "description": "Format-specific configuration",
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "required": ["type", "template", "separator", "enumerator", "shuffleChoices", "shots"],
+                            "properties": {
+                                "type": {
+                                    "const": "MultipleChoice"
+                                },
+                                "template": {
+                                    "type": "string",
+                                    "description": "Base template format with placeholders for topic, question, choices, and answer"
+                                },
+                                "separator": {
+                                    "type": "string",
+                                    "description": "Character(s) used to separate multiple choice options",
+                                    "enum": [" ", "\n", ", ", "; ", " | ", " OR ", " or "]
+                                },
+                                "enumerator": {
+                                    "type": "string",
+                                    "description": "Style of enumeration for multiple choice options",
+                                    "enum": ["capitals", "lowercase", "numbers", "roman", "αβγδεζηθικ", "!@#$%^₪*)("]
+                                },
+                                "shuffleChoices": {
+                                    "type": "boolean",
+                                    "description": "Whether the order of choices is randomized"
+                                },
+                                "shots": {
+                                    "type": "integer",
+                                    "description": "Number of examples provided in the prompt",
+                                    "minimum": 0,
+                                    "maximum": 10
+                                }
+                            }
+                        }
+                    ]
                 }
             }
-        },
-        "Instance": {
+        }
+    },
+    "Instance": {
             "type": "object",
             "description": "Specific instance and its metadata",
-            "required": ["TaskType", "RawInput", "SampleIdentifier", "Perplexity"],
+            "required": ["TaskType", "RawInput", "SampleIdentifier", "TokenIds","Perplexity"],
             "additionalProperties": true,
             "properties": {
                 "TaskType": {
@@ -161,6 +175,13 @@
                             "type": "integer",
                             "description": "Index in the HuggingFace dataset"
                         }
+                    }
+                },
+                "TokenIds": {
+                    "type": ["array", "null"],
+                    "description": "Array of token IDs representing the tokenized prompt",
+                    "items": {
+                        "type": "integer"
                     }
                 },
                 "Perplexity": {
@@ -203,8 +224,18 @@
                                 }
                             },
                             "GroundTruth": {
-                                "type": "string",
-                                "description": "The correct answer for the classification task"
+                                "required": ["id", "text"],
+                                "description": "The correct answer for the classification task",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Choice identifier (e.g., 'A', '1', etc.)"
+                                    },
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Choice text"
+                                    }
+                                }
                             }
                         }
                     }
@@ -214,24 +245,24 @@
         "Output": {
             "type": "object",
             "description": "Model's response and associated probability metrics",
-            "required": ["Response", "GeneratedTokenIds", "TokenLogprobs", "MaxProb"],
+            "required": ["Response", "GeneratedTokensIds", "GeneratedTokensLogProbs", "MaxProb"],
             "properties": {
                 "Response": {
                     "type": "string",
                     "description": "The model's complete text response"
                 },
-                "CumulativeLogprob": {
+                "CumulativeLogProb": {
                     "type": ["number", "null"],
                     "description": "Cumulative log probability of the generated sequence from VLLM"
                 },
-                "GeneratedTokenIds": {
+                "GeneratedTokensIds": {
                     "type": ["array", "null"],
                     "description": "Array of token IDs for the model's response",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "TokenLogprobs": {
+                "GeneratedTokensLogProbs": {
                     "type": ["array", "null"],
                     "description": "Per-token probabilities and top alternatives",
                     "items": {
@@ -253,7 +284,7 @@
                                 "maxItems": 5,
                                 "items": {
                                     "type": "object",
-                                    "required": ["token", "token_id", "logprob"],
+                                    "required": ["token", "token_id", "LogProb"],
                                     "properties": {
                                         "token": {
                                             "type": "string",
@@ -263,7 +294,7 @@
                                             "type": "integer",
                                             "description": "ID of the candidate token"
                                         },
-                                        "logprob": {
+                                        "LogProb": {
                                             "type": "number",
                                             "description": "Log probability of the candidate token"
                                         },
@@ -281,7 +312,7 @@
                 },
                 "MaxProb": {
                     "type": "string",
-                    "description": "The answer choice with the highest probability"
+                    "description": "The answer choice that received the highest probability among the specific answer options available in the sample (e.g., if the choices are A, B, C, we only compare probabilities between these three labels in the model's first token prediction)."
                 }
             }
         },
@@ -290,6 +321,18 @@
             "description": "Evaluation metrics and ground truth",
             "required": ["GroundTruth", "Score"],
             "properties": {
+                "EvaluationMethod": {
+                    "type": "string",
+                    "description": "Method used to evaluate the answer",
+                    "enum": [
+                        "label_only_match",
+                        "content_similarity"
+                    ],
+                    "enumDescriptions": {
+                       "label_only_match": "Compares only the choice identifier/label",
+                        "content_similarity": "Finds the most similar answer among the given choices by comparing the textual content"
+                    }
+                },
                 "GroundTruth": {
                     "type": "string",
                     "description": "The correct answer for evaluation"

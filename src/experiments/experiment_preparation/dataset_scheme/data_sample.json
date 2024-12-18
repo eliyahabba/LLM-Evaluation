@@ -7,17 +7,17 @@
             "QuantizationMethod": "dynamic"
         },
        "GenerationArgs": {
-            "temperature": 0.7,
+            "temperature": 0,
             "max_tokens": 15,
             "top_p": 1
         }
     },
     "Prompt": {
-        "Instruct Template": "Topic: {topic}\nQuestion: [question]\nChoices: [choices]\nAnswer: [answer]",
+        "Template": "Topic: {topic}\nQuestion: [question]\nChoices: [choices]\nAnswer: [answer]",
         "Separator": " ",
         "Enumerator": "capitals",
         "ShuffleChoices": false,
-        "Shots": "zero",
+        "Shots": 0,
         "TokenIds": [123, 456, 789, 234, 567, 890]
     },
     "Instance": {
@@ -56,40 +56,40 @@
     },
     "Output": {
         "Response": "B. 20 gauge\nExplanation: While larger bore cannulas allow for faster fluid administration, a 20-gauge cannula provides a good balance between flow rate and ease of insertion...",
-        "CumulativeLogprob": -12.45,
-        "GeneratedTokenIds": [456, 789, 101, 202, 303, 404],
-        "TokenLogprobs": [
+        "CumulativeLogProb": -12.45,
+        "GeneratedTokensIds": [456, 789, 101, 202, 303, 404],
+        "GeneratedTokensLogProbs": [
             {
                 "token": "B",
                 "token_id": 456,
                 "top_5": [
-                    {"token": "B", "token_id": 456, "logprob": -0.12, "rank": 1},
-                    {"token": "A", "token_id": 123, "logprob": -1.45, "rank": 2},
-                    {"token": "C", "token_id": 789, "logprob": -2.31, "rank": 3},
-                    {"token": "D", "token_id": 101, "logprob": -2.89, "rank": 4},
-                    {"token": "The", "token_id": 202, "logprob": -3.42, "rank": 5}
+                    {"token": "B", "token_id": 456, "LogProb": -0.12, "rank": 1},
+                    {"token": "A", "token_id": 123, "LogProb": -1.45, "rank": 2},
+                    {"token": "C", "token_id": 789, "LogProb": -2.31, "rank": 3},
+                    {"token": "D", "token_id": 101, "LogProb": -2.89, "rank": 4},
+                    {"token": "The", "token_id": 202, "LogProb": -3.42, "rank": 5}
                 ]
             },
             {
                 "token": ".",
                 "token_id": 789,
                 "top_5": [
-                    {"token": ".", "token_id": 789, "logprob": -0.08, "rank": 1},
-                    {"token": ",", "token_id": 234, "logprob": -1.23, "rank": 2},
-                    {"token": "!", "token_id": 567, "logprob": -2.45, "rank": 3},
-                    {"token": "?", "token_id": 890, "logprob": -2.67, "rank": 4},
-                    {"token": ":", "token_id": 123, "logprob": -3.01, "rank": 5}
+                    {"token": ".", "token_id": 789, "LogProb": -0.08, "rank": 1},
+                    {"token": ",", "token_id": 234, "LogProb": -1.23, "rank": 2},
+                    {"token": "!", "token_id": 567, "LogProb": -2.45, "rank": 3},
+                    {"token": "?", "token_id": 890, "LogProb": -2.67, "rank": 4},
+                    {"token": ":", "token_id": 123, "LogProb": -3.01, "rank": 5}
                 ]
             },
             {
                 "token": "20",
                 "token_id": 101,
                 "top_5": [
-                    {"token": "20", "token_id": 101, "logprob": -0.15, "rank": 1},
-                    {"token": "18", "token_id": 345, "logprob": -1.34, "rank": 2},
-                    {"token": "22", "token_id": 678, "logprob": -2.12, "rank": 3},
-                    {"token": "16", "token_id": 901, "logprob": -2.56, "rank": 4},
-                    {"token": "24", "token_id": 234, "logprob": -2.89, "rank": 5}
+                    {"token": "20", "token_id": 101, "LogProb": -0.15, "rank": 1},
+                    {"token": "18", "token_id": 345, "LogProb": -1.34, "rank": 2},
+                    {"token": "22", "token_id": 678, "LogProb": -2.12, "rank": 3},
+                    {"token": "16", "token_id": 901, "LogProb": -2.56, "rank": 4},
+                    {"token": "24", "token_id": 234, "LogProb": -2.89, "rank": 5}
                 ]
             }
         ],
