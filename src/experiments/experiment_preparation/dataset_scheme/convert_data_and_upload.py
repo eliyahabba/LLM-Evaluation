@@ -143,7 +143,7 @@ def run_on_files(exp_dir: str) -> list[Path]:
 
                         if exp_files:  # Print info when files are found
                             tqdm.write(f"Found {len(exp_files)} files in {model_folder}/{shot_number}")
-
+    mapping = mapping[:10]
     return mapping
 
 
@@ -160,7 +160,7 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
 
         with open(exp_file_path, 'r') as f:
             input_data = json.load(f)
-
+        logging.info(f"Reading file {exp_file_path}")
         template_name = input_data['template_name']
         from src.utils.Constants import Constants
         catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
@@ -175,7 +175,7 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
         template_path = os.path.join(catalog_path, template_name + '.json')
         with open(template_path, 'r') as f:
             template_data = json.load(f)
-
+        logging.info(f"Reading template {template_path}")
         TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
         catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
         from src.experiments.data_loading.CatalogManager import CatalogManager
@@ -195,11 +195,14 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
         llm_dataset = llm_dataset_loader.load()
         dataset = llm_dataset.dataset
         # Read the schema file
+        logger.info(f"Reading dataset for {model} - {shot}: {exp_file_path}")
         schema_file_path = r'/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/scheme.json'
         with open(schema_file_path, 'r') as file:
             schema_data = json.load(file)
         converted_data = convert_dataset(dataset, input_data, template_data)
+        logging.info(f"Converting data for {model} - {shot}: {exp_file_path}")
         validate_json_data(converted_data, schema_data)
+        logging.info(f"Validating data for {model} - {shot}: {exp_file_path}")
         REPO_NAME = "eliyahabba/llm-evaluation-dataset"  # Replace with your desired repo name
         config = Config()
         TOKEN = config.config_values.get("hf_access_token", "")
