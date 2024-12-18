@@ -140,7 +140,8 @@ def run_on_files(exp_dir: str) -> list[Path]:
                         for exp_file in exp_files:
                             exp_path = Path(exp_file)
                             mapping.append(exp_path)
-
+                        if len(mapping) > 10:
+                            return mapping
                         if exp_files:  # Print info when files are found
                             tqdm.write(f"Found {len(exp_files)} files in {model_folder}/{shot_number}")
     mapping = mapping[:10]
