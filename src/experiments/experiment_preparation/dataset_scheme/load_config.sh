@@ -15,6 +15,10 @@ if [ ! -f "$config_path" ]; then
 fi
 
 if [ ! -f "$config_path" ]; then
+    config_path="../../../../config/get_config.py"
+fi
+
+if [ ! -f "$config_path" ]; then
     echo "Configuration script not found at $config_path"
     exit 1
 fi
