@@ -91,7 +91,7 @@ valid_paths = {
 }
 
 
-def run_on_files(exp_dir: str) -> list[Path]:
+def run_on_files(exp_dir: str,logger) -> list[Path]:
     """
     Create mapping between experiment_template files and template files
     Returns: Dict[template_number, (experiment_file_path, template_file_path)]
@@ -161,7 +161,7 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
 
         with open(exp_file_path, 'r') as f:
             input_data = json.load(f)
-        logging.info(f"Reading file {exp_file_path}")
+        logger.info(f"Reading file {exp_file_path}")
         template_name = input_data['template_name']
         from src.utils.Constants import Constants
         catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
@@ -176,14 +176,14 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
         template_path = os.path.join(catalog_path, template_name + '.json')
         with open(template_path, 'r') as f:
             template_data = json.load(f)
-        logging.info(f"Reading template file {template_path}")
+        logger.info(f"Reading template file {template_path}")
         TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
         catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
         from src.experiments.data_loading.CatalogManager import CatalogManager
         catalog_manager = CatalogManager(catalog_path)
         template = catalog_manager.load_from_catalog(template_name)
         from src.experiments.data_loading.DatasetLoader import DatasetLoader
-        logging.info(f"Reading template data {template_path}")
+        logger.info(f"Reading template data {template_path}")
 
         llm_dataset_loader = DatasetLoader(card=input_data['card'],
                                            template=template,
@@ -202,9 +202,9 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
         with open(schema_file_path, 'r') as file:
             schema_data = json.load(file)
         converted_data = convert_dataset(dataset, input_data, template_data)
-        logging.info(f"Converting data for {model} - {shot}: {exp_file_path}")
+        logger.info(f"Converting data for {model} - {shot}: {exp_file_path}")
         validate_json_data(converted_data, schema_data)
-        logging.info(f"Validating data for {model} - {shot}: {exp_file_path}")
+        logger.info(f"Validating data for {model} - {shot}: {exp_file_path}")
         REPO_NAME = "eliyahabba/llm-evaluation-dataset"  # Replace with your desired repo name
         config = Config()
         TOKEN = config.config_values.get("hf_access_token", "")
@@ -215,7 +215,7 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
 
     except Exception as e:
         logger.error(f"Error processing file {exp_file_path}: {str(e)}")
-        logging.info(f"Error processing file {exp_file_path}: {str(e)}")
+        logger.info(f"Error processing file {exp_file_path}: {str(e)}")
 
 def rename_files_parallel(file_mapping: list[Path], config_params: ConfigParams,
                           logger: logging.Logger) -> None:
@@ -247,7 +247,7 @@ def main():
     # Initialize tracker
 
     logger.info("Creating file mapping...")
-    file_mapping = run_on_files(experiment_dir)
+    file_mapping = run_on_files(experiment_dir,logger)
     total_files = len(file_mapping)
     logger.info(f"Found {total_files} files to process")
 
