@@ -136,9 +136,8 @@
                     ]
                 }
             }
-        }
     },
-    "Instance": {
+        "Instance": {
             "type": "object",
             "description": "Specific instance and its metadata",
             "required": ["TaskType", "RawInput", "SampleIdentifier", "TokenIds","Perplexity"],
