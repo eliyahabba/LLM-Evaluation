@@ -97,29 +97,37 @@ def run_on_files(exp_dir: str) -> list[Path]:
     Returns: Dict[template_number, (experiment_file_path, template_file_path)]
     """
     mapping = []
-    for instrcu_folder in os.listdir(exp_dir):
+
+    # Get all instruction folders for the main progress bar
+    instrcu_folders = os.listdir(exp_dir)
+
+    for instrcu_folder in tqdm(instrcu_folders, desc="Processing instruction folders"):
         # בדיקה אם זו תיקייה והאם זו התיקייה הנכונה
         if not os.path.isdir(os.path.join(exp_dir, instrcu_folder)) or \
                 instrcu_folder not in valid_paths:
             continue
 
-        for model_folder in os.listdir(os.path.join(exp_dir, instrcu_folder)):
+        model_folders = os.listdir(os.path.join(exp_dir, instrcu_folder))
+        for model_folder in tqdm(model_folders, desc=f"{instrcu_folder}/{model_folder}", leave=False):
             if not os.path.isdir(os.path.join(exp_dir, instrcu_folder, model_folder)) or \
                     model_folder not in valid_paths[instrcu_folder]:
                 continue
 
-            for dataset_folder in os.listdir(os.path.join(exp_dir, instrcu_folder, model_folder)):
+            dataset_folders = os.listdir(os.path.join(exp_dir, instrcu_folder, model_folder))
+            for dataset_folder in dataset_folders:
                 if not os.path.isdir(os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder)):
                     continue
 
-                for shot_number in os.listdir(os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder)):
+                shot_numbers = os.listdir(os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder))
+                for shot_number in shot_numbers:
                     if not os.path.isdir(
                             os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder, shot_number)) or \
                             shot_number not in valid_paths[instrcu_folder][model_folder]:
                         continue
 
                     shots = os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder, shot_number)
-                    for system_folder in os.listdir(shots):
+                    system_folders = os.listdir(shots)
+                    for system_folder in system_folders:
                         if not os.path.isdir(
                                 os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder, shot_number,
                                              system_folder)):
@@ -132,6 +140,9 @@ def run_on_files(exp_dir: str) -> list[Path]:
                         for exp_file in exp_files:
                             exp_path = Path(exp_file)
                             mapping.append(exp_path)
+
+                        if exp_files:  # Print info when files are found
+                            tqdm.write(f"Found {len(exp_files)} files in {model_folder}/{shot_number}")
 
     return mapping
 
