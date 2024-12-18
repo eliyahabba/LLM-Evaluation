@@ -1,8 +1,12 @@
+# Add these imports at the top
 import json
+import logging
 import os
+from datetime import datetime
 from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
 from pathlib import Path
+from typing import Dict
 
 from tqdm import tqdm
 
@@ -12,6 +16,60 @@ from src.experiments.experiment_preparation.dataset_scheme.JSON_schema_validator
 from src.experiments.experiment_preparation.dataset_scheme.dataset_schema_adapter import convert_dataset
 from src.experiments.experiment_preparation.dataset_scheme.hf_dataset_manager.dataset_publisher import \
     check_and_upload_to_huggingface
+
+
+class ProcessTracker:
+    def __init__(self):
+        self.manager = Manager()
+        self.processed_count = self.manager.Value('i', 0)
+        self.uploaded_count = self.manager.Value('i', 0)
+        self.failed_count = self.manager.Value('i', 0)
+        self.model_stats = self.manager.dict()
+        self.lock = self.manager.Lock()
+
+    def increment_processed(self, model: str, shot: str):
+        with self.lock:
+            self.processed_count.value += 1
+            if model not in self.model_stats:
+                self.model_stats[model] = self.manager.dict()
+            if shot not in self.model_stats[model]:
+                self.model_stats[model][shot] = self.manager.Value('i', 0)
+            self.model_stats[model][shot].value += 1
+
+    def increment_uploaded(self):
+        with self.lock:
+            self.uploaded_count.value += 1
+
+    def increment_failed(self):
+        with self.lock:
+            self.failed_count.value += 1
+
+    def get_stats(self) -> Dict:
+        with self.lock:
+            stats = {
+                'total_processed': self.processed_count.value,
+                'total_uploaded': self.uploaded_count.value,
+                'total_failed': self.failed_count.value,
+                'model_stats': {
+                    model: {shot: count.value for shot, count in shots.items()}
+                    for model, shots in self.model_stats.items()
+                }
+            }
+            return stats
+
+
+def setup_logging():
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(f'processing_log_{timestamp}.log'),
+            logging.StreamHandler()
+        ]
+    )
+    return logging.getLogger(__name__)
+
 
 valid_paths = {
     "MultipleChoiceTemplatesStructured": {
@@ -78,16 +136,25 @@ def run_on_files(exp_dir: str) -> list[Path]:
     return mapping
 
 
-def convert_to_scheme(item: Path, config_params, file_lock) -> None:
-    """Process a single file rename operation with thread-safe checking"""
+def convert_to_scheme(item: Path, config_params, file_lock, tracker: ProcessTracker, logger: logging.Logger) -> None:
     exp_file_path = item
     try:
+        # Extract model and shot from path
+        path_parts = str(exp_file_path).split(os.sep)
+        model = next((part for part in path_parts if part in valid_paths["MultipleChoiceTemplatesStructured"]),
+                     "unknown")
+        shot = next((part for part in path_parts if "shot" in part), "unknown")
+
+        logger.info(f"Processing file for {model} - {shot}: {exp_file_path}")
+
         with open(exp_file_path, 'r') as f:
             input_data = json.load(f)
+
         template_name = input_data['template_name']
         from src.utils.Constants import Constants
         catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
-        template_name.replace('MultipleChoiceTemplatesStructuredTopic', 'MultipleChoiceTemplatesStructuredWithTopic')
+        template_name.replace('MultipleChoiceTemplatesStructuredTopic',
+                              'MultipleChoiceTemplatesStructuredWithTopic')
         template_name.replace('MultipleChoiceTemplatesStructured', 'MultipleChoiceTemplatesStructuredWithoutTopic')
         template_name = template_name.replace('MultipleChoiceTemplatesStructuredTopic',
                                               'MultipleChoiceTemplatesStructuredWithTopic')
@@ -108,7 +175,8 @@ def convert_to_scheme(item: Path, config_params, file_lock) -> None:
         llm_dataset_loader = DatasetLoader(card=input_data['card'],
                                            template=template,
                                            system_format=input_data['system_format'],
-                                           demos_taken_from='train' if input_data['num_demos'] < 1 else 'validation',
+                                           demos_taken_from='train' if input_data[
+                                                                           'num_demos'] < 1 else 'validation',
                                            num_demos=input_data['num_demos'],
                                            demos_pool_size=input_data['demos_pool_size'],
                                            max_instances=input_data['max_instances'],
@@ -126,60 +194,66 @@ def convert_to_scheme(item: Path, config_params, file_lock) -> None:
         TOKEN = config.config_values.get("hf_access_token", "")
 
         check_and_upload_to_huggingface(converted_data, repo_name=REPO_NAME, token=TOKEN, private=False)
-        # print(converted_data)
+        # After successful upload
+        tracker.increment_processed(model, shot)
+        tracker.increment_uploaded()
+        logger.info(f"Successfully processed and uploaded {exp_file_path}")
+
     except Exception as e:
-        print(f"Error processing file {exp_file_path}: {str(e)}")
+        tracker.increment_failed()
+        logger.error(f"Error processing file {exp_file_path}: {str(e)}")
 
 
-def rename_files_parallel(file_mapping: list[Path], config_params: ConfigParams) -> None:
-    """Parallel version of rename_files using multiprocessing with thread-safe file operations"""
-    # Determine number of processes to use (leave one core free)
+def rename_files_parallel(file_mapping: list[Path], config_params: ConfigParams, tracker: ProcessTracker,
+                          logger: logging.Logger) -> None:
     num_processes = max(1, cpu_count() - 1)
+    logger.info(f"Starting parallel processing with {num_processes} processes...")
 
-    print(f"Starting parallel renaming with {num_processes} processes...")
-
-    # Create a manager for sharing the lock between processes
     with Manager() as manager:
-        # Create a lock for file operations
         file_lock = manager.Lock()
-
-        # Create partial function with config_params and lock
         process_func = partial(convert_to_scheme,
                                config_params=config_params,
-                               file_lock=file_lock)
+                               file_lock=file_lock,
+                               tracker=tracker,
+                               logger=logger)
 
-        # Create process pool and map the work
         with Pool(processes=num_processes) as pool:
-            # Convert the dictionary items to a list for tqdm
-            items = file_mapping
-
-            # Use imap_unordered for better performance with progress bar
             list(tqdm(
-                pool.imap_unordered(process_func, items),
-                total=len(items),
-                desc="Renaming files"
+                pool.imap_unordered(process_func, file_mapping),
+                total=len(file_mapping),
+                desc="Processing files"
             ))
 
 
-# Modified main function to use parallel version
 def main():
-    experiment_dir = "/cs/labs/gabis/eliyahabba/LLM-Evaluation/results"
+    logger = setup_logging()
+    logger.info("Starting processing...")
 
+    experiment_dir = "/cs/labs/gabis/eliyahabba/LLM-Evaluation/results"
     config_params = ConfigParams()
 
-    print("Creating file mapping...")
+    # Initialize tracker
+    tracker = ProcessTracker()
+
+    logger.info("Creating file mapping...")
     file_mapping = run_on_files(experiment_dir)
+    total_files = len(file_mapping)
+    logger.info(f"Found {total_files} files to process")
 
-    print(f"\nFound {len(file_mapping)} matching file pairs")
-    # split the file to 2 parts
-    #    file_mapping1 = {k: v for i, (k, v) in enumerate(file_mapping.items()) if i % 2 == 0}
-    #    file_mapping2 = {k: v for i, (k, v) in enumerate(file_mapping.items()) if i % 2 == 1}
-    print(f"\nFound {len(file_mapping)} matching file pairs")
+    rename_files_parallel(file_mapping, config_params, tracker, logger)
 
-    print("\nRenaming files in parallel...")
-    rename_files_parallel(file_mapping, config_params)
+    # Print final statistics
+    stats = tracker.get_stats()
+    logger.info("\nProcessing Summary:")
+    logger.info(f"Total files processed: {stats['total_processed']}/{total_files}")
+    logger.info(f"Successfully uploaded: {stats['total_uploaded']}")
+    logger.info(f"Failed: {stats['total_failed']}")
 
-    print("\nFinished processing all files.")
+    logger.info("\nBreakdown by model and shot:")
+    for model, shots in stats['model_stats'].items():
+        logger.info(f"\n{model}:")
+        for shot, count in shots.items():
+            logger.info(f"  {shot}: {count} files")
 
 
 if __name__ == "__main__":
