@@ -152,7 +152,7 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
     try:
         # Extract model and shot from path
         path_parts = str(exp_file_path).split(os.sep)
-        model = next((part for part in path_parts if part in valid_paths["MultipleChoiceTemplatesStructured"]),
+        model = next((part for part in path_parts if part in valid_paths["MultipleChoiceTemplatesStructuredWithoutTopic"]),
                      "unknown")
         shot = next((part for part in path_parts if "shot" in part), "unknown")
 
