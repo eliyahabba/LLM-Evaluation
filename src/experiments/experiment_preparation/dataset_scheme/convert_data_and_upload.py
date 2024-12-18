@@ -87,11 +87,28 @@ valid_paths = {
         "Llama-2-7b-chat-hf": ["zero_shot"],
         "Meta-Llama-3-8B-Instruct": ["zero_shot"],
         "Llama-2-13b-hf": ["three_shot"]
+    },
+    "MultipleChoiceTemplatesStructured": {
+        "Mistral-7B-Instruct-v0.3": ["zero_shot", "three_shot"],
+        "Mistral-7B-Instruct-v0.2": ["zero_shot"],
+        "vicuna-7b-v1.5": ["zero_shot", "three_shot"],
+        "gemma-7b-it": ["zero_shot", "three_shot"],
+        "gemma-2b-it": ["zero_shot", "three_shot"],
+        "Phi-3-mini-4k-instruct": ["zero_shot"],
+        "Phi-3-medium-4k-instruct": ["zero_shot"],
+        "OLMo-7B-Instruct-hf": ["three_shot"],
+        "OLMo-1.7-7B-hf": ["zero_shot", "three_shot"],
+        "Llama-2-13b-chat-hf": ["zero_shot"],
+        "Llama-2-7b-hf": ["three_shot"],
+        "Llama-2-7b-chat-hf": ["zero_shot"],
+        "Meta-Llama-3-8B-Instruct": ["zero_shot"],
+        "Llama-2-13b-hf": ["three_shot"]
     }
+
 }
 
 
-def run_on_files(exp_dir: str,logger) -> list[Path]:
+def run_on_files(exp_dir: str, logger) -> list[Path]:
     """
     Create mapping between experiment_template files and template files
     Returns: Dict[template_number, (experiment_file_path, template_file_path)]
@@ -136,25 +153,24 @@ def run_on_files(exp_dir: str,logger) -> list[Path]:
                                               system_folder)
                         exp_files = [os.path.join(system, file) for file in os.listdir(system)
                                      if file.startswith('enumerator') and file.endswith('.json')]
-                        # add to mapping
+                        exp_files = [os.path.join(system, file) for file in os.listdir(system)
+                                     if (file.startswith('enumerator') or file.startswith('exp'))
+                                     and file.endswith('.json')]
+                        # # add to mapping
                         for exp_file in exp_files:
                             exp_path = Path(exp_file)
                             mapping.append(exp_path)
-                        if len(mapping) > 10:
-                            return mapping
                         if exp_files:  # Print info when files are found
                             tqdm.write(f"Found {len(exp_files)} files in {model_folder}/{shot_number}")
-    mapping = mapping[:10]
     return mapping
 
 
-def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Logger) -> None:
+def convert_to_scheme(item: Path, config_params, file_lock, logger: logging.Logger) -> None:
     exp_file_path = item
     try:
         # Extract model and shot from path
         path_parts = str(exp_file_path).split(os.sep)
-        model = next((part for part in path_parts if part in valid_paths["MultipleChoiceTemplatesStructuredWithoutTopic"]),
-                     "unknown")
+        model = path_parts[-5]
         shot = next((part for part in path_parts if "shot" in part), "unknown")
 
         logger.info(f"Processing file for {model} - {shot}: {exp_file_path}")
@@ -174,6 +190,9 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
                                               'MultipleChoiceTemplatesStructuredWithoutTopic')
 
         template_path = os.path.join(catalog_path, template_name + '.json')
+        if not os.path.exists(template_path):
+            template_path = Path(
+                "/Users/ehabba/PycharmProjects/LLM-Evaluation/Data/Catalog/MultipleChoiceTemplatesInstructionsWithoutTopic/enumerator_capitals_choicesSeparator_comma_shuffleChoices_False.json")
         with open(template_path, 'r') as f:
             template_data = json.load(f)
         logger.info(f"Reading template file {template_path}")
@@ -199,6 +218,8 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
         # Read the schema file
         logger.info(f"Reading dataset for {model} - {shot}: {exp_file_path}")
         schema_file_path = r'/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/scheme.json'
+        if not os.path.exists(schema_file_path):
+            schema_file_path = r'/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/scheme.json:66'
         with open(schema_file_path, 'r') as file:
             schema_data = json.load(file)
         converted_data = convert_dataset(dataset, input_data, template_data)
@@ -216,6 +237,7 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
     except Exception as e:
         logger.error(f"Error processing file {exp_file_path}: {str(e)}")
         logger.info(f"Error processing file {exp_file_path}: {str(e)}")
+
 
 def rename_files_parallel(file_mapping: list[Path], config_params: ConfigParams,
                           logger: logging.Logger) -> None:
@@ -242,17 +264,18 @@ def main():
     logger.info("Starting processing...")
 
     experiment_dir = "/cs/labs/gabis/eliyahabba/results"
+    if not os.path.exists(experiment_dir):
+        experiment_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/results"
     config_params = ConfigParams()
 
     # Initialize tracker
 
     logger.info("Creating file mapping...")
-    file_mapping = run_on_files(experiment_dir,logger)
+    file_mapping = run_on_files(experiment_dir, logger)
     total_files = len(file_mapping)
     logger.info(f"Found {total_files} files to process")
 
     rename_files_parallel(file_mapping, config_params, logger)
-
 
 
 if __name__ == "__main__":
