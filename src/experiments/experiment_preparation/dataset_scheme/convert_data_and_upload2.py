@@ -229,7 +229,7 @@ def main():
     logger = setup_logging()
     logger.info("Starting processing...")
 
-    experiment_dir = "/cs/labs/gabis/eliyahabba/LLM-Evaluation/results"
+    experiment_dir = "/cs/labs/gabis/eliyahabba/results"
     config_params = ConfigParams()
 
     # Initialize tracker

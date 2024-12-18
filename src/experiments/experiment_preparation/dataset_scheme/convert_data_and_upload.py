@@ -163,7 +163,7 @@ def rename_files_parallel(file_mapping: list[Path], config_params: ConfigParams)
 
 # Modified main function to use parallel version
 def main():
-    experiment_dir = "/cs/labs/gabis/eliyahabba/LLM-Evaluation/results"
+    experiment_dir = "/cs/labs/gabis/eliyahabba/results"
 
     config_params = ConfigParams()
 
