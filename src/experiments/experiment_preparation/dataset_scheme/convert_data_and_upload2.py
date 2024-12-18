@@ -108,7 +108,7 @@ def run_on_files(exp_dir: str) -> list[Path]:
             continue
 
         model_folders = os.listdir(os.path.join(exp_dir, instrcu_folder))
-        for model_folder in tqdm(model_folders, desc=f"{instrcu_folder}/{model_folder}", leave=False):
+        for model_folder in tqdm(model_folders, desc=f"{instrcu_folder}", leave=False):
             if not os.path.isdir(os.path.join(exp_dir, instrcu_folder, model_folder)) or \
                     model_folder not in valid_paths[instrcu_folder]:
                 continue
