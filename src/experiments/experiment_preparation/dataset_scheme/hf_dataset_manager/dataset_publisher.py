@@ -78,13 +78,81 @@ def read_data(
     with open(data_path, 'r') as f:
         data = json.load(f)
     upload_to_huggingface(data, repo_name, token, private)
-def upload_to_huggingface(
-        data: list,
+
+
+import json
+from collections import defaultdict
+from pathlib import Path
+from typing import Set, Dict, List, Tuple
+from datasets import DatasetDict, Dataset, load_dataset
+from huggingface_hub import HfApi, create_repo
+
+
+def load_existing_dataset(repo_name: str) -> Tuple[Set[str], int]:
+    """
+    Load existing dataset and get evaluation IDs.
+
+    Args:
+        repo_name: Name of the HuggingFace repository
+
+    Returns:
+        Tuple containing set of existing IDs and total example count
+    """
+    try:
+        existing_dataset = load_dataset(repo_name)
+        total_examples = sum(len(split) for split in existing_dataset.values())
+        print(f"Found existing dataset with {total_examples} examples")
+
+        existing_ids = set()
+        for split in existing_dataset.values():
+            for item in split:
+                if 'EvaluationId' in item:
+                    existing_ids.add(item['EvaluationId'])
+
+        return existing_ids, total_examples
+
+    except Exception as e:
+        print(f"No existing dataset found or error occurred: {e}")
+        print("Will create new dataset")
+        return set(), 0
+
+
+def filter_duplicates(data: List[dict], existing_ids: Set[str]) -> List[dict]:
+    """
+    Filter out duplicate examples based on EvaluationId.
+
+    Args:
+        data: List of data items
+        existing_ids: Set of existing evaluation IDs
+
+    Returns:
+        Filtered list of data items
+    """
+    filtered_data = []
+    for item in data:
+        if item['EvaluationId'] not in existing_ids:
+            filtered_data.append(item)
+
+    duplicates = len(data) - len(filtered_data)
+    print(f"Found {duplicates} duplicate examples")
+    return filtered_data
+
+
+def check_and_upload_to_huggingface(
+        data: List[dict],
         repo_name: str,
         token: str,
         private: bool = False
 ) -> None:
-    # Create repository if it doesn't exist
+    """
+    Main function to check for duplicates and upload dataset.
+
+    Args:
+        data: List of data items to upload
+        repo_name: Name for the HuggingFace repository
+        token: HuggingFace API token
+        private: Whether to create a private repository
+    """
     try:
         create_repo(
             repo_id=repo_name,
@@ -95,8 +163,19 @@ def upload_to_huggingface(
     except Exception as e:
         print(f"Repository already exists or error occurred: {e}")
 
+    # Load existing dataset and get IDs
+    existing_ids, _ = load_existing_dataset(repo_name)
+
+    # Filter duplicates
+    filtered_data = filter_duplicates(data, existing_ids)
+
+    if not filtered_data:
+        print("No new data to upload")
+        return
+    # Create repository if it doesn't exist
     # Convert to dataset
     split_data = defaultdict(list)
+    data = filtered_data
     for item in data:
         split = item['Instance']['SampleIdentifier']['split']
         split_data[split].append(item)
