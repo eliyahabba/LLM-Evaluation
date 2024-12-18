@@ -175,13 +175,14 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
         template_path = os.path.join(catalog_path, template_name + '.json')
         with open(template_path, 'r') as f:
             template_data = json.load(f)
-        logging.info(f"Reading template {template_path}")
+        logging.info(f"Reading template file {template_path}")
         TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
         catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
         from src.experiments.data_loading.CatalogManager import CatalogManager
         catalog_manager = CatalogManager(catalog_path)
         template = catalog_manager.load_from_catalog(template_name)
         from src.experiments.data_loading.DatasetLoader import DatasetLoader
+        logging.info(f"Reading template data {template_path}")
 
         llm_dataset_loader = DatasetLoader(card=input_data['card'],
                                            template=template,
@@ -213,7 +214,7 @@ def convert_to_scheme(item: Path, config_params, file_lock,  logger: logging.Log
 
     except Exception as e:
         logger.error(f"Error processing file {exp_file_path}: {str(e)}")
-
+        logging.info(f"Error processing file {exp_file_path}: {str(e)}")
 
 def rename_files_parallel(file_mapping: list[Path], config_params: ConfigParams,
                           logger: logging.Logger) -> None:
