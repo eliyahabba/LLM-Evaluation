@@ -59,7 +59,7 @@ def define_features():
     })
 
 
-def upload_to_huggingface(
+def read_data(
         data_path: str,
         repo_name: str,
         token: str,
@@ -77,9 +77,14 @@ def upload_to_huggingface(
     # Load the converted data
     with open(data_path, 'r') as f:
         data = json.load(f)
-
+    upload_to_huggingface(data, repo_name, token, private)
+def upload_to_huggingface(
+        data: list,
+        repo_name: str,
+        token: str,
+        private: bool = False
+) -> None:
     # Create repository if it doesn't exist
-    api = HfApi()
     try:
         create_repo(
             repo_id=repo_name,
