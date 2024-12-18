@@ -1,9 +1,6 @@
-import json
-from collections import defaultdict
 from pathlib import Path
 
-from datasets import DatasetDict, Dataset, Features, Sequence, Value
-from huggingface_hub import HfApi, create_repo
+from datasets import Features, Sequence, Value
 
 from config.get_config import Config
 
@@ -60,7 +57,7 @@ def define_features():
 
 
 def read_data(
-        data_path: str,
+        data_path: Path,
         repo_name: str,
         token: str,
         private: bool = False
@@ -77,13 +74,13 @@ def read_data(
     # Load the converted data
     with open(data_path, 'r') as f:
         data = json.load(f)
-    upload_to_huggingface(data, repo_name, token, private)
+    check_and_upload_to_huggingface(data, repo_name, token, private)
 
 
 import json
 from collections import defaultdict
 from pathlib import Path
-from typing import Set, Dict, List, Tuple
+from typing import Set, List, Tuple
 from datasets import DatasetDict, Dataset, load_dataset
 from huggingface_hub import HfApi, create_repo
 
@@ -234,7 +231,7 @@ If you use this dataset, please cite:
 
     try:
         # Upload dataset
-        upload_to_huggingface(
+        read_data(
             data_path=DATA_PATH,
             repo_name=REPO_NAME,
             token=TOKEN,
