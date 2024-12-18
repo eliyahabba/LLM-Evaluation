@@ -11,9 +11,27 @@ from config.get_config import Config
 from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.experiments.experiment_preparation.dataset_scheme.JSON_schema_validator import validate_json_data
 from src.experiments.experiment_preparation.dataset_scheme.dataset_schema_adapter import convert_dataset
-from src.experiments.experiment_preparation.dataset_scheme.hf_dataset_manager.dataset_publisher import \
-    upload_to_huggingface
+from src.experiments.experiment_preparation.dataset_scheme.hf_dataset_manager.dataset_publisher import check_and_upload_to_huggingface
 from src.utils.Constants import Constants
+
+valid_paths = {
+    "MultipleChoiceTemplatesStructured": {
+        "Mistral-7B-Instruct-v0.3": ["zero_shot", "three_shot"],
+        "Mistral-7B-Instruct-v0.2": ["zero_shot"],
+        "vicuna-7b-v1.5": ["zero_shot", "three_shot"],
+        "gemma-7b-it": ["zero_shot", "three_shot"],
+        "gemma-2b-it": ["zero_shot", "three_shot"],
+        "Phi-3-mini-4k-instruct": ["zero_shot"],
+        "Phi-3-medium-4k-instruct": ["zero_shot"],
+        "OLMo-7B-Instruct-hf": ["three_shot"],
+        "OLMo-1.7-7B-hf": ["zero_shot", "three_shot"],
+        "Llama-2-13b-chat-hf": ["zero_shot"],
+        "Llama-2-7b-hf": ["three_shot"],
+        "Llama-2-7b-chat-hf": ["zero_shot"],
+        "Meta-Llama-3-8B-Instruct": ["zero_shot"],
+        "Llama-2-13b-hf": ["three_shot"]
+    }
+}
 
 
 def run_on_files(exp_dir: str) -> list[Path]:
@@ -23,19 +41,26 @@ def run_on_files(exp_dir: str) -> list[Path]:
     """
     mapping = []
     for instrcu_folder in os.listdir(exp_dir):
-        # if not folder continue
-        if not os.path.isdir(os.path.join(exp_dir, instrcu_folder)):
+        # בדיקה אם זו תיקייה והאם זו התיקייה הנכונה
+        if not os.path.isdir(os.path.join(exp_dir, instrcu_folder)) or \
+                instrcu_folder not in valid_paths:
             continue
+
         for model_folder in os.listdir(os.path.join(exp_dir, instrcu_folder)):
-            if not os.path.isdir(os.path.join(exp_dir, instrcu_folder, model_folder)):
+            if not os.path.isdir(os.path.join(exp_dir, instrcu_folder, model_folder)) or \
+                    model_folder not in valid_paths[instrcu_folder]:
                 continue
+
             for dataset_folder in os.listdir(os.path.join(exp_dir, instrcu_folder, model_folder)):
                 if not os.path.isdir(os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder)):
                     continue
+
                 for shot_number in os.listdir(os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder)):
                     if not os.path.isdir(
-                            os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder, shot_number)):
+                            os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder, shot_number)) or \
+                            shot_number not in valid_paths[instrcu_folder][model_folder]:
                         continue
+
                     shots = os.path.join(exp_dir, instrcu_folder, model_folder, dataset_folder, shot_number)
                     for system_folder in os.listdir(shots):
                         if not os.path.isdir(
@@ -50,8 +75,6 @@ def run_on_files(exp_dir: str) -> list[Path]:
                         for exp_file in exp_files:
                             exp_path = Path(exp_file)
                             mapping.append(exp_path)
-                            return mapping
-                            break
 
     return mapping
 
@@ -101,7 +124,7 @@ def convert_to_scheme(item: Path, config_params, file_lock) -> None:
         config = Config()
         TOKEN = config.config_values.get("hf_access_token", "")
 
-        upload_to_huggingface(converted_data, repo_name=REPO_NAME, token=TOKEN, private=False)
+        check_and_upload_to_huggingface(converted_data, repo_name=REPO_NAME, token=TOKEN, private=False)
         # print(converted_data)
     except Exception as e:
         print(f"Error processing file {exp_file_path}: {str(e)}")
