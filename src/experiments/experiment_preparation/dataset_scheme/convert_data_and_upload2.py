@@ -72,7 +72,7 @@ def setup_logging():
 
 
 valid_paths = {
-    "MultipleChoiceTemplatesStructured": {
+    "MultipleChoiceTemplatesStructuredWithoutTopic": {
         "Mistral-7B-Instruct-v0.3": ["zero_shot", "three_shot"],
         "Mistral-7B-Instruct-v0.2": ["zero_shot"],
         "vicuna-7b-v1.5": ["zero_shot", "three_shot"],
