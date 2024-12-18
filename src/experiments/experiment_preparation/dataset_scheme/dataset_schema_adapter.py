@@ -1,20 +1,26 @@
 import json
 from typing import Dict, List, Any
 import re
+import hashlib
+import json
+from typing import List, Dict, Any, Optional, Tuple
 
+def create_hash(text: str) -> str:
+    """Create a hash of the input text."""
+    return hashlib.sha256(text.encode()).hexdigest()
 
-def create_sample_identifier(card_name: str, split: str) -> Dict[str, Any]:
+def create_sample_identifier(card_name: str, split: str, idx) -> Dict[str, Any]:
     """Create sample identifier from card name."""
     dataset_name = card_name.split('.')[1]  # e.g., 'mmlu' from 'cards.mmlu.abstract_algebra'
     return {
         "dataset_name": dataset_name,
         "split": split,
-        "hf_repo": f"lukaemon/{dataset_name}",  # assumption
-        "hf_index": 0  # will be updated in the conversion loop
+        "hf_repo": f"cais/{dataset_name}",  # assumption
+        "hf_index": idx  # will be updated in the conversion loop
     }
 
 
-def convert_to_schema_format(data: Dict[str, Any], template: Dict[str, Any]) -> Dict[str, Any]:
+def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], template: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Convert a single sample to the schema format."""
 
     # Helper to generate fake token IDs (for demonstration)
@@ -43,20 +49,24 @@ def convert_to_schema_format(data: Dict[str, Any], template: Dict[str, Any]) -> 
         return result
 
     # Process each result
+    samples = []
     for idx, result in enumerate(data["results"]["test"]):
         instance_text = result["Instance"]
         response = result["Result"]
         perplexity = None if "Perplexity" not in result else result["Perplexity"]
+        sample = dataset['test'][result['Index']]
         # Extract question and choices from the instance text
-        match = re.search(r"Question: (.*?)Answers: (.*?)Answer:", instance_text, re.DOTALL)
-        if not match:
-            continue
+        # match = re.search(r"Question: (.*?)Answers: (.*?)Answer:", instance_text, re.DOTALL)
+        # if not match:
+        #     continue
 
-        question = match.group(1).strip()
-        choices = match.group(2).strip()
-        choices = [('A', '0'), ('B','4'), ('C', '2'), ('D', '6')]  # Example format
-        return {
-            "EvaluationId": str(idx),
+        question = eval(sample['task_data'])['question']
+        options = eval(sample['task_data'])['options']
+        choices = eval(sample['task_data'])['choices']
+        choices = [(option.split(".")[0], choice) for option,choice in zip(options, choices)]
+        samples.append(
+        {
+            "EvaluationId": create_hash(instance_text),
             "Model": {
                 "Name": data["model_name"],
                 "Quantization": {
@@ -64,10 +74,10 @@ def convert_to_schema_format(data: Dict[str, Any], template: Dict[str, Any]) -> 
                     "QuantizationMethod": "dynamic"
                 },
                 "GenerationArgs": {
-                    "max_tokens": 10,
+                    "max_tokens": max_new_tokens,
                     "do_sample": False,
                     "top_p": 1,
-                    "temperature": 0.7
+                    "temperature": 0
                 }
 
             },
@@ -82,11 +92,12 @@ def convert_to_schema_format(data: Dict[str, Any], template: Dict[str, Any]) -> 
             },
             "Instance": {
                 "TaskType" : "classification",
-                "RawInput": instance_text,
-                "SampleIdentifier": create_sample_identifier(data["card"], "test"),
+                "RawInput": question,
+                "SampleIdentifier": create_sample_identifier(data["card"], "test", idx),
                 "Perplexity": perplexity,
                 "ClassificationFields": {
                 "Topic": data["card"].split('.')[-1],  # e.g., 'abstract_algebra'
+                "FullInput": instance_text,
                 "Question": question,
                 "Choices": [{
                     "id": choice[0],
@@ -110,18 +121,14 @@ def convert_to_schema_format(data: Dict[str, Any], template: Dict[str, Any]) -> 
                 "Score": result["Score"]
             }
         }
-
-
-def convert_dataset(input_data: Dict[str, Any], template_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+        )
+    return samples
+def convert_dataset(dataset, input_data: Dict[str, Any], template_data: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Convert entire dataset to new format."""
-    converted_samples = []
-    for idx, result in enumerate(input_data["results"]["test"]):
-        sample = convert_to_schema_format(input_data, template_data)
-        if sample:
-            sample["Instance"]["SampleIdentifier"]["hf_index"] = idx
-            converted_samples.append(sample)
-
-    return converted_samples
+    # convert_dataseted_samples = []
+    max_new_tokens = max([len(instance["target"].split()) for instance in dataset['test']])*2
+    samples = convert_to_schema_format(dataset,max_new_tokens, input_data, template_data)
+    return samples
 
 
 # Usage example:
