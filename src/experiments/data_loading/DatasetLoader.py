@@ -66,6 +66,8 @@ class DatasetLoader:
                 self.demos_taken_from = 'train'
                 train_size = self.get_data_size(self.card,data_type="train") - 1
                 self.demos_pool_size = min(train_size, self.demos_pool_size)
+        else:
+            self.demos_pool_size = 0
 
 
         recipe = StandardRecipe(
