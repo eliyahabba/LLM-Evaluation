@@ -13,15 +13,27 @@ def validate_json_file(json_file_path, schema_file_path):
     Returns:
         tuple: (bool, str) - (is_valid, error_message)
     """
+    with open(json_file_path, 'r') as file:
+        json_data = json.load(file)
+
+    # Read the schema file
+    with open(schema_file_path, 'r') as file:
+        schema_data = json.load(file)
+
+    return validate_json_data(json_data, schema_data)
+
+def validate_json_data(json_data, schema_data):
+    """
+    Validate a JSON file against a JSON schema.
+
+    Args:
+        json_file_path (str): Path to the JSON file to validate
+        schema_file_path (str): Path to the JSON schema file
+
+    Returns:
+        tuple: (bool, str) - (is_valid, error_message)
+    """
     try:
-        # Read the JSON file
-        with open(json_file_path, 'r') as file:
-            json_data = json.load(file)
-
-        # Read the schema file
-        with open(schema_file_path, 'r') as file:
-            schema_data = json.load(file)
-
         # Validate the JSON against the schema
         if isinstance(json_data, list):
             for idx, item in enumerate(json_data):
