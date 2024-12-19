@@ -10,80 +10,121 @@
         },
         "Model": {
             "type": "object",
-            "description": "Information about the model and its configuration",
-            "required": ["Name", "Quantization"],
+            "description": "Complete model specification including basic information, technical configuration and inference settings",
+            "required": ["ModelInfo", "Configuration", "InferenceSettings"],
             "properties": {
-                "Name": {
-                    "type": "string",
-                    "description": "Name and version of the model (e.g., 'Llama-2-13b-chat-hf')"
-                },
-                "Quantization": {
+                "ModelInfo": {
                     "type": "object",
-                    "description": "Model quantization settings for optimized inference",
-                    "required": ["QuantizationBit", "QuantizationMethod"],
+                    "description": "Basic identifying information about the model - represents the core identity and naming of the model without technical details",
+                    "required": ["name"],
                     "properties": {
-                        "QuantizationBit": {
+                        "name": {
                             "type": "string",
-                            "description": "Bit precision used for quantization. Must be 'none' if no quantization is applied",
-                            "enum": ["none", "4bit", "8bit", "16bit"]
+                            "description": "Model name and version (e.g., 'Llama-2-13b-chat-hf')"
                         },
-                        "QuantizationMethod": {
-                            "type": "string",
-                            "description": "Method used for quantization. Must be 'none' if no quantization is applied",
-                            "enum": ["none", "dynamic", "static"]
-                        }
-                    },
-                    "dependencies": {
-                        "QuantizationMethod": {
-                            "oneOf": [
-                                {
-                                    "properties": {
-                                        "QuantizationMethod": { "enum": ["none"] },
-                                        "QuantizationBit": { "enum": ["none"] }
-                                    }
-                                },
-                                {
-                                    "properties": {
-                                        "QuantizationMethod": { "enum": ["dynamic", "static"] },
-                                        "QuantizationBit": { "enum": ["4bit", "8bit", "16bit"] }
-                                    }
-                                }
-                            ]
+                        "family": {
+                            "type": ["string", "null"],
+                            "enum": ["llama", "mistral", "gemma", "gpt", "palm", "claude", "falcon", null],
+                            "description": "Model family"
                         }
                     }
                 },
-                "GenerationArgs": {
+                "Configuration": {
                     "type": "object",
-                    "description": "Generation parameters used for model inference",
-                    "additionalProperties": true,
+                    "description": "Technical specifications and implementation details of the model - defines how the model is structured and where it's hosted",
+                    "required": ["context_window"],
                     "properties": {
-                        "temperature": {
-                            "type": "number",
-                            "description": "Sampling temperature. Set to 0 for deterministic generation"
+                        "architecture": {
+                            "type": ["string", "null"],
+                            "enum": ["transformer", "moe", "ssm", null],
+                            "description": "Model architecture type"
                         },
-                        "top_p": {
-                            "type": "number",
-                            "description": "Nucleus sampling parameter"
+                        "parameters": {
+                            "type": ["integer", "null"],
+                            "minimum": 1,
+                            "description": "Number of parameters in billions"
                         },
-                        "top_k": {
+                        "context_window": {
                             "type": "integer",
-                            "description": "Limits sampling to k most likely tokens"
+                            "minimum": 1,
+                            "description": "Maximum context window size in tokens"
                         },
-                        "max_tokens": {
-                            "type": "integer",
-                            "description": "Maximum number of tokens to generate"
+                        "is_instruct": {
+                            "type": "boolean",
+                            "description": "Whether the model is instruction-tuned"
                         },
-                        "stop_sequences": {
-                            "type": "array",
-                            "description": "Sequences that stop generation",
-                            "items": {
-                                "type": "string"
-                            },
-                            "default": []
+                        "hf_path": {
+                            "type": ["string", "null"],
+                            "description": "HuggingFace model path"
+                        },
+                        "revision": {
+                            "type": ["string", "null"],
+                            "description": "Model revision/commit hash"
+                        }
+                    }
+                },
+                "InferenceSettings": {
+                    "type": "object",
+                    "description": "Runtime settings and parameters for model inference - controls how the model generates outputs and performs during execution",
+                    "required": ["quantization", "generation_args"],
+                    "properties": {
+                        "quantization": {
+                            "type": "object",
+                            "required": ["bit_precision", "method"],
+                            "properties": {
+                                "bit_precision": {
+                                    "type": "string",
+                                    "enum": ["none", "4bit", "8bit", "16bit"],
+                                    "description": "Quantization bit precision"
+                                },
+                                "method": {
+                                    "type": "string",
+                                    "enum": ["none", "dynamic", "static"],
+                                    "description": "Quantization method"
+                                }
+                            }
+                        },
+                        "generation_args": {
+                            "type": "object",
+                            "properties": {
+                                "use_vllm": {
+                                    "type": "boolean",
+                                    "description": "Whether VLLM was used for inference"
+                                },
+                                "temperature": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 2,
+                                    "description": "Sampling temperature"
+                                },
+                                "top_p": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 1,
+                                    "description": "Nucleus sampling parameter"
+                                },
+                                "top_k": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "description": "Top-k sampling parameter"
+                                },
+                                "max_tokens": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "description": "Maximum number of tokens to generate"
+                                },
+                                "stop_sequences": {
+                                    "type": "array",
+                                    "description": "Sequences that stop generation",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "default": []
+                                }
+                            }
                         }
                     }
                 }
-
             }
         },
         "Prompt": {

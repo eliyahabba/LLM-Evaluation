@@ -16,7 +16,7 @@ def define_features():
             }
         },
         'Prompt': {
-            'Instruct Template': Value('string'),
+            'Template': Value('string'),
             'Separator': Value('string'),
             'Enumerator': Value('string'),
             'ShuffleChoices': Value('bool'),
@@ -39,13 +39,13 @@ def define_features():
         },
         'Output': {
             'Response': Value('string'),
-            'CumulativeLogprob': Value('float32'),
-            'GeneratedTokenIds': Sequence(Value('int64')),
-            'TokenLogprobs_tokens': Sequence(Value('string')),
-            'TokenLogprobs_ids': Sequence(Value('int64')),
+            'CumulativeLogProb': Value('float32'),
+            'GeneratedTokensIds': Sequence(Value('int64')),
+            'GeneratedTokensLogProbs_tokens': Sequence(Value('string')),
+            'GeneratedTokensLogProbs_ids': Sequence(Value('int64')),
             'top5_tokens': Sequence(Value('string')),
             'top5_token_ids': Sequence(Value('int64')),
-            'top5_logprobs': Sequence(Value('float32')),
+            'top5_LogProbs': Sequence(Value('float32')),
             'top5_ranks': Sequence(Value('int64')),
             'MaxProb': Value('string')
         },

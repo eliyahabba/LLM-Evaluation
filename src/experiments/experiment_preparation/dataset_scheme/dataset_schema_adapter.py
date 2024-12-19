@@ -1,8 +1,9 @@
 import hashlib
 import json
+import os
+from pathlib import Path
 from typing import List, Dict, Any
 
-from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 
 
@@ -20,6 +21,14 @@ def create_sample_identifier(card_name: str, split: str, idx) -> Dict[str, Any]:
         "hf_repo": f"cais/{dataset_name}",  # assumption
         "hf_index": idx  # will be updated in the conversion loop
     }
+
+
+def get_model_metadata(model_name: str, models_metadata: Dict) -> Dict:
+    """Get model metadata from the metadata file."""
+    metadata = models_metadata.get(model_name, {})
+    if not metadata:
+        print(f"Warning: No metadata found for model {model_name}")
+    return metadata
 
 
 def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], template: Dict[str, Any]) -> List[
@@ -54,6 +63,9 @@ def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], temp
     # Process each result
     with open(Constants.ExperimentConstants.MODELS_METADATA_PATH, 'r') as f:
         models_metadata = json.load(f)
+    model_name = data["model_name"]
+    model_metadata = get_model_metadata(model_name, models_metadata)
+
     samples = []
     for idx, result in enumerate(data["results"]["test"]):
         instance_text = result["Instance"]
@@ -69,68 +81,78 @@ def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], temp
         options = eval(sample['task_data'])['options']
         choices = eval(sample['task_data'])['choices']
         choices = [(option.split(".")[0], choice) for option, choice in zip(options, choices)]
-        samples.append(
-            {
-                "EvaluationId": create_hash(instance_text),
-                "Model": {
-                    "Name": data["model_name"],
-                    "Quantization": {
-                        "QuantizationBit": "8bit",
-                        "QuantizationMethod": "dynamic"
+        samples.append({
+            "EvaluationId": create_hash(instance_text),
+            "Model": {
+                "ModelInfo": model_metadata.get("ModelInfo", {
+                    "name": model_name,
+                    "family": None
+                }),
+                "Configuration": model_metadata.get("Configuration", {
+                    "architecture": None,
+                    "parameters": None,
+                    "context_window": None,
+                    "is_instruct": None,
+                    "hf_path": model_name,
+                    "revision": None
+                }),
+                "InferenceSettings": {
+                    "quantization": {
+                        "bit_precision": "8bit",
+                        "method": "dynamic"
                     },
-                    "GenerationArgs": {
+                    "generation_args": {
                         "max_tokens": max_new_tokens,
-                        "do_sample": False,
+                        "temperature": 0,
                         "top_p": 1,
-                        "temperature": 0
+                        "use_vllm": True  # או מה שמתאים לפי המערכת שלך
                     }
-
-                },
-                "Prompt": {
-                    "Template": template["input_format"],
-                    "Separator": template["choices_separator"],
-                    "Enumerator": template["enumerator"],
-                    "ShuffleChoices": template["shuffle_choices"],
-                    "Shots": Utils.word_to_number("zero"),
-                    "TokenIds": None
-                },
-                "Instance": {
-                    "TaskType": "classification",
-                    "RawInput": question,
-                    "SampleIdentifier": create_sample_identifier(data["card"], "test", idx),
-                    "Perplexity": perplexity,
-                    "ClassificationFields": {
-                        "Topic": data["card"].split('.')[-1],  # e.g., 'abstract_algebra'
-                        "FullInput": instance_text,
-                        "Question": question,
-                        "Choices": [{
-                            "id": choice[0],
-                            "text": choice[1]
-                        } for choice in choices],  # Example format
-                        "GroundTruth":
-                            {
-                                "id": result["GroundTruth"].split(".")[0],
-                                "text": choices[eval(sample['task_data'])["answer"]][1]
-                            }
-                    }
-                },
-                "Output": {
-                    "Response": response,
-                    "CumulativeLogProb": None,
-                    # -2.34,  # Example value
-                    "GeneratedTokensIds": None,
-                    # generate_token_ids(len(response.split())),
-                    "GeneratedTokensLogProbs": None,
-                    # create_token_LogProbs(response),
-                    "MaxProb": response.split()[0]  # Taking first token as max prob answer
-                },
-                "Evaluation": {
-                    "EvaluationMethod": "content_similarity",
-                    "GroundTruth": result["GroundTruth"],
-                    "Score": result["Score"]
                 }
+            },
+            "Prompt": {
+                "promptClass": "MultipleChoice",
+                "format": {
+                    "type": "MultipleChoice",
+                    "template": template["input_format"],
+                    "separator": template["choices_separator"],
+                    "enumerator": template["enumerator"],
+                    "shuffleChoices": template["shuffle_choices"],
+                    "shots": Utils.word_to_number("zero")
+                }
+            },
+            "Instance": {
+                "TaskType": "classification",
+                "RawInput": question,
+                "SampleIdentifier": create_sample_identifier(data["card"], "test", idx),
+                "TokenIds": None,  # אולי כדאי להוסיף פונקציה שמייצרת
+                "Perplexity": perplexity,
+                "ClassificationFields": {
+                    "Topic": data["card"].split('.')[-1],
+                    "FullInput": instance_text,
+                    "Question": question,
+                    "Choices": [{
+                        "id": choice[0],
+                        "text": choice[1]
+                    } for choice in choices],
+                    "GroundTruth": {
+                        "id": result["GroundTruth"].split(".")[0],
+                        "text": choices[eval(sample['task_data'])["answer"]][1]
+                    }
+                }
+            },
+            "Output": {
+                "Response": response,
+                "CumulativeLogProb": None,
+                "GeneratedTokensIds": None,
+                "GeneratedTokensLogProbs": None,
+                "MaxProb": response.split()[0]
+            },
+            "Evaluation": {
+                "EvaluationMethod": "content_similarity",
+                "GroundTruth": result["GroundTruth"],
+                "Score": result["Score"]
             }
-        )
+        })
     return samples
 
 
@@ -153,7 +175,47 @@ if __name__ == "__main__":
             'r') as f:
         template_data = json.load(f)
 
-    converted_data = convert_dataset(input_data, template_data)
+    template_name = input_data['template_name']
+    from src.utils.Constants import Constants
+
+    if template_name.startswith('template_'):
+        template_name = "MultipleChoiceTemplatesInstructionsWithoutTopic/enumerator_capitals_choicesSeparator_comma_shuffleChoices_False"
+
+    catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
+    template_name.replace('MultipleChoiceTemplatesStructuredTopic',
+                          'MultipleChoiceTemplatesStructuredWithTopic')
+    template_name.replace('MultipleChoiceTemplatesStructured', 'MultipleChoiceTemplatesStructuredWithoutTopic')
+    template_name = template_name.replace('MultipleChoiceTemplatesStructuredTopic',
+                                          'MultipleChoiceTemplatesStructuredWithTopic')
+    template_name = template_name.replace('MultipleChoiceTemplatesStructured',
+                                          'MultipleChoiceTemplatesStructuredWithoutTopic')
+
+    template_path = os.path.join(catalog_path, template_name + '.json')
+    if not os.path.exists(template_path):
+        template_path = Path(
+            "/Users/ehabba/PycharmProjects/LLM-Evaluation/Data/Catalog/MultipleChoiceTemplatesInstructionsWithoutTopic/enumerator_capitals_choicesSeparator_comma_shuffleChoices_False.json")
+
+    TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
+    catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
+    from src.experiments.data_loading.CatalogManager import CatalogManager
+
+    catalog_manager = CatalogManager(catalog_path)
+    template = catalog_manager.load_from_catalog(template_name)
+    from src.experiments.data_loading.DatasetLoader import DatasetLoader
+
+    llm_dataset_loader = DatasetLoader(card=input_data['card'],
+                                       template=template,
+                                       system_format=input_data['system_format'],
+                                       demos_taken_from='train' if input_data[
+                                                                       'num_demos'] < 1 else 'validation',
+                                       num_demos=input_data['num_demos'],
+                                       demos_pool_size=input_data['demos_pool_size'],
+                                       max_instances=input_data['max_instances'],
+                                       template_name=template_name)
+    llm_dataset = llm_dataset_loader.load()
+    dataset = llm_dataset.dataset
+
+    converted_data = convert_dataset(dataset, input_data, template_data)
 
     with open('converted_data.json', 'w') as f:
         json.dump(converted_data, f, indent=2)

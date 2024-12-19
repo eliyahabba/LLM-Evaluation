@@ -129,6 +129,9 @@ class Constants:
         DEMOS_TAKEN_FROM = "validation"
         BATCH_SIZE = 2
 
+        MODELS_METADATA_FILE  = "models_metadata.json"
+        MODELS_METADATA_PATH = Path(__file__).parent / MODELS_METADATA_FILE
+
     class McNemarTestConstants:
         ALPHA = 0.05
 

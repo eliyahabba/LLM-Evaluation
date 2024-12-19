@@ -1,0 +1,268 @@
+{
+    "mistralai/Mistral-7B-Instruct-v0.1": {
+        "ModelInfo": {
+            "name": "Mistral-7B-Instruct-v0.1",
+            "family": "mistral"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 32768,
+            "is_instruct": true,
+            "hf_path": "mistralai/Mistral-7B-Instruct-v0.1",
+            "revision": null
+        }
+    },
+    "mistralai/Mistral-7B-Instruct-v0.2": {
+        "ModelInfo": {
+            "name": "Mistral-7B-Instruct-v0.2",
+            "family": "mistral"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 32768,
+            "is_instruct": true,
+            "hf_path": "mistralai/Mistral-7B-Instruct-v0.2",
+            "revision": null
+        }
+    },
+    "mistralai/Mistral-7B-Instruct-v0.3": {
+        "ModelInfo": {
+            "name": "Mistral-7B-Instruct-v0.3",
+            "family": "mistral"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 32768,
+            "is_instruct": true,
+            "hf_path": "mistralai/Mistral-7B-Instruct-v0.3",
+            "revision": null
+        }
+    },
+    "meta-llama/Llama-2-7b-chat-hf": {
+        "ModelInfo": {
+            "name": "Llama-2-7b-chat",
+            "family": "llama"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 4096,
+            "is_instruct": true,
+            "hf_path": "meta-llama/Llama-2-7b-chat-hf",
+            "revision": null
+        }
+    },
+    "meta-llama/Llama-2-13b-chat-hf": {
+        "ModelInfo": {
+            "name": "Llama-2-13b-chat",
+            "family": "llama"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 13000000000,
+            "context_window": 4096,
+            "is_instruct": true,
+            "hf_path": "meta-llama/Llama-2-13b-chat-hf",
+            "revision": null
+        }
+    },
+    "meta-llama/Llama-2-70b-chat-hf": {
+        "ModelInfo": {
+            "name": "Llama-2-70b-chat",
+            "family": "llama"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 70000000000,
+            "context_window": 4096,
+            "is_instruct": true,
+            "hf_path": "meta-llama/Llama-2-70b-chat-hf",
+            "revision": null
+        }
+    },
+    "meta-llama/Meta-Llama-3-8B-Instruct": {
+        "ModelInfo": {
+            "name": "Meta-Llama-3-8B-Instruct",
+            "family": "llama"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 8000000000,
+            "context_window": 8192,
+            "is_instruct": true,
+            "hf_path": "meta-llama/Meta-Llama-3-8B-Instruct",
+            "revision": null
+        }
+    },
+    "meta-llama/Llama-2-7b-hf": {
+        "ModelInfo": {
+            "name": "Llama-2-7b",
+            "family": "llama"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 4096,
+            "is_instruct": false,
+            "hf_path": "meta-llama/Llama-2-7b-hf",
+            "revision": null
+        }
+    },
+    "meta-llama/Llama-2-13b-hf": {
+        "ModelInfo": {
+            "name": "Llama-2-13b",
+            "family": "llama"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 13000000000,
+            "context_window": 4096,
+            "is_instruct": false,
+            "hf_path": "meta-llama/Llama-2-13b-hf",
+            "revision": null
+        }
+    },
+    "google/gemma-7b-it": {
+        "ModelInfo": {
+            "name": "Gemma-7b-it",
+            "family": "gemma"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 8192,
+            "is_instruct": true,
+            "hf_path": "google/gemma-7b-it",
+            "revision": null
+        }
+    },
+    "google/gemma-2b-it": {
+        "ModelInfo": {
+            "name": "Gemma-2b-it",
+            "family": "gemma"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 2000000000,
+            "context_window": 8192,
+            "is_instruct": true,
+            "hf_path": "google/gemma-2b-it",
+            "revision": null
+        }
+    },
+    "google/gemma-2-9b-it": {
+        "ModelInfo": {
+            "name": "Gemma-2-9b-it",
+            "family": "gemma"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 9000000000,
+            "context_window": 8192,
+            "is_instruct": true,
+            "hf_path": "google/gemma-2-9b-it",
+            "revision": null
+        }
+    },
+    "google/gemma-2-27b-it": {
+        "ModelInfo": {
+            "name": "Gemma-2-27b-it",
+            "family": "gemma"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 27000000000,
+            "context_window": 8192,
+            "is_instruct": true,
+            "hf_path": "google/gemma-2-27b-it",
+            "revision": null
+        }
+    },
+    "microsoft/phi-2": {
+        "ModelInfo": {
+            "name": "Phi-2",
+            "family": "phi"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 2700000000,
+            "context_window": 2048,
+            "is_instruct": false,
+            "hf_path": "microsoft/phi-2",
+            "revision": null
+        }
+    },
+    "microsoft/Phi-3-medium-4k-instruct": {
+        "ModelInfo": {
+            "name": "Phi-3-medium-4k-instruct",
+            "family": "phi"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 4096,
+            "is_instruct": true,
+            "hf_path": "microsoft/Phi-3-medium-4k-instruct",
+            "revision": null
+        }
+    },
+    "microsoft/Phi-3-small-8k-instruct": {
+        "ModelInfo": {
+            "name": "Phi-3-small-8k-instruct",
+            "family": "phi"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 3800000000,
+            "context_window": 8192,
+            "is_instruct": true,
+            "hf_path": "microsoft/Phi-3-small-8k-instruct",
+            "revision": null
+        }
+    },
+    "microsoft/Phi-3-mini-4k-instruct": {
+        "ModelInfo": {
+            "name": "Phi-3-mini-4k-instruct",
+            "family": "phi"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 1800000000,
+            "context_window": 4096,
+            "is_instruct": true,
+            "hf_path": "microsoft/Phi-3-mini-4k-instruct",
+            "revision": null
+        }
+    },
+    "allenai/OLMo-7B-Instruct-hf": {
+        "ModelInfo": {
+            "name": "OLMo-7B-Instruct",
+            "family": "olmo"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 2048,
+            "is_instruct": true,
+            "hf_path": "allenai/OLMo-7B-Instruct-hf",
+            "revision": null
+        }
+    },
+    "allenai/OLMo-1.7-7B-hf": {
+        "ModelInfo": {
+            "name": "OLMo-1.7-7B",
+            "family": "olmo"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 2048,
+            "is_instruct": false,
+            "hf_path": "allenai/OLMo-1.7-7B-hf",
+            "revision": null
+        }
+    }
+}

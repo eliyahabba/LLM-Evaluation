@@ -80,3 +80,32 @@ class Utils:
         @return: The model name.
         """
         return model_name.split('/')[-1]
+
+    @staticmethod
+    def word_to_number(word):
+        """
+        Convert a number word to its integer value.
+        Raises ValueError if the word is not a valid number word.
+        """
+        number_dict = {
+            "zero": 0,
+            "one": 1,
+            "two": 2,
+            "three": 3,
+            "four": 4,
+            "five": 5,
+            "six": 6,
+            "seven": 7,
+            "eight": 8,
+            "nine": 9,
+            "ten": 10
+        }
+
+        # Convert input to lowercase for case-insensitive matching
+        word = word.lower()
+
+        # Check if the word exists in our dictionary
+        if word in number_dict:
+            return number_dict[word]
+        else:
+            raise ValueError(f"Invalid number word: {word}")
