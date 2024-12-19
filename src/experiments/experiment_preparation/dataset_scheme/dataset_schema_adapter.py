@@ -1,13 +1,15 @@
-import json
-from typing import Dict, List, Any
-import re
 import hashlib
 import json
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any
+
+from src.utils.Constants import Constants
+from src.utils.Utils import Utils
+
 
 def create_hash(text: str) -> str:
     """Create a hash of the input text."""
     return hashlib.sha256(text.encode()).hexdigest()
+
 
 def create_sample_identifier(card_name: str, split: str, idx) -> Dict[str, Any]:
     """Create sample identifier from card name."""
@@ -20,35 +22,38 @@ def create_sample_identifier(card_name: str, split: str, idx) -> Dict[str, Any]:
     }
 
 
-def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], template: Dict[str, Any]) -> List[Dict[str, Any]]:
+def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], template: Dict[str, Any]) -> List[
+    Dict[str, Any]]:
     """Convert a single sample to the schema format."""
 
     # Helper to generate fake token IDs (for demonstration)
     def generate_token_ids(length: int) -> List[int]:
         return list(range(1000, 1000 + length))
 
-    # Helper to create token logprobs
-    def create_token_logprobs(response: str) -> List[Dict[str, Any]]:
+    # Helper to create token LogProbs
+    def create_token_LogProbs(response: str) -> List[Dict[str, Any]]:
         tokens = response.split()[:3]  # Take first 3 tokens for example
         result = []
         for token in tokens:
-            logprob_entry = {
+            LogProb_entry = {
                 "token": token,
                 "token_id": generate_token_ids(1)[0],
                 "top_5": []
             }
             # Create top 5 predictions
             for rank in range(1, 6):
-                logprob_entry["top_5"].append({
+                LogProb_entry["top_5"].append({
                     "token": f"{token}_{rank}",
                     "token_id": generate_token_ids(1)[0],
-                    "logprob": -0.1 * rank,
+                    "LogProb": -0.1 * rank,
                     "rank": rank
                 })
-            result.append(logprob_entry)
+            result.append(LogProb_entry)
         return result
 
     # Process each result
+    with open(Constants.ExperimentConstants.MODELS_METADATA_PATH, 'r') as f:
+        models_metadata = json.load(f)
     samples = []
     for idx, result in enumerate(data["results"]["test"]):
         instance_text = result["Instance"]
@@ -63,79 +68,89 @@ def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], temp
         question = eval(sample['task_data'])['question']
         options = eval(sample['task_data'])['options']
         choices = eval(sample['task_data'])['choices']
-        choices = [(option.split(".")[0], choice) for option,choice in zip(options, choices)]
+        choices = [(option.split(".")[0], choice) for option, choice in zip(options, choices)]
         samples.append(
-        {
-            "EvaluationId": create_hash(instance_text),
-            "Model": {
-                "Name": data["model_name"],
-                "Quantization": {
-                    "QuantizationBit": "8bit",
-                    "QuantizationMethod": "dynamic"
-                },
-                "GenerationArgs": {
-                    "max_tokens": max_new_tokens,
-                    "do_sample": False,
-                    "top_p": 1,
-                    "temperature": 0
-                }
+            {
+                "EvaluationId": create_hash(instance_text),
+                "Model": {
+                    "Name": data["model_name"],
+                    "Quantization": {
+                        "QuantizationBit": "8bit",
+                        "QuantizationMethod": "dynamic"
+                    },
+                    "GenerationArgs": {
+                        "max_tokens": max_new_tokens,
+                        "do_sample": False,
+                        "top_p": 1,
+                        "temperature": 0
+                    }
 
-            },
-            "Prompt": {
-                "Instruct Template": template["input_format"],
-                "Separator": template["choices_separator"],
-                "Enumerator": template["enumerator"],
-                "ShuffleChoices": template["shuffle_choices"],
-                "Shots": "zero",
-                "TokenIds": None
-                    # generate_token_ids(10)
-            },
-            "Instance": {
-                "TaskType" : "classification",
-                "RawInput": question,
-                "SampleIdentifier": create_sample_identifier(data["card"], "test", idx),
-                "Perplexity": perplexity,
-                "ClassificationFields": {
-                "Topic": data["card"].split('.')[-1],  # e.g., 'abstract_algebra'
-                "FullInput": instance_text,
-                "Question": question,
-                "Choices": [{
-                    "id": choice[0],
-                    "text": choice[1]
-                } for choice in choices],  # Example format
-                "GroundTruth": result["GroundTruth"]
-                }
-            },
-            "Output": {
-                "Response": response,
-                "CumulativeLogprob": None,
+                },
+                "Prompt": {
+                    "Template": template["input_format"],
+                    "Separator": template["choices_separator"],
+                    "Enumerator": template["enumerator"],
+                    "ShuffleChoices": template["shuffle_choices"],
+                    "Shots": Utils.word_to_number("zero"),
+                    "TokenIds": None
+                },
+                "Instance": {
+                    "TaskType": "classification",
+                    "RawInput": question,
+                    "SampleIdentifier": create_sample_identifier(data["card"], "test", idx),
+                    "Perplexity": perplexity,
+                    "ClassificationFields": {
+                        "Topic": data["card"].split('.')[-1],  # e.g., 'abstract_algebra'
+                        "FullInput": instance_text,
+                        "Question": question,
+                        "Choices": [{
+                            "id": choice[0],
+                            "text": choice[1]
+                        } for choice in choices],  # Example format
+                        "GroundTruth":
+                            {
+                                "id": result["GroundTruth"].split(".")[0],
+                                "text": choices[eval(sample['task_data'])["answer"]][1]
+                            }
+                    }
+                },
+                "Output": {
+                    "Response": response,
+                    "CumulativeLogProb": None,
                     # -2.34,  # Example value
-                "GeneratedTokenIds": None ,
+                    "GeneratedTokensIds": None,
                     # generate_token_ids(len(response.split())),
-                "TokenLogprobs": None ,
-                # create_token_logprobs(response),
-                "MaxProb": response.split()[0]  # Taking first token as max prob answer
-            },
-            "Evaluation": {
-                "GroundTruth": result["GroundTruth"],
-                "Score": result["Score"]
+                    "GeneratedTokensLogProbs": None,
+                    # create_token_LogProbs(response),
+                    "MaxProb": response.split()[0]  # Taking first token as max prob answer
+                },
+                "Evaluation": {
+                    "EvaluationMethod": "content_similarity",
+                    "GroundTruth": result["GroundTruth"],
+                    "Score": result["Score"]
+                }
             }
-        }
         )
     return samples
+
+
 def convert_dataset(dataset, input_data: Dict[str, Any], template_data: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Convert entire dataset to new format."""
     # convert_dataseted_samples = []
-    max_new_tokens = max([len(instance["target"].split()) for instance in dataset['test']])*2
-    samples = convert_to_schema_format(dataset,max_new_tokens, input_data, template_data)
+    max_new_tokens = max([len(instance["target"].split()) for instance in dataset['test']]) * 2
+    samples = convert_to_schema_format(dataset, max_new_tokens, input_data, template_data)
     return samples
 
 
 # Usage example:
 if __name__ == "__main__":
-    with open('/Users/ehabba/PycharmProjects/LLM-Evaluation/results/MultipleChoiceTemplatesInstructions/Mistral-7B-Instruct-v0.2/mmlu.abstract_algebra/zero_shot/empty_system_format/experiment_template_0.json', 'r') as f:
+    with open(
+            '/Users/ehabba/PycharmProjects/LLM-Evaluation/results/MultipleChoiceTemplatesInstructions/Mistral-7B-Instruct-v0.2/mmlu.abstract_algebra/zero_shot/empty_system_format/experiment_template_0.json',
+            'r') as f:
         input_data = json.load(f)
-    with open('/Users/ehabba/PycharmProjects/LLM-Evaluation/Data/MultipleChoiceTemplatesStructured/mmlu.abstract_algebra/template_0.json', 'r') as f:
+    with open(
+            '/Users/ehabba/PycharmProjects/LLM-Evaluation/Data/MultipleChoiceTemplatesStructured/mmlu.abstract_algebra/template_0.json',
+            'r') as f:
         template_data = json.load(f)
 
     converted_data = convert_dataset(input_data, template_data)
