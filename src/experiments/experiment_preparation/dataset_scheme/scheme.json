@@ -362,15 +362,49 @@
             "required": ["GroundTruth", "Score"],
             "properties": {
                 "EvaluationMethod": {
-                    "type": "string",
-                    "description": "Method used to evaluate the answer",
-                    "enum": [
-                        "label_only_match",
-                        "content_similarity"
-                    ],
-                    "enumDescriptions": {
-                       "label_only_match": "Compares only the choice identifier/label",
-                        "content_similarity": "Finds the most similar answer among the given choices by comparing the textual content"
+                    "type": "object",
+                    "description": "Method used to evaluate the answer, including predefined methods and user-defined methods.",
+                    "properties": {
+                        "method_name": {
+                            "type": "string",
+                            "description": "Name of the evaluation method. Can be a predefined method or a user-defined method."
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Detailed explanation of how the evaluation method works. For user-defined methods, this is required."
+                        },
+                        "parameters": {
+                            "type": "object",
+                            "description": "Optional parameters used by the evaluation method. Allows custom configuration.",
+                            "additionalProperties": true
+                        }
+                    },
+                    "required": ["method_name", "description"],
+                    "if": {
+                        "properties": {
+                            "method_name": {
+                                "enum": ["label_only_match", "content_similarity"]
+                            }
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "description": {
+                                "type": "string",
+                                "enum": [
+                                    "Compares only the choice identifier/label to evaluate the response.",
+                                    "Finds the most similar answer among the given choices by comparing the textual content"
+                                ]
+                            }
+                        }
+                    },
+                    "else": {
+                        "properties": {
+                            "description": {
+                                "type": "string",
+                                "description": "Explanation of the custom evaluation method."
+                            }
+                        }
                     }
                 },
                 "GroundTruth": {

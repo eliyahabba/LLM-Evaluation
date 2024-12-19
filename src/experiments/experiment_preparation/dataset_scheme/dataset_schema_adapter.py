@@ -148,7 +148,10 @@ def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], temp
                 "MaxProb": response.split()[0]
             },
             "Evaluation": {
-                "EvaluationMethod": "content_similarity",
+                "EvaluationMethod": {
+                    "method_name": "content_similarity",
+                    "description": "Finds the most similar answer among the given choices by comparing the textual content"
+                },
                 "GroundTruth": result["GroundTruth"],
                 "Score": result["Score"]
             }

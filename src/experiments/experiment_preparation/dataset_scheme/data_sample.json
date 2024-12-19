@@ -1,16 +1,30 @@
 {
-    "EvaluationId": "123456",
+    "EvaluationId": "173adc56265187372225049bc1ecb85e0c49dc5dd5df529f50bec994d44426a4",
     "Model": {
-        "Name": "Llama-2-13b-chat-hf",
-        "Quantization": {
-            "QuantizationBit": "8bit",
-            "QuantizationMethod": "dynamic"
+      "ModelInfo": {
+        "name": "Mistral-7B-Instruct-v0.2",
+        "family": "mistral"
+      },
+      "Configuration": {
+        "architecture": "transformer",
+        "parameters": 7000000000,
+        "context_window": 32768,
+        "is_instruct": true,
+        "hf_path": "mistralai/Mistral-7B-Instruct-v0.2",
+        "revision": null
+      },
+      "InferenceSettings": {
+        "quantization": {
+          "bit_precision": "8bit",
+          "method": "dynamic"
         },
-        "GenerationArgs": {
-            "temperature": 0,
-            "max_tokens": 15,
-            "top_p": 1
+        "generation_args": {
+          "max_tokens": 32,
+          "temperature": 0,
+          "top_p": 1,
+          "use_vllm": true
         }
+      }
     },
     "Prompt": {
         "promptClass": "MultipleChoice",
@@ -103,7 +117,10 @@
         "MaxProb": "B"
     },
     "Evaluation": {
-        "EvaluationMethod": "content_similarity",
+        "EvaluationMethod": {
+              "method_name": "content_similarity",
+              "description": "Finds the most similar answer among the given choices by comparing the textual content"
+        },
         "GroundTruth": "A",
         "Score": 0.0
     }
