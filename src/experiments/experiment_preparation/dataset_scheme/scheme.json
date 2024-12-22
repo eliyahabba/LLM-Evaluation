@@ -359,7 +359,7 @@
         "Evaluation": {
             "type": "object",
             "description": "Evaluation metrics and ground truth",
-            "required": ["GroundTruth", "Score"],
+            "required": ["GroundTruth", "EvaluationMethod", "Score"],
             "properties": {
                 "EvaluationMethod": {
                     "type": "object",
