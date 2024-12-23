@@ -129,6 +129,7 @@ class MetaHistogramOfSamples:
         # Implementation to display details for each example
         example_data = MetaHistogramCalculator.extract_example_data(examples)
         self.display_bar_chart(example_data)
+        self.display_bar_chart_precentages(example_data) # Precentage Chart 
         self.display_text_examples(example_data)
 
     def display_bar_chart(self, example_data):
@@ -139,6 +140,37 @@ class MetaHistogramOfSamples:
         fig.update_traces(texttemplate='%{y}', textposition='outside')
         fig.update_layout(xaxis_tickangle=-45)
         st.plotly_chart(fig)
+    def get_number_of_examples_per_topic(self, dataset_size_path='../../Data/datasets_sizes.csv'):
+        df = pd.read_csv(dataset_size_path)
+        return dict(zip(df['Name'], df['test']))
+
+    def display_bar_chart_precentages(self, example_data):
+        try:
+            dataset_size = self.get_number_of_examples_per_topic()
+            current_count = example_data['dataset'].value_counts()
+
+            percentages = {
+                dataset: (current_count[dataset] / dataset_size[dataset] * 100)
+                for dataset in current_count.index
+                if dataset in dataset_size
+            }
+
+            percentage_series = pd.Series(
+                percentages).sort_values(ascending=False)
+
+            fig = px.bar(
+                x=percentage_series.index,
+                y=percentage_series.values,
+                labels={'x': 'Dataset', 'y': 'Percentage of Examples'},
+                title='Percentage of examples in the selected range from total e',
+            )
+
+            fig.update_traces(texttemplate='%{y:.0f}', textposition='outside')
+            fig.update_layout(xaxis_tickangle=-45)
+            st.plotly_chart(fig)
+
+        except Exception as e:
+            st.error(f"Error generating chart: {str(e)}")
 
     def display_text_examples(self, example_data):
         dataset = st.selectbox("Select dataset", example_data['dataset'].unique())
