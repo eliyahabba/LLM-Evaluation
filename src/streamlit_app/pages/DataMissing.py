@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -19,11 +20,7 @@ class DataMissing:
 
     def read_data(self):
         # add bottom to the side bar to slecet the summarize df path
-        data_folders = [
-            TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_FOLDER_NAME,
-            TemplatesGeneratorConstants.MULTIPLE_CHOICE_STRUCTURED_TOPIC_FOLDER_NAME,
-            TemplatesGeneratorConstants.MULTIPLE_CHOICE_INSTRUCTIONS_FOLDER_NAME
-        ]
+        data_folders = os.listdir(self.results_path )
         results_folder = st.sidebar.selectbox("Select the summarize df path", data_folders)
         self.summarize_df_path = self.results_path / results_folder / self.summarize_df_name
         self.df = pd.read_csv(self.summarize_df_path, index_col=[0, 1, 2, 3])
