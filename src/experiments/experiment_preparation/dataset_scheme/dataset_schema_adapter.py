@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from typing import List, Dict, Any
 
+from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 
 
@@ -81,7 +82,7 @@ def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], temp
         options = eval(sample['task_data'])['options']
         choices = eval(sample['task_data'])['choices']
         choices = [(option.split(".")[0], choice) for option, choice in zip(options, choices)]
-        samples.append({
+        sample = {
             "EvaluationId": create_hash(instance_text),
             "Model": {
                 "ModelInfo": model_metadata.get("ModelInfo", {
@@ -155,7 +156,8 @@ def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], temp
                 "GroundTruth": result["GroundTruth"],
                 "Score": result["Score"]
             }
-        })
+        }
+        samples.append(sample)
     return samples
 
 
@@ -179,7 +181,6 @@ if __name__ == "__main__":
         template_data = json.load(f)
 
     template_name = input_data['template_name']
-    from src.utils.Constants import Constants
 
     if template_name.startswith('template_'):
         template_name = "MultipleChoiceTemplatesInstructionsWithoutTopic/enumerator_capitals_choicesSeparator_comma_shuffleChoices_False"

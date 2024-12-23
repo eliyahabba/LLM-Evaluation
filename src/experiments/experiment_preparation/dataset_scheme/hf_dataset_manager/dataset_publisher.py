@@ -1,3 +1,5 @@
+import tempfile
+import time
 from pathlib import Path
 
 from datasets import Features, Sequence, Value
@@ -133,6 +135,82 @@ def filter_duplicates(data: List[dict], existing_ids: Set[str]) -> List[dict]:
     duplicates = len(data) - len(filtered_data)
     print(f"Found {duplicates} duplicate examples")
     return filtered_data
+
+
+def check_and_upload_file_to_huggingface(
+        data: List[dict],
+        repo_name: str,
+        token: str,
+        private: bool = False,
+        file_name: str = None
+) -> None:
+    """
+    Main function to check for duplicates and upload dataset.
+
+    Args:
+        data: List of data items to upload
+        repo_name: Name for the HuggingFace repository
+        token: HuggingFace API token
+        private: Whether to create a private repository
+    """
+    try:
+        create_repo(
+            repo_id=repo_name,
+            token=token,
+            private=private,
+            repo_type="dataset"
+        )
+    except Exception as e:
+        print(f"Repository already exists or error occurred: {e}")
+
+    # Load existing dataset and get IDs
+    existing_ids, _ = load_existing_dataset(repo_name)
+
+    # Filter duplicates
+    filtered_data = filter_duplicates(data, existing_ids)
+
+    if not filtered_data:
+        print("No new data to upload")
+        return
+    # Create repository if it doesn't exist
+    # Convert to dataset
+    split_data = defaultdict(list)
+    data = filtered_data
+    for item in data:
+        split = item['Instance']['SampleIdentifier']['split']
+        split_data[split].append(item)
+
+    # Create datasets for each split
+    datasets = {
+        split: Dataset.from_list(items)
+        for split, items in split_data.items()
+    }
+
+    dataset_dict = DatasetDict(datasets)
+    api = HfApi()
+    try:
+        api.create_repo(
+            repo_id=repo_name,
+            token=token,
+            repo_type="dataset",
+            private=private
+        )
+    except Exception as e:
+        print(f"Repository already exists or error occurred: {e}")
+
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as tmp:
+        for split_name, dataset in dataset_dict.items():
+            dataset.to_json(tmp.name)
+
+        timestamp = int(time.time())
+        file_name = file_name or f"data"
+        api.upload_file(
+            path_or_fileobj=tmp.name,
+            path_in_repo=f"{file_name}_{timestamp}.json",
+            repo_id=repo_name,
+            repo_type="dataset",
+            token=token
+        )
 
 
 def check_and_upload_to_huggingface(
