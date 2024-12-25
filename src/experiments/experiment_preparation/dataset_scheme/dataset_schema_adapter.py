@@ -136,7 +136,7 @@ def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], temp
                         "text": choice[1]
                     } for choice in choices],
                     "GroundTruth": {
-                        "id": result["GroundTruth"].split(".")[0],
+                        "id": choices[eval(sample['task_data'])["answer"]][0],
                         "text": choices[eval(sample['task_data'])["answer"]][1]
                     }
                 }
@@ -222,4 +222,4 @@ if __name__ == "__main__":
     converted_data = convert_dataset(dataset, input_data, template_data)
 
     with open('converted_data.json', 'w') as f:
-        json.dump(converted_data, f, indent=2)
+        json.dump(converted_data, f, indent=4)
