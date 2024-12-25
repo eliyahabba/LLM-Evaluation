@@ -2,7 +2,7 @@ import argparse
 import itertools
 import os
 from enum import Enum
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 
 
 class BaseConfig:
@@ -201,6 +201,26 @@ class BaseConfig:
                 for model_info in configs[family].values()
             ]
 
+        @classmethod
+        def get_model_family(cls, model_path: str) -> Optional[str]:
+            """
+            Find the model family for a given model path.
+
+            Args:
+                model_path: The full path of the model (e.g., 'meta-llama/Llama-3.2-1B-Instruct')
+
+            Returns:
+                str: The model family name if found, None otherwise
+            """
+            configs = cls.get_configs()
+
+            # Iterate through each family and its models
+            for family, models in configs.items():
+                # Check if the model path exists in any of the family's models
+                if any(model_info["path"] == model_path for model_info in models.values()):
+                    return family
+
+            return None
 
 def run_experiment(local_catalog_path: str):
     """Run the experiment with given configuration"""
