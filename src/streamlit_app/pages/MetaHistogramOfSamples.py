@@ -21,6 +21,9 @@ MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
 
 class MetaHistogramOfSamples:
+    def __init__(self, dataset_sizes_path):
+
+        self.dataset_sizes_path = dataset_sizes_path
 
     def display_page(self):
         st.title("Histogram of Samples")
@@ -129,7 +132,7 @@ class MetaHistogramOfSamples:
         # Implementation to display details for each example
         example_data = MetaHistogramCalculator.extract_example_data(examples)
         self.display_bar_chart(example_data)
-        self.display_bar_chart_precentages(example_data) # Precentage Chart 
+        self.display_bar_chart_precentages(example_data)  # Precentage Chart
         self.display_text_examples(example_data)
 
     def display_bar_chart(self, example_data):
@@ -140,8 +143,9 @@ class MetaHistogramOfSamples:
         fig.update_traces(texttemplate='%{y}', textposition='outside')
         fig.update_layout(xaxis_tickangle=-45)
         st.plotly_chart(fig)
-    def get_number_of_examples_per_topic(self, dataset_size_path='../../Data/datasets_sizes.csv'):
-        df = pd.read_csv(dataset_size_path)
+
+    def get_number_of_examples_per_topic(self):
+        df = pd.read_csv(self.dataset_sizes_path)
         return dict(zip(df['Name'], df['test']))
 
     def display_bar_chart_precentages(self, example_data):
@@ -240,5 +244,6 @@ class MetaHistogramOfSamples:
 
 
 if __name__ == '__main__':
-    hos = MetaHistogramOfSamples()
+    dataset_sizes_path = Constants.TemplatesGeneratorConstants.DATASET_SIZES_PATH
+    hos = MetaHistogramOfSamples(dataset_sizes_path)
     hos.display_page()
