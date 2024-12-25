@@ -97,6 +97,34 @@
             "revision": null
         }
     },
+    "meta-llama/Llama-3.2-3B-Instruct": {
+        "ModelInfo": {
+            "name": "Llama-3.2-3B-Instruct",
+            "family": "llama"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 3000000000,
+            "context_window": 131072,
+            "is_instruct": true,
+            "hf_path": "meta-llama/Llama-3.2-3B-Instruct",
+            "revision": null
+        }
+    },
+    "meta-llama/Llama-3.2-1B-Instruct": {
+        "ModelInfo": {
+            "name": "Llama-3.2-1B-Instruct",
+            "family": "llama"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 1000000000,
+            "context_window": 131072,
+            "is_instruct": true,
+            "hf_path": "meta-llama/Llama-3.2-1B-Instruct",
+            "revision": null
+        }
+    },
     "meta-llama/Llama-2-7b-hf": {
         "ModelInfo": {
             "name": "Llama-2-7b",
@@ -262,6 +290,20 @@
             "context_window": 2048,
             "is_instruct": false,
             "hf_path": "allenai/OLMo-1.7-7B-hf",
+            "revision": null
+        }
+    },
+    "allenai/OLMoE-1B-7B-0924-Instruct": {
+        "ModelInfo": {
+            "name": "OLMoE-1B-7B-0924-Instruct",
+            "family": "olmo"
+        },
+        "Configuration": {
+            "architecture": "transformer",
+            "parameters": 7000000000,
+            "context_window": 4096,
+            "is_instruct": false,
+            "hf_path": "allenai/OLMoE-1B-7B-0924-Instruct",
             "revision": null
         }
     }
