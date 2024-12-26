@@ -150,7 +150,7 @@
                                 "separator": {
                                     "type": "string",
                                     "description": "Character(s) used to separate multiple choice options",
-                                    "enum": [" ", "\n", ", ", "; ", " | ", " OR ", " or "]
+                                    "enum": ["\\s", "\n", ", ", "; ", " | ", " OR ", " or "]
                                 },
                                 "enumerator": {
                                     "type": "string",
@@ -439,7 +439,7 @@
                                             "items": {
                                                 "type": "object",
                                                 "properties": {
-                                                    "logprob": {
+                                                    "log_prob": {
                                                         "type": "number",
                                                         "description": "Log probability of the token"
                                                     },
@@ -452,7 +452,7 @@
                                                         "description": "The decoded string representation of the token"
                                                     }
                                                 },
-                                                "required": ["logprob", "rank", "decoded_token"]
+                                                "required": ["log_prob", "rank", "decoded_token"]
                                             }
                                         }
                                     },
@@ -493,7 +493,7 @@
                             "^[0-9]+$": {
                                 "type": "object",
                                 "properties": {
-                                    "logprob": {
+                                    "log_prob": {
                                         "type": "number",
                                         "description": "Log probability of the token"
                                     },
@@ -508,7 +508,7 @@
                                         "description": "The decoded string representation of the token"
                                     }
                                 },
-                                "required": ["logprob", "rank", "decoded_token"]
+                                "required": ["log_prob", "rank", "decoded_token"]
                             }
                         },
                         "additionalProperties": false
