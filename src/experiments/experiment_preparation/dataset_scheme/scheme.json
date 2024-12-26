@@ -24,7 +24,7 @@
                         },
                         "family": {
                             "type": ["string", "null"],
-                            "enum": ["llama", "mistral", "gemma", "gpt", "palm", "claude", "falcon", null],
+                            "enum": ["Llama", "Mistral", "OLMo","gemma", "gpt", "palm", "claude", "falcon", "Qwen",null],
                             "description": "Model family"
                         }
                     }
@@ -74,12 +74,12 @@
                             "properties": {
                                 "bit_precision": {
                                     "type": "string",
-                                    "enum": ["none", "4bit", "8bit", "16bit"],
+                                    "enum": ["none", "int8", "int4", "float16","float32"],
                                     "description": "Quantization bit precision"
                                 },
                                 "method": {
                                     "type": "string",
-                                    "enum": ["none", "dynamic", "static"],
+                                    "enum": ["None", "dynamic", "static"],
                                     "description": "Quantization method"
                                 }
                             }
@@ -92,20 +92,15 @@
                                     "description": "Whether VLLM was used for inference"
                                 },
                                 "temperature": {
-                                    "type": "number",
-                                    "minimum": 0,
-                                    "maximum": 2,
+                                    "type": ["null","number"],
                                     "description": "Sampling temperature"
                                 },
                                 "top_p": {
-                                    "type": "number",
-                                    "minimum": 0,
-                                    "maximum": 1,
+                                    "type": ["null","number"],
                                     "description": "Nucleus sampling parameter"
                                 },
                                 "top_k": {
-                                    "type": "integer",
-                                    "minimum": 1,
+                                    "type": ["null","number"],
                                     "description": "Top-k sampling parameter"
                                 },
                                 "max_tokens": {
@@ -127,7 +122,7 @@
                 }
             }
         },
-        "Prompt": {
+        "PromptConfig": {
             "type": "object",
             "description": "Configuration of the prompt template and formatting",
             "required": ["promptClass", "format"],
@@ -171,17 +166,57 @@
                                     "description": "Number of examples provided in the prompt",
                                     "minimum": 0,
                                     "maximum": 10
+                                },
+                                "demos": {
+                                    "type": ["array", "null"],
+                                    "description": "Array of demonstration examples used in few-shot prompting",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "topic": {
+                                                "type": "string",
+                                                "description": "Topic of the demonstration example"
+                                            },
+                                            "question": {
+                                                "type": "string",
+                                                "description": "Question text"
+                                            },
+                                            "choices": {
+                                                "type": "array",
+                                                "description": "Array of all multiple choice options",
+                                                "items": {
+                                                    "type": "object",
+                                                    "required": ["id", "text"],
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "description": "Choice identifier (e.g., 'A', '1', etc.)"
+                                                        },
+                                                        "text": {
+                                                            "type": "string",
+                                                            "description": "Choice text"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "answer": {
+                                                "type": "integer",
+                                                "description": "Index of correct answer"
+                                            }
+                                        },
+                                        "required": ["topic", "question", "choices", "answer"]
+                                    }
                                 }
                             }
                         }
                     ]
                 }
             }
-    },
+        },
         "Instance": {
             "type": "object",
             "description": "Specific instance and its metadata",
-            "required": ["TaskType", "RawInput", "SampleIdentifier", "TokenIds","Perplexity"],
+            "required": ["TaskType", "RawInput", "SampleIdentifier","Perplexity"],
             "additionalProperties": true,
             "properties": {
                 "TaskType": {
@@ -190,8 +225,24 @@
                     "enum": ["classification", "generation"]
                 },
                 "RawInput": {
-                    "type": "string",
-                    "description": "Original input text as it appears in the dataset, without any formatting or prompting"
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "description": "Original input text as it appears in the dataset, without any formatting or prompting"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "role": { "type": "string" },
+                                    "content": { "type": "string" }
+                                },
+                                "required": ["role", "content"]
+                            },
+                            "description": "Array of conversation turns with roles and content"
+                        }
+                    ]
                 },
                 "SampleIdentifier": {
                     "type": "object",
@@ -279,13 +330,58 @@
                             }
                         }
                     }
+                },
+                "PromptLogProbs": {
+                    "type": "array",
+                    "description": "Array of token probability data, with first element being 'None' and subsequent elements being arrays of token information",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": ["null","string"]
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token_index": {
+                                            "type": "string",
+                                            "description": "Index position of the token in the sequence"
+                                        },
+                                        "tokens": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "logprob": {
+                                                        "type": "number",
+                                                        "description": "Log probability of the token"
+                                                    },
+                                                    "rank": {
+                                                        "type": "integer",
+                                                        "description": "Rank of the token in the model's vocabulary"
+                                                    },
+                                                    "decoded_token": {
+                                                        "type": "string",
+                                                        "description": "The decoded string representation of the token"
+                                                    }
+                                                },
+                                                "required": ["logprob", "rank", "decoded_token"]
+                                            }
+                                        }
+                                    },
+                                    "required": ["token_index", "tokens"]
+                                }
+                            }
+                        ]
+                    }
                 }
             }
         },
         "Output": {
             "type": "object",
             "description": "Model's response and associated probability metrics",
-            "required": ["Response", "GeneratedTokensIds", "GeneratedTokensLogProbs", "MaxProb"],
+            "required": ["Response", "GeneratedTokensIds", "GeneratedTokensLogProbs"],
             "properties": {
                 "Response": {
                     "type": "string",
@@ -303,51 +399,33 @@
                     }
                 },
                 "GeneratedTokensLogProbs": {
-                    "type": ["array", "null"],
-                    "description": "Per-token probabilities and top alternatives",
+                    "type": "array",
+                    "description": "Array of token probability mappings",
                     "items": {
                         "type": "object",
-                        "required": ["token", "token_id", "top_5"],
-                        "properties": {
-                            "token": {
-                                "type": "string",
-                                "description": "The actual token string"
-                            },
-                            "token_id": {
-                                "type": "integer",
-                                "description": "ID of the token"
-                            },
-                            "top_5": {
-                                "type": "array",
-                                "description": "Top 5 most probable next tokens and their probabilities",
-                                "minItems": 5,
-                                "maxItems": 5,
-                                "items": {
-                                    "type": "object",
-                                    "required": ["token", "token_id", "LogProb"],
-                                    "properties": {
-                                        "token": {
-                                            "type": "string",
-                                            "description": "Candidate token string"
-                                        },
-                                        "token_id": {
-                                            "type": "integer",
-                                            "description": "ID of the candidate token"
-                                        },
-                                        "LogProb": {
-                                            "type": "number",
-                                            "description": "Log probability of the candidate token"
-                                        },
-                                        "rank": {
-                                            "type": "integer",
-                                            "description": "Rank of this token in the top 5 (1-5, where 1 is highest probability)",
-                                            "minimum": 1,
-                                            "maximum": 5
-                                        }
+                        "patternProperties": {
+                            "^[0-9]+$": {
+                                "type": "object",
+                                "properties": {
+                                    "logprob": {
+                                        "type": "number",
+                                        "description": "Log probability of the token"
+                                    },
+                                    "rank": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 5,
+                                        "description": "Rank of the token (1-5, where 1 is highest probability)"
+                                    },
+                                    "decoded_token": {
+                                        "type": "string",
+                                        "description": "The decoded string representation of the token"
                                     }
-                                }
+                                },
+                                "required": ["logprob", "rank", "decoded_token"]
                             }
-                        }
+                        },
+                        "additionalProperties": false
                     }
                 },
                 "MaxProb": {
