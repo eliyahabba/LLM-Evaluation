@@ -2,18 +2,18 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "description": "Schema for storing and validating LLMs evaluation data, including model configuration, prompts, instances, Output, and evaluation metrics",
-    "required": ["EvaluationId","Model", "Prompt", "Instance", "Output", "Evaluation"],
+    "required": ["evaluation_id", "model", "prompt_config", "instance", "output", "evaluation"],
     "properties": {
-        "EvaluationId": {
+        "evaluation_id": {
             "type": "string",
             "description": "Unique identifier for this specific evaluation run, including the model configuration, prompt, instance, output and evaluation results"
         },
-        "Model": {
+        "model": {
             "type": "object",
             "description": "Complete model specification including basic information, technical configuration and inference settings",
-            "required": ["ModelInfo", "Configuration", "InferenceSettings"],
+            "required": ["model_info", "configuration", "inference_settings"],
             "properties": {
-                "ModelInfo": {
+                "model_info": {
                     "type": "object",
                     "description": "Basic identifying information about the model - represents the core identity and naming of the model without technical details",
                     "required": ["name"],
@@ -24,12 +24,12 @@
                         },
                         "family": {
                             "type": ["string", "null"],
-                            "enum": ["Llama", "Mistral", "OLMo","gemma", "gpt", "palm", "claude", "falcon", "Qwen",null],
+                            "enum": ["Llama", "Mistral", "OLMo", "gemma", "gpt", "palm", "claude", "falcon", "Qwen", null],
                             "description": "Model family"
                         }
                     }
                 },
-                "Configuration": {
+                "configuration": {
                     "type": "object",
                     "description": "Technical specifications and implementation details of the model - defines how the model is structured and where it's hosted",
                     "required": ["context_window"],
@@ -63,7 +63,7 @@
                         }
                     }
                 },
-                "InferenceSettings": {
+                "inference_settings": {
                     "type": "object",
                     "description": "Runtime settings and parameters for model inference - controls how the model generates outputs and performs during execution",
                     "required": ["quantization", "generation_args"],
@@ -74,7 +74,7 @@
                             "properties": {
                                 "bit_precision": {
                                     "type": "string",
-                                    "enum": ["none", "int8", "int4", "float16","float32"],
+                                    "enum": ["none", "int8", "int4", "float16", "float32"],
                                     "description": "Quantization bit precision"
                                 },
                                 "method": {
@@ -92,15 +92,15 @@
                                     "description": "Whether VLLM was used for inference"
                                 },
                                 "temperature": {
-                                    "type": ["null","number"],
+                                    "type": ["null", "number"],
                                     "description": "Sampling temperature"
                                 },
                                 "top_p": {
-                                    "type": ["null","number"],
+                                    "type": ["null", "number"],
                                     "description": "Nucleus sampling parameter"
                                 },
                                 "top_k": {
-                                    "type": ["null","number"],
+                                    "type": ["null", "number"],
                                     "description": "Top-k sampling parameter"
                                 },
                                 "max_tokens": {
@@ -122,12 +122,12 @@
                 }
             }
         },
-        "PromptConfig": {
+        "prompt_config": {
             "type": "object",
             "description": "Configuration of the prompt template and formatting",
-            "required": ["promptClass", "format"],
+            "required": ["prompt_class", "format"],
             "properties": {
-                "promptClass": {
+                "prompt_class": {
                     "type": "string",
                     "description": "Type of prompt template and its formatting requirements",
                     "enum": ["MultipleChoice", "OpenEnded", "Completion"]
@@ -138,7 +138,7 @@
                     "oneOf": [
                         {
                             "type": "object",
-                            "required": ["type", "template", "separator", "enumerator", "shuffleChoices", "shots"],
+                            "required": ["type", "template", "separator", "enumerator", "shuffle_choices", "shots"],
                             "properties": {
                                 "type": {
                                     "const": "MultipleChoice"
@@ -157,9 +157,95 @@
                                     "description": "Style of enumeration for multiple choice options",
                                     "enum": ["capitals", "lowercase", "numbers", "roman", "αβγδεζηθικ", "!@#$%^₪*)("]
                                 },
-                                "shuffleChoices": {
+                                "shuffle_choices": {
                                     "type": "boolean",
                                     "description": "Whether the order of choices is randomized"
+                                },
+                                "choices_order": {
+                                    "type": "object",
+                                    "description": "Defines how the multiple choice options should be ordered",
+                                    "properties": {
+                                        "method": {
+                                            "type": "string",
+                                            "description": "The method to use for ordering choices",
+                                            "oneOf": [
+                                                {
+                                                    "enum": [
+                                                        "random",
+                                                        "none",
+                                                        "shortest_to_longest",
+                                                        "longest_to_shortest",
+                                                        "correct_first",
+                                                        "correct_last",
+                                                        "alphabetical",
+                                                        "reverse_alphabetical"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Description of the ordering method. Required for custom methods, optional for predefined methods"
+                                        },
+                                        "predefined_methods": {
+                                            "type": "object",
+                                            "description": "Information about available ordering methods",
+                                            "properties": {
+                                                "random": {
+                                                    "description": "Randomly shuffles all choices"
+                                                },
+                                                "none": {
+                                                    "description": "Preserves the original order of choices as provided"
+                                                },
+                                                "shortest_to_longest": {
+                                                    "description": "Orders choices by length, from shortest to longest text"
+                                                },
+                                                "longest_to_shortest": {
+                                                    "description": "Orders choices by length, from longest to shortest text"
+                                                },
+                                                "correct_first": {
+                                                    "description": "Places the correct answer as the first choice"
+                                                },
+                                                "correct_last": {
+                                                    "description": "Places the correct answer as the last choice"
+                                                },
+                                                "alphabetical": {
+                                                    "description": "Orders choices alphabetically (A to Z)"
+                                                },
+                                                "reverse_alphabetical": {
+                                                    "description": "Orders choices in reverse alphabetical order (Z to A)"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "required": ["method"],
+                                    "if": {
+                                        "properties": {
+                                            "method": {
+                                                "not": {
+                                                    "enum": [
+                                                        "random",
+                                                        "none",
+                                                        "shortest_to_longest",
+                                                        "longest_to_shortest",
+                                                        "correct_first",
+                                                        "correct_last",
+                                                        "alphabetical",
+                                                        "reverse_alphabetical"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "then": {
+                                        "required": ["description"]
+                                    },
+                                    "default": {
+                                        "method": "none"
+                                    }
                                 },
                                 "shots": {
                                     "type": "integer",
@@ -213,18 +299,18 @@
                 }
             }
         },
-        "Instance": {
+        "instance": {
             "type": "object",
             "description": "Specific instance and its metadata",
-            "required": ["TaskType", "RawInput", "SampleIdentifier","Perplexity"],
+            "required": ["task_type", "raw_input", "sample_identifier", "perplexity"],
             "additionalProperties": true,
             "properties": {
-                "TaskType": {
+                "task_type": {
                     "type": "string",
                     "description": "Type of the task",
                     "enum": ["classification", "generation"]
                 },
-                "RawInput": {
+                "raw_input": {
                     "anyOf": [
                         {
                             "type": "string",
@@ -244,7 +330,7 @@
                         }
                     ]
                 },
-                "SampleIdentifier": {
+                "sample_identifier": {
                     "type": "object",
                     "description": "Metadata to help identify and match the sample to the dataset",
                     "required": ["dataset_name", "split"],
@@ -268,35 +354,35 @@
                         }
                     }
                 },
-                "TokenIds": {
+                "token_ids": {
                     "type": ["array", "null"],
                     "description": "Array of token IDs representing the tokenized prompt",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "Perplexity": {
+                "perplexity": {
                     "type": ["number", "null"],
                     "description": "Perplexity score measuring the complexity of the input text"
                 },
-                "ClassificationFields": {
+                "classification_fields": {
                     "type": "object",
                     "description": "Fields specific to classification tasks",
                     "if": {
-                        "properties": { "TaskType": { "const": "classification" } }
+                        "properties": { "task_type": { "const": "classification" } }
                     },
                     "then": {
-                        "required": ["Question", "Choices", "GroundTruth"],
+                        "required": ["question", "choices", "ground_truth"],
                         "properties": {
-                            "FullInput": {
+                            "full_input": {
                                 "type": "string",
                                 "description": "Full input text, including few shot examples and question"
                             },
-                            "Question": {
+                            "question": {
                                 "type": "string",
                                 "description": "The actual question"
                             },
-                            "Choices": {
+                            "choices": {
                                 "type": "array",
                                 "description": "Array of all multiple choice options",
                                 "items": {
@@ -314,7 +400,7 @@
                                     }
                                 }
                             },
-                            "GroundTruth": {
+                            "ground_truth": {
                                 "required": ["id", "text"],
                                 "description": "The correct answer for the classification task",
                                 "properties": {
@@ -331,13 +417,13 @@
                         }
                     }
                 },
-                "PromptLogProbs": {
+                "prompt_log_probs": {
                     "type": "array",
                     "description": "Array of token probability data, with first element being 'None' and subsequent elements being arrays of token information",
                     "items": {
                         "oneOf": [
                             {
-                                "type": ["null","string"]
+                                "type": ["null", "string"]
                             },
                             {
                                 "type": "array",
@@ -378,27 +464,27 @@
                 }
             }
         },
-        "Output": {
+        "output": {
             "type": "object",
             "description": "Model's response and associated probability metrics",
-            "required": ["Response", "GeneratedTokensIds", "GeneratedTokensLogProbs"],
+            "required": ["response", "generated_tokens_ids", "generated_tokens_log_probs"],
             "properties": {
-                "Response": {
+                "response": {
                     "type": "string",
                     "description": "The model's complete text response"
                 },
-                "CumulativeLogProb": {
+                "cumulative_log_prob": {
                     "type": ["number", "null"],
                     "description": "Cumulative log probability of the generated sequence from VLLM"
                 },
-                "GeneratedTokensIds": {
+                "generated_tokens_ids": {
                     "type": ["array", "null"],
                     "description": "Array of token IDs for the model's response",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "GeneratedTokensLogProbs": {
+                "generated_tokens_log_probs": {
                     "type": "array",
                     "description": "Array of token probability mappings",
                     "items": {
@@ -428,18 +514,18 @@
                         "additionalProperties": false
                     }
                 },
-                "MaxProb": {
+                "max_prob": {
                     "type": "string",
                     "description": "The answer choice that received the highest probability among the specific answer options available in the sample (e.g., if the choices are A, B, C, we only compare probabilities between these three labels in the model's first token prediction)."
                 }
             }
         },
-        "Evaluation": {
+        "evaluation": {
             "type": "object",
             "description": "Evaluation metrics and ground truth",
-            "required": ["GroundTruth", "EvaluationMethod", "Score"],
+            "required": ["ground_truth", "evaluation_method", "score"],
             "properties": {
-                "EvaluationMethod": {
+                "evaluation_method": {
                     "type": "object",
                     "description": "Method used to evaluate the answer, including predefined methods and user-defined methods.",
                     "properties": {
@@ -485,11 +571,11 @@
                         }
                     }
                 },
-                "GroundTruth": {
+                "ground_truth": {
                     "type": "string",
                     "description": "The correct answer for evaluation"
                 },
-                "Score": {
+                "score": {
                     "type": "number",
                     "description": "Binary score indicating whether the model's answer was correct (1.0) or incorrect (0.0)",
                     "minimum": 0,
