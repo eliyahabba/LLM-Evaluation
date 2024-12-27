@@ -138,7 +138,7 @@
                     "oneOf": [
                         {
                             "type": "object",
-                            "required": ["type", "template", "separator", "enumerator", "shuffle_choices", "shots"],
+                            "required": ["type", "template", "separator", "enumerator", "choices_order", "shots"],
                             "properties": {
                                 "type": {
                                     "const": "MultipleChoice"
@@ -157,94 +157,52 @@
                                     "description": "Style of enumeration for multiple choice options",
                                     "enum": ["capitals", "lowercase", "numbers", "roman", "αβγδεζηθικ", "!@#$%^₪*)("]
                                 },
-                                "shuffle_choices": {
-                                    "type": "boolean",
-                                    "description": "Whether the order of choices is randomized"
-                                },
                                 "choices_order": {
                                     "type": "object",
-                                    "description": "Defines how the multiple choice options should be ordered",
+                                    "required": ["method", "description"],
                                     "properties": {
                                         "method": {
                                             "type": "string",
                                             "description": "The method to use for ordering choices",
-                                            "oneOf": [
+                                            "examples": [
                                                 {
-                                                    "enum": [
-                                                        "random",
-                                                        "none",
-                                                        "shortest_to_longest",
-                                                        "longest_to_shortest",
-                                                        "correct_first",
-                                                        "correct_last",
-                                                        "alphabetical",
-                                                        "reverse_alphabetical"
-                                                    ]
+                                                    "method": "random",
+                                                    "description": "Randomly shuffles all choices"
                                                 },
                                                 {
-                                                    "type": "string"
+                                                    "method": "none",
+                                                    "description": "Preserves the original order of choices as provided"
+                                                },
+                                                {
+                                                    "method": "shortest_to_longest",
+                                                    "description": "Orders choices by length, from shortest to longest text"
+                                                },
+                                                {
+                                                    "method": "longest_to_shortest",
+                                                    "description": "Orders choices by length, from longest to shortest text"
+                                                },
+                                                {
+                                                    "method": "correct_first",
+                                                    "description": "Places the correct answer as the first choice"
+                                                },
+                                                {
+                                                    "method": "correct_last",
+                                                    "description": "Places the correct answer as the last choice"
+                                                },
+                                                {
+                                                    "method": "alphabetical",
+                                                    "description": "Orders choices alphabetically (A to Z)"
+                                                },
+                                                {
+                                                    "method": "reverse_alphabetical",
+                                                    "description": "Orders choices in reverse alphabetical order (Z to A)"
                                                 }
                                             ]
                                         },
                                         "description": {
                                             "type": "string",
-                                            "description": "Description of the ordering method. Required for custom methods, optional for predefined methods"
-                                        },
-                                        "predefined_methods": {
-                                            "type": "object",
-                                            "description": "Information about available ordering methods",
-                                            "properties": {
-                                                "random": {
-                                                    "description": "Randomly shuffles all choices"
-                                                },
-                                                "none": {
-                                                    "description": "Preserves the original order of choices as provided"
-                                                },
-                                                "shortest_to_longest": {
-                                                    "description": "Orders choices by length, from shortest to longest text"
-                                                },
-                                                "longest_to_shortest": {
-                                                    "description": "Orders choices by length, from longest to shortest text"
-                                                },
-                                                "correct_first": {
-                                                    "description": "Places the correct answer as the first choice"
-                                                },
-                                                "correct_last": {
-                                                    "description": "Places the correct answer as the last choice"
-                                                },
-                                                "alphabetical": {
-                                                    "description": "Orders choices alphabetically (A to Z)"
-                                                },
-                                                "reverse_alphabetical": {
-                                                    "description": "Orders choices in reverse alphabetical order (Z to A)"
-                                                }
-                                            }
+                                            "description": "Detailed explanation of the ordering method"
                                         }
-                                    },
-                                    "required": ["method"],
-                                    "if": {
-                                        "properties": {
-                                            "method": {
-                                                "not": {
-                                                    "enum": [
-                                                        "random",
-                                                        "none",
-                                                        "shortest_to_longest",
-                                                        "longest_to_shortest",
-                                                        "correct_first",
-                                                        "correct_last",
-                                                        "alphabetical",
-                                                        "reverse_alphabetical"
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "then": {
-                                        "required": ["description"]
-                                    },
-                                    "default": {
-                                        "method": "none"
                                     }
                                 },
                                 "shots": {
@@ -417,7 +375,7 @@
                         }
                     }
                 },
-                "prompt_log_probs": {
+                "prompt_logprobs": {
                     "type": "array",
                     "description": "Array of token probability data, with first element being 'None' and subsequent elements being arrays of token information",
                     "items": {
@@ -429,34 +387,25 @@
                                 "type": "array",
                                 "items": {
                                     "type": "object",
+                                    "required": ["token_index", "logprob", "rank", "decoded_token"],
                                     "properties": {
                                         "token_index": {
                                             "type": "string",
                                             "description": "Index position of the token in the sequence"
                                         },
-                                        "tokens": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "log_prob": {
-                                                        "type": "number",
-                                                        "description": "Log probability of the token"
-                                                    },
-                                                    "rank": {
-                                                        "type": "integer",
-                                                        "description": "Rank of the token in the model's vocabulary"
-                                                    },
-                                                    "decoded_token": {
-                                                        "type": "string",
-                                                        "description": "The decoded string representation of the token"
-                                                    }
-                                                },
-                                                "required": ["log_prob", "rank", "decoded_token"]
-                                            }
+                                        "logprob": {
+                                            "type": "number",
+                                            "description": "Log probability of the token"
+                                        },
+                                        "rank": {
+                                            "type": "integer",
+                                            "description": "Rank of the token in the model's vocabulary"
+                                        },
+                                        "decoded_token": {
+                                            "type": "string",
+                                            "description": "The decoded string representation of the token"
                                         }
-                                    },
-                                    "required": ["token_index", "tokens"]
+                                    }
                                 }
                             }
                         ]
@@ -467,13 +416,13 @@
         "output": {
             "type": "object",
             "description": "Model's response and associated probability metrics",
-            "required": ["response", "generated_tokens_ids", "generated_tokens_log_probs"],
+            "required": ["response", "generated_tokens_ids", "generated_tokens_logprobs"],
             "properties": {
                 "response": {
                     "type": "string",
                     "description": "The model's complete text response"
                 },
-                "cumulative_log_prob": {
+                "cumulative_logprob": {
                     "type": ["number", "null"],
                     "description": "Cumulative log probability of the generated sequence from VLLM"
                 },
@@ -484,34 +433,39 @@
                         "type": "integer"
                     }
                 },
-                "generated_tokens_log_probs": {
-                    "type": "array",
-                    "description": "Array of token probability mappings",
+                "generated_tokens_logprobs": {
+                    "additionalProperties": false,
                     "items": {
-                        "type": "object",
-                        "patternProperties": {
-                            "^[0-9]+$": {
-                                "type": "object",
-                                "properties": {
-                                    "log_prob": {
-                                        "type": "number",
-                                        "description": "Log probability of the token"
-                                    },
-                                    "rank": {
-                                        "type": "integer",
-                                        "minimum": 1,
-                                        "maximum": 5,
-                                        "description": "Rank of the token (1-5, where 1 is highest probability)"
-                                    },
-                                    "decoded_token": {
-                                        "type": "string",
-                                        "description": "The decoded string representation of the token"
+                        "oneOf": [
+                            {
+                                "type": ["null", "string"]
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "required": ["token_index", "logprob", "rank", "decoded_token"],
+                                    "properties": {
+                                        "token_index": {
+                                            "type": "string",
+                                            "description": "Index position of the token in the sequence"
+                                        },
+                                        "logprob": {
+                                            "type": "number",
+                                            "description": "Log probability of the token"
+                                        },
+                                        "rank": {
+                                            "type": "integer",
+                                            "description": "Rank of the token in the model's vocabulary"
+                                        },
+                                        "decoded_token": {
+                                            "type": "string",
+                                            "description": "The decoded string representation of the token"
+                                        }
                                     }
-                                },
-                                "required": ["log_prob", "rank", "decoded_token"]
+                                }
                             }
-                        },
-                        "additionalProperties": false
+                        ]
                     }
                 },
                 "max_prob": {
