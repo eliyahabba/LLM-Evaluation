@@ -13,17 +13,6 @@ def create_hash(text: str) -> str:
     return hashlib.sha256(text.encode()).hexdigest()
 
 
-def create_sample_identifier(card_name: str, split: str, idx) -> Dict[str, Any]:
-    """Create sample identifier from card name."""
-    dataset_name = card_name.split('.')[1]  # e.g., 'mmlu' from 'cards.mmlu.abstract_algebra'
-    return {
-        "dataset_name": dataset_name,
-        "split": split,
-        "hf_repo": f"cais/{dataset_name}",  # assumption
-        "hf_index": idx  # will be updated in the conversion loop
-    }
-
-
 def get_model_metadata(model_name: str, models_metadata: Dict) -> Dict:
     """Get model metadata from the metadata file."""
     metadata = models_metadata.get(model_name, {})
@@ -32,36 +21,38 @@ def get_model_metadata(model_name: str, models_metadata: Dict) -> Dict:
     return metadata
 
 
-def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], template: Dict[str, Any]) -> List[
-    Dict[str, Any]]:
+def create_sample_identifier(card_name: str, split: str, idx) -> Dict[str, Any]:
+    """Create sample identifier from card name."""
+    dataset_name = card_name.split('.')[1]  # e.g., 'mmlu' from 'cards.mmlu.abstract_algebra'
+    return {
+        "dataset_name": dataset_name,
+        "split": split,
+        "hf_repo": f"cais/{dataset_name}",
+        "hf_index": idx
+    }
+
+
+def create_choices_order_config() -> Dict[str, Any]:
+    """Create default choices order configuration."""
+    return {
+        "method": "none",
+        "description": None,
+        "predefined_methods": {
+            "random": "Randomly shuffles all choices",
+            "none": "Preserves the original order of choices as provided",
+            "shortest_to_longest": "Orders choices by length, from shortest to longest text",
+            "longest_to_shortest": "Orders choices by length, from longest to shortest text",
+            "correct_first": "Places the correct answer as the first choice",
+            "correct_last": "Places the correct answer as the last choice",
+            "alphabetical": "Orders choices alphabetically (A to Z)",
+            "reverse_alphabetical": "Orders choices in reverse alphabetical order (Z to A)"
+        }
+    }
+
+
+def convert_to_schema_format(dataset: Dict[str, Any], max_new_tokens: int, data: Dict[str, Any],
+                             template: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Convert a single sample to the schema format."""
-
-    # Helper to generate fake token IDs (for demonstration)
-    def generate_token_ids(length: int) -> List[int]:
-        return list(range(1000, 1000 + length))
-
-    # Helper to create token LogProbs
-    def create_token_LogProbs(response: str) -> List[Dict[str, Any]]:
-        tokens = response.split()[:3]  # Take first 3 tokens for example
-        result = []
-        for token in tokens:
-            LogProb_entry = {
-                "token": token,
-                "token_id": generate_token_ids(1)[0],
-                "top_5": []
-            }
-            # Create top 5 predictions
-            for rank in range(1, 6):
-                LogProb_entry["top_5"].append({
-                    "token": f"{token}_{rank}",
-                    "token_id": generate_token_ids(1)[0],
-                    "LogProb": -0.1 * rank,
-                    "rank": rank
-                })
-            result.append(LogProb_entry)
-        return result
-
-    # Process each result
     with open(Constants.ExperimentConstants.MODELS_METADATA_PATH, 'r') as f:
         models_metadata = json.load(f)
     model_name = data["model_name"]
@@ -73,101 +64,100 @@ def convert_to_schema_format(dataset, max_new_tokens, data: Dict[str, Any], temp
         response = result["Result"]
         perplexity = None if "Perplexity" not in result else result["Perplexity"]
         sample = dataset['test'][result['Index']]
-        # Extract question and choices from the instance text
-        # match = re.search(r"Question: (.*?)Answers: (.*?)Answer:", instance_text, re.DOTALL)
-        # if not match:
-        #     continue
 
         question = eval(sample['task_data'])['question']
         options = eval(sample['task_data'])['options']
         choices = eval(sample['task_data'])['choices']
         choices = [(option.split(".")[0], choice) for option, choice in zip(options, choices)]
-        sample = {
-            "EvaluationId": create_hash(instance_text),
-            "Model": {
-                "ModelInfo": model_metadata.get("ModelInfo", {
+
+        # Create evaluation ID
+        evaluation_id = create_hash(instance_text)
+
+        # Create sample dictionary according to new schema
+        formatted_sample = {
+            "evaluation_id": evaluation_id,
+            "model": {
+                "model_info": {
                     "name": model_name,
-                    "family": None
-                }),
-                "Configuration": model_metadata.get("Configuration", {
-                    "architecture": None,
-                    "parameters": None,
-                    "context_window": None,
-                    "is_instruct": None,
+                    "family": model_metadata.get("ModelInfo", {}).get("family")
+                },
+                "configuration": {
+                    "architecture": model_metadata.get("Configuration", {}).get("architecture"),
+                    "parameters": model_metadata.get("Configuration", {}).get("parameters"),
+                    "context_window": model_metadata.get("Configuration", {}).get("context_window", 2048),
+                    "is_instruct": model_metadata.get("Configuration", {}).get("is_instruct", False),
                     "hf_path": model_name,
-                    "revision": None
-                }),
-                "InferenceSettings": {
+                    "revision": model_metadata.get("Configuration", {}).get("revision")
+                },
+                "inference_settings": {
                     "quantization": {
-                        "bit_precision": "8bit",
+                        "bit_precision": "int8",
                         "method": "dynamic"
                     },
                     "generation_args": {
+                        "use_vllm": True,
+                        "temperature": 0.0,
+                        "top_p": 1.0,
+                        "top_k": None,
                         "max_tokens": max_new_tokens,
-                        "temperature": 0,
-                        "top_p": 1,
-                        "use_vllm": True  # או מה שמתאים לפי המערכת שלך
+                        "stop_sequences": []
                     }
                 }
             },
-            "Prompt": {
-                "promptClass": "MultipleChoice",
+            "prompt_config": {
+                "prompt_class": "MultipleChoice",
                 "format": {
                     "type": "MultipleChoice",
                     "template": template["input_format"],
                     "separator": template["choices_separator"],
                     "enumerator": template["enumerator"],
-                    "shuffleChoices": template["shuffle_choices"],
-                    "shots": Utils.word_to_number("zero")
+                    "shuffle_choices": template["shuffle_choices"],
+                    "choices_order": create_choices_order_config(),
+                    "shots": Utils.word_to_number("zero"),
+                    "demos": None
                 }
             },
-            "Instance": {
-                "TaskType": "classification",
-                "RawInput": question,
-                "SampleIdentifier": create_sample_identifier(data["card"], "test", idx),
-                "TokenIds": None,  # אולי כדאי להוסיף פונקציה שמייצרת
-                "Perplexity": perplexity,
-                "ClassificationFields": {
-                    "Topic": data["card"].split('.')[-1],
-                    "FullInput": instance_text,
-                    "Question": question,
-                    "Choices": [{
-                        "id": choice[0],
-                        "text": choice[1]
-                    } for choice in choices],
-                    "GroundTruth": {
+            "instance": {
+                "task_type": "classification",
+                "raw_input": question,
+                "sample_identifier": create_sample_identifier(data["card"], "test", idx),
+                "token_ids": None,
+                "perplexity": perplexity,
+                "classification_fields": {
+                    "full_input": instance_text,
+                    "question": question,
+                    "choices": [{"id": choice[0], "text": choice[1]} for choice in choices],
+                    "ground_truth": {
                         "id": choices[eval(sample['task_data'])["answer"]][0],
                         "text": choices[eval(sample['task_data'])["answer"]][1]
                     }
                 }
             },
-            "Output": {
-                "Response": response,
-                "CumulativeLogProb": None,
-                "GeneratedTokensIds": None,
-                "GeneratedTokensLogProbs": None,
-                "MaxProb": response.split()[0]
+            "output": {
+                "response": response,
+                "cumulative_logprob": None,
+                "generated_tokens_ids": None,
+                "generated_tokens_logprobs": [],
+                "max_prob": response.split()[0]
             },
-            "Evaluation": {
-                "EvaluationMethod": {
+            "evaluation": {
+                "ground_truth": result["GroundTruth"],
+                "evaluation_method": {
                     "method_name": "content_similarity",
                     "description": "Finds the most similar answer among the given choices by comparing the textual content"
                 },
-                "GroundTruth": result["GroundTruth"],
-                "Score": result["Score"]
+                "score": result["Score"]
             }
         }
-        samples.append(sample)
+        samples.append(formatted_sample)
     return samples
 
 
-def convert_dataset(dataset, input_data: Dict[str, Any], template_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+def convert_dataset(dataset: Dict[str, Any], input_data: Dict[str, Any], template_data: Dict[str, Any]) -> List[
+    Dict[str, Any]]:
     """Convert entire dataset to new format."""
-    # convert_dataseted_samples = []
     max_new_tokens = max([len(instance["target"].split()) for instance in dataset['test']]) * 2
-    samples = convert_to_schema_format(dataset, max_new_tokens, input_data, template_data)
-    return samples
-
+    return convert_to_schema_format(dataset, max_new_tokens, input_data, template_data)
 
 # Usage example:
 if __name__ == "__main__":
