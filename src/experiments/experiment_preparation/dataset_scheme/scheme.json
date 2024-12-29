@@ -390,7 +390,7 @@
                                     "required": ["token_index", "logprob", "rank", "decoded_token"],
                                     "properties": {
                                         "token_index": {
-                                            "type": "string",
+                                            "type": "number",
                                             "description": "Index position of the token in the sequence"
                                         },
                                         "logprob": {
@@ -447,7 +447,7 @@
                                     "required": ["token_index", "logprob", "rank", "decoded_token"],
                                     "properties": {
                                         "token_index": {
-                                            "type": "string",
+                                            "type": "number",
                                             "description": "Index position of the token in the sequence"
                                         },
                                         "logprob": {
