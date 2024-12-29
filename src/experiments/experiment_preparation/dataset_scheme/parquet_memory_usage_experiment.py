@@ -208,8 +208,8 @@ def compare_file_sizes(file1, file2) -> None:
 def main():
     """Process and analyze parquet files."""
     # File from the huggingface dataset
-    INPUT_PATH = Path("/Users/ehabba/Downloads/data.parquet")
-    # INPUT_PATH = Path("data.parquet")
+    # INPUT_PATH = Path("/Users/ehabba/Downloads/data.parquet")
+    INPUT_PATH = Path("data.parquet")
 
     SAMPLE_OUTPUT = Path("update_data.parquet")
     FULL_OUTPUT = Path("update_data_full.parquet")
