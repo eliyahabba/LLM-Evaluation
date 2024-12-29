@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Dict, Optional, Any, Iterator
 
 import pandas as pd
@@ -8,7 +9,7 @@ from datasets import load_dataset
 class RunOutputMerger:
     """A class to process and merge run data with associated metadata."""
 
-    def __init__(self, parquet_path: str, batch_size: int = 1000):
+    def __init__(self, parquet_path: Path, batch_size: int = 1000):
         """
         Initialize the RunDataProcessor.
 
@@ -88,7 +89,7 @@ class RunOutputMerger:
 
 def main():
     """Main function to demonstrate usage."""
-    parquet_path = "~/Downloads/data_sample.parquet"
+    parquet_path = Path("~/Downloads/data_sample.parquet")
     processor = RunOutputMerger(parquet_path)
     for processed_batch in processor.process_batches():
         # Now you can work with each batch

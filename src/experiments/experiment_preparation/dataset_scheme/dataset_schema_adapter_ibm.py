@@ -343,11 +343,12 @@ def main():
 
     for batch in tqdm(processor.process_batches()):
         # Process single batch for testing
+        batch = batch.head(10)
         converted_data.extend(converter.convert_dataframe(batch))
         break
 
     # Save results
-    output_path = Path("converted_data_ibm.json")
+    output_path = Path("data_sample_ibm.json")
     with open(output_path, 'w') as f:
         json.dump(converted_data, f, indent=4)
 

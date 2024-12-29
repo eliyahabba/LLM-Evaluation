@@ -56,9 +56,9 @@ def validate_json_data(json_data, schema_data):
 # Example usage
 if __name__ == "__main__":
     # Example paths - replace with your actual file paths
-    json_file = "data_sample.json"
-    json_file = "converted_data.json"
-    json_file = "converted_data_ibm.json"
+    json_file = "data_sample_huji.json"
+    json_file = "data_sample_huji.json"
+    json_file = "data_sample_ibm.json"
     schema_file = "scheme.json"
 
     is_valid, message = validate_json_file(json_file, schema_file)

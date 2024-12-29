@@ -227,5 +227,5 @@ if __name__ == "__main__":
 
     converted_data = convert_dataset(dataset, input_data, template_data)
 
-    with open('converted_data.json', 'w') as f:
+    with open('data_sample_huji.json', 'w') as f:
         json.dump(converted_data, f, indent=4)
