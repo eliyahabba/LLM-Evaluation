@@ -7,6 +7,21 @@ from typing import List, Dict, Any
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 
+class SeparatorMap:
+    SEPARATOR_MAP = {
+        "space": "\\s",
+        " ": "\\s",
+        "newline": "\n",
+        "comma": ", ",
+        "semicolon": "; ",
+        "pipe": " | ",
+        "OR": " OR ",
+        "or": " or "
+    }
+
+    @classmethod
+    def get_separator(cls, separator: str) -> str:
+        return cls.SEPARATOR_MAP.get(separator, separator)
 
 def create_hash(text: str) -> str:
     """Create a hash of the input text."""
@@ -25,29 +40,26 @@ def create_sample_identifier(card_name: str, split: str, idx) -> Dict[str, Any]:
     """Create sample identifier from card name."""
     dataset_name = card_name.split('.')[1]  # e.g., 'mmlu' from 'cards.mmlu.abstract_algebra'
     return {
-        "dataset_name": dataset_name,
+        "dataset_name": card_name.split('cards.')[1],
         "split": split,
         "hf_repo": f"cais/{dataset_name}",
         "hf_index": idx
     }
 
 
-def create_choices_order_config() -> Dict[str, Any]:
+def create_choices_order_config(shuffle) -> Dict[str, Any]:
     """Create default choices order configuration."""
-    return {
-        "method": "none",
-        "description": None,
-        "predefined_methods": {
-            "random": "Randomly shuffles all choices",
-            "none": "Preserves the original order of choices as provided",
-            "shortest_to_longest": "Orders choices by length, from shortest to longest text",
-            "longest_to_shortest": "Orders choices by length, from longest to shortest text",
-            "correct_first": "Places the correct answer as the first choice",
-            "correct_last": "Places the correct answer as the last choice",
-            "alphabetical": "Orders choices alphabetically (A to Z)",
-            "reverse_alphabetical": "Orders choices in reverse alphabetical order (Z to A)"
+    if shuffle:
+        choices_order = {
+            "method": "random",
+            "description": "Randomly shuffles all choices"
         }
-    }
+    else:
+        choices_order = {
+            "method": "none",
+            "description": "Preserves the original order of choices as provided"
+        }
+    return choices_order
 
 
 def convert_to_schema_format(dataset: Dict[str, Any], max_new_tokens: int, data: Dict[str, Any],
@@ -95,7 +107,7 @@ def convert_to_schema_format(dataset: Dict[str, Any], max_new_tokens: int, data:
                         "method": "dynamic"
                     },
                     "generation_args": {
-                        "use_vllm": True,
+                        "use_vllm": False,
                         "temperature": 0.0,
                         "top_p": 1.0,
                         "top_k": None,
@@ -109,10 +121,9 @@ def convert_to_schema_format(dataset: Dict[str, Any], max_new_tokens: int, data:
                 "format": {
                     "type": "MultipleChoice",
                     "template": template["input_format"],
-                    "separator": template["choices_separator"],
+                    "separator": SeparatorMap.get_separator(template["choices_separator"]),
                     "enumerator": template["enumerator"],
-                    "shuffle_choices": template["shuffle_choices"],
-                    "choices_order": create_choices_order_config(),
+                    "choices_order": create_choices_order_config(template["shuffle_choices"]),
                     "shots": Utils.word_to_number("zero"),
                     "demos": None
                 }
