@@ -29,20 +29,3 @@ class BaseDatasetConfig:
             "shuffle_choices": self.shuffle_choices,
             "postprocessors": self.postprocessors
         }
-
-    # def get_mmlu_instructions_with_topic(self, topic: str) -> str:
-    #     return f"The following are multiple choice questions (with answers) about {topic}.\n"
-    #
-    # def get_mmlu_instructions_without_topic(self) -> str:
-    #     return "The following are multiple choice questions (with answers).\n"
-    #
-    # def get_structured_instruction_text(self, context_topic):
-    #     # Provide a default implementation if needed
-    #     return f"{context_topic}Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
-    #
-    # def get_context_topic(self):
-    #     # Base class provides a generic placeholder which can be overridden
-    #     return ""
-    #
-    # def get_input_format(self):
-    #     raise NotImplementedError("Subclasses must implement this method to return the specific input format.")

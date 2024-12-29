@@ -26,6 +26,10 @@ class MMLUConfig(BaseDatasetConfig):
     def get_structured_instruction_without_topic(self):
         return f"Question: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
 
+    def get_mmlu_instructions_with_topic_and_cot(self):
+        return (f"The following are multiple choice questions (with answers) about {{topic}}. Think step by"
+                f" step and then output the answer in the format of \"The answer is (X)\" at the end.\n\n")
+
 if __name__ == "__main__":
     config = MMLUConfig({"shuffle_choices": True})
     config_dict = config.to_dict()
