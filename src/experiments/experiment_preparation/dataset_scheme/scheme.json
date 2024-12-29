@@ -155,7 +155,7 @@
                                 "enumerator": {
                                     "type": "string",
                                     "description": "Style of enumeration for multiple choice options",
-                                    "enum": ["capitals", "lowercase", "numbers", "roman", "αβγδεζηθικ", "!@#$%^₪*)("]
+                                    "enum": ["capitals", "lowercase", "numbers", "roman", "keyboard", "greek"]
                                 },
                                 "choices_order": {
                                     "type": "object",

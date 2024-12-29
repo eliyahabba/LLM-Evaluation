@@ -7,6 +7,7 @@ from typing import List, Dict, Any
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 
+
 class SeparatorMap:
     SEPARATOR_MAP = {
         "space": "\\s",
@@ -16,12 +17,15 @@ class SeparatorMap:
         "semicolon": "; ",
         "pipe": " | ",
         "OR": " OR ",
-        "or": " or "
+        "or": " or ",
+        "orLower": " or ",
+        "OrCapital": " OR "
     }
 
     @classmethod
     def get_separator(cls, separator: str) -> str:
         return cls.SEPARATOR_MAP.get(separator, separator)
+
 
 def create_hash(text: str) -> str:
     """Create a hash of the input text."""
@@ -169,6 +173,7 @@ def convert_dataset(dataset: Dict[str, Any], input_data: Dict[str, Any], templat
     """Convert entire dataset to new format."""
     max_new_tokens = max([len(instance["target"].split()) for instance in dataset['test']]) * 2
     return convert_to_schema_format(dataset, max_new_tokens, input_data, template_data)
+
 
 # Usage example:
 if __name__ == "__main__":
