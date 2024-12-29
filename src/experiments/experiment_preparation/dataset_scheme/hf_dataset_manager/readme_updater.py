@@ -71,7 +71,7 @@ If you use this dataset, please cite:
 
 if __name__ == "__main__":
     # Configuration
-    DATA_PATH = "../converted_data.json"  # Path to your converted data
+    DATA_PATH = "../data_sample_huji.json"  # Path to your converted data
     REPO_NAME = "eliyahabba/llm-evaluation-dataset"  # Replace with your desired repo name
     config = Config()
     TOKEN = config.config_values.get("hf_access_token", "")
