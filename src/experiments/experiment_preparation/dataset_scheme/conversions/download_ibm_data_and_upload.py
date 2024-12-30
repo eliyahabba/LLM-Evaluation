@@ -134,7 +134,6 @@ def download_huggingface_files(output_dir):
         convert_to_scheme_format(output_path)
         # now load the file by chu
 
-
 if __name__ == "__main__":
     # Set start date
     output_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data"
