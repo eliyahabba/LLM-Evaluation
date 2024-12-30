@@ -295,21 +295,22 @@ def download_huggingface_files(output_dir):
         # Example: from URL get '2024-12-16' for the filename
         original_filename = url.split('/')[-1]
         output_path = Path(os.path.join(output_dir, original_filename))
+        if output_path.exists():
+            print(f"File already exists: {output_path}")
+        else:
+            try:
+                print(f"Downloading {original_filename}...")
+                response = requests.get(url, stream=True)
+                response.raise_for_status()
 
-        try:
-            print(f"Downloading {original_filename}...")
-            response = requests.get(url, stream=True)
-            response.raise_for_status()
+                with open(output_path, 'wb') as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        f.write(chunk)
 
-            with open(output_path, 'wb') as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
+                print(f"Download completed: {original_filename}")
 
-            print(f"Download completed: {original_filename}")
-
-        except requests.exceptions.RequestException as e:
-            print(f"Error downloading {original_filename}: {e}")
-
+            except requests.exceptions.RequestException as e:
+                print(f"Error downloading {original_filename}: {e}")
         convert_to_scheme_format(output_path)
         # now load the file by chu
 
