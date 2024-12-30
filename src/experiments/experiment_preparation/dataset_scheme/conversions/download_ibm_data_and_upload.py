@@ -14,6 +14,162 @@ from src.experiments.experiment_preparation.dataset_scheme.conversions.RunOutput
 from src.experiments.experiment_preparation.dataset_scheme.conversions.dataset_schema_adapter_ibm import SchemaConverter
 from src.utils.Constants import Constants
 
+import pyarrow as pa
+
+
+def create_model_info_schema():
+    return pa.struct([
+        ('name', pa.string()),
+        ('family', pa.string())  # nullable by default in PyArrow
+    ])
+
+
+def create_model_config_schema():
+    return pa.struct([
+        ('architecture', pa.string()),
+        ('parameters', pa.int64()),
+        ('context_window', pa.int64()),
+        ('is_instruct', pa.bool_()),
+        ('hf_path', pa.string()),
+        ('revision', pa.string())
+    ])
+
+
+def create_inference_settings_schema():
+    quantization_schema = pa.struct([
+        ('bit_precision', pa.string()),
+        ('method', pa.string())
+    ])
+
+    generation_args_schema = pa.struct([
+        ('use_vllm', pa.bool_()),
+        ('temperature', pa.null()),  # או float64() אם צריך
+        ('top_p', pa.null()),
+        ('top_k', pa.int64()),
+        ('max_tokens', pa.int64()),
+        ('stop_sequences', pa.list_(pa.string()))
+    ])
+
+    return pa.struct([
+        ('quantization', quantization_schema),
+        ('generation_args', generation_args_schema)
+    ])
+
+
+def create_choice_schema():
+    return pa.struct([
+        ('id', pa.string()),
+        ('text', pa.string())
+    ])
+
+
+def create_demos_schema():
+    return pa.list_(
+        pa.struct([
+            ('topic', pa.string()),
+            ('question', pa.string()),
+            ('choices', pa.list_(create_choice_schema())),
+            ('answer', pa.int64())
+        ]),
+        nullable=True
+    )
+
+
+def create_prompt_config_schema():
+    choices_order_schema = pa.struct([
+        ('method', pa.string()),
+        ('description', pa.string())
+    ])
+
+    format_schema = pa.struct([
+        ('type', pa.string()),
+        ('template', pa.string()),
+        ('separator', pa.string()),
+        ('enumerator', pa.string()),
+        ('choices_order', choices_order_schema),
+        ('shots', pa.int64()),
+        ('demos', create_demos_schema())
+    ])
+
+    return pa.struct([
+        ('prompt_class', pa.string()),
+        ('format', format_schema)
+    ])
+
+
+def create_token_info_schema():
+    return pa.struct([
+        ('token_index', pa.int64()),
+        ('logprob', pa.float64()),
+        ('rank', pa.int64()),
+        ('decoded_token', pa.string())
+    ])
+
+
+def create_instance_schema():
+    classification_fields_schema = pa.struct([
+        ('question', pa.string()),
+        ('choices', pa.list_(create_choice_schema())),
+        ('ground_truth', create_choice_schema())
+    ])
+
+    sample_identifier_schema = pa.struct([
+        ('dataset_name', pa.string()),
+        ('split', pa.string()),
+        ('hf_repo', pa.string()),
+        ('hf_index', pa.int64())
+    ])
+
+    return pa.struct([
+        ('task_type', pa.string()),
+        ('raw_input', pa.list_(pa.struct([
+            ('role', pa.string()),
+            ('content', pa.string())
+        ]))),
+        ('sample_identifier', sample_identifier_schema),
+        ('perplexity', pa.float64()),
+        ('classification_fields', classification_fields_schema),
+        ('prompt_logprobs', pa.list_(pa.list_(create_token_info_schema())))
+    ])
+
+
+def create_output_schema():
+    return pa.struct([
+        ('response', pa.string()),
+        ('cumulative_logprob', pa.float64()),
+        ('generated_tokens_ids', pa.list_(pa.int64())),
+        ('generated_tokens_logprobs', pa.list_(pa.list_(create_token_info_schema()))),
+        ('max_prob', pa.string())
+    ])
+
+
+def create_evaluation_schema():
+    evaluation_method_schema = pa.struct([
+        ('method_name', pa.string()),
+        ('description', pa.string())
+    ])
+
+    return pa.struct([
+        ('evaluation_method', evaluation_method_schema),
+        ('ground_truth', pa.string()),
+        ('score', pa.float64())
+    ])
+
+
+def create_full_schema():
+    return pa.schema([
+        ('evaluation_id', pa.string()),
+        ('model', pa.struct([
+            ('model_info', create_model_info_schema()),
+            ('configuration', create_model_config_schema()),
+            ('inference_settings', create_inference_settings_schema())
+        ])),
+        ('prompt_config', create_prompt_config_schema()),
+        ('instance', create_instance_schema()),
+        ('output', create_output_schema()),
+        ('evaluation', create_evaluation_schema())
+    ])
+
 
 def convert_to_scheme_format(parquet_path, batch_size=1000):
     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
@@ -30,7 +186,8 @@ def convert_to_scheme_format(parquet_path, batch_size=1000):
     # We'll get this from the first batch
     first_batch = next(processor.process_batches())
     first_converted = converter.convert_dataframe(first_batch)
-    schema = pa.Table.from_pylist(first_converted).schema
+
+    schema = create_full_schema()
 
     # Create the ParquetWriter
     writer = pq.ParquetWriter(temp_path, schema)
