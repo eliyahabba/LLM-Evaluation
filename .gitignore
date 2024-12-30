@@ -4,3 +4,5 @@
 **/logs/
 **/slurm*
 **/.DS_Store
+/src/experiments/experiment_preparation/dataset_scheme/old/
+/src/unitxt/
