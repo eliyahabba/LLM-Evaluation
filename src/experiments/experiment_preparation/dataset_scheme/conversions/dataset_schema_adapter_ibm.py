@@ -9,7 +9,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from src.experiments.experiment_preparation.configuration_generation.generate_templates import BaseConfig
-from src.experiments.experiment_preparation.dataset_scheme.RunOutputMerger import RunOutputMerger
+from src.experiments.experiment_preparation.dataset_scheme.conversions.RunOutputMerger import RunOutputMerger
 from src.utils.Constants import Constants
 
 
