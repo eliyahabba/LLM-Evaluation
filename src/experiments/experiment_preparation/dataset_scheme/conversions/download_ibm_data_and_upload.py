@@ -1,3 +1,4 @@
+import json
 import os
 import tempfile
 from datetime import datetime
@@ -193,7 +194,18 @@ def convert_to_scheme_format(parquet_path, batch_size=1000):
 
     # Write the first batch
     table = pa.Table.from_pylist(first_converted)
-    writer.write_table(table)
+    try:
+        writer.write_table(table)
+    except Exception as e:
+        # try on each row in the first batch to find the problematic row
+        for i, row in enumerate(first_converted):
+            try:
+                table = pa.Table.from_pylist([row], schema)
+                writer.write_table(table)
+            except Exception as e:
+                print(f"Error writing row {i}: {e}")
+                # print the row in prrety format
+                print(json.dumps(row, indent=4))
 
     # Process remaining batches
     for i, batch in tqdm(enumerate(processor.process_batches()), desc="Processing batches"):
@@ -294,6 +306,6 @@ if __name__ == "__main__":
     # Set start date
     output_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data"
 
-    # download_huggingface_files(output_directory)
-    parquet_path = Path("~/Downloads/data_sample.parquet")
-    convert_to_scheme_format(parquet_path, batch_size=1000)
+    download_huggingface_files(output_directory)
+    # parquet_path = Path("~/Downloads/data_sample.parquet")
+    # convert_to_scheme_format(parquet_path, batch_size=1000)
