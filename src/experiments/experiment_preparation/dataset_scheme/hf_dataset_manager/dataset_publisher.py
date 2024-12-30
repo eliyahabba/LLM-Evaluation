@@ -5,7 +5,14 @@ from pathlib import Path
 from datasets import Features, Sequence, Value
 
 from config.get_config import Config
-
+from typing import List, Dict
+from datasets import Dataset, DatasetDict
+from huggingface_hub import HfApi, create_repo
+from collections import defaultdict
+import tempfile
+import time
+import pyarrow as pa
+import pyarrow.parquet as pq
 
 def define_features():
     """Define the features schema for the dataset."""
@@ -136,6 +143,82 @@ def filter_duplicates(data: List[dict], existing_ids: Set[str]) -> List[dict]:
     print(f"Found {duplicates} duplicate examples")
     return filtered_data
 
+
+def check_and_upload_parq_file_to_huggingface(
+        data: List[dict],
+        repo_name: str,
+        token: str,
+        private: bool = False,
+        file_name: str = None
+) -> None:
+    """
+    Main function to check for duplicates and upload dataset as Parquet.
+
+    Args:
+        data: List of data items to upload
+        repo_name: Name for the HuggingFace repository
+        token: HuggingFace API token
+        private: Whether to create a private repository
+        file_name: Base name for the uploaded file (optional)
+    """
+    try:
+        create_repo(
+            repo_id=repo_name,
+            token=token,
+            private=private,
+            repo_type="dataset"
+        )
+    except Exception as e:
+        print(f"Repository already exists or error occurred: {e}")
+
+    # Load existing dataset and get IDs
+    # existing_ids, _ = load_existing_dataset(repo_name)
+
+    # Filter duplicates
+    # filtered_data = filter_duplicates(data, existing_ids)
+    filtered_data = data
+    if not filtered_data:
+        print("No new data to upload")
+        return
+
+    # Split data by splits (train/test/validation)
+    split_data = defaultdict(list)
+    for item in filtered_data:
+        split = item['instance']['sample_identifier']['split']
+        split_data[split].append(item)
+
+    # Create datasets for each split
+    datasets = {
+        split: Dataset.from_list(items)
+        for split, items in split_data.items()
+    }
+
+    dataset_dict = DatasetDict(datasets)
+    api = HfApi()
+
+    # Create temporary Parquet file and upload
+    with tempfile.NamedTemporaryFile(suffix='.parquet', delete=False) as tmp:
+        for split_name, dataset in dataset_dict.items():
+            # Convert to Arrow table
+            arrow_table = pa.Table.from_pylist(dataset.to_list())
+
+            # Write to Parquet
+            pq.write_table(arrow_table, tmp.name)
+
+            # Generate filename with timestamp
+            timestamp = int(time.time())
+            file_name = file_name or "data"
+            remote_path = f"{file_name}_{split_name}_{timestamp}.parquet"
+
+            # Upload to Hugging Face
+            api.upload_file(
+                path_or_fileobj=tmp.name,
+                path_in_repo=remote_path,
+                repo_id=repo_name,
+                repo_type="dataset",
+                token=token
+            )
+            print(f"Uploaded {remote_path} to {repo_name}")
 
 def check_and_upload_file_to_huggingface(
         data: List[dict],
