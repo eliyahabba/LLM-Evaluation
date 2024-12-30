@@ -214,7 +214,18 @@ def convert_to_scheme_format(parquet_path, batch_size=1000):
 
         # Convert to table and write
         table = pa.Table.from_pylist(converted_data)
-        writer.write_table(table)
+        try:
+            writer.write_table(table)
+        except Exception as e:
+            # try on each row in the first batch to find the problematic row
+            for i, row in enumerate(converted_data):
+                try:
+                    table = pa.Table.from_pylist([row], schema)
+                    writer.write_table(table)
+                except Exception as e:
+                    print(f"Error writing row {i}: {e}")
+                    # print the row in prrety format
+                    print(json.dumps(row, indent=4))
 
     # Close the writer
     writer.close()
