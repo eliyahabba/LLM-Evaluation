@@ -214,7 +214,7 @@ def convert_to_scheme_format(parquet_path, batch_size=1000, logger=None):
 
         writer = get_writer_for_split(split)
         try:
-            table = pa.Table.from_pylist(rows)
+            table = pa.Table.from_pylist(rows, schema)
             writer.write_table(table)
             if logger:
                 logger.info(f"Batch {batch_num} written successfully for split {split}")
@@ -329,7 +329,7 @@ def convert_to_scheme_format1(parquet_path,batch_size=1000, logger=None):
     writer = pq.ParquetWriter(temp_path, schema)
 
     # Write the first batch
-    table = pa.Table.from_pylist(first_converted)
+    table = pa.Table.from_pylist(first_converted,schema)
     try:
         writer.write_table(table)
         if logger:
@@ -511,8 +511,8 @@ def procces_file(url, output_dir,logger):
 
 if __name__ == "__main__":
     # Set start date
-    output_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
-    # output_directory = Path("/Users/ehabba/Downloads")
-    download_huggingface_files_parllel(output_directory)
-    # parquet_path = Path("~/Downloads/data_sample.parquet")
-    # convert_to_scheme_format(parquet_path, batch_size=100)
+    # output_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    output_directory = Path("/Users/ehabba/Downloads")
+    # download_huggingface_files_parllel(output_directory)
+    parquet_path = Path("~/Downloads/data_sample.parquet")
+    convert_to_scheme_format(parquet_path, batch_size=100)
