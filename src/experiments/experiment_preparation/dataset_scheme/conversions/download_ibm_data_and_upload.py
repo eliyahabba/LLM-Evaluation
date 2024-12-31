@@ -281,7 +281,7 @@ def convert_to_scheme_format(parquet_path, batch_size=1000, logger=None):
             repo_type="dataset"
         )
     except Exception as e:
-        print(f"Repository already exists or error occurred: {e}")
+        logger.info(f"Repository already exists or error occurred: {e}")
 
     api = HfApi()
     base_filename = parquet_path.stem  # Get filename without extension
@@ -290,7 +290,7 @@ def convert_to_scheme_format(parquet_path, batch_size=1000, logger=None):
     for split, temp_path in temp_files.items():
         filename = f"{base_filename}_{split}.parquet"
         try:
-            print(f"Uploading {split} file to Hugging Face...")
+            logger.info(f"Uploading {split} file to Hugging Face...")
             api.upload_file(
                 path_or_fileobj=temp_path,
                 path_in_repo=filename,
@@ -298,14 +298,15 @@ def convert_to_scheme_format(parquet_path, batch_size=1000, logger=None):
                 token=TOKEN,
                 repo_type="dataset"
             )
-            print(f"Successfully uploaded {split} file as {filename} to {REPO_NAME}")
+            logger.info(f"Successfully uploaded {split} file as {filename} to {REPO_NAME}")
         except Exception as e:
-            print(f"Error uploading {split} file: {e}")
+            logger.info(f"Error uploading {split} file: {e}")
+
         finally:
             # Clean up temporary file
             if Path(temp_path).exists():
                 Path(temp_path).unlink()
-                print(f"Temporary file for {split} cleaned up")
+                logger.info(f"Temporary file for {split} cleaned up")
 
 def convert_to_scheme_format1(parquet_path,batch_size=1000, logger=None):
     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
