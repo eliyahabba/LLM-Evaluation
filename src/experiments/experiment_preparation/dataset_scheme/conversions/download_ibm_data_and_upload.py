@@ -339,9 +339,7 @@ def download_huggingface_files_parllel(output_dir):
     logger.info(f"Starting parallel processing with {num_processes} processes...")
 
     with Manager() as manager:
-        file_lock = manager.Lock()
         process_func = partial(procces_file,
-                               file_lock=file_lock,
                                logger=logger)
 
         with Pool(processes=num_processes) as pool:
