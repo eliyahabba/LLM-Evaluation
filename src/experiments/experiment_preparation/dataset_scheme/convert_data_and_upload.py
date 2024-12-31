@@ -113,7 +113,7 @@ def convert_to_scheme(items: list[Path], config_params, file_lock, logger: loggi
     all_data = []
     file_name, dataset_files = items
     try:
-        for exp_file_path in dataset_files:
+        for i, exp_file_path in enumerate(dataset_files):
             try:
                 path_parts = str(exp_file_path).split(os.sep)
                 model = path_parts[-5]
@@ -121,7 +121,8 @@ def convert_to_scheme(items: list[Path], config_params, file_lock, logger: loggi
                 name = path_parts[-1].split(".")[0]
                 shot = next((part for part in path_parts if "shot" in part), "unknown")
                 logger.info(f"Processing file for {model} - {shot}: {exp_file_path}")
-
+                logger.info(
+                    f"Processing file {i}/{len(dataset_files)} for {model} - {dataset} - {shot}: {exp_file_path}")
                 with open(exp_file_path, 'r') as f:
                     input_data = json.load(f)
                 logger.info(f"Reading file {exp_file_path}")
