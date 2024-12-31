@@ -511,8 +511,8 @@ def procces_file(url, output_dir,logger):
 
 if __name__ == "__main__":
     # Set start date
-    # output_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
-    output_directory = Path("/Users/ehabba/Downloads")
-    # download_huggingface_files_parllel(output_directory)
-    parquet_path = Path("~/Downloads/data_sample.parquet")
-    convert_to_scheme_format(parquet_path, batch_size=100)
+    output_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    # output_directory = Path("/Users/ehabba/Downloads")
+    download_huggingface_files_parllel(output_directory)
+    # parquet_path = Path("~/Downloads/data_sample.parquet")
+    # convert_to_scheme_format(parquet_path, batch_size=100)
