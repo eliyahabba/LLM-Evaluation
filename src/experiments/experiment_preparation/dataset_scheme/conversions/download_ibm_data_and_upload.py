@@ -187,7 +187,7 @@ def create_full_schema():
     ])
 
 
-def convert_to_scheme_format(parquet_path, batch_size=1000):
+def convert_to_scheme_format(parquet_path,batch_size=1000, logger=None):
     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
 
     # Initialize converter
@@ -212,19 +212,27 @@ def convert_to_scheme_format(parquet_path, batch_size=1000):
     table = pa.Table.from_pylist(first_converted)
     try:
         writer.write_table(table)
+        if logger:
+            logger.info(f"First batch written successfully")
     except Exception as e:
+        if logger:
+            logger.error(f"Error writing first batch: {e}")
         # try on each row in the first batch to find the problematic row
         for i, row in enumerate(first_converted):
             try:
                 table = pa.Table.from_pylist([row], schema)
                 writer.write_table(table)
             except Exception as e:
+                if logger:
+                    logger.error(f"Error writing row {i}: {e}")
                 print(f"Error writing row {i}: {e}")
                 # print the row in prrety format
                 print(json.dumps(row, indent=4))
 
     # Process remaining batches
     for i, batch in tqdm(enumerate(processor.process_batches()), desc="Processing batches"):
+        if logger:
+            logger.info(f"Processing batch {i + 1}...")
         print(f"Processing batch {i + 1}...")  # i+1 because we already processed first batch
         converted_data = converter.convert_dataframe(batch)
 
@@ -233,17 +241,23 @@ def convert_to_scheme_format(parquet_path, batch_size=1000):
         try:
             writer.write_table(table)
         except Exception as e:
+            if logger:
+                logger.error(f"Error writing batch {i + 1}: {e}")
             # try on each row in the first batch to find the problematic row
             for i, row in enumerate(converted_data):
                 try:
                     table = pa.Table.from_pylist([row], schema)
                     writer.write_table(table)
                 except Exception as e:
+                    if logger:
+                        logger.error(f"Error writing row {i}: {e}")
                     print(f"Error writing row {i}: {e}")
                     # print the row in prrety format
                     print(json.dumps(row, indent=4))
 
     # Close the writer
+    if logger:
+        logger.info(f"Closing writer... for {parquet_path}")
     writer.close()
 
     print(f"Data saved to: {temp_path}")
@@ -325,8 +339,8 @@ def download_huggingface_files_parllel(output_dir):
 
     # List of URLs to download
     urls = [
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-16T00%3A00%3A00%2B00%3A00_2024-12-17T00%3A00%3A00%2B00%3A00.parquet",
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-17T00%3A00%3A00%2B00%3A00_2024-12-18T00%3A00%3A00%2B00%3A00.parquet",
+        #"https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-16T00%3A00%3A00%2B00%3A00_2024-12-17T00%3A00%3A00%2B00%3A00.parquet",
+        #"https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-17T00%3A00%3A00%2B00%3A00_2024-12-18T00%3A00%3A00%2B00%3A00.parquet",
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-18T00%3A00%3A00%2B00%3A00_2024-12-19T00%3A00%3A00%2B00%3A00.parquet",
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-19T00%3A00%3A00%2B00%3A00_2024-12-20T00%3A00%3A00%2B00%3A00.parquet",
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-20T00%3A00%3A00%2B00%3A00_2024-12-21T00%3A00%3A00%2B00%3A00.parquet",
@@ -340,6 +354,7 @@ def download_huggingface_files_parllel(output_dir):
 
     with Manager() as manager:
         process_func = partial(procces_file,
+                               output_dir=output_dir,
                                logger=logger)
 
         with Pool(processes=num_processes) as pool:
@@ -350,15 +365,17 @@ def download_huggingface_files_parllel(output_dir):
             ))
 
 
-def procces_file(url, output_dir):
+def procces_file(url, output_dir,logger):
     # Extract date from URL for the output filename
     # Example: from URL get '2024-12-16' for the filename
     original_filename = url.split('/')[-1]
     output_path = Path(os.path.join(output_dir, original_filename))
     if output_path.exists():
+        logger.info(f"File already exists: {output_path}")
         print(f"File already exists: {output_path}")
     else:
         try:
+            logger.info(f"Downloading {original_filename}...")
             print(f"Downloading {original_filename}...")
             response = requests.get(url, stream=True)
             response.raise_for_status()
@@ -366,12 +383,13 @@ def procces_file(url, output_dir):
             with open(output_path, 'wb') as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
-
+            logger.info(f"Download completed: {original_filename}")
             print(f"Download completed: {original_filename}")
 
         except requests.exceptions.RequestException as e:
             print(f"Error downloading {original_filename}: {e}")
-    convert_to_scheme_format(output_path)
+            logger.error(f"Error downloading {original_filename}: {e}")
+    convert_to_scheme_format(output_path,logger= logger)
 
 
 if __name__ == "__main__":
