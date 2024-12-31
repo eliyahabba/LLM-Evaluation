@@ -71,7 +71,10 @@ def run_on_files(exp_dir: str, logger) -> list[Path]:
             if not os.path.isdir(os.path.join(exp_dir, instrcu_folder, model_folder)) or \
                     model_folder not in valid_paths[instrcu_folder]:
                 continue
-
+            if model_folder in ["Llama-2-7b-chat-hf",
+                                "Mistral-7B-Instruct-v0.2",
+                                "Phi-3-medium-4k-instruct"]:
+                continue
             dataset_folders = os.listdir(os.path.join(exp_dir, instrcu_folder, model_folder))
             dataset_files = []
             file_name = model_folder.split("/")[-1]
