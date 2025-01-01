@@ -1,6 +1,6 @@
 import itertools
+import json
 
-import pandas as pd
 import streamlit as st
 
 from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
@@ -8,7 +8,7 @@ from src.experiments.experiment_preparation.configuration_generation.ConfigParam
 
 def calculate_combinations(dataset_configs, selected_datasets, selected_models, selected_quant,
                            selected_prompts_variations,
-                           selected_prompt_paraphrasing,
+                           selected_phrases,
                            samples_per_dataset,
                            shots,
                            additional_features
@@ -29,8 +29,8 @@ def calculate_combinations(dataset_configs, selected_datasets, selected_models, 
         expanded_datasets,
         selected_models,
         selected_quant,
-        range(1, selected_prompts_variations + 1),
-        range(1, selected_prompt_paraphrasing + 1),
+        *[v for v in selected_prompts_variations.values()],
+        selected_phrases,
         shots,
         additional_features
     ))
@@ -40,7 +40,77 @@ def calculate_combinations(dataset_configs, selected_datasets, selected_models, 
     total_samples = total_combinations * samples_per_dataset
     estimated_cost = total_samples * 0.01  # $0.01 per instance as per document
 
+    summary = create_experiment_params_summary(
+        dataset_configs,
+        selected_models,
+        selected_quant,
+        selected_prompts_variations,
+        selected_phrases,
+        shots,
+        additional_features
+    )
+    display_summary(summary)
+
     return combinations, total_combinations, total_samples, estimated_cost
+
+
+def get_prompt_paraphrasing():
+    def get_mmlu_instructions_with_topic() -> str:
+        return f"The following are multiple choice questions (with answers) about {{topic}}.\n\n{{question}}\n{{choices}}\nAnswer:"
+
+    def get_mmlu_instructions_without_topic() -> str:
+        return f"The following are multiple choice questions (with answers).\n\n{{question}}\n\n{{choices}}\nAnswer:"
+
+    def get_mmlu_instructions_with_topic_helm() -> str:
+        return f"The following are multiple choice questions (with answers) about {{topic}}.\n\nQuestion: {{question}}\n{{choices}}\nAnswer:"
+
+    def get_mmlu_instructions_without_topic_helm() -> str:
+        return f"The following are multiple choice questions (with answers).\n\nQuestion: {{question}}\n\n{{choices}}\nAnswer:"
+
+    def get_mmlu_instructions_without_topic_lm_evaluation_harness() -> str:
+        return f"Question: {{question}}\n\nChoices: {{choices}}\nAnswer:"
+
+    def get_structured_instruction_with_topic():
+        return f"Topic: {{topic}}\nQuestion: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
+
+    def get_mmlu_instructions_with_topic_and_cot():
+        return (f"The following are multiple choice questions (with answers) about {{topic}}. Think step by"
+                f" step and then output the answer in the format of \"The answer is (X)\" at the end.\n\n")
+
+    def get_please_simple_prompt_ProSA_paper() -> str:
+        return f"Please answer the following question:\n{{question}}\n{{choices}}\nAnswer:"
+
+    def get_please_letter_prompt_ProSA_paper() -> str:
+        return f"Please answer the following question:\n{{question}}\n{{choices}}\nAnswer the question by replying {{options}}."
+
+    def get_could_you_prompt_ProSA_paper() -> str:
+        return f"Could you provide a response to the following question:\n{{question}}\n{{choices}}\nAnswer:"
+
+    def get_here_prompt_State_of_What_Art_paper() -> str:
+        return f"Here are some multiple choice questions along with their answers about {{topic}}.\n\nQuestion: {{question}}\nChoices: {{choices}}\nCorrect Answer:"
+
+    def get_below_prompt_State_of_What_Art_paper() -> str:
+        return f"Below are multiple-choice questions related to {{topic}}, each followed by their respective answers.\n\nQuestion: {{question}}\nChoices: {{choices}}\nCorrect Answer:"
+
+    def get_below_please_prompt_State_of_What_Art_paper() -> str:
+        return f"Below are multiple-choice questions related to {{topic}}. Please provide the correct answer for each question.\n\nQuestion: {{question}}\nChoices: {{choices}}\nAnswer:"
+
+    # return dict with all the functions returning the strings
+    return {
+        "mmlu_instructions_with_topic": get_mmlu_instructions_with_topic(),
+        "mmlu_instructions_without_topic": get_mmlu_instructions_without_topic(),
+        "mmlu_instructions_with_topic_helm": get_mmlu_instructions_with_topic_helm(),
+        "mmlu_instructions_without_topic_helm": get_mmlu_instructions_without_topic_helm(),
+        "mmlu_instructions_without_topic_lm_evaluation_harness": get_mmlu_instructions_without_topic_lm_evaluation_harness(),
+        "structured_instruction_with_topic": get_structured_instruction_with_topic(),
+        "mmlu_instructions_with_topic_and_cot": get_mmlu_instructions_with_topic_and_cot(),
+        "please_simple_prompt_ProSA_paper": get_please_simple_prompt_ProSA_paper(),
+        "please_letter_prompt_ProSA_paper": get_please_letter_prompt_ProSA_paper(),
+        "could_you_prompt_ProSA_paper": get_could_you_prompt_ProSA_paper(),
+        "here_prompt_State_of_What_Art_paper": get_here_prompt_State_of_What_Art_paper(),
+        "below_prompt_State_of_What_Art_paper": get_below_prompt_State_of_What_Art_paper(),
+        "below_please_prompt_State_of_What_Art_paper": get_below_please_prompt_State_of_What_Art_paper()
+    }
 
 
 def main():
@@ -48,6 +118,12 @@ def main():
     if "prompt_variations" not in st.session_state:
         from copy import deepcopy
         st.session_state.prompt_variations = deepcopy(ConfigParams.override_options)
+        st.session_state.prompt_variations['choices_separator'] = [item.replace(" ", "\\s") if item == " " else item for
+                                                                   item in st.session_state.prompt_variations[
+                                                                       'choices_separator']]
+        st.session_state.prompt_variations['choices_separator'] = [item.replace("\n", "\\n") for item in
+                                                                   st.session_state.prompt_variations[
+                                                                       'choices_separator']]
         RARE_CHARS = "⊗œ§Жüϡʘϗѯ₿"  # 10 rare characters
         st.session_state.prompt_variations['enumerator'].extend([RARE_CHARS])
 
@@ -82,9 +158,9 @@ def main():
     default_models = [model for model in models if "Llama" in model]
     default_models = models[:1]
     quantizations = ["None", '4int', '8int']
-    default_quant = ["None"]
-    shots = ["zero_shot", "tow_shot", "four_shot"]
-    default_shots = ["zero_shot"]
+    default_quant = ["None", '8int']
+    shots = ["zero_shot", "five_shot"]
+    default_shots = ["zero_shot", "five_shot"]
     Additional_features = ["None",
                            "Spelling_errors", "Random spaces"]
     default_features = ["None"]
@@ -100,7 +176,7 @@ def main():
             "Select Datasets",
             options=list(datasets.keys()),
             help="Choose one or more datasets",
-            default=["MMLU", "MMLU-Pro"]
+            default=["MMLU", "MMLU-Pro", "ARC-Challenge", "Social IQA", "GPQA"]
         )
 
         # Dataset selection
@@ -148,14 +224,33 @@ def main():
             default=default_quant
         )
 
-        # Number of prompt variations
-        num_prompt_paraphrasing = st.slider(
-            "Number of Prompt Paraphrasing",
-            min_value=1,
-            max_value=10,
-            value=4,
-            help="Select number of prompt paraphrasing"
+        # Number of prompt prompt_phrases
+        # display the prompt phrases and selcet values from them
+        prompt_phrases = get_prompt_paraphrasing()
+
+        # Create a formatted display of the prompts with numbers
+        formatted_options = {f"{i + 1}. {k}": v for i, (k, v) in enumerate(prompt_phrases.items())}
+
+        # Display total number of prompts
+        # Create a better multiselect with formatted display
+        selected_phrases = st.multiselect(
+            "Select Prompt Paraphrasing",
+            options=formatted_options.keys(),
+            help="Choose one or more prompt paraphrasing options. Preview of selected prompts will appear below.",
+            default=list(formatted_options.keys())
         )
+        with st.expander("Prompt Paraphrasing Options"):
+            selected_template = st.selectbox(
+                "View template",
+                options=formatted_options.keys(),
+                format_func=lambda x: x.split('. ')[1]  # Show only the name part without the number
+            )
+            st.code(formatted_options[selected_template], language="text")
+        st.info(f"Total number of prompt phrases: {len(prompt_phrases)}")
+
+        # Get the actual values of selected prompts (if you need them later)
+        selected_values = [formatted_options[key] for key in selected_phrases]
+
         st.subheader("Prompt Variations")
 
         with st.expander("Configure Prompt Variations", expanded=True):
@@ -174,12 +269,24 @@ def main():
             )
             selected_shuffle = st.multiselect(
                 "Shuffle Choices",
-                options=["Yes", "No"],
-                default=["Yes", "No"],
+                options=["None",
+                         "sort_by_length_ascending",
+                         "sort_by_length_descending",
+                         "place_correct_at_start",
+                         "place_correct_at_end",
+                         "sort_alphabetically_asceding",
+                         "sort_alphabetically_descending",
+                         "random"],
+                default=["None",
+                         "sort_by_length_ascending",
+                         "sort_by_length_descending",
+                         "place_correct_at_start",
+                         "place_correct_at_end",
+                         "sort_alphabetically_asceding",
+                         "sort_alphabetically_descending",
+                         "random"],
                 help="Whether to shuffle the order of choices"
             )
-            # Convert Yes/No to boolean
-            selected_shuffle = [s == "Yes" for s in selected_shuffle]
 
             # Calculate total variations
             num_prompt_variations = (
@@ -218,12 +325,17 @@ def main():
         st.subheader("Results")
 
         if all([selected_datasets, selected_models, selected_quant]):
+            prompt_variations_all = {
+                "enumerator": selected_enumerators,
+                "choices_separator": selected_separators,
+                "shuffle_choices": selected_shuffle
+            }
             combinations, total_combinations, total_samples, estimated_cost = calculate_combinations(dataset_configs,
                                                                                                      selected_datasets,
                                                                                                      selected_models,
                                                                                                      selected_quant,
-                                                                                                     num_prompt_variations,
-                                                                                                     num_prompt_paraphrasing,
+                                                                                                     prompt_variations_all,
+                                                                                                     selected_phrases,
                                                                                                      samples_per_dataset,
                                                                                                      shots,
                                                                                                      additional_features
@@ -240,25 +352,73 @@ def main():
                 st.metric("Configurations", len(combinations))
 
             # Show sample of combinations
-            st.subheader("Sample Configurations")
-            df = pd.DataFrame(combinations[:1000], columns=['Dataset', 'Model', 'Quantization', 'Prompt Variation',
-                                                            ''
-                                                            'ng', 'Shots', 'Additional Features'])
-            st.dataframe(df, height=400)
+            # st.subheader("Sample Configurations")
+            # df = pd.DataFrame(combinations[:1000], columns=['Dataset', 'Model', 'Quantization', 'Prompt Variation',
+            #                                                 ''
+            #                                                 'ng', 'Shots', 'Additional Features'])
+            # st.dataframe(df, height=400)
 
             # Download button for full configuration
-            if len(combinations) > 0:
-                df_full = pd.DataFrame(combinations, columns=['Dataset', 'Model', 'Quantization', 'Prompt Variation',
-                                                              'Prompt Paraphrasing', 'Shots', 'Additional Features'])
-                csv = df_full.to_csv(index=False)
-                st.download_button(
-                    label="Download Full Configuration",
-                    data=csv,
-                    file_name="dataset_configurations.csv",
-                    mime="text/csv"
-                )
+            # if len(combinations) > 0:
+            #     df_full = pd.DataFrame(combinations, columns=['Dataset', 'Model', 'Quantization', 'Prompt Variation',
+            #                                                   'Prompt Paraphrasing', 'Shots', 'Additional Features'])
+            #     csv = df_full.to_csv(index=False)
+            #     st.download_button(
+            #         label="Download Full Configuration",
+            #         data=csv,
+            #         file_name="dataset_configurations.csv",
+            #         mime="text/csv"
+            #     )
         else:
             st.info("Please select at least one option from each category to see the results.")
+
+
+def create_experiment_params_summary(
+        dataset_configs,
+        selected_models,
+        selected_quant,
+        selected_prompts_variations,
+        selected_phrases,
+        shots,
+        additional_features
+):
+    summary = {}
+
+    # Datasets summary
+    summary['datasets'] = {
+        dataset: f"{count} sub-datasets" if count > 1 else "No sub-datasets"
+        for dataset, count in dataset_configs.items()
+    }
+
+    # Models summary
+    summary['models'] = selected_models
+
+    # Quantization summary
+    summary['quantization'] = selected_quant
+
+    # Prompt variations summary
+    summary['prompt_variations'] = {
+        'total_variations': selected_prompts_variations,
+        'selected_phrases': [phrase.split('. ')[1] for phrase in selected_phrases]  # Remove the numbering
+    }
+
+    # Shots summary
+    summary['shots'] = shots
+
+    # Additional features summary
+    summary['additional_features'] = additional_features if additional_features else ['None']
+
+    return summary
+
+
+def display_summary(summary):
+    summary_json = json.dumps(summary, indent=2, ensure_ascii=False)
+    st.download_button(
+        label="Download Parameters Summary",
+        data=summary_json,
+        file_name="experiment_parameters_summary.json",
+        mime="application/json"
+    )
 
 
 if __name__ == "__main__":
