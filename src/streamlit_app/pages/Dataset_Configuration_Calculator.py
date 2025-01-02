@@ -137,20 +137,35 @@ def main():
 
     # Define available options
     # Update the datasets dictionary to include sub-dataset information
-    datasets = {
-        'MMLU': {'total_instances': 14042, 'sub_datasets': 57},
-        'MMLU-Pro': {'total_instances': 12032, 'sub_datasets': 14},
-        'ARC-Challenge': {'total_instances': 1172, 'sub_datasets': 0},
-        'HellaSwag (commonsense NLI)': {'total_instances': 6700, 'sub_datasets': 0},
-        'Social IQA': {'total_instances': 1954, 'sub_datasets': 0},
-        'OpenBookQA': {'total_instances': 1000, 'sub_datasets': 0},
-        'race high (Reading Comprehension)': {'total_instances': 1000, 'sub_datasets': 0},
-        'race middle (Reading Comprehension)': {'total_instances': 1000, 'sub_datasets': 0},
-        'Social IQa (Commonsense reasoning about social interactions)': {'total_instances': 1000, 'sub_datasets': 0},
-        'Quality (long global context questions)': {'total_instances': 1000, 'sub_datasets': 0},
-        'Coursera (long  context about big data and machine learning))': {'total_instances': 1000, 'sub_datasets': 0},
-        'TPO (long context machine comprehension of spoken content)': {'total_instances': 1000, 'sub_datasets': 0},
+    grouped_datasets = {
+        'knowledge_based_reasoning': {
+            'MMLU': {'total_instances': 14042, 'sub_datasets': 57},
+            'MMLU-Pro': {'total_instances': 12032, 'sub_datasets': 14},
+            'ARC-Challenge': {'total_instances': 1172, 'sub_datasets': 0},
+            'HellaSwag (commonsense NLI)': {'total_instances': 6700, 'sub_datasets': 0},
+            'Social IQA': {'total_instances': 1954, 'sub_datasets': 0},
+            'OpenBookQA': {'total_instances': 1000, 'sub_datasets': 0},
+            'Social IQa (Commonsense reasoning about social interactions)': {'total_instances': 1000, 'sub_datasets': 0}
+        },
+        'context': {
+            'race high (Reading Comprehension)': {'total_instances': 1000, 'sub_datasets': 0},
+            'race middle (Reading Comprehension)': {'total_instances': 1000, 'sub_datasets': 0},
+            'Quality (long global context questions)': {'total_instances': 1000, 'sub_datasets': 0},
+            'Coursera (long  context about big data and machine learning))': {'total_instances': 1000,
+                                                                              'sub_datasets': 0},
+            'TPO (long context machine comprehension of spoken content)': {'total_instances': 1000, 'sub_datasets': 0}
+        }
     }
+
+    flattened_datasets = {}
+    for group, datasets3 in grouped_datasets.items():
+        for dataset_name, dataset_info in datasets3.items():
+            flattened_datasets[dataset_name] = dataset_info
+
+    datasets_to_groups = {}
+    for group, datasets3 in grouped_datasets.items():
+        for dataset_name, dataset_info in datasets3.items():
+            datasets_to_groups[dataset_name] = group
     # Replace the dataset selection section in the main() function with:
     models = ["Llama-3.2-1B-Instruct",
               "Llama-3.2-3B-Instruct",
@@ -184,9 +199,9 @@ def main():
         # Dataset selection
         selected_datasets = st.multiselect(
             "Select Datasets",
-            options=list(datasets.keys()),
+            options=list(flattened_datasets.keys()),
             help="Choose one or more datasets",
-            default=datasets.keys()
+            default=flattened_datasets.keys()
         )
 
         # Dataset selection
@@ -195,7 +210,7 @@ def main():
         if selected_datasets:
             st.write("Configure sub-datasets:")
             for ds in selected_datasets:
-                if datasets[ds]['sub_datasets'] > 0:
+                if flattened_datasets[ds]['sub_datasets'] > 0:
                     col_name, col_slider = st.columns([2, 3])
                     with col_name:
                         st.write(f"{ds}:")
@@ -203,8 +218,8 @@ def main():
                         num_sub_datasets = st.slider(
                             f"Number of sub-datasets for {ds}",
                             min_value=1,
-                            max_value=datasets[ds]['sub_datasets'],
-                            value=datasets[ds]['sub_datasets'],  # Default to max
+                            max_value=flattened_datasets[ds]['sub_datasets'],
+                            value=flattened_datasets[ds]['sub_datasets'],  # Default to max
                             key=f"slider_{ds}"
                         )
                     dataset_configs[ds] = num_sub_datasets
@@ -218,17 +233,13 @@ def main():
         #     st.write(f"- {ds}: {datasets[ds]} instances")
         if selected_datasets:
             st.write("Selected Dataset:")
-            col1, col2, col3 = st.columns(3)
-
+            tab1, tab2 = st.tabs(["knowledge_based_reasoning", "context"])
             for i, item in enumerate(selected_datasets):
-                if i % 3 == 0:
-                    with col1:
-                        st.write(f"• {item}")
-                elif i % 3 == 1:
-                    with col2:
+                if datasets_to_groups[item] == "knowledge_based_reasoning":
+                    with tab1:
                         st.write(f"• {item}")
                 else:
-                    with col3:
+                    with tab2:
                         st.write(f"• {item}")
         # Model selection
         selected_models = st.multiselect(
