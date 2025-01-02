@@ -155,7 +155,7 @@ class Constants:
         TEMPLATE_NAME = "template_name"
 
         MAIN_RESULTS_FOLDER_NAME = "results"
-        MAIN_RESULTS_PATH = Path(__file__).parents[3] / MAIN_RESULTS_FOLDER_NAME
+        MAIN_RESULTS_PATH = Path(__file__).parents[2] / MAIN_RESULTS_FOLDER_NAME
         SUMMARIZE_DF_NAME = "summarize_df_path.csv"
         SUMMARIZE_DF_PATH = MAIN_RESULTS_PATH / SUMMARIZE_DF_NAME
 
