@@ -141,12 +141,16 @@ def main():
         'MMLU': {'total_instances': 14042, 'sub_datasets': 57},
         'MMLU-Pro': {'total_instances': 12032, 'sub_datasets': 14},
         'ARC-Challenge': {'total_instances': 1172, 'sub_datasets': 0},
-        'Bool Q': {'total_instances': 3270, 'sub_datasets': 0},
-        'HellaSwag': {'total_instances': 6700, 'sub_datasets': 0},
+        'HellaSwag (commonsense NLI)': {'total_instances': 6700, 'sub_datasets': 0},
         'Social IQA': {'total_instances': 1954, 'sub_datasets': 0},
-        'GPQA': {'total_instances': 448, 'sub_datasets': 0}
+        'OpenBookQA': {'total_instances': 1000, 'sub_datasets': 0},
+        'race high (Reading Comprehension)': {'total_instances': 1000, 'sub_datasets': 0},
+        'race middle (Reading Comprehension)': {'total_instances': 1000, 'sub_datasets': 0},
+        'Social IQa (Commonsense reasoning about social interactions)': {'total_instances': 1000, 'sub_datasets': 0},
+        'Quality (long global context questions)': {'total_instances': 1000, 'sub_datasets': 0},
+        'Coursera (long  context about big data and machine learning))': {'total_instances': 1000, 'sub_datasets': 0},
+        'TPO (long context machine comprehension of spoken content)': {'total_instances': 1000, 'sub_datasets': 0},
     }
-
     # Replace the dataset selection section in the main() function with:
     models = ["Llama-3.2-1B-Instruct",
               "Llama-3.2-3B-Instruct",
@@ -182,7 +186,7 @@ def main():
             "Select Datasets",
             options=list(datasets.keys()),
             help="Choose one or more datasets",
-            default=["MMLU", "MMLU-Pro", "ARC-Challenge", "Social IQA", "GPQA"]
+            default=datasets.keys()
         )
 
         # Dataset selection
