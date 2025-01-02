@@ -55,9 +55,9 @@ class BaseConfig:
     class PromptParaphrases:
         """Prompt template constants"""
         MC_WITH_TOPIC = "MultipleChoiceTemplatesInstructionsWithTopic"
-        MC_WITHOUT_TOPIC = "MultipleChoiceTemplatesInstructionsWithoutTopic"
+        MC_WITHOUT_TOPIC = "MultipleChoiceTemplatesInstructionsWithoutTopicFixed"
         MC_WITH_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithTopicHelm"
-        MC_WITHOUT_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithoutTopicHelm"
+        MC_WITHOUT_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithoutTopicHelmFixed"
 
         @classmethod
         def get_all_prompt_paraphrases(cls) -> List[str]:
