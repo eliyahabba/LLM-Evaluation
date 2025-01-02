@@ -210,14 +210,26 @@ def main():
                     dataset_configs[ds] = num_sub_datasets
                 else:
                     dataset_configs[ds] = 1
-                    st.write(f"{ds}: No sub-datasets")
+                    # st.write(f"{ds}: No sub-datasets")
 
         # Show selected dataset sizes
+        # st.write("Selected Dataset Sizes:")
+        # for ds in selected_datasets:
+        #     st.write(f"- {ds}: {datasets[ds]} instances")
         if selected_datasets:
-            st.write("Selected Dataset Sizes:")
-            for ds in selected_datasets:
-                st.write(f"- {ds}: {datasets[ds]} instances")
+            st.write("Selected Dataset:")
+            col1, col2, col3 = st.columns(3)
 
+            for i, item in enumerate(selected_datasets):
+                if i % 3 == 0:
+                    with col1:
+                        st.write(f"• {item}")
+                elif i % 3 == 1:
+                    with col2:
+                        st.write(f"• {item}")
+                else:
+                    with col3:
+                        st.write(f"• {item}")
         # Model selection
         selected_models = st.multiselect(
             "Select Models",
