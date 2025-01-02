@@ -61,11 +61,17 @@ def get_prompt_paraphrasing():
     def get_mmlu_instructions_without_topic() -> str:
         return f"The following are multiple choice questions (with answers).\n\n{{question}}\n\n{{choices}}\nAnswer:"
 
+    def get_mmlu_instructions_without_topic_fixed() -> str:
+        return f"The following are multiple choice questions (with answers).\n\n{{question}}\n{{choices}}\nAnswer:"
+
     def get_mmlu_instructions_with_topic_helm() -> str:
         return f"The following are multiple choice questions (with answers) about {{topic}}.\n\nQuestion: {{question}}\n{{choices}}\nAnswer:"
 
     def get_mmlu_instructions_without_topic_helm() -> str:
         return f"The following are multiple choice questions (with answers).\n\nQuestion: {{question}}\n\n{{choices}}\nAnswer:"
+
+    def get_mmlu_instructions_without_topic_helm_fixed() -> str:
+        return f"The following are multiple choice questions (with answers).\n\nQuestion: {{question}}\n{{choices}}\nAnswer:"
 
     def get_mmlu_instructions_without_topic_lm_evaluation_harness() -> str:
         return f"Question: {{question}}\n\nChoices: {{choices}}\nAnswer:"
@@ -98,9 +104,9 @@ def get_prompt_paraphrasing():
     # return dict with all the functions returning the strings
     return {
         "mmlu_instructions_with_topic": get_mmlu_instructions_with_topic(),
-        "mmlu_instructions_without_topic": get_mmlu_instructions_without_topic(),
+        "mmlu_instructions_without_topic": get_mmlu_instructions_without_topic_fixed(),
         "mmlu_instructions_with_topic_helm": get_mmlu_instructions_with_topic_helm(),
-        "mmlu_instructions_without_topic_helm": get_mmlu_instructions_without_topic_helm(),
+        "mmlu_instructions_without_topic_helm": get_mmlu_instructions_without_topic_helm_fixed(),
         "mmlu_instructions_without_topic_lm_evaluation_harness": get_mmlu_instructions_without_topic_lm_evaluation_harness(),
         "structured_instruction_with_topic": get_structured_instruction_with_topic(),
         "mmlu_instructions_with_topic_and_cot": get_mmlu_instructions_with_topic_and_cot(),
