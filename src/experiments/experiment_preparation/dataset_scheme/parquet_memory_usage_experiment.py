@@ -109,6 +109,35 @@ def _process_token_ids(df: pd.DataFrame) -> pd.DataFrame:
         return df
 
 
+def _process_raw_input(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Process logprobs or prompt_logprobs columns.
+
+    Args:
+        df: Input DataFrame
+        column_name: Name of column to process ('logprobs' or 'prompt_logprobs')
+        prefix: Prefix for new column names
+    """
+    processed_series = df['raw_input'].apply(_restructure_raw_input)
+    df['raw_input'] = processed_series
+    df.drop(columns=['raw_input'])
+    # Create new columns for each key in the processed data
+    return df
+# dict_keys(['source', 'target', 'references', 'metrics', '', 'subset', 'media', 'postprocessors', 'task_data', 'data_classification_policy'])
+# 'source', 'target', 'references', metrics,groups,  '', 'subset', 'media','data_classification_policy
+
+
+def _restructure_raw_input(row):
+    data = eval(row) if isinstance(row, str) else row
+# delete these keys from the dictionary
+    #'source', 'target', 'references', metrics, groups, '', 'subset', 'media', 'data_classification_policy
+    keys_to_delete = ['source', 'target', 'references', 'metrics', 'groups', 'subset', 'media', 'data_classification_policy']
+    for key in keys_to_delete:
+        if key in data:
+            del data[key]
+    return data
+
+
 def process_df(df: pd.DataFrame) -> pd.DataFrame:
     """
     Process a DataFrame containing model output data.
@@ -140,6 +169,7 @@ def process_df(df: pd.DataFrame) -> pd.DataFrame:
 
     df = _convert_decoded_columns_to_string(df)
     df = _process_token_ids(df)
+    df = _process_raw_input(df)
 
     return df
 
