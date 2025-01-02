@@ -3,9 +3,27 @@ import json
 
 import streamlit as st
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 
+class ConfigParams:
+    GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
+    KEYBOARD_CHARS = "!@#$%^₪*)("  # 26 lowercase letters
+    override_options = {
+        "enumerator": ["capitals", "lowercase", "numbers", "roman", KEYBOARD_CHARS, GREEK_CHARS],
 
+        "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
+        "shuffle_choices": [False, True],
+        # Add more parameters and their possible values as needed
+    }
+
+    ENUM_CHARS = {"ABCDEFGHIJKLMNOP": "capitals",
+                  "abcdefghijklmnop": "lowercase",
+                  str(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17',
+                       '18', '19', '20']): "numbers",
+                  str(['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV',
+                       'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX']): "roman",
+                  KEYBOARD_CHARS: "keyboard",  # Added mapping for keyboard chars
+                  GREEK_CHARS: "greek"  # Added mapping for greek chars
+                  }
 def calculate_combinations(dataset_configs, selected_datasets, selected_models, selected_quant,
                            selected_prompts_variations,
                            selected_phrases,
