@@ -161,7 +161,6 @@ def main():
             'MMLU-Pro': {'total_instances': 12032, 'sub_datasets': 14},
             'ARC-Challenge': {'total_instances': 1172, 'sub_datasets': 0},
             'HellaSwag (commonsense NLI)': {'total_instances': 6700, 'sub_datasets': 0},
-            'Social IQA': {'total_instances': 1954, 'sub_datasets': 0},
             'OpenBookQA': {'total_instances': 1000, 'sub_datasets': 0},
             'Social IQa (Commonsense reasoning about social interactions)': {'total_instances': 1000, 'sub_datasets': 0}
         },
@@ -172,6 +171,9 @@ def main():
             'Coursera (long  context about big data and machine learning))': {'total_instances': 1000,
                                                                               'sub_datasets': 0},
             'TPO (long context machine comprehension of spoken content)': {'total_instances': 1000, 'sub_datasets': 0}
+        },
+        'multilingual': {
+            'mgsm (Multilingual of GSM)': {'total_instances': 1000, 'sub_datasets': 11}
         }
     }
 
@@ -251,14 +253,19 @@ def main():
         #     st.write(f"- {ds}: {datasets[ds]} instances")
         if selected_datasets:
             st.write("Selected Dataset:")
-            tab1, tab2 = st.tabs(["knowledge_based_reasoning", "context"])
+            tab1, tab2, tab3 = st.tabs(["knowledge_based_reasoning", "context", "multilingual"])
             for i, item in enumerate(selected_datasets):
                 if datasets_to_groups[item] == "knowledge_based_reasoning":
                     with tab1:
                         st.write(f"• {item}")
-                else:
+                elif datasets_to_groups[item] == "context":
                     with tab2:
                         st.write(f"• {item}")
+                elif datasets_to_groups[item] == "multilingual":
+                    with tab3:
+                        st.write(f"• {item}")
+
+
         # Model selection
         selected_models = st.multiselect(
             "Select Models",
