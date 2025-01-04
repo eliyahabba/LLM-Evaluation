@@ -358,9 +358,18 @@ def download_huggingface_files_parllel(output_dir):
     logger.info(f"Starting parallel processing with {num_processes} processes...")
 
     with Manager() as manager:
-        process_func = partial(procces_file,
-                               output_dir=output_dir,
-                               logger=logger)
+        errors = manager.list()
+
+        def process_file_safe(url, output_dir, logger):
+            try:
+                procces_file(url, output_dir=output_dir, logger=logger)
+            except Exception as e:
+                logger.error(f"Error processing file {url}: {e}")
+                errors.append((url, str(e)))
+                return None
+
+        process_func = partial(process_file_safe, output_dir=output_dir, logger=logger)
+
 
         with Pool(processes=num_processes) as pool:
             list(tqdm(
@@ -369,6 +378,8 @@ def download_huggingface_files_parllel(output_dir):
                 desc="Processing files"
             ))
 
+    if errors:
+        logger.warning(f"Errors occurred during processing: {list(errors)}")
 
 def procces_file(url, output_dir, logger):
     # Extract date from URL for the output filename
