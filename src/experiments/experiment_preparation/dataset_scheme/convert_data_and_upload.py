@@ -15,7 +15,7 @@ from src.experiments.experiment_preparation.dataset_scheme.conversions.JSON_sche
 from src.experiments.experiment_preparation.dataset_scheme.conversions.dataset_schema_adapter_huji import \
     convert_dataset
 from src.experiments.experiment_preparation.dataset_scheme.hf_dataset_manager.dataset_publisher import \
-    check_and_upload_file_to_huggingface, check_and_upload_parq_file_to_huggingface
+    check_and_upload_parq_file_to_huggingface
 
 
 def setup_logging():
@@ -105,7 +105,7 @@ def run_on_files(exp_dir: str, logger) -> list[Path]:
                         tqdm.write(f"Found {len(exp_files)} files in {model_folder}/{shot_number}")
                         dataset_files.extend(exp_files)
                         # return mapping
-            mapping.append((file_name,dataset_files))
+            mapping.append((file_name, dataset_files))
     return mapping
 
 
@@ -187,7 +187,8 @@ def convert_to_scheme(items: list[Path], config_params, file_lock, logger: loggi
     REPO_NAME = "eliyahabba/llm-evaluation-dataset"  # Replace with your desired repo name
     config = Config()
     TOKEN = config.config_values.get("hf_access_token", "")
-    check_and_upload_parq_file_to_huggingface(all_data, repo_name=REPO_NAME, token=TOKEN, private=False, file_name=file_name)
+    check_and_upload_parq_file_to_huggingface(all_data, repo_name=REPO_NAME, token=TOKEN, private=False,
+                                              file_name=file_name, logger=logger)
     # After successful upload
     logger.info(f"Successfully processed and uploaded {file_name}")
 

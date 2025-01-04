@@ -149,7 +149,8 @@ def check_and_upload_parq_file_to_huggingface(
         repo_name: str,
         token: str,
         private: bool = False,
-        file_name: str = None
+        file_name: str = None,
+        logger=None
 ) -> None:
     """
     Main function to check for duplicates and upload dataset as Parquet.
@@ -188,11 +189,25 @@ def check_and_upload_parq_file_to_huggingface(
         split_data[split].append(item)
 
     # Create datasets for each split
-    datasets = {
-        split: Dataset.from_list(items)
-        for split, items in split_data.items()
-    }
-
+    try:
+        datasets = {
+            split: Dataset.from_list(items)
+            for split, items in split_data.items()
+        }
+    except Exception as e:
+        for split, items in split_data.items():
+            logger.info(f"Checking split: {split}")
+            for idx, item in enumerate(items):
+                for key, value in item.items():
+                    if isinstance(value, str) and value.strip() == "":
+                        logger.info(f"Found empty string in split '{split}', item {idx}, key '{key}': '{value}'")
+                    elif isinstance(value, (list, tuple)):
+                        # If the value is a list/tuple, check each element
+                        for i, v in enumerate(value):
+                            if isinstance(v, str) and v.strip() == "":
+                                logger.info(
+                                    f"Found empty string in split '{split}', item {idx}, key '{key}', position {i}: '{v}'")
+        raise e
     dataset_dict = DatasetDict(datasets)
     api = HfApi()
 
