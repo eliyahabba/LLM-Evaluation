@@ -170,7 +170,7 @@ class SchemaConverter:
         logprob_values = np.array([item[0]['logprob'] for item in logprobs])
         return np.exp(-np.mean(logprob_values))
 
-    def convert_row(self, row: pd.Series) -> Dict:
+    def convert_row(self, row: pd.Series, probs: bool = True) -> Dict:
         """Convert a single DataFrame row to schema format."""
         raw_input = json.loads(row['raw_input'])
         task_data = eval(raw_input['task_data'])
@@ -186,9 +186,9 @@ class SchemaConverter:
                                                         recipe
                                                         ),
             "instance": self._build_instance_section(
-                row, task_data, recipe
+                row, task_data, recipe, probs
             ),
-            "output": self._build_output_section(row),
+            "output": self._build_output_section(row, probs),
             "evaluation": self._build_evaluation_section(row)
         }
 
@@ -264,7 +264,8 @@ class SchemaConverter:
         }
 
     def _build_instance_section(self, row: pd.Series, task_data: Dict,
-                                recipe: Dict) -> Dict:
+                                recipe: Dict, probs: bool = True
+                                ) -> Dict:
         """Build instance section of schema."""
         # Extract choice information
         choices = [
@@ -273,10 +274,13 @@ class SchemaConverter:
         ]
 
         # Transform log probabilities
-        prompt_logprobs = self.transform_logprobs(eval(row['prompt_logprobs']))
+        if probs:
+            prompt_logprobs = self.transform_logprobs(eval(row['prompt_logprobs']))
+        else:
+            prompt_logprobs = []
+
         with open(f"{recipe['card'].split('.')[1]}_samples.json", 'r') as file:
             index_map = json.load(file)
-
         return {
             "task_type": "classification",
             "raw_input": eval(row['prompt']),
@@ -298,14 +302,16 @@ class SchemaConverter:
             "prompt_logprobs": prompt_logprobs
         }
 
-    def _build_output_section(self, row: pd.Series) -> Dict:
+    def _build_output_section(self, row: pd.Series, probs: bool) -> Dict:
         """Build output section of schema."""
-        logprobs = json.loads(row['logprobs'])
-        generated_tokens_logprobs = [
-            self.add_token_index_to_tokens(logprobs[i])
-            for i in range(len(logprobs))
-        ]
-
+        if probs:
+            logprobs = json.loads(row['logprobs'])
+            generated_tokens_logprobs = [
+                self.add_token_index_to_tokens(logprobs[i])
+                for i in range(len(logprobs))
+            ]
+        else:
+            generated_tokens_logprobs = []
         return {
             "response": row['generated_text'],
             "cumulative_logprob": row['cumulative_logprob'],
@@ -324,9 +330,9 @@ class SchemaConverter:
             "score": eval(row['scores'])['score']
         }
 
-    def convert_dataframe(self, df: pd.DataFrame) -> List[Dict]:
+    def convert_dataframe(self, df: pd.DataFrame, probs=True) -> List[Dict]:
         """Convert entire DataFrame to schema format."""
-        return [self.convert_row(row) for _, row in df.iterrows()]
+        return [self.convert_row(row, probs) for _, row in df.iterrows()]
 
 
 def main():
