@@ -352,7 +352,7 @@ def download_huggingface_files_parllel(output_dir):
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T06%3A00%3A00%2B00%3A00_2024-12-24T08%3A00%3A00%2B00%3A00.parquet",
     ]
 
-    num_processes = max(1, cpu_count() - 1)
+    num_processes = min(8, cpu_count() - 1)
     logger = setup_logging()
     logger.info("Starting processing...")
     logger.info(f"Starting parallel processing with {num_processes} processes...")
