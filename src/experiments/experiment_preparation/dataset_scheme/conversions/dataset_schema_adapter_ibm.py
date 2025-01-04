@@ -274,9 +274,9 @@ class SchemaConverter:
         ]
 
         # Transform log probabilities
-        if probs:
-            prompt_logprobs = self.transform_logprobs(eval(row['prompt_logprobs']))
-        else:
+        prompt_logprobs = self.transform_logprobs(eval(row['prompt_logprobs']))
+        perplexity = self.calculate_perplexity(prompt_logprobs)
+        if not prompt_logprobs:
             prompt_logprobs = []
 
         with open(f"{recipe['card'].split('.')[1]}_samples.json", 'r') as file:
@@ -290,7 +290,7 @@ class SchemaConverter:
                 "hf_repo": f"cais/{recipe['card'].split('.')[1]}",
                 "hf_index": index_map[task_data['question']]
             },
-            "perplexity": self.calculate_perplexity(prompt_logprobs),
+            "perplexity": perplexity,
             "classification_fields": {
                 "question": task_data['question'],
                 "choices": choices,
