@@ -350,7 +350,6 @@ def download_huggingface_files_parllel(output_dir):
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T02%3A00%3A00%2B00%3A00_2024-12-24T04%3A00%3A00%2B00%3A00.parquet",
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T04%3A00%3A00%2B00%3A00_2024-12-24T06%3A00%3A00%2B00%3A00.parquet",
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T06%3A00%3A00%2B00%3A00_2024-12-24T08%3A00%3A00%2B00%3A00.parquet",
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T08%3A00%3A00%2B00%3A00_2024-12-24T10%3A00%3A00%2B00%3A00.parquet",
     ]
 
     num_processes = max(1, cpu_count() - 1)
