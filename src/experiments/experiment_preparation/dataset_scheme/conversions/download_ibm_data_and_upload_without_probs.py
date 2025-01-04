@@ -271,7 +271,6 @@ def convert_to_scheme_format(parquet_path, batch_size=1000, logger=None):
     for writer in writers.values():
         writer.close()
 
-
     try:
         create_repo(
             repo_id=REPO_NAME,
@@ -327,7 +326,31 @@ def download_huggingface_files_parllel(output_dir):
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-18T00%3A00%3A00%2B00%3A00_2024-12-19T00%3A00%3A00%2B00%3A00.parquet",
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-19T00%3A00%3A00%2B00%3A00_2024-12-20T00%3A00%3A00%2B00%3A00.parquet",
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-20T00%3A00%3A00%2B00%3A00_2024-12-21T00%3A00%3A00%2B00%3A00.parquet",
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-21T00%3A00%3A00%2B00%3A00_2024-12-22T00%3A00%3A00%2B00%3A00.parquet"
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-21T00%3A00%3A00%2B00%3A00_2024-12-22T00%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-22T08%3A00%3A00%2B00%3A00_2024-12-22T12%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-22T16%3A00%3A00%2B00%3A00_2024-12-22T18%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-22T18%3A00%3A00%2B00%3A00_2024-12-22T20%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-22T20%3A00%3A00%2B00%3A00_2024-12-22T22%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-22T22%3A00%3A00%2B00%3A00_2024-12-23T00%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-22T22%3A00%3A00%2B00%3A00_2024-12-23T00%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T00%3A00%3A00%2B00%3A00_2024-12-23T02%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T02%3A00%3A00%2B00%3A00_2024-12-23T04%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T04%3A00%3A00%2B00%3A00_2024-12-23T06%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T06%3A00%3A00%2B00%3A00_2024-12-23T08%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T08%3A00%3A00%2B00%3A00_2024-12-23T10%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T10%3A00%3A00%2B00%3A00_2024-12-23T12%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T12%3A00%3A00%2B00%3A00_2024-12-23T14%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T14%3A00%3A00%2B00%3A00_2024-12-23T16%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T16%3A00%3A00%2B00%3A00_2024-12-23T18%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T18%3A00%3A00%2B00%3A00_2024-12-23T20%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T20%3A00%3A00%2B00%3A00_2024-12-23T22%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T22%3A00%3A00%2B00%3A00_2024-12-24T00%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-23T22%3A00%3A00%2B00%3A00_2024-12-24T00%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T00%3A00%3A00%2B00%3A00_2024-12-24T02%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T02%3A00%3A00%2B00%3A00_2024-12-24T04%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T04%3A00%3A00%2B00%3A00_2024-12-24T06%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T06%3A00%3A00%2B00%3A00_2024-12-24T08%3A00%3A00%2B00%3A00.parquet",
+        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2024-12-24T08%3A00%3A00%2B00%3A00_2024-12-24T10%3A00%3A00%2B00%3A00.parquet",
     ]
 
     num_processes = max(1, cpu_count() - 1)
@@ -348,7 +371,7 @@ def download_huggingface_files_parllel(output_dir):
             ))
 
 
-def procces_file(url, output_dir,logger):
+def procces_file(url, output_dir, logger):
     # Extract date from URL for the output filename
     # Example: from URL get '2024-12-16' for the filename
     original_filename = url.split('/')[-1]
@@ -372,7 +395,7 @@ def procces_file(url, output_dir,logger):
         except requests.exceptions.RequestException as e:
             print(f"Error downloading {original_filename}: {e}")
             logger.error(f"Error downloading {original_filename}: {e}")
-    convert_to_scheme_format(output_path,logger= logger)
+    convert_to_scheme_format(output_path, logger=logger)
 
 
 if __name__ == "__main__":
