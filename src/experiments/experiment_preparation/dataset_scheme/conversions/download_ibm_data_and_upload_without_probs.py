@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import tempfile
+import time
 from datetime import datetime
 from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
@@ -360,7 +361,6 @@ def download_huggingface_files_parllel(output_dir):
     with Manager() as manager:
         process_func = partial(process_file_safe, output_dir=output_dir, logger=logger)
 
-
         with Pool(processes=num_processes) as pool:
             list(tqdm(
                 pool.imap_unordered(process_func, urls),
@@ -368,12 +368,19 @@ def download_huggingface_files_parllel(output_dir):
                 desc="Processing files"
             ))
 
+
 def process_file_safe(url, output_dir, logger):
+    start_time = time.time()
     try:
         procces_file(url, output_dir=output_dir, logger=logger)
     except Exception as e:
         logger.error(f"Error processing file {url}: {e}")
         return None
+    finally:
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        logger.info(f"Processing time for {url}: {elapsed_time:.2f} seconds")
+
 
 def procces_file(url, output_dir, logger):
     # Extract date from URL for the output filename
@@ -399,7 +406,7 @@ def procces_file(url, output_dir, logger):
         except requests.exceptions.RequestException as e:
             print(f"Error downloading {original_filename}: {e}")
             logger.error(f"Error downloading {original_filename}: {e}")
-    convert_to_scheme_format(output_path, logger=logger)
+    convert_to_scheme_format(output_path, logger=logger, batch_size=10000)
 
 
 if __name__ == "__main__":
