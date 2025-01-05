@@ -276,7 +276,7 @@ class SchemaConverter:
         # Transform log probabilities
         prompt_logprobs = self.transform_logprobs(eval(row['prompt_logprobs']))
         perplexity = self.calculate_perplexity(prompt_logprobs)
-        if not prompt_logprobs:
+        if not probs:
             prompt_logprobs = []
 
         with open(f"{recipe['card'].split('.')[1]}_samples.json", 'r') as file:
