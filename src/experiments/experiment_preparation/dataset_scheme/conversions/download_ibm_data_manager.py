@@ -101,7 +101,6 @@ def create_prompt_config_schema():
     ])
 
     format_schema = pa.struct([
-        ('type', pa.string()),
         ('template', pa.string()),
         ('separator', pa.string()),
         ('enumerator', pa.string()),
