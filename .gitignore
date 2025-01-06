@@ -3,6 +3,7 @@
 **/__pycache__/
 **/logs/
 **/slurm*
+**/processing_log_*
 **/.DS_Store
 /src/experiments/experiment_preparation/dataset_scheme/old/
 /src/unitxt/
