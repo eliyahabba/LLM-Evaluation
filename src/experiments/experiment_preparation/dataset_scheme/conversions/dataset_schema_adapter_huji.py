@@ -123,7 +123,6 @@ def convert_to_schema_format(dataset: Dict[str, Any], max_new_tokens: int, data:
             "prompt_config": {
                 "prompt_class": "MultipleChoice",
                 "format": {
-                    "type": "MultipleChoice",
                     "template": template["input_format"],
                     "separator": SeparatorMap.get_separator(template["choices_separator"]),
                     "enumerator": template["enumerator"],

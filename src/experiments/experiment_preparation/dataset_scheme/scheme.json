@@ -140,9 +140,6 @@
                             "type": "object",
                             "required": ["type", "template", "separator", "enumerator", "choices_order", "shots"],
                             "properties": {
-                                "type": {
-                                    "const": "MultipleChoice"
-                                },
                                 "template": {
                                     "type": "string",
                                     "description": "Base template format with placeholders for topic, question, choices, and answer"

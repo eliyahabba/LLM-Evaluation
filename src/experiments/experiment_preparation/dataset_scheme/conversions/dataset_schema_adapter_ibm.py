@@ -253,7 +253,6 @@ class SchemaConverter:
         return {
             "prompt_class": "MultipleChoice",
             "format": {
-                "type": "MultipleChoice",
                 "template": self._get_template(recipe),
                 "separator": separator,
                 "enumerator": enumerator,
