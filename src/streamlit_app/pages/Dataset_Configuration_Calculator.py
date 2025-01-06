@@ -148,8 +148,6 @@ def main():
         st.session_state.prompt_variations['choices_separator'] = [item.replace("\n", "\\n") for item in
                                                                    st.session_state.prompt_variations[
                                                                        'choices_separator']]
-        RARE_CHARS = "⊗œ§Жüϡʘϗѯ₿"  # 10 rare characters
-        st.session_state.prompt_variations['enumerator'].extend([RARE_CHARS])
 
     st.title("Dataset Configuration Calculator")
 
