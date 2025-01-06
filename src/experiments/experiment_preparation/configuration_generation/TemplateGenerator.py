@@ -7,23 +7,24 @@ from tqdm import tqdm
 from unitxt.templates import Template
 
 from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
-from src.experiments.experiment_preparation.datasets_configurations.BaseDatasetConfig import BaseDatasetConfig
+from src.experiments.experiment_preparation.datasets_configurations.InputTemplatesConfigs.InputFormatTemplateConfig import \
+    InputFormatTemplateConfig
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class TemplateGenerator:
-    def __init__(self, dataset_config: BaseDatasetConfig, override_options: dict, input_format_func: callable = None):
+    def __init__(self, input_config: InputFormatTemplateConfig, override_options: dict, input_format: str):
         """
         Initializes the TemplateGenerator with base arguments and override options.
 
         @param base_args: A dictionary containing base arguments for the template.
         @param override_options: A dictionary containing override options for the template.
         """
-        self.dataset_config = dataset_config
+        self.input_config = input_config
         self.override_options = override_options
-        self.input_format_func = input_format_func
+        self.input_format = input_format
 
     def create_templates(self) -> Dict[str, Template]:
         """
@@ -36,7 +37,7 @@ class TemplateGenerator:
             override_args = dict(zip(self.override_options.keys(), options))
             # create a name for the template
             template_name = ConfigParams.generate_template_name(override_args)
-            override_args['input_format_func'] = self.input_format_func
+            override_args['input_format'] = self.input_format
             template = self.create_template(**override_args)
             templates[template_name] = template
             print(f"Created template with options: {override_args}")
