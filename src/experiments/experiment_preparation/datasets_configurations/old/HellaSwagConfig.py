@@ -1,4 +1,4 @@
-from src.experiments.experiment_preparation.datasets_configurations.BaseDatasetConfig import BaseDatasetConfig
+from src.experiments.experiment_preparation.datasets_configurations.old.BaseDatasetConfig import BaseDatasetConfig
 
 
 class HellaSwagConfig(BaseDatasetConfig):
