@@ -2,6 +2,7 @@
 import json
 import logging
 import os
+import time
 from datetime import datetime
 from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
@@ -109,6 +110,25 @@ def run_on_files(exp_dir: str, logger) -> list[Path]:
     return mapping
 
 
+def convert_to_scheme_safe(items, config_params,
+                           file_lock,
+                           logger):
+    start_time = time.time()
+    try:
+        convert_to_scheme(items, config_params,
+                          file_lock,
+                          logger)
+    except Exception as e:
+        file_name, dataset_files = items
+        logger.error(f"Error processing file {file_name}: {e}")
+        return None
+    finally:
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        file_name, dataset_files = items
+        logger.info(f"Processing time for {file_name}: {elapsed_time:.2f} seconds")
+
+
 def convert_to_scheme(items: list[Path], config_params, file_lock, logger: logging.Logger) -> None:
     all_data = []
     file_name, dataset_files = items
@@ -196,6 +216,7 @@ def convert_to_scheme(items: list[Path], config_params, file_lock, logger: loggi
 def rename_files_parallel(file_mapping: list[Path], config_params: ConfigParams,
                           logger: logging.Logger) -> None:
     num_processes = max(1, cpu_count() - 1)
+    num_processes = max(1, 8)
     logger.info(f"Starting parallel processing with {num_processes} processes...")
 
     with Manager() as manager:
