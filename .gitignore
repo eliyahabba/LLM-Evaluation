@@ -1,4 +1,5 @@
 /.idea
+/.unitxt_env
 /src/utils/access_token
 **/__pycache__/
 **/logs/
@@ -6,3 +7,4 @@
 **/.DS_Store
 /src/experiments/experiment_preparation/dataset_scheme/old/
 /src/unitxt/
+/src/experiments/experiment_preparation/datasets_configurations/old/
