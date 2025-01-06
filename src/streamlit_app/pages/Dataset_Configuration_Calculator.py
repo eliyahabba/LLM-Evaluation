@@ -332,7 +332,7 @@ def main():
                          "place_correct_at_end",
                          "sort_alphabetically_asceding",
                          "sort_alphabetically_descending",
-                         "random"],
+                         ],
                 default=["None",
                          "sort_by_length_ascending",
                          "sort_by_length_descending",
@@ -340,7 +340,7 @@ def main():
                          "place_correct_at_end",
                          "sort_alphabetically_asceding",
                          "sort_alphabetically_descending",
-                         "random"],
+                         ],
                 help="Whether to shuffle the order of choices"
             )
 
