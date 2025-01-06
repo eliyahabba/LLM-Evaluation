@@ -1,6 +1,6 @@
 import json
 import os
-
+import random
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -28,12 +28,15 @@ class MetaHistogramOfSamples:
     def display_page(self):
         st.title("Histogram of Samples")
         selected_results_file, model_files, shot = self.get_files()
-        self.display_aggregated_results(selected_results_file, model_files, shot)
+        self.display_aggregated_results(
+            selected_results_file, model_files, shot)
 
     def get_model_files(self, selected_results_file):
-        folders = [file for file in selected_results_file.iterdir() if file.is_dir()]
+        folders = [file for file in selected_results_file.iterdir()
+                   if file.is_dir()]
         models_names = {f.name: f for f in folders}
-        sorted_folders = dict(sorted(models_names.items(), key=lambda x: (x[0].lower(), x[0]), reverse=False))
+        sorted_folders = dict(
+            sorted(models_names.items(), key=lambda x: (x[0].lower(), x[0]), reverse=False))
         models = st.sidebar.multiselect("Select models to visualize", list(sorted_folders.keys()),
                                         default=list(sorted_folders.keys()))
         # add the model to st.session_state
@@ -47,7 +50,8 @@ class MetaHistogramOfSamples:
             main_results_path, "Select results folder to visualize", reverse=True
         )
         self.results_folder = main_results_path / selected_results_file
-        shot = st.sidebar.selectbox("Select number of shots", ["zero_shot", "three_shot"])
+        shot = st.sidebar.selectbox("Select number of shots", [
+                                    "zero_shot", "three_shot"])
         model_files = self.get_model_files(selected_results_file)
         return selected_results_file, model_files, shot
 
@@ -56,7 +60,8 @@ class MetaHistogramOfSamples:
         total_merge_df = MetaHistogramCalculator.aggregate_data_across_models(selected_results_file,
                                                                               selected_models_files, shot,
                                                                               datasets_names)
-        total_merge_df = MetaHistogramCalculator.calculate_and_add_accuracy_columns(total_merge_df)
+        total_merge_df = MetaHistogramCalculator.calculate_and_add_accuracy_columns(
+            total_merge_df)
         self.plot_aggregated_histogram(total_merge_df)
         self.display_examples(total_merge_df)
 
@@ -83,25 +88,37 @@ class MetaHistogramOfSamples:
         Plot the histogram of the results.
         @param df: DataFrame containing the data to plot.
         """
-        # title = f"Aggregated Histogram by {split_option} {split_option_value}"
+        # Get the mean of number_of_predictions
+        mean_predictions = df['number_of_predictions'].mean()
+
+        # Check if mean is NaN
+        if np.isnan(mean_predictions):
+            config_count = 0  # or any default value you want to use
+        else:
+            config_count = int(mean_predictions)
+
         title = f"Aggregated Histogram by"
         st.markdown(
-            f"There are {len(df)} examples in the dataset across {int(df['number_of_predictions'].mean())} configurations "
-            f"(configuration - combination of model and prompt variation).")
+            f"There are {len(df)} examples in the dataset across {config_count} configurations "
+        )
         st.markdown(
             f"The models in the plots are {', '.join(st.session_state['models'])}")
         # Setting up the plot
         fig, ax = plt.subplots(figsize=(11, 6))
         ax.grid(True)  # Add grid lines for better readability
-        ax.set_axisbelow(True)  # Ensure grid lines are behind other plot elements
+        # Ensure grid lines are behind other plot elements
+        ax.set_axisbelow(True)
 
         # Plotting the histogram
-        bins = np.arange(0, 105, 5)  # Adjust bins to include the range from 12 to 100
-        df['accuracy'].plot(kind='hist', bins=bins, ax=ax, color='skyblue', edgecolor='black')
+        # Adjust bins to include the range from 12 to 100
+        bins = np.arange(0, 105, 5)
+        df['accuracy'].plot(kind='hist', bins=bins, ax=ax,
+                            color='skyblue', edgecolor='black')
 
         # Adding title and labels
         ax.set_title(title, fontsize=16)
-        ax.set_xlabel("Percentage of Templates with Correct Predictions", fontsize=14)
+        ax.set_xlabel(
+            "Percentage of Templates with Correct Predictions", fontsize=14)
         ax.set_ylabel("Number of Examples", fontsize=14)
 
         # Customizing tick labels from and plot all the bins
@@ -127,6 +144,11 @@ class MetaHistogramOfSamples:
         max_percentage = st.slider("Maximum percentage of examples to display", 0, 100, 5, step=5)
         examples = df[(df['accuracy'] > min_percentage) & (df['accuracy'] < max_percentage)]
         self.display_example_details(examples)
+        # Add categorization section after the regular display
+        st.markdown("---")
+        st.markdown("## Error Category Analysis")
+        example_data = MetaHistogramCalculator.extract_example_data(examples)
+        self.display_error_categorization(example_data)
 
     def display_example_details(self, examples):
         # Implementation to display details for each example
@@ -177,7 +199,8 @@ class MetaHistogramOfSamples:
             st.error(f"Error generating chart: {str(e)}")
 
     def display_text_examples(self, example_data):
-        dataset = st.selectbox("Select dataset", example_data['dataset'].unique())
+        dataset = st.selectbox(
+            "Select dataset", example_data['dataset'].unique())
         # results_folder = ResultConstants.MAIN_RESULTS_PATH / Path("MultipleChoiceTemplatesStructured")
         default_model = "Mistral-7B-Instruct-v0.2"
         models = sorted(
@@ -187,7 +210,8 @@ class MetaHistogramOfSamples:
         selected_examples = example_data[example_data['dataset'] == dataset]
         # current_instance = selected_examples.iloc[st.session_state.get('file_index', 0)]
         current_instance = self.get_current_index(selected_examples, dataset)
-        full_results_path = self.results_folder / model / dataset / "zero_shot" / "empty_system_format" / "experiment_template_0.json"
+        full_results_path = self.results_folder / model / dataset / \
+            "zero_shot" / "empty_system_format" / "experiment_template_0.json"
         with open(full_results_path, "r") as file:
             template = json.load(file)
         sample = template["results"]["test"][current_instance]
@@ -195,11 +219,13 @@ class MetaHistogramOfSamples:
         st.write("----")
 
     def get_current_index(self, examples_id, dataset):
-        dataset_index = examples_id[examples_id['dataset'] == dataset]['example_number'].values
+        dataset_index = examples_id[examples_id['dataset']
+                                    == dataset]['example_number'].values
 
         # sort the files by the number of the experiment
         # write on the center of the page
-        st.markdown(f"#### {len(dataset_index)} Examples", unsafe_allow_html=True)
+        st.markdown(f"#### {len(dataset_index)} Examples",
+                    unsafe_allow_html=True)
         if "file_index" not in st.session_state:
             st.session_state["file_index"] = 0
         if "dataset" not in st.session_state:
@@ -213,23 +239,28 @@ class MetaHistogramOfSamples:
         # add bottoms to choose example
         col1, col2 = st.columns(2)
         with col1:
-            st.button(label="Previous sentence", on_click=SamplesNavigator.previous_sentence)
+            st.button(label="Previous sentence",
+                      on_click=SamplesNavigator.previous_sentence)
         with col2:
-            st.button(label="Next sentence", on_click=SamplesNavigator.next_sentence)
+            st.button(label="Next sentence",
+                      on_click=SamplesNavigator.next_sentence)
         st.selectbox(
             "Sentences",
-            [f"sentence {i + 1}" for i in range(0, st.session_state["files_number"])],
+            [f"sentence {i + 1}" for i in range(0,
+                                                st.session_state["files_number"])],
             index=st.session_state["file_index"],
             on_change=SamplesNavigator.go_to_sentence,
             key="selected_sentence",
         )
 
-        current_instance = examples_id[examples_id['example_number'] == dataset_index[st.session_state['file_index']]]
+        current_instance = examples_id[examples_id['example_number']
+                                       == dataset_index[st.session_state['file_index']]]
         current_instance = int(current_instance.example_number.values[0])
         return current_instance
 
     def display_sample_details(self, sample):
-        formatted_instance = sample['Instance'].replace('\n\n', '<br><br>').replace('\n', '<br>')
+        formatted_instance = sample['Instance'].replace(
+            '\n\n', '<br><br>').replace('\n', '<br>')
         formatted_ground_truth = sample['GroundTruth']
         formatted_prediction = sample['Result']
         formatted_score = sample['Score']
@@ -242,7 +273,191 @@ class MetaHistogramOfSamples:
             unsafe_allow_html=True
         )
 
+    def display_error_categorization(self, examples):
+        
+        st.markdown("### Error Category Analysis")
+        if 'all_annotations' not in st.session_state:
+            st.session_state.all_annotations = {}
+        if 'current_session_annotations' not in st.session_state:
+            st.session_state.current_session_annotations = {}
+        
+        try:
+            max_examples = st.number_input(
+                "Number of examples to analyze:", 
+                min_value=1, 
+                max_value=len(examples), 
+                value=min(10, len(examples))
+            )
+            
+            selected_examples = self._sample_examples(examples, max_examples)
+            
+            with st.form("annotation_form"):
+                self._display_error_categories_legend()
+                
+                for i, (idx, row) in enumerate(selected_examples.iterrows()):
+                    self._display_single_example_annotation(i, idx, row)
+                
+                col1, col2 = st.columns([3, 1])
+                with col1:
+                    submit_button = st.form_submit_button("Submit Annotations", 
+                        help="Save current annotations and view statistics")
+                with col2:
+                    clear_button = st.form_submit_button("Clear All", 
+                        help="Clear all saved annotations")
+            
+            if submit_button:
+                st.session_state.all_annotations.update(
+                    st.session_state.current_session_annotations)
+                self.display_annotation_statistics(st.session_state.all_annotations)
+                st.success("Annotations submitted successfully!")
+            
+            if clear_button:
+                self._handle_clear_annotations()
+                
+        except Exception as e:
+            st.error(f"Error in error categorization display: {str(e)}")
 
+    def _sample_examples(self, examples, max_examples):
+        if len(examples) > max_examples:
+            if 'sampled_indices' not in st.session_state or \
+               len(st.session_state.sampled_indices) != max_examples:
+                st.session_state.sampled_indices = random.sample(
+                    range(len(examples)), max_examples)
+            return examples.iloc[st.session_state.sampled_indices]
+        return examples
+
+    def _display_error_categories_legend(self):
+        st.markdown("""
+        #### Error Categories
+        1. **Instruction Error/Hallucination** - Model fails to follow format or provide answer
+           
+        2. **Wrong Reasoning** - Model's logic path contains flaws
+        
+        3. **Wrong Annotation** - Answer could be debatable or incorrect
+           
+        4. **Lack of Knowledge** - Model lacks necessary knowledge that's not in prompt
+        """)
+
+    def _display_single_example_annotation(self, index, idx, row):
+        st.markdown("---")
+        with st.expander(f"Example {index+1} (Dataset: {row['dataset']})", expanded=True):
+            try:
+                default_model = Constants.LLMProcessorConstants.MISTRAL_V2_MODEL
+                model = st.session_state.get('models', [default_model])[0]
+                sample = self._get_example_details(row, model)
+                
+                if sample:
+                    self._display_example_content(sample)
+                    self._add_example_annotation(idx, row['dataset'])
+            except Exception as e:
+                st.error(f"Error loading example {index+1}: {str(e)}")
+
+    def _get_example_details(self, row, model):
+        try:
+            full_results_path = (
+                self.results_folder / 
+                model / 
+                row['dataset'] / 
+                Constants.ResultConstants.ZERO_SHOT / 
+                Constants.ResultConstants.EMPTY_SYSTEM_FORMAT / 
+                "experiment_template_0.json"
+            )
+            
+            with open(full_results_path, "r") as file:
+                template = json.load(file)
+            return template["results"]["test"][int(row['example_number'])]
+        except Exception as e:
+            st.error(f"Error loading example details: {str(e)}")
+            return None
+
+    def _display_example_content(self, sample):
+        """Display example content in a consistent format."""
+        st.markdown("#### Example Content")
+        st.markdown(f"**Question**:\n{sample['Instance']}")
+        st.markdown(f"**Ground Truth**:\n{sample['GroundTruth']}")
+        st.markdown(f"**Predicted**:\n{sample['Result']}")
+        st.markdown(f"**Score**: {sample['Score']}")
+
+    def _add_example_annotation(self, idx, dataset):
+        """Add annotation for a single example."""
+        category = st.selectbox(
+            "Select error category:",
+            ErrorCategories.get_all_categories(),
+            key=f"cat_{idx}"
+        )
+        
+        st.session_state.current_session_annotations[idx] = {
+            'category': category,
+            'dataset': dataset
+        }
+
+    def _handle_clear_annotations(self):
+        st.session_state.all_annotations = {}
+        st.session_state.current_session_annotations = {}
+        st.success("All annotations have been cleared!")
+        st.experimental_rerun()
+
+
+    def display_annotation_statistics(self, annotations):
+        if not annotations:
+            st.warning("No annotations available to display statistics.")
+            return
+            
+        st.markdown("### Annotation Statistics")
+        categories = [ann['category'] for ann in annotations.values()]
+        datasets = [ann['dataset'] for ann in annotations.values()]
+        
+        # Display only category distribution and dataset distribution
+        tab1 = st.tabs(["Category Distribution"])[0]
+        
+        with tab1:
+            self._plot_category_distribution(categories)
+        
+        #  dataset distribution but kept for future use
+        # with tab2:
+        #     self._plot_dataset_distribution(datasets)
+
+    def _plot_category_distribution(self, categories):
+        """Plot distribution of error categories."""
+        category_counts = pd.Series(categories).value_counts()
+        fig = px.bar(
+            x=category_counts.index,
+            y=category_counts.values,
+            labels={'x': 'Category', 'y': 'Count'},
+            title='Distribution of Error Categories'
+        )
+        fig.update_traces(texttemplate='%{y}', textposition='outside')
+        st.plotly_chart(fig)
+
+    def _plot_dataset_distribution(self, datasets):
+        """Plot distribution of errors by dataset."""
+        dataset_counts = pd.Series(datasets).value_counts()
+        fig = px.bar(
+            x=dataset_counts.index,
+            y=dataset_counts.values,
+            labels={'x': 'Dataset', 'y': 'Count'},
+            title='Distribution of Errors by Dataset'
+        )
+        fig.update_traces(texttemplate='%{y}', textposition='outside')
+        fig.update_layout(xaxis_tickangle=-45)
+        st.plotly_chart(fig)
+
+   
+class ErrorCategories:
+    """Constants for error categories"""
+    INSTRUCTION_ERROR = "1. Instruction Error/Hallucination"
+    WRONG_REASONING = "2. Wrong Reasoning"
+    WRONG_ANNOTATION = "3. Wrong Annotation"
+    LACK_KNOWLEDGE = "4. Lack of Knowledge"
+
+    @classmethod
+    def get_all_categories(cls):
+        return [
+            cls.INSTRUCTION_ERROR,
+            cls.WRONG_REASONING,
+            cls.WRONG_ANNOTATION,
+            cls.LACK_KNOWLEDGE
+        ]
 if __name__ == '__main__':
     dataset_sizes_path = Constants.TemplatesGeneratorConstants.DATASET_SIZES_PATH
     hos = MetaHistogramOfSamples(dataset_sizes_path)
