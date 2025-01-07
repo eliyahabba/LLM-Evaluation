@@ -13,7 +13,21 @@ class ConfigParams:
         "enumerator": ["capitals", "lowercase", "numbers", "roman", KEYBOARD_CHARS, GREEK_CHARS],
 
         "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
-        "shuffle_choices": [False, True],
+        "shuffle_choices":  {
+        "False": {"shuffle_choices": False, "sort_choices_by_length": False, "sort_choices_alphabetically": False,
+                    "reverse_choices": False, "place_correct_choice_position": None},
+        "lengthSort": {"shuffle_choices": False, "sort_choices_by_length": True, "sort_choices_alphabetically": False,
+                        "reverse_choices": False,"place_correct_choice_position": None},
+        "lengthSortReverse": {"shuffle_choices": False, "sort_choices_by_length": True,
+                                "sort_choices_alphabetically": False, "reverse_choices": True,"place_correct_choice_position": None},
+        "alphabeticalSort": {"shuffle_choices": False, "sort_choices_alphabetically": True,
+                              "sort_choices_by_length": False, "reverse_choices": False,"place_correct_choice_position": None},
+        "alphabeticalSortReverse": {"shuffle_choices": False, "sort_choices_alphabetically": True,
+                                      "sort_choices_by_length": False, "reverse_choices": True,"place_correct_choice_position": None},
+        "placeCorrectChoiceFirst": {"shuffle_choices": False, "sort_choices_alphabetically": False,
+                                "sort_choices_by_length": False, "reverse_choices": False,"place_correct_choice_position": 0},
+    }
+
         # Add more parameters and their possible values as needed
     }
 
@@ -300,22 +314,8 @@ def main():
             )
             selected_shuffle = st.multiselect(
                 "Shuffle Choices",
-                options=["None",
-                         "sort_by_length_ascending",
-                         "sort_by_length_descending",
-                         "place_correct_at_start",
-                         "place_correct_at_end",
-                         "sort_alphabetically_asceding",
-                         "sort_alphabetically_descending",
-                         ],
-                default=["None",
-                         "sort_by_length_ascending",
-                         "sort_by_length_descending",
-                         "place_correct_at_start",
-                         "place_correct_at_end",
-                         "sort_alphabetically_asceding",
-                         "sort_alphabetically_descending",
-                         ],
+                options=st.session_state.prompt_variations["shuffle_choices"].keys(),
+                default=st.session_state.prompt_variations["shuffle_choices"].keys(),
                 help="Whether to shuffle the order of choices"
             )
 
