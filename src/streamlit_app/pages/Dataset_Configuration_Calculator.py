@@ -3,6 +3,8 @@ import json
 
 import streamlit as st
 
+from src.experiments.experiment_preparation.datasets_configurations.old.DatasetConfigFactory import DatasetConfigFactory
+
 
 class ConfigParams:
     GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
@@ -24,6 +26,8 @@ class ConfigParams:
                   KEYBOARD_CHARS: "keyboard",  # Added mapping for keyboard chars
                   GREEK_CHARS: "greek"  # Added mapping for greek chars
                   }
+
+
 def calculate_combinations(dataset_configs, selected_datasets, selected_models, selected_quant,
                            selected_prompts_variations,
                            selected_phrases,
@@ -72,69 +76,24 @@ def calculate_combinations(dataset_configs, selected_datasets, selected_models, 
     return combinations, total_combinations, total_samples, estimated_cost
 
 
-def get_prompt_paraphrasing():
-    def get_mmlu_instructions_with_topic() -> str:
-        return f"The following are multiple choice questions (with answers) about {{topic}}.\n\n{{question}}\n{{choices}}\nAnswer:"
-
-    def get_mmlu_instructions_without_topic() -> str:
-        return f"The following are multiple choice questions (with answers).\n\n{{question}}\n\n{{choices}}\nAnswer:"
-
-    def get_mmlu_instructions_without_topic_fixed() -> str:
-        return f"The following are multiple choice questions (with answers).\n\n{{question}}\n{{choices}}\nAnswer:"
-
-    def get_mmlu_instructions_with_topic_helm() -> str:
-        return f"The following are multiple choice questions (with answers) about {{topic}}.\n\nQuestion: {{question}}\n{{choices}}\nAnswer:"
-
-    def get_mmlu_instructions_without_topic_helm() -> str:
-        return f"The following are multiple choice questions (with answers).\n\nQuestion: {{question}}\n\n{{choices}}\nAnswer:"
-
-    def get_mmlu_instructions_without_topic_helm_fixed() -> str:
-        return f"The following are multiple choice questions (with answers).\n\nQuestion: {{question}}\n{{choices}}\nAnswer:"
-
-    def get_mmlu_instructions_without_topic_lm_evaluation_harness() -> str:
-        return f"Question: {{question}}\n\nChoices: {{choices}}\nAnswer:"
-
-    def get_structured_instruction_with_topic():
-        return f"Topic: {{topic}}\nQuestion: [question] Choices: [choices] Answer: [answer]\nQuestion: {{question}} Choices: {{choices}} Answer:"
-
-    def get_mmlu_instructions_with_topic_and_cot():
-        return (f"The following are multiple choice questions (with answers) about {{topic}}. Think step by"
-                f" step and then output the answer in the format of \"The answer is (X)\" at the end.\n\n")
-
-    def get_please_simple_prompt_ProSA_paper() -> str:
-        return f"Please answer the following question:\n{{question}}\n{{choices}}\nAnswer:"
-
-    def get_please_letter_prompt_ProSA_paper() -> str:
-        return f"Please answer the following question:\n{{question}}\n{{choices}}\nAnswer the question by replying {{options}}."
-
-    def get_could_you_prompt_ProSA_paper() -> str:
-        return f"Could you provide a response to the following question:\n{{question}}\n{{choices}}\nAnswer:"
-
-    def get_here_prompt_State_of_What_Art_paper() -> str:
-        return f"Here are some multiple choice questions along with their answers about {{topic}}.\n\nQuestion: {{question}}\nChoices: {{choices}}\nCorrect Answer:"
-
-    def get_below_prompt_State_of_What_Art_paper() -> str:
-        return f"Below are multiple-choice questions related to {{topic}}, each followed by their respective answers.\n\nQuestion: {{question}}\nChoices: {{choices}}\nCorrect Answer:"
-
-    def get_below_please_prompt_State_of_What_Art_paper() -> str:
-        return f"Below are multiple-choice questions related to {{topic}}. Please provide the correct answer for each question.\n\nQuestion: {{question}}\nChoices: {{choices}}\nAnswer:"
-
-    # return dict with all the functions returning the strings
-    return {
-        "mmlu_instructions_with_topic": get_mmlu_instructions_with_topic(),
-        "mmlu_instructions_without_topic": get_mmlu_instructions_without_topic_fixed(),
-        "mmlu_instructions_with_topic_helm": get_mmlu_instructions_with_topic_helm(),
-        "mmlu_instructions_without_topic_helm": get_mmlu_instructions_without_topic_helm_fixed(),
-        "mmlu_instructions_without_topic_lm_evaluation_harness": get_mmlu_instructions_without_topic_lm_evaluation_harness(),
-        "structured_instruction_with_topic": get_structured_instruction_with_topic(),
-        "mmlu_instructions_with_topic_and_cot": get_mmlu_instructions_with_topic_and_cot(),
-        "please_simple_prompt_ProSA_paper": get_please_simple_prompt_ProSA_paper(),
-        "please_letter_prompt_ProSA_paper": get_please_letter_prompt_ProSA_paper(),
-        "could_you_prompt_ProSA_paper": get_could_you_prompt_ProSA_paper(),
-        "here_prompt_State_of_What_Art_paper": get_here_prompt_State_of_What_Art_paper(),
-        "below_prompt_State_of_What_Art_paper": get_below_prompt_State_of_What_Art_paper(),
-        "below_please_prompt_State_of_What_Art_paper": get_below_please_prompt_State_of_What_Art_paper()
-    }
+def get_prompt_paraphrasing(selected_datasets):
+    dataset_map = {'MMLU': "MMLU",
+                   'MMLU-Pro': "MMLU",
+                   'ARC-Challenge': 'AI2-ARC',
+                   'ARC-EASY': 'AI2-ARC',
+                   'HellaSwag': 'HellaSwag',
+                   'OpenBookQA': 'OpenBookQA',
+                   'Social-IQa': 'Social-IQa',
+                   'race high (Reading Comprehension)': 'RACE',
+                   'race middle (Reading Comprehension)': "RACE",
+                   'Quality (long global context questions)': 'Quality',
+                   'Coursera (long  context about big data and machine learning))': 'Coursera',
+                   'TPO (long context machine comprehension of spoken content)': 'TPO',
+                   'mgsm (Multilingual of GSM)': 'mgsm'}
+    dataset_names_to_prompts_instruct = {}
+    for dataset in selected_datasets:
+        dataset_names_to_prompts_instruct[dataset] = DatasetConfigFactory.get_instruct_prompts(dataset_map[dataset])
+    return dataset_names_to_prompts_instruct
 
 
 def main():
@@ -158,9 +117,10 @@ def main():
             'MMLU': {'total_instances': 14042, 'sub_datasets': 57},
             'MMLU-Pro': {'total_instances': 12032, 'sub_datasets': 14},
             'ARC-Challenge': {'total_instances': 1172, 'sub_datasets': 0},
-            'HellaSwag (commonsense NLI)': {'total_instances': 6700, 'sub_datasets': 0},
+            'ARC-EASY': {'total_instances': 1172, 'sub_datasets': 0},
+            'HellaSwag': {'total_instances': 6700, 'sub_datasets': 0},
             'OpenBookQA': {'total_instances': 1000, 'sub_datasets': 0},
-            'Social IQa (Commonsense reasoning about social interactions)': {'total_instances': 1000, 'sub_datasets': 0}
+            'Social-IQa': {'total_instances': 1000, 'sub_datasets': 0}
         },
         'context': {
             'race high (Reading Comprehension)': {'total_instances': 1000, 'sub_datasets': 0},
@@ -176,13 +136,13 @@ def main():
     }
 
     flattened_datasets = {}
-    for group, datasets3 in grouped_datasets.items():
-        for dataset_name, dataset_info in datasets3.items():
+    for group, datasets in grouped_datasets.items():
+        for dataset_name, dataset_info in datasets.items():
             flattened_datasets[dataset_name] = dataset_info
 
     datasets_to_groups = {}
-    for group, datasets3 in grouped_datasets.items():
-        for dataset_name, dataset_info in datasets3.items():
+    for group, datasets in grouped_datasets.items():
+        for dataset_name, dataset_info in datasets.items():
             datasets_to_groups[dataset_name] = group
     # Replace the dataset selection section in the main() function with:
     models = ["Llama-3.2-1B-Instruct",
@@ -263,7 +223,6 @@ def main():
                     with tab3:
                         st.write(f"• {item}")
 
-
         # Model selection
         selected_models = st.multiselect(
             "Select Models",
@@ -282,31 +241,47 @@ def main():
 
         # Number of prompt prompt_phrases
         # display the prompt phrases and selcet values from them
-        prompt_phrases = get_prompt_paraphrasing()
+        st.info("Select Prompt Phrases- Use the arrows to navigate between datasets", icon="ℹ️")
+        prompt_phrases = get_prompt_paraphrasing(selected_datasets)
+        tabs = st.tabs(selected_datasets)
+        selected_datasets_phrases = {}
+        for tab, dataset in zip(tabs, selected_datasets):
+            with tab:
+                if dataset in prompt_phrases:
+                    prompts = prompt_phrases[dataset].get_all_prompts()
 
-        # Create a formatted display of the prompts with numbers
-        formatted_options = {f"{i + 1}. {k}": v for i, (k, v) in enumerate(prompt_phrases.items())}
+                    # Format prompts for display
+                    formatted_prompts = {
+                        f"{i + 1}. {prompt.name}": prompt.text
+                        for i, prompt in enumerate(prompts)
+                    }
 
-        # Display total number of prompts
-        # Create a better multiselect with formatted display
-        selected_phrases = st.multiselect(
-            "Select Prompt Paraphrasing",
-            options=formatted_options.keys(),
-            help="Choose one or more prompt paraphrasing options. Preview of selected prompts will appear below.",
-            default=list(formatted_options.keys())
-        )
-        with st.expander("Prompt Paraphrasing Options"):
-            selected_template = st.selectbox(
-                "View template",
-                options=formatted_options.keys(),
-                format_func=lambda x: x.split('. ')[1]  # Show only the name part without the number
-            )
-            st.code(formatted_options[selected_template], language="text")
-        st.info(f"Total number of prompt phrases: {len(prompt_phrases)}")
+                    # Create multiselect for this dataset's prompts
+                    selected = st.multiselect(
+                        f"Select Prompts for {dataset}",
+                        options=formatted_prompts.keys(),
+                        default=list(formatted_prompts.keys()),
+                        key=f"multiselect_{dataset}"  # Unique key for each multiselect
+                    )
+                    selected_datasets_phrases[dataset] = selected
+                    # Show preview expander
+                    with st.expander(f"Preview Prompts for {dataset}"):
+                        template = st.selectbox(
+                            "Select template to view",
+                            options=formatted_prompts.keys(),
+                            # format_func=lambda x: x.split('. ')[1],  # Remove numbering
+                            key=f"selectbox_{dataset}"  # Unique key for each selectbox
+                        )
+                        if template:
+                            st.code(formatted_prompts[template], language="text")
+
+                    # Show count of prompts
+                    st.info(f"Number of prompts for {dataset}: {len(prompts)}")
+                else:
+                    st.warning(f"No prompts available for {dataset}")
 
         # Get the actual values of selected prompts (if you need them later)
-        selected_values = [formatted_options[key] for key in selected_phrases]
-
+        selected_phrases = selected_datasets_phrases[selected_datasets[0]]
         st.subheader("Prompt Variations")
 
         with st.expander("Configure Prompt Variations", expanded=True):
