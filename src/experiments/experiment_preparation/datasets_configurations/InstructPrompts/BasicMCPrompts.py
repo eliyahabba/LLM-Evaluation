@@ -1,19 +1,12 @@
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass
 
+from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.BasicPrompts import BasicPrompts
 from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.Instruction import \
     Instruction
 
 
 @dataclass(frozen=True)
-class BasicMCPrompts:
-    def get_all_prompts(self):
-        return [
-            getattr(self, field.name)
-            for field in fields(self)
-            if isinstance(getattr(self, field.name), Instruction)
-        ]
-
-
+class BasicMCPrompts(BasicPrompts):
     instructions_with_topic: Instruction = Instruction(
         name="MultipleChoiceTemplatesInstructionsWithTopic",
         text=f"The following are multiple choice questions (with answers) about {{topic}}.\n\n{{question}}\n{{choices}}\nAnswer:"
@@ -24,7 +17,7 @@ class BasicMCPrompts:
         text=f"The following are multiple choice questions (with answers).\n\n{{question}}\n\n{{choices}}\nAnswer:"
     )
 
-    instructions_without_topic_fixed: Instruction = Instruction(
+    instructions_without_topic: Instruction = Instruction(
         name="MultipleChoiceTemplatesInstructionsWithoutTopicFixed",
         text=f"The following are multiple choice questions (with answers).\n\n{{question}}\n{{choices}}\nAnswer:"
     )
@@ -39,9 +32,9 @@ class BasicMCPrompts:
         text=f"The following are multiple choice questions (with answers).\n\nQuestion: {{question}}\n\n{{choices}}\nAnswer:"
     )
 
-    instructions_without_topic_helm_fixed: Instruction = Instruction(
+    instructions_without_topic_helm: Instruction = Instruction(
         name="MultipleChoiceTemplatesInstructionsWithoutTopicHelmFixed",
-        text= f"The following are multiple choice questions (with answers).\n\nQuestion: {{question}}\n{{choices}}\nAnswer:"
+        text=f"The following are multiple choice questions (with answers).\n\nQuestion: {{question}}\n{{choices}}\nAnswer:"
     )
 
     instructions_without_topic_lm_evaluation_harness: Instruction = Instruction(
@@ -62,7 +55,7 @@ class BasicMCPrompts:
     mmlu_instructions_with_topic_and_cot: Instruction = Instruction(
         name="MultipleChoiceTemplatesInstructionsWithTopicAndCoT",
         text=(f"The following are multiple choice questions (with answers) about {{topic}}. Think step by"
-                f" step and then output the answer in the format of \"The answer is (X)\" at the end.\n\n")
+              f" step and then output the answer in the format of \"The answer is (X)\" at the end.\n\n")
     )
 
     please_simple_prompt_ProSA_paper: Instruction = Instruction(
@@ -77,7 +70,7 @@ class BasicMCPrompts:
 
     could_you_prompt_ProSA_paper: Instruction = Instruction(
         name="MultipleChoiceTemplatesInstructionsProSACould",
-        text= f"Could you provide a response to the following question:\n{{question}}\n{{choices}}\nAnswer:"
+        text=f"Could you provide a response to the following question:\n{{question}}\n{{choices}}\nAnswer:"
     )
 
     here_prompt_State_of_What_Art_paper: Instruction = Instruction(

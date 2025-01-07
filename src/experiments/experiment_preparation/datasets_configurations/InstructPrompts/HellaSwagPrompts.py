@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 
+from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.BasicPrompts import BasicPrompts
 from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.Instruction import \
     Instruction
 
 
 @dataclass(frozen=True)
-class HellaSwagPrompts:
+class HellaSwagPrompts(BasicPrompts):
     hellaswag_instructions_standard: Instruction = Instruction(
         name="MultipleChoiceTemplatesInstructionsStandard",
         text=f"Pick the best ending to the sentence.\nContext: {{context}}\nChoices:\n{{choices}}\nAnswer:"
