@@ -58,7 +58,7 @@ def calculate_combinations(dataset_configs, selected_datasets, selected_models, 
 
 def get_prompt_paraphrasing(selected_datasets):
     dataset_map = {'MMLU': "MMLU",
-                   'MMLU-Pro': "MMLU",
+                   'MMLU-Pro': "MMLU_PRO",
                    'ARC-Challenge': 'AI2_ARC',
                    'ARC-EASY': 'AI2_ARC',
                    'HellaSwag': 'HellaSwag',

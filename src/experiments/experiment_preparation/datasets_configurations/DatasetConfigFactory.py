@@ -16,6 +16,7 @@ class DatasetConfigFactory:
             'AI2_ARC': AI2ARCPrompts(),
             'HellaSwag': HellaSwagPrompts(),
             'MMLU': MMLUPrompts(),
+            'MMLU_PRO': MMLUPrompts(),
             'OpenBookQA': OpenBookQAPrompts(),
             'Social_IQa': SocialQaPrompts()
             # Add other datasets here
@@ -28,6 +29,7 @@ class DatasetConfigFactory:
             'AI2_ARC': AI2ARCPrompts(),
             'HellaSwag': HellaSwagPrompts(),
             'MMLU': MMLUPrompts(),
+            'MMLU_PRO': MMLUPrompts(),
             'OpenBookQA': OpenBookQAPrompts(),
             'Social_IQa': SocialQaPrompts()
             # Add other datasets here
