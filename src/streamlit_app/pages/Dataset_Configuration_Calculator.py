@@ -3,48 +3,9 @@ import json
 
 import streamlit as st
 
+from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 
-
-class ConfigParams:
-    GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
-    KEYBOARD_CHARS = "!@#$%^₪*)("  # 26 lowercase letters
-    override_options = {
-        "enumerator": ["capitals", "lowercase", "numbers", "roman", KEYBOARD_CHARS, GREEK_CHARS],
-
-        "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
-        "shuffle_choices": {
-            "False": {"shuffle_choices": False, "sort_choices_by_length": False, "sort_choices_alphabetically": False,
-                      "reverse_choices": False, "place_correct_choice_position": None},
-            "lengthSort": {"shuffle_choices": False, "sort_choices_by_length": True,
-                           "sort_choices_alphabetically": False,
-                           "reverse_choices": False, "place_correct_choice_position": None},
-            "lengthSortReverse": {"shuffle_choices": False, "sort_choices_by_length": True,
-                                  "sort_choices_alphabetically": False, "reverse_choices": True,
-                                  "place_correct_choice_position": None},
-            "alphabeticalSort": {"shuffle_choices": False, "sort_choices_alphabetically": True,
-                                 "sort_choices_by_length": False, "reverse_choices": False,
-                                 "place_correct_choice_position": None},
-            "alphabeticalSortReverse": {"shuffle_choices": False, "sort_choices_alphabetically": True,
-                                        "sort_choices_by_length": False, "reverse_choices": True,
-                                        "place_correct_choice_position": None},
-            "placeCorrectChoiceFirst": {"shuffle_choices": False, "sort_choices_alphabetically": False,
-                                        "sort_choices_by_length": False, "reverse_choices": False,
-                                        "place_correct_choice_position": 0},
-        }
-
-        # Add more parameters and their possible values as needed
-    }
-
-    ENUM_CHARS = {"ABCDEFGHIJKLMNOP": "capitals",
-                  "abcdefghijklmnop": "lowercase",
-                  str(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17',
-                       '18', '19', '20']): "numbers",
-                  str(['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV',
-                       'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX']): "roman",
-                  KEYBOARD_CHARS: "keyboard",  # Added mapping for keyboard chars
-                  GREEK_CHARS: "greek"  # Added mapping for greek chars
-                  }
 
 
 def calculate_combinations(dataset_configs, selected_datasets, selected_models, selected_quant,
@@ -98,11 +59,11 @@ def calculate_combinations(dataset_configs, selected_datasets, selected_models, 
 def get_prompt_paraphrasing(selected_datasets):
     dataset_map = {'MMLU': "MMLU",
                    'MMLU-Pro': "MMLU",
-                   'ARC-Challenge': 'AI2-ARC',
-                   'ARC-EASY': 'AI2-ARC',
+                   'ARC-Challenge': 'AI2_ARC',
+                   'ARC-EASY': 'AI2_ARC',
                    'HellaSwag': 'HellaSwag',
                    'OpenBookQA': 'OpenBookQA',
-                   'Social-IQa': 'Social-IQa',
+                   'Social-IQa': 'Social_IQa',
                    'race high (Reading Comprehension)': 'RACE',
                    'race middle (Reading Comprehension)': "RACE",
                    'Quality (long global context questions)': 'Quality',
@@ -319,8 +280,8 @@ def main():
             )
             selected_shuffle = st.multiselect(
                 "Shuffle Choices",
-                options=st.session_state.prompt_variations["shuffle_choices"].keys(),
-                default=st.session_state.prompt_variations["shuffle_choices"].keys(),
+                options=st.session_state.prompt_variations["shuffle_choices"],
+                default=st.session_state.prompt_variations["shuffle_choices"],
                 help="Whether to shuffle the order of choices"
             )
 
