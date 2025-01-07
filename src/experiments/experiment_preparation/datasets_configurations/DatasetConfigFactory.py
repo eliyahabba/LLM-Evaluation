@@ -13,11 +13,11 @@ class DatasetConfigFactory:
     @staticmethod
     def get_all_instruct_prompts():
         dataset_instruct_prompts = {
-            'AI2-ARC': AI2ARCPrompts(),
+            'AI2_ARC': AI2ARCPrompts(),
             'HellaSwag': HellaSwagPrompts(),
             'MMLU': MMLUPrompts(),
             'OpenBookQA': OpenBookQAPrompts(),
-            'Social-IQa': SocialQaPrompts()
+            'Social_IQa': SocialQaPrompts()
             # Add other datasets here
         }
         return dataset_instruct_prompts
@@ -25,11 +25,11 @@ class DatasetConfigFactory:
     @staticmethod
     def get_instruct_prompts(dataset_name):
         dataset_instruct_prompts = {
-            'AI2-ARC': AI2ARCPrompts(),
+            'AI2_ARC': AI2ARCPrompts(),
             'HellaSwag': HellaSwagPrompts(),
             'MMLU': MMLUPrompts(),
             'OpenBookQA': OpenBookQAPrompts(),
-            'Social-IQa': SocialQaPrompts()
+            'Social_IQa': SocialQaPrompts()
             # Add other datasets here
         }
         return BasicMCPrompts() if dataset_name not in dataset_instruct_prompts else \
