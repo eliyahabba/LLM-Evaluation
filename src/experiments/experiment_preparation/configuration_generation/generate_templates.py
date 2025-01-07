@@ -12,10 +12,16 @@ class BaseConfig:
         """Dataset name constants"""
         MMLU = "mmlu"
         MMLU_PRO = "mmlu_pro"
+        AI2_ARC_EASY = "ai2_arc.arc_easy"
+        AI2_ARC_CHALLENGE = "ai2_arc.arc_challenge"
+        HellaSwag = "hellaswag"
+        OpenBookQA = "openbook_qa"
+        Social_IQa = "social_iqa"
 
         @classmethod
         def get_datasets(cls) -> List[str]:
-            return [cls.MMLU, cls.MMLU_PRO]
+            return [cls.MMLU, cls.MMLU_PRO, cls.AI2_ARC_EASY, cls.AI2_ARC_CHALLENGE, cls.HellaSwag, cls.OpenBookQA,
+                    cls.Social_IQa]
 
     class DatasetSubsets:
         """Dataset subset configurations"""
@@ -71,7 +77,7 @@ class BaseConfig:
     class FewShot(Enum):
         """Few-shot learning parameters"""
         ZERO_SHOT = 0
-        FEW_SHOT = 4
+        FEW_SHOT = 5
 
         @classmethod
         def get_values(cls) -> List[int]:
@@ -80,11 +86,34 @@ class BaseConfig:
     class PromptOptions:
         GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
         KEYBOARD_CHARS = "!@#$%^₪*)("  # 26 lowercase letters
+        SHUFFLE_CHOICES_COMBINATIONS = {
+            "False": {"shuffle_choices": False, "sort_choices_by_length": False, "sort_choices_alphabetically": False,
+                      "reverse_choices": False, "place_correct_choice_position": None},
+            "lengthSort": {"shuffle_choices": False, "sort_choices_by_length": True,
+                           "sort_choices_alphabetically": False,
+                           "reverse_choices": False, "place_correct_choice_position": None},
+            "lengthSortReverse": {"shuffle_choices": False, "sort_choices_by_length": True,
+                                  "sort_choices_alphabetically": False, "reverse_choices": True,
+                                  "place_correct_choice_position": None},
+            "alphabeticalSort": {"shuffle_choices": False, "sort_choices_alphabetically": True,
+                                 "sort_choices_by_length": False, "reverse_choices": False,
+                                 "place_correct_choice_position": None},
+            "alphabeticalSortReverse": {"shuffle_choices": False, "sort_choices_alphabetically": True,
+                                        "sort_choices_by_length": False, "reverse_choices": True,
+                                        "place_correct_choice_position": None},
+            "placeCorrectChoiceFirst": {"shuffle_choices": False, "sort_choices_alphabetically": False,
+                                        "sort_choices_by_length": False, "reverse_choices": False,
+                                        "place_correct_choice_position": 0},
+            "placeCorrectChoiceFourth": {"shuffle_choices": False, "sort_choices_alphabetically": False,
+                                         "sort_choices_by_length": False, "reverse_choices": False,
+                                         "place_correct_choice_position": 4},
+        }
+
         override_options = {
             "enumerator": ["capitals", "lowercase", "numbers", "roman", KEYBOARD_CHARS, GREEK_CHARS],
 
             "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
-            "shuffle_choices": [False, True],
+            "shuffle_choices": list(SHUFFLE_CHOICES_COMBINATIONS.keys()),
             # Add more parameters and their possible values as needed
         }
 
@@ -149,19 +178,26 @@ class BaseConfig:
             return components[0] + ''.join(x.title() for x in components[1:])
 
         @classmethod
-        def generate_template_combinations(cls) -> Dict[str, Dict]:
+        def generate_template_combinations(cls, dataset_name) -> Dict[str, Dict]:
             """Generate all possible combinations of template options"""
             options = cls.get_options()
-            combinations = [
+            all_combinations = [
                 {key: value for key, value in zip(options.keys(), values)}
                 for values in itertools.product(*options.values())
             ]
-
-            return {
-                cls.generate_template_name(combo): combo
-                for combo in combinations
-            }
-
+            if dataset_name in ["mmlu", "ai2_arc.arc_easy", "ai2_arc.arc_challenge", "hellaswag", "openbook_qa"]:
+                return {
+                    cls.generate_template_name(combo): combo
+                    for combo in all_combinations
+                }
+            elif dataset_name in ["mmlu_pro", "social_iqa"]:
+                combinations = [combo for combo in all_combinations if combo["shuffle_choices"] != "placeCorrectChoiceFourth"]
+                return {
+                    cls.generate_template_name(combo): combo
+                    for combo in combinations
+                }
+            else:
+                raise ValueError(f"Dataset name {dataset_name} is not supported")
 
     class ModelConfigs:
         """Model configurations"""
@@ -222,21 +258,43 @@ class BaseConfig:
 
             return None
 
+
+def get_prompt_paraphrasing(dataset_name):
+    if dataset_name in ["mmlu", "mmlu_pro", "ai2_arc.arc_easy", "ai2_arc.arc_challenge", "hellaswag", "openbook_qa",
+                        "social_iqa"]:
+        return ['MultipleChoiceTemplatesInstructionsWithTopic', 'MultipleChoiceTemplatesInstructionsWithoutTopicFixed',
+                'MultipleChoiceTemplatesInstructionsWithTopicHelm',
+                'MultipleChoiceTemplatesInstructionsWithoutTopicHelmFixed',
+                'MultipleChoiceTemplatesInstructionsWithoutTopicHarness', 'MultipleChoiceTemplatesStructuredWithTopic',
+                'MultipleChoiceTemplatesStructuredWithoutTopic', 'MultipleChoiceTemplatesInstructionsProSASimple',
+                'MultipleChoiceTemplatesInstructionsProSALetter', 'MultipleChoiceTemplatesInstructionsProSACould',
+                'MultipleChoiceTemplatesInstructionsStateHere', 'MultipleChoiceTemplatesInstructionsStateBelow',
+                'MultipleChoiceTemplatesInstructionsStateBelowPlease']
+    if dataset_name in ["HellaSwag"]:
+        return \
+            ['MultipleChoiceTemplatesInstructionsStandard', 'MultipleChoiceTemplatesInstructionsContext',
+             'MultipleChoiceTemplatesInstructionsStructured', 'MultipleChoiceTemplatesInstructionsBasic',
+             'MultipleChoiceTemplatesInstructionsState1', 'MultipleChoiceTemplatesInstructionsState2',
+             'MultipleChoiceTemplatesInstructionsState3', 'MultipleChoiceTemplatesInstructionsState4',
+             'MultipleChoiceTemplatesInstructionsState5', 'MultipleChoiceTemplatesInstructionsState6',
+             'MultipleChoiceTemplatesInstructionsState7', 'MultipleChoiceTemplatesInstructionsState8']
+
+
 def run_experiment(local_catalog_path: str):
     """Run the experiment with given configuration"""
     os.environ["UNITXT_ARTIFACTORIES"] = local_catalog_path
 
     # Generate all possible template combinations
-    templates = BaseConfig.PromptOptions.generate_template_combinations()
-    template_names = list(templates.keys())
-
     # Get configurations
     datasets = BaseConfig.DatasetNames.get_datasets()
     subsets = BaseConfig.DatasetSubsets.get_subsets()
 
     # Generate experiments for each dataset type
     for dataset_name in datasets:
-        for prompt_paraphrase in BaseConfig.PromptParaphrases.get_all_prompt_paraphrases():
+        prompt_paraphrases = get_prompt_paraphrasing(dataset_name)
+        templates = BaseConfig.PromptOptions.generate_template_combinations(dataset_name)
+        template_names = list(templates.keys())
+        for prompt_paraphrase in prompt_paraphrases:
             for few_shots in BaseConfig.FewShot.get_values():
                 unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
                     "Knowledge": [
