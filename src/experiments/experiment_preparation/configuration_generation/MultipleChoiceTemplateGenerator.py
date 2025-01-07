@@ -9,9 +9,9 @@ from unitxt.templates import MultipleChoiceTemplate
 from src.experiments.data_loading.CatalogManager import CatalogManager
 from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.experiments.experiment_preparation.configuration_generation.TemplateGenerator import TemplateGenerator
+from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 from src.experiments.experiment_preparation.datasets_configurations.InputTemplatesConfigs.MultipleChoiceTemplateConfig import \
     MultipleChoiceTemplateConfigFactory
-from src.experiments.experiment_preparation.datasets_configurations.old.DatasetConfigFactory import DatasetConfigFactory
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -69,8 +69,8 @@ if __name__ == "__main__":
     dataset_names_to_configs = DatasetConfigFactory.get_all_instruct_prompts()
     # for input_format_func, data_folder in zip(input_format_funcs, data_folders):
     for dataset_name, datasetConfig in dataset_names_to_configs.items():
-        if "mmlu" not in dataset_name:
-            continue
+        if dataset_name in ["MMLU_PRO", "Social_IQa"]:
+            override_options['shuffle_choices'].remove('placeCorrectChoiceFourth')
         prompts_instruct_data = datasetConfig.get_all_prompts()
         for prompts_instruct in prompts_instruct_data:
             instruct_folder_name = prompts_instruct.name
@@ -84,12 +84,12 @@ if __name__ == "__main__":
                 # Save templates to local catalog
                 catalog_manager = CatalogManager(catalog_path)
                 for template_name, template in tqdm(created_templates.items()):
-                    catalog_manager.save_to_catalog(template, f"{dataset_name}.{instruct_folder_name}.{template_name}")
+                    catalog_manager.save_to_catalog(template,
+                                                    f"{dataset_name}.{instruct_folder_name}.{template_name}")
 
                 # add a df that contains the templates and their parameter
                 generator.create_and_process_metadata(created_templates.values(), dataset_name, override_options)
                 print(colored(f"Templates for {dataset_name} created successfully", "green"))
-                break
             except Exception as e:
                 print(colored(
                     f"Error in creating templates for {dataset_name} with function {input_format}: {e}",

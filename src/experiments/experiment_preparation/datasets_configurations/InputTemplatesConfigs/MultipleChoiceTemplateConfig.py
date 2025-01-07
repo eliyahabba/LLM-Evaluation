@@ -23,10 +23,11 @@ class MultipleChoiceTemplateConfig(InputFormatTemplateConfig):
         ]
     )
     shuffle_choices: bool = False
-    # shuffle_choices_seed: Optional[int] = None
-    # sort_choices_by_length: bool = False
-    # sort_choices_alphabetically: bool = False
-    # reverse_choices: bool = False
+    shuffle_choices_seed: Optional[int] = None
+    sort_choices_by_length: bool = False
+    sort_choices_alphabetically: bool = False
+    reverse_choices: bool = False
+    place_correct_choice_position: Optional[int] = None
 
 
 class MultipleChoiceTemplateConfigFactory:
@@ -42,7 +43,7 @@ class MultipleChoiceTemplateConfigFactory:
         # Merge all kwargs
         config_kwargs = {
             **extracted_kwargs,
-            # **shuffle_choices_config
+            **shuffle_choices_config
         }
 
         return MultipleChoiceTemplateConfig(**config_kwargs)
