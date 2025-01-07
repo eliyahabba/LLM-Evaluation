@@ -3,8 +3,6 @@ import json
 
 import streamlit as st
 
-from src.experiments.experiment_preparation.datasets_configurations.old.DatasetConfigFactory import DatasetConfigFactory
-
 
 class ConfigParams:
     GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
@@ -13,20 +11,25 @@ class ConfigParams:
         "enumerator": ["capitals", "lowercase", "numbers", "roman", KEYBOARD_CHARS, GREEK_CHARS],
 
         "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
-        "shuffle_choices":  {
-        "False": {"shuffle_choices": False, "sort_choices_by_length": False, "sort_choices_alphabetically": False,
-                    "reverse_choices": False, "place_correct_choice_position": None},
-        "lengthSort": {"shuffle_choices": False, "sort_choices_by_length": True, "sort_choices_alphabetically": False,
-                        "reverse_choices": False,"place_correct_choice_position": None},
-        "lengthSortReverse": {"shuffle_choices": False, "sort_choices_by_length": True,
-                                "sort_choices_alphabetically": False, "reverse_choices": True,"place_correct_choice_position": None},
-        "alphabeticalSort": {"shuffle_choices": False, "sort_choices_alphabetically": True,
-                              "sort_choices_by_length": False, "reverse_choices": False,"place_correct_choice_position": None},
-        "alphabeticalSortReverse": {"shuffle_choices": False, "sort_choices_alphabetically": True,
-                                      "sort_choices_by_length": False, "reverse_choices": True,"place_correct_choice_position": None},
-        "placeCorrectChoiceFirst": {"shuffle_choices": False, "sort_choices_alphabetically": False,
-                                "sort_choices_by_length": False, "reverse_choices": False,"place_correct_choice_position": 0},
-    }
+        "shuffle_choices": {
+            "False": {"shuffle_choices": False, "sort_choices_by_length": False, "sort_choices_alphabetically": False,
+                      "reverse_choices": False, "place_correct_choice_position": None},
+            "lengthSort": {"shuffle_choices": False, "sort_choices_by_length": True,
+                           "sort_choices_alphabetically": False,
+                           "reverse_choices": False, "place_correct_choice_position": None},
+            "lengthSortReverse": {"shuffle_choices": False, "sort_choices_by_length": True,
+                                  "sort_choices_alphabetically": False, "reverse_choices": True,
+                                  "place_correct_choice_position": None},
+            "alphabeticalSort": {"shuffle_choices": False, "sort_choices_alphabetically": True,
+                                 "sort_choices_by_length": False, "reverse_choices": False,
+                                 "place_correct_choice_position": None},
+            "alphabeticalSortReverse": {"shuffle_choices": False, "sort_choices_alphabetically": True,
+                                        "sort_choices_by_length": False, "reverse_choices": True,
+                                        "place_correct_choice_position": None},
+            "placeCorrectChoiceFirst": {"shuffle_choices": False, "sort_choices_alphabetically": False,
+                                        "sort_choices_by_length": False, "reverse_choices": False,
+                                        "place_correct_choice_position": 0},
+        }
 
         # Add more parameters and their possible values as needed
     }
