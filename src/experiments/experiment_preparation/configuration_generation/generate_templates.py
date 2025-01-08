@@ -74,10 +74,23 @@ class MultiChoiceDatasetsConfig:
                 "public_relations", "security_studies", "sociology",
                 "us_foreign_policy", "virology", "world_religions"
             ],
+            "ai2_arc.arc_easy":
+            [],
+            "ai2_arc.arc_challenge":
+            [],
+            "hellaswag":
+            [],
+            "openbook_qa":
+            [],
+            "social_iqa":
+            []
+
         }
 
+        subset_list = dataset_subset_dict.get(dataset_name, [])
+        if not subset_list:
+            return [f"cards.{dataset_name}"]
         cards_list = []
-        subset_list = dataset_subset_dict[dataset_name]
         for subset in subset_list:
             cards_list.append(f"cards.{dataset_name}.{subset}")
         return cards_list
@@ -100,20 +113,6 @@ def get_run_data(dataset_name: str) -> List[Tuple[str, List[str]]]:
         results.append((card_name, templates))
     return results
 
-
-def get_templates(self):
-    template_paraphrase_list = self.get_template_paraphrase_list()
-    template_combination_names_list = (
-        self.PromptOptions.generate_template_combinations()
-    )
-    template_list = []
-    for prompt_paraphrase, template_combination_name in itertools.product(
-            template_paraphrase_list, template_combination_names_list
-    ):
-        template_list.append(
-            f"templates.huji_workshop.{prompt_paraphrase}.{template_combination_name}"
-        )
-    return template_list
 
 
 def run_experiment(local_catalog_path: str):

@@ -1216,19 +1216,18 @@
     "hellaswag": {
         "dataset_catalog_name": "HellaSwag",
         "prompt_paraphrases": [
-            "MultipleChoiceTemplatesInstructionsWithTopic",
-            "MultipleChoiceTemplatesInstructionsWithoutTopicFixed",
-            "MultipleChoiceTemplatesInstructionsWithTopicHelm",
-            "MultipleChoiceTemplatesInstructionsWithoutTopicHelmFixed",
-            "MultipleChoiceTemplatesInstructionsWithoutTopicHarness",
-            "MultipleChoiceTemplatesStructuredWithTopic",
-            "MultipleChoiceTemplatesStructuredWithoutTopic",
-            "MultipleChoiceTemplatesInstructionsProSASimple",
-            "MultipleChoiceTemplatesInstructionsProSALetter",
-            "MultipleChoiceTemplatesInstructionsProSACould",
-            "MultipleChoiceTemplatesInstructionsStateHere",
-            "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStandard",
+            "MultipleChoiceTemplatesInstructionsContext",
+            "MultipleChoiceTemplatesInstructionsStructured",
+            "MultipleChoiceTemplatesInstructionsBasic",
+            "MultipleChoiceTemplatesInstructionsState1",
+            "MultipleChoiceTemplatesInstructionsState2",
+            "MultipleChoiceTemplatesInstructionsState3",
+            "MultipleChoiceTemplatesInstructionsState4",
+            "MultipleChoiceTemplatesInstructionsState5",
+            "MultipleChoiceTemplatesInstructionsState6",
+            "MultipleChoiceTemplatesInstructionsState7",
+            "MultipleChoiceTemplatesInstructionsState8"
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
