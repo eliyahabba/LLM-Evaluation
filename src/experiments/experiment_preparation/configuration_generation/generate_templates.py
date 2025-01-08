@@ -191,7 +191,8 @@ class BaseConfig:
                     for combo in all_combinations
                 }
             elif dataset_name in ["mmlu_pro", "social_iqa"]:
-                combinations = [combo for combo in all_combinations if combo["shuffle_choices"] != "placeCorrectChoiceFourth"]
+                combinations = [combo for combo in all_combinations if
+                                combo["shuffle_choices"] != "placeCorrectChoiceFourth"]
                 return {
                     cls.generate_template_name(combo): combo
                     for combo in combinations
@@ -290,7 +291,7 @@ def run_experiment(local_catalog_path: str):
     subsets = BaseConfig.DatasetSubsets.get_subsets()
 
     # Generate experiments for each dataset type
-    for dataset_name in datasets:
+    for dataset_name in ["mmlu", "mmlu_pro"]:
         prompt_paraphrases = get_prompt_paraphrasing(dataset_name)
         templates = BaseConfig.PromptOptions.generate_template_combinations(dataset_name)
         template_names = list(templates.keys())
@@ -314,7 +315,39 @@ def run_experiment(local_catalog_path: str):
                 }
                 # Your experiment execution code here
                 # process_experiment(unitxt_recipe_args_by_groupings)
-
+    for dataset_name in ["ai2_arc.arc_easy",
+                         "ai2_arc.arc_challenge",
+                         "hellaswag",
+                         "openbook_qa",
+                         "social_iqa"]:
+        catalog_dataset_map = {"ai2_arc.arc_easy": "AI2_ARC",
+                             "ai2_arc.arc_challenge": "AI2_ARC",
+                             "hellaswag": "HellaSwag",
+                             "openbook_qa": "OpenBookQA",
+                             "social_iqa": "Social_IQa"}
+        prompt_paraphrases = get_prompt_paraphrasing(dataset_name)
+        templates = BaseConfig.PromptOptions.generate_template_combinations(dataset_name)
+        template_names = list(templates.keys())
+        for prompt_paraphrase in prompt_paraphrases:
+            for few_shots in BaseConfig.FewShot.get_values():
+                unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
+                    "Knowledge": [
+                        _DefaultUnitxtRecipeArgs(
+                            card=f"cards.{dataset_name}.{subset}",
+                            template=[
+                                f"{catalog_dataset_map[dataset_name]}.{prompt_paraphrase}.{template_name}"
+                                for template_name in template_names
+                            ],
+                            demos_pool_size=few_shots,
+                            max_test_instances=100,
+                            max_train_instances=100,
+                            max_validation_instances=100,
+                        )
+                        for subset in subsets[dataset_name]
+                    ]
+                }
+                # Your experiment execution code here
+                # process_experiment(unitxt_recipe_args_by_groupings)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate multiple choice templates')
