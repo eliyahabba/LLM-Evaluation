@@ -1,285 +1,119 @@
-import argparse
 import itertools
 import json
 import os
-from enum import Enum
-from typing import Dict, List, Any, Optional
+from dataclasses import dataclass, field
+from typing import Dict, List
+from typing import Tuple
+
+from fm_eval.benchmarks.basic.benchmark_types import (
+    GenerationArgs,
+    UnitxtRecipeArgs,
+    UnitxtSingleRecipeArgs,
+)
+from fm_eval.benchmarks.basic.benchmarks_definitions.utils.benchmark_function import (
+    get_basic_benchmark_function,
+)
 
 
-class BaseConfig:
-    """Parent configuration class containing all config-related classes and methods"""
+@dataclass
+class _DefaultUnitxtRecipeArgs(UnitxtRecipeArgs):
+    demos_pool_size: int = 100
+    num_demos: List[int] = field(default_factory=lambda: [0, 5])
+    system_prompt: List[str] = field(default_factory=lambda: ["system_prompts.empty"])
+    format: List[str] = field(default_factory=lambda: ["formats.chat_api"])
+    augmentor: List[str] = field(default_factory=lambda: [])
+    max_test_instances: int = 100
+    max_train_instances = 100
+    max_validation_instances = 100
 
-    class DatasetNames:
-        """Dataset name constants"""
-        MMLU = "mmlu"
-        MMLU_PRO = "mmlu_pro"
-        AI2_ARC_EASY = "ai2_arc.arc_easy"
-        AI2_ARC_CHALLENGE = "ai2_arc.arc_challenge"
-        HellaSwag = "hellaswag"
-        OpenBookQA = "openbook_qa"
-        Social_IQa = "social_iqa"
 
-        @classmethod
-        def get_datasets(cls) -> List[str]:
-            return [cls.MMLU, cls.MMLU_PRO, cls.AI2_ARC_EASY, cls.AI2_ARC_CHALLENGE, cls.HellaSwag, cls.OpenBookQA,
-                    cls.Social_IQa]
+@dataclass
+class _DefaultGenerationArgs(GenerationArgs):
+    max_new_tokens: int = 64
+    seed: List[int] = field(default_factory=lambda: [42])
+    top_p: List[float] = field(default_factory=lambda: [])
+    top_k: List[int] = field(default_factory=lambda: [])
+    temperature: List[float] = field(default_factory=lambda: [])
+    do_sample: bool = False
+    num_beams: int = 1
+    stop_sequences: List[List[str]] = field(default_factory=lambda: [])
+    quantization: List[str] = field(default_factory=lambda: ["auto"])
+    max_predict_samples: int = 100
 
-    class DatasetSubsets:
-        """Dataset subset configurations"""
 
-        @classmethod
-        def get_subsets(cls) -> Dict[str, List[str]]:
-            return {
-                BaseConfig.DatasetNames.MMLU_PRO: [
-                    "history", "law", "health", "physics", "business", "other",
-                    "philosophy", "psychology", "economics", "math", "biology",
-                    "chemistry", "computer_science", "engineering",
-                ],
-                BaseConfig.DatasetNames.MMLU: [
-                    "abstract_algebra", "anatomy", "astronomy", "business_ethics",
-                    "clinical_knowledge", "college_biology", "college_chemistry",
-                    "college_computer_science", "college_mathematics", "college_medicine",
-                    "college_physics", "computer_security", "conceptual_physics",
-                    "econometrics", "electrical_engineering", "elementary_mathematics",
-                    "formal_logic", "global_facts", "high_school_biology",
-                    "high_school_chemistry", "high_school_computer_science",
-                    "high_school_european_history", "high_school_geography",
-                    "high_school_government_and_politics", "high_school_macroeconomics",
-                    "high_school_mathematics", "high_school_microeconomics",
-                    "high_school_physics", "high_school_psychology",
-                    "high_school_statistics", "high_school_us_history",
-                    "high_school_world_history", "human_aging", "human_sexuality",
-                    "international_law", "jurisprudence", "logical_fallacies",
-                    "machine_learning", "management", "marketing", "medical_genetics",
-                    "miscellaneous", "moral_disputes", "moral_scenarios", "nutrition",
-                    "philosophy", "prehistory", "professional_accounting",
-                    "professional_law", "professional_medicine", "professional_psychology",
-                    "public_relations", "security_studies", "sociology",
-                    "us_foreign_policy", "virology", "world_religions"
-                ]
-            }
+class MultiChoiceDatasetsConfig:
+    """Dataset subset configurations"""
 
-    class PromptParaphrases:
-        """Prompt template constants"""
-        MC_WITH_TOPIC = "MultipleChoiceTemplatesInstructionsWithTopic"
-        MC_WITHOUT_TOPIC = "MultipleChoiceTemplatesInstructionsWithoutTopicFixed"
-        MC_WITH_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithTopicHelm"
-        MC_WITHOUT_TOPIC_HELM = "MultipleChoiceTemplatesInstructionsWithoutTopicHelmFixed"
-
-        @classmethod
-        def get_all_prompt_paraphrases(cls) -> List[str]:
-            return [
-                cls.MC_WITH_TOPIC,
-                cls.MC_WITHOUT_TOPIC,
-                cls.MC_WITH_TOPIC_HELM,
-                cls.MC_WITHOUT_TOPIC_HELM
-            ]
-
-    class FewShot(Enum):
-        """Few-shot learning parameters"""
-        ZERO_SHOT = 0
-        FEW_SHOT = 5
-
-        @classmethod
-        def get_values(cls) -> List[int]:
-            return [shot.value for shot in cls]
-
-    class PromptOptions:
-        GREEK_CHARS = "αβγδεζηθικ"  # 10 Greek letters
-        KEYBOARD_CHARS = "!@#$%^₪*)("  # 26 lowercase letters
-        SHUFFLE_CHOICES_COMBINATIONS = {
-            "False": {"shuffle_choices": False, "sort_choices_by_length": False, "sort_choices_alphabetically": False,
-                      "reverse_choices": False, "place_correct_choice_position": None},
-            "lengthSort": {"shuffle_choices": False, "sort_choices_by_length": True,
-                           "sort_choices_alphabetically": False,
-                           "reverse_choices": False, "place_correct_choice_position": None},
-            "lengthSortReverse": {"shuffle_choices": False, "sort_choices_by_length": True,
-                                  "sort_choices_alphabetically": False, "reverse_choices": True,
-                                  "place_correct_choice_position": None},
-            "alphabeticalSort": {"shuffle_choices": False, "sort_choices_alphabetically": True,
-                                 "sort_choices_by_length": False, "reverse_choices": False,
-                                 "place_correct_choice_position": None},
-            "alphabeticalSortReverse": {"shuffle_choices": False, "sort_choices_alphabetically": True,
-                                        "sort_choices_by_length": False, "reverse_choices": True,
-                                        "place_correct_choice_position": None},
-            "placeCorrectChoiceFirst": {"shuffle_choices": False, "sort_choices_alphabetically": False,
-                                        "sort_choices_by_length": False, "reverse_choices": False,
-                                        "place_correct_choice_position": 0},
-            "placeCorrectChoiceFourth": {"shuffle_choices": False, "sort_choices_alphabetically": False,
-                                         "sort_choices_by_length": False, "reverse_choices": False,
-                                         "place_correct_choice_position": 4},
+    @staticmethod
+    def get_card_list(dataset_name: str) -> List[str]:
+        dataset_subset_dict = {
+            "mmlu_pro": [
+                "history", "law", "health", "physics", "business", "other",
+                "philosophy", "psychology", "economics", "math", "biology",
+                "chemistry", "computer_science", "engineering",
+            ],
+            "mmlu": [
+                "abstract_algebra", "anatomy", "astronomy", "business_ethics",
+                "clinical_knowledge", "college_biology", "college_chemistry",
+                "college_computer_science", "college_mathematics", "college_medicine",
+                "college_physics", "computer_security", "conceptual_physics",
+                "econometrics", "electrical_engineering", "elementary_mathematics",
+                "formal_logic", "global_facts", "high_school_biology",
+                "high_school_chemistry", "high_school_computer_science",
+                "high_school_european_history", "high_school_geography",
+                "high_school_government_and_politics", "high_school_macroeconomics",
+                "high_school_mathematics", "high_school_microeconomics",
+                "high_school_physics", "high_school_psychology",
+                "high_school_statistics", "high_school_us_history",
+                "high_school_world_history", "human_aging", "human_sexuality",
+                "international_law", "jurisprudence", "logical_fallacies",
+                "machine_learning", "management", "marketing", "medical_genetics",
+                "miscellaneous", "moral_disputes", "moral_scenarios", "nutrition",
+                "philosophy", "prehistory", "professional_accounting",
+                "professional_law", "professional_medicine", "professional_psychology",
+                "public_relations", "security_studies", "sociology",
+                "us_foreign_policy", "virology", "world_religions"
+            ],
         }
 
-        override_options = {
-            "enumerator": ["capitals", "lowercase", "numbers", "roman", KEYBOARD_CHARS, GREEK_CHARS],
-
-            "choices_separator": [" ", "\n", ", ", "; ", " | ", " OR ", " or "],
-            "shuffle_choices": list(SHUFFLE_CHOICES_COMBINATIONS.keys()),
-            # Add more parameters and their possible values as needed
-        }
-
-        ENUM_CHARS = {"ABCDEFGHIJKLMNOP": "capitals",
-                      "abcdefghijklmnop": "lowercase",
-                      str(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17',
-                           '18', '19', '20']): "numbers",
-                      str(['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV',
-                           'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX']): "roman",
-                      KEYBOARD_CHARS: "keyboard",  # Added mapping for keyboard chars
-                      GREEK_CHARS: "greek"  # Added mapping for greek chars
-                      }
-
-        @classmethod
-        def get_options(cls) -> Dict[str, List]:
-            return cls.override_options
-
-        @classmethod  # Changed to classmethod to access class attributes
-        def format_value(cls, value: Any) -> str:
-            """Format a value for use in template name"""
-            if isinstance(value, bool):
-                return str(value)
-            elif isinstance(value, str):
-                # Special characters mapping
-                separator_names = {
-                    " ": "space",
-                    "\n": "newline",
-                    " | ": "pipe",
-                    " OR ": "OrCapital",
-                    " or ": "orLower",
-                    ", ": "comma",
-                    "; ": "semicolon"
-                }
-
-                # Check separators first
-                if value in separator_names:
-                    return separator_names[value]
-
-                # Check special character sets
-                if value in cls.ENUM_CHARS:
-                    return cls.ENUM_CHARS[value]
-
-                # For any other string values
-                return value.replace(" ", "")
-
-            return str(value)
-
-        @classmethod
-        def generate_template_name(cls, combination: Dict[str, Any]) -> str:
-            """Generate a descriptive template name from a combination of options"""
-            parts = []
-            for key, value in combination.items():
-                formatted_value = cls.format_value(value)
-                camel_key = cls.to_camel_case(key)
-                parts.append(f"{camel_key}_{formatted_value}")
-            return "_".join(parts)
-
-        @staticmethod
-        def to_camel_case(snake_str: str) -> str:
-            """Convert snake_case to camelCase"""
-            components = snake_str.split('_')
-            return components[0] + ''.join(x.title() for x in components[1:])
-
-        @classmethod
-        def generate_template_combinations(cls, dataset_name) -> Dict[str, Dict]:
-            """Generate all possible combinations of template options"""
-            options = cls.get_options()
-            all_combinations = [
-                {key: value for key, value in zip(options.keys(), values)}
-                for values in itertools.product(*options.values())
-            ]
-            if dataset_name in ["mmlu", "ai2_arc.arc_easy", "ai2_arc.arc_challenge", "hellaswag", "openbook_qa"]:
-                return {
-                    cls.generate_template_name(combo): combo
-                    for combo in all_combinations
-                }
-            elif dataset_name in ["mmlu_pro", "social_iqa"]:
-                combinations = [combo for combo in all_combinations if
-                                combo["shuffle_choices"] != "placeCorrectChoiceFourth"]
-                return {
-                    cls.generate_template_name(combo): combo
-                    for combo in combinations
-                }
-            else:
-                raise ValueError(f"Dataset name {dataset_name} is not supported")
-
-    class ModelConfigs:
-        """Model configurations"""
-        PRIORITY_ORDER = ["Llama", "Mistral", "OLMo", "Gemma", "Qwen"]
-
-        @classmethod
-        def get_configs(cls) -> Dict[str, Dict[str, Dict[str, str]]]:
-            return {
-                "Llama": {
-                    "Llama-3.2-1B-Instruct": {"path": "meta-llama/Llama-3.2-1B-Instruct", "size": "1B"},
-                    "Llama-3.2-3B-Instruct": {"path": "meta-llama/Llama-3.2-3B-Instruct", "size": "3B"},
-                    "Meta-Llama-3-8B-Instruct": {"path": "meta-llama/Meta-Llama-3-8B-Instruct", "size": "8B"},
-                    "Meta-Llama-3-70B-Instruct": {"path": "meta-llama/Meta-Llama-3-70B-Instruct", "size": "70B"}
-                },
-                "Mistral": {
-                    "Mistral-7B-Instruct-v0.3": {"path": "mistralai/Mistral-7B-Instruct-v0.3", "size": "7B"},
-                    "Mixtral-8x7B-Instruct-v0.1": {"path": "mistralai/Mixtral-8x7B-Instruct-v0.1", "size": "8x7B"},
-                    "Mixtral-8x22B-Instruct-v0.1": {"path": "mistralai/Mixtral-8x22B-Instruct-v0.1", "size": "8x22B"}
-                },
-                "OLMo": {
-                    "OLMo-7B-Instruct": {"path": "allenai/OLMo-7B-Instruct", "size": "7B"},
-                    "OLMoE-1B-7B-0924-Instruct": {"path": "allenai/OLMoE-1B-7B-0924-Instruct", "size": "1B"}
-                },
-                "Qwen": {
-                    "Qwen2.5-0.5B-Instruct": {"path": "Qwen/Qwen2.5-0.5B-Instruct", "size": "0.5B"},
-                    "Qwen2.5-72B-Instruct": {"path": "Qwen/Qwen2.5-72B-Instruct", "size": "72B"}
-                }
-            }
-
-        @classmethod
-        def get_priority_paths(cls) -> List[str]:
-            configs = cls.get_configs()
-            return [
-                model_info["path"]
-                for family in cls.PRIORITY_ORDER
-                if family in configs
-                for model_info in configs[family].values()
-            ]
-
-        @classmethod
-        def get_model_family(cls, model_path: str) -> Optional[str]:
-            """
-            Find the model family for a given model path.
-
-            Args:
-                model_path: The full path of the model (e.g., 'meta-llama/Llama-3.2-1B-Instruct')
-
-            Returns:
-                str: The model family name if found, None otherwise
-            """
-            configs = cls.get_configs()
-
-            # Iterate through each family and its models
-            for family, models in configs.items():
-                # Check if the model path exists in any of the family's models
-                if any(model_info["path"] == model_path for model_info in models.values()):
-                    return family
-
-            return None
+        cards_list = []
+        subset_list = dataset_subset_dict[dataset_name]
+        for subset in subset_list:
+            cards_list.append(f"cards.{dataset_name}.{subset}")
+        return cards_list
 
 
-def get_prompt_paraphrasing(dataset_name):
-    if dataset_name in ["mmlu", "mmlu_pro", "ai2_arc.arc_easy", "ai2_arc.arc_challenge", "hellaswag", "openbook_qa",
-                        "social_iqa"]:
-        return ['MultipleChoiceTemplatesInstructionsWithTopic', 'MultipleChoiceTemplatesInstructionsWithoutTopicFixed',
-                'MultipleChoiceTemplatesInstructionsWithTopicHelm',
-                'MultipleChoiceTemplatesInstructionsWithoutTopicHelmFixed',
-                'MultipleChoiceTemplatesInstructionsWithoutTopicHarness', 'MultipleChoiceTemplatesStructuredWithTopic',
-                'MultipleChoiceTemplatesStructuredWithoutTopic', 'MultipleChoiceTemplatesInstructionsProSASimple',
-                'MultipleChoiceTemplatesInstructionsProSALetter', 'MultipleChoiceTemplatesInstructionsProSACould',
-                'MultipleChoiceTemplatesInstructionsStateHere', 'MultipleChoiceTemplatesInstructionsStateBelow',
-                'MultipleChoiceTemplatesInstructionsStateBelowPlease']
-    if dataset_name in ["HellaSwag"]:
-        return \
-            ['MultipleChoiceTemplatesInstructionsStandard', 'MultipleChoiceTemplatesInstructionsContext',
-             'MultipleChoiceTemplatesInstructionsStructured', 'MultipleChoiceTemplatesInstructionsBasic',
-             'MultipleChoiceTemplatesInstructionsState1', 'MultipleChoiceTemplatesInstructionsState2',
-             'MultipleChoiceTemplatesInstructionsState3', 'MultipleChoiceTemplatesInstructionsState4',
-             'MultipleChoiceTemplatesInstructionsState5', 'MultipleChoiceTemplatesInstructionsState6',
-             'MultipleChoiceTemplatesInstructionsState7', 'MultipleChoiceTemplatesInstructionsState8']
+def get_run_data(dataset_name: str) -> List[Tuple[str, List[str]]]:
+    with open('experiments_config.json', 'r', encoding='utf-8') as f:
+        configs = json.load(f)
+
+    dataset_config = configs[dataset_name]
+    results = []
+    dataset_catalog_name = dataset_config["dataset_catalog_name"]
+    prompt_paraphrases = dataset_config["prompt_paraphrases"]
+    template_names = dataset_config["template_names"]
+    for subset in MultiChoiceDatasetsConfig.get_card_list(dataset_name):
+        card_name = f"cards.{dataset_name}.{subset}"
+        templates = [f"templates.huji_workshop.{dataset_catalog_name}.{prompt}.{template}"
+                     for prompt in prompt_paraphrases
+                     for template in template_names]
+        results.append((card_name, templates))
+    return results
+
+
+def get_templates(self):
+    template_paraphrase_list = self.get_template_paraphrase_list()
+    template_combination_names_list = (
+        self.PromptOptions.generate_template_combinations()
+    )
+    template_list = []
+    for prompt_paraphrase, template_combination_name in itertools.product(
+            template_paraphrase_list, template_combination_names_list
+    ):
+        template_list.append(
+            f"templates.huji_workshop.{prompt_paraphrase}.{template_combination_name}"
+        )
+    return template_list
 
 
 def run_experiment(local_catalog_path: str):
@@ -287,39 +121,25 @@ def run_experiment(local_catalog_path: str):
     os.environ["UNITXT_ARTIFACTORIES"] = local_catalog_path
 
     # Generate all possible template combinations
-    subsets = BaseConfig.DatasetSubsets.get_subsets()
-    with open('experiments_config.json', 'r', encoding='utf-8') as f:
-        config= json.load(f)
+    configs = ["mmlu", "mmlu_pro", "ai2_arc.arc_easy", "ai2_arc.arc_challenge", "hellaswag", "openbook_qa",
+               "social_iqa"]
+    for config in configs:
+        unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
+            config: [
+                _DefaultUnitxtRecipeArgs(
+                    card=card_name,
+                    template=templates
+                )
+                for card_name, templates in get_run_data(config)
+            ]
+        }
 
-    for dataset_name, dataset_config in config.items():
-        catalog_name = dataset_config["catalog_name"]
-        prompt_paraphrases = dataset_config["prompt_paraphrases"]
-        template_names = dataset_config["template_names"]
-        for prompt_paraphrase in prompt_paraphrases:
-            for few_shots in BaseConfig.FewShot.get_values():
-                unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
-                    "Knowledge": [
-                        _DefaultUnitxtRecipeArgs(
-                            card=f"cards.{dataset_name}.{subset}",
-                            template=[
-                                f"{catalog_name}.{prompt_paraphrase}.{template_name}"
-                                for template_name in template_names
-                            ],
-                            demos_pool_size=few_shots,
-                            max_test_instances=100,
-                            max_train_instances=100,
-                            max_validation_instances=100,
-                        )
-                        for subset in subsets[dataset_name]
-                    ]
-                }
-                # Your experiment execution code here
-                # process_experiment(unitxt_recipe_args_by_groupings)
+        def get_generation_args(unitxt_args: UnitxtSingleRecipeArgs) -> GenerationArgs:
+            return _DefaultGenerationArgs()
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Generate multiple choice templates')
-    parser.add_argument('--local_catalog_path', type=str, default="local_catalog_path",
-                        help='The local catalog path')
-    args = parser.parse_args()
-
-    run_experiment(args.local_catalog_path)
+        get_single_runs_args_list = get_basic_benchmark_function(
+            unitxt_recipe_args_by_groupings,
+            get_run_generation_args_func=get_generation_args,
+            get_train_args_func=None,
+            system_prompts_and_formatters_mapper=None,
+        )

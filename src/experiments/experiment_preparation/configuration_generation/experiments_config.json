@@ -1,6 +1,6 @@
 {
     "mmlu": {
-        "catalog_name": "MMLU",
+        "dataset_catalog_name": "MMLU",
         "prompt_paraphrases": [
             "MultipleChoiceTemplatesInstructionsWithTopic",
             "MultipleChoiceTemplatesInstructionsWithoutTopicFixed",
@@ -314,7 +314,7 @@
         ]
     },
     "mmlu_pro": {
-        "catalog_name": "MMLU_PRO",
+        "dataset_catalog_name": "MMLU_PRO",
         "prompt_paraphrases": [
             "MultipleChoiceTemplatesInstructionsWithTopic",
             "MultipleChoiceTemplatesInstructionsWithoutTopicFixed",
@@ -586,7 +586,7 @@
         ]
     },
     "ai2_arc.arc_easy": {
-        "catalog_name": "AI2_ARC",
+        "dataset_catalog_name": "AI2_ARC",
         "prompt_paraphrases": [
             "MultipleChoiceTemplatesInstructionsWithTopic",
             "MultipleChoiceTemplatesInstructionsWithoutTopicFixed",
@@ -900,7 +900,7 @@
         ]
     },
     "ai2_arc.arc_challenge": {
-        "catalog_name": "AI2_ARC",
+        "dataset_catalog_name": "AI2_ARC",
         "prompt_paraphrases": [
             "MultipleChoiceTemplatesInstructionsWithTopic",
             "MultipleChoiceTemplatesInstructionsWithoutTopicFixed",
@@ -1214,7 +1214,7 @@
         ]
     },
     "hellaswag": {
-        "catalog_name": "HellaSwag",
+        "dataset_catalog_name": "HellaSwag",
         "prompt_paraphrases": [
             "MultipleChoiceTemplatesInstructionsWithTopic",
             "MultipleChoiceTemplatesInstructionsWithoutTopicFixed",
@@ -1528,7 +1528,7 @@
         ]
     },
     "openbook_qa": {
-        "catalog_name": "OpenBookQA",
+        "dataset_catalog_name": "OpenBookQA",
         "prompt_paraphrases": [
             "MultipleChoiceTemplatesInstructionsWithTopic",
             "MultipleChoiceTemplatesInstructionsWithoutTopicFixed",
@@ -1842,7 +1842,7 @@
         ]
     },
     "social_iqa": {
-        "catalog_name": "Social_IQa",
+        "dataset_catalog_name": "Social_IQa",
         "prompt_paraphrases": [
             "MultipleChoiceTemplatesInstructionsWithTopic",
             "MultipleChoiceTemplatesInstructionsWithoutTopicFixed",
