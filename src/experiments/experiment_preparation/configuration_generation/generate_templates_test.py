@@ -39,10 +39,23 @@ class MultiChoiceDatasetsConfig:
                 "public_relations", "security_studies", "sociology",
                 "us_foreign_policy", "virology", "world_religions"
             ],
+            "ai2_arc.arc_easy":
+            [],
+            "ai2_arc.arc_challenge":
+            [],
+            "hellaswag":
+            [],
+            "openbook_qa":
+            [],
+            "social_iqa":
+            []
+
         }
 
+        subset_list = dataset_subset_dict.get(dataset_name, [])
+        if not subset_list:
+            return [f"cards.{dataset_name}"]
         cards_list = []
-        subset_list = dataset_subset_dict[dataset_name]
         for subset in subset_list:
             cards_list.append(f"cards.{dataset_name}.{subset}")
         return cards_list
@@ -97,15 +110,13 @@ def run_experiment(local_catalog_path: str):
     configs = ["mmlu", "mmlu_pro", "ai2_arc.arc_easy", "ai2_arc.arc_challenge", "hellaswag", "openbook_qa",
                "social_iqa"]
     for config in configs:
-        unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
-            config: [
-                _DefaultUnitxtRecipeArgs(
-                    card=card_name,
-                    template=templates
-                )
+        unitxt_recipe_args_by_groupings = [
+            (card_name,
+                    templates)
+
                 for card_name, templates in get_run_data(config)
             ]
-        }
+        pass
 
 
 if __name__ == "__main__":
