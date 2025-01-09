@@ -1,8 +1,5 @@
-import json
-import os
 from dataclasses import dataclass, field
-from typing import Dict, List
-from typing import Tuple
+from typing import Dict, List, Tuple
 
 from fm_eval.benchmarks.basic.benchmark_types import (
     GenerationArgs,
@@ -29,7 +26,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -325,8 +322,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSort",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFirst",
-            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth"
-        ]
+            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth",
+        ],
     },
     "mmlu_pro": {
         "dataset_catalog_name": "MMLU_PRO",
@@ -343,7 +340,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -597,8 +594,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSort",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse",
-            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFirst"
-        ]
+            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFirst",
+        ],
     },
     "ai2_arc.arc_easy": {
         "dataset_catalog_name": "AI2_ARC",
@@ -615,7 +612,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -911,8 +908,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSort",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFirst",
-            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth"
-        ]
+            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth",
+        ],
     },
     "ai2_arc.arc_challenge": {
         "dataset_catalog_name": "AI2_ARC",
@@ -929,7 +926,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -1225,8 +1222,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSort",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFirst",
-            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth"
-        ]
+            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth",
+        ],
     },
     "hellaswag": {
         "dataset_catalog_name": "HellaSwag",
@@ -1242,7 +1239,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsState5",
             "MultipleChoiceTemplatesInstructionsState6",
             "MultipleChoiceTemplatesInstructionsState7",
-            "MultipleChoiceTemplatesInstructionsState8"
+            "MultipleChoiceTemplatesInstructionsState8",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -1538,8 +1535,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSort",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFirst",
-            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth"
-        ]
+            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth",
+        ],
     },
     "openbook_qa": {
         "dataset_catalog_name": "OpenBookQA",
@@ -1556,7 +1553,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -1852,8 +1849,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSort",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFirst",
-            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth"
-        ]
+            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFourth",
+        ],
     },
     "social_iqa": {
         "dataset_catalog_name": "Social_IQa",
@@ -1870,7 +1867,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -2124,9 +2121,9 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSort",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse",
-            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFirst"
-        ]
-    }
+            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_placeCorrectChoiceFirst",
+        ],
+    },
 }
 
 
@@ -2163,43 +2160,85 @@ class MultiChoiceDatasetsConfig:
     def get_card_list(dataset_name: str) -> List[str]:
         dataset_subset_dict = {
             "mmlu_pro": [
-                "history", "law", "health", "physics", "business", "other",
-                "philosophy", "psychology", "economics", "math", "biology",
-                "chemistry", "computer_science", "engineering",
+                "history",
+                "law",
+                "health",
+                "physics",
+                "business",
+                "other",
+                "philosophy",
+                "psychology",
+                "economics",
+                "math",
+                "biology",
+                "chemistry",
+                "computer_science",
+                "engineering",
             ],
             "mmlu": [
-                "abstract_algebra", "anatomy", "astronomy", "business_ethics",
-                "clinical_knowledge", "college_biology", "college_chemistry",
-                "college_computer_science", "college_mathematics", "college_medicine",
-                "college_physics", "computer_security", "conceptual_physics",
-                "econometrics", "electrical_engineering", "elementary_mathematics",
-                "formal_logic", "global_facts", "high_school_biology",
-                "high_school_chemistry", "high_school_computer_science",
-                "high_school_european_history", "high_school_geography",
-                "high_school_government_and_politics", "high_school_macroeconomics",
-                "high_school_mathematics", "high_school_microeconomics",
-                "high_school_physics", "high_school_psychology",
-                "high_school_statistics", "high_school_us_history",
-                "high_school_world_history", "human_aging", "human_sexuality",
-                "international_law", "jurisprudence", "logical_fallacies",
-                "machine_learning", "management", "marketing", "medical_genetics",
-                "miscellaneous", "moral_disputes", "moral_scenarios", "nutrition",
-                "philosophy", "prehistory", "professional_accounting",
-                "professional_law", "professional_medicine", "professional_psychology",
-                "public_relations", "security_studies", "sociology",
-                "us_foreign_policy", "virology", "world_religions"
+                "abstract_algebra",
+                "anatomy",
+                "astronomy",
+                "business_ethics",
+                "clinical_knowledge",
+                "college_biology",
+                "college_chemistry",
+                "college_computer_science",
+                "college_mathematics",
+                "college_medicine",
+                "college_physics",
+                "computer_security",
+                "conceptual_physics",
+                "econometrics",
+                "electrical_engineering",
+                "elementary_mathematics",
+                "formal_logic",
+                "global_facts",
+                "high_school_biology",
+                "high_school_chemistry",
+                "high_school_computer_science",
+                "high_school_european_history",
+                "high_school_geography",
+                "high_school_government_and_politics",
+                "high_school_macroeconomics",
+                "high_school_mathematics",
+                "high_school_microeconomics",
+                "high_school_physics",
+                "high_school_psychology",
+                "high_school_statistics",
+                "high_school_us_history",
+                "high_school_world_history",
+                "human_aging",
+                "human_sexuality",
+                "international_law",
+                "jurisprudence",
+                "logical_fallacies",
+                "machine_learning",
+                "management",
+                "marketing",
+                "medical_genetics",
+                "miscellaneous",
+                "moral_disputes",
+                "moral_scenarios",
+                "nutrition",
+                "philosophy",
+                "prehistory",
+                "professional_accounting",
+                "professional_law",
+                "professional_medicine",
+                "professional_psychology",
+                "public_relations",
+                "security_studies",
+                "sociology",
+                "us_foreign_policy",
+                "virology",
+                "world_religions",
             ],
-            "ai2_arc.arc_easy":
-                [],
-            "ai2_arc.arc_challenge":
-                [],
-            "hellaswag":
-                [],
-            "openbook_qa":
-                [],
-            "social_iqa":
-                []
-
+            "ai2_arc.arc_easy": [],
+            "ai2_arc.arc_challenge": [],
+            "hellaswag": [],
+            "openbook_qa": [],
+            "social_iqa": [],
         }
 
         subset_list = dataset_subset_dict.get(dataset_name, [])
@@ -2219,37 +2258,45 @@ def get_run_data(dataset_name: str) -> List[Tuple[str, List[str]]]:
     template_names = dataset_config["template_names"]
     for subset in MultiChoiceDatasetsConfig.get_card_list(dataset_name):
         card_name = f"{subset}"
-        templates = [f"{dataset_catalog_name}.{prompt}.{template}"
-                     for prompt in prompt_paraphrases
-                     for template in template_names]
+        templates = [
+            f"{dataset_catalog_name}.{prompt}.{template}"
+            for prompt in prompt_paraphrases
+            for template in template_names
+        ]
         results.append((card_name, templates))
     return results
 
 
-def run_experiment(local_catalog_path: str):
-    """Run the experiment with given configuration"""
-    os.environ["UNITXT_ARTIFACTORIES"] = local_catalog_path
+# Generate all possible template combinations
+configs = [
+    "mmlu",
+    "mmlu_pro",
+    "ai2_arc.arc_easy",
+    "ai2_arc.arc_challenge",
+    "hellaswag",
+    "openbook_qa",
+    "social_iqa",
+]
 
-    # Generate all possible template combinations
-    configs = ["mmlu", "mmlu_pro", "ai2_arc.arc_easy", "ai2_arc.arc_challenge", "hellaswag", "openbook_qa",
-               "social_iqa"]
-    for config in configs:
-        unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
-            config: [
-                _DefaultUnitxtRecipeArgs(
-                    card=card_name,
-                    template=templates
-                )
-                for card_name, templates in get_run_data(config)
-            ]
-        }
-
-        def get_generation_args(unitxt_args: UnitxtSingleRecipeArgs) -> GenerationArgs:
-            return _DefaultGenerationArgs()
-
-        get_single_runs_args_list = get_basic_benchmark_function(
-            unitxt_recipe_args_by_groupings,
-            get_run_generation_args_func=get_generation_args,
-            get_train_args_func=None,
-            system_prompts_and_formatters_mapper=None,
+unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
+    config: [
+        _DefaultUnitxtRecipeArgs(
+            card=f"{card_name}",
+            template=[f"templates.huji_workshop.{template}" for template in templates],
         )
+        for card_name, templates in get_run_data(config)
+    ]
+    for config in configs
+}
+
+
+def get_generation_args(unitxt_args: UnitxtSingleRecipeArgs) -> GenerationArgs:
+    return _DefaultGenerationArgs()
+
+
+get_single_runs_args_list = get_basic_benchmark_function(
+    unitxt_recipe_args_by_groupings,
+    get_run_generation_args_func=get_generation_args,
+    get_train_args_func=None,
+    system_prompts_and_formatters_mapper=None,
+)
