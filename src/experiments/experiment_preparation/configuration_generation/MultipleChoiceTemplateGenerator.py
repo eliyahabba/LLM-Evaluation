@@ -1,3 +1,4 @@
+from copy import deepcopy
 import argparse
 from dataclasses import asdict
 from typing import List
@@ -65,10 +66,11 @@ if __name__ == "__main__":
     # Base arguments for all templates
     catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
     parser = argparse.ArgumentParser(description='Generate multiple choice templates')
-    override_options = ConfigParams.override_options
     dataset_names_to_configs = DatasetConfigFactory.get_all_instruct_prompts()
     # for input_format_func, data_folder in zip(input_format_funcs, data_folders):
     for dataset_name, datasetConfig in dataset_names_to_configs.items():
+        override_options = deepcopy(ConfigParams.override_options)
+
         if dataset_name in ["MMLU_PRO", "Social_IQa"]:
             override_options['shuffle_choices'].remove('placeCorrectChoiceFourth')
         prompts_instruct_data = datasetConfig.get_all_prompts()
@@ -85,7 +87,7 @@ if __name__ == "__main__":
                 catalog_manager = CatalogManager(catalog_path)
                 for template_name, template in tqdm(created_templates.items()):
                     catalog_manager.save_to_catalog(template,
-                                                    f"{dataset_name}.{instruct_folder_name}.{template_name}")
+                                                        f"{dataset_name}.{instruct_folder_name}.{template_name}")
 
                 # add a df that contains the templates and their parameter
                 generator.create_and_process_metadata(created_templates.values(), dataset_name, override_options)
