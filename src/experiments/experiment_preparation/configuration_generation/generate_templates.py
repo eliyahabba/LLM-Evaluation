@@ -106,8 +106,8 @@ def get_run_data(dataset_name: str) -> List[Tuple[str, List[str]]]:
     prompt_paraphrases = dataset_config["prompt_paraphrases"]
     template_names = dataset_config["template_names"]
     for subset in MultiChoiceDatasetsConfig.get_card_list(dataset_name):
-        card_name = f"cards.{dataset_name}.{subset}"
-        templates = [f"templates.huji_workshop.{dataset_catalog_name}.{prompt}.{template}"
+        card_name = f"{subset}"
+        templates = [f"{dataset_catalog_name}.{prompt}.{template}"
                      for prompt in prompt_paraphrases
                      for template in template_names]
         results.append((card_name, templates))
