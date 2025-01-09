@@ -6,9 +6,9 @@ import streamlit as st
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
-from src.streamlit_app.ui_components.FindCombinations import FindCombinations
 from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
 from src.utils.Constants import Constants
+from src.streamlit_app.ui_components.FindCombinations import FindCombinations
 
 BestOrWorst = Constants.BestOrWorst
 
