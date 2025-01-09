@@ -23,7 +23,7 @@ class ConfigParams:
                                 "sort_choices_by_length": False, "reverse_choices": False,"place_correct_choice_position": 0},
         "placeCorrectChoiceFourth": {"shuffle_choices": False, "sort_choices_alphabetically": False,
                                      "sort_choices_by_length": False, "reverse_choices": False,
-                                     "place_correct_choice_position": 4},
+                                     "place_correct_choice_position": 3},
     }
 
     override_options = {

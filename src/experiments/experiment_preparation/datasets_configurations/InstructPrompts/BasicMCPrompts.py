@@ -63,9 +63,9 @@ class BasicMCPrompts(BasicPrompts):
         text=f"Please answer the following question:\n{{question}}\n{{choices}}\nAnswer:"
     )
 
-    please_letter_prompt_ProSA_paper: Instruction = Instruction(
-        name="MultipleChoiceTemplatesInstructionsProSALetter",
-        text=f"Please answer the following question:\n{{question}}\n{{choices}}\nAnswer the question by replying {{options}}."
+    please_address_prompt_ProSA_paper: Instruction = Instruction(
+        name="MultipleChoiceTemplatesInstructionsProSAAddress",
+        text=f"Please address the following question:\n{{question}}\n{{choices}}\nAnswer:"
     )
 
     could_you_prompt_ProSA_paper: Instruction = Instruction(
