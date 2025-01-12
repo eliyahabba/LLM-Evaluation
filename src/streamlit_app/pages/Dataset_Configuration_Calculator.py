@@ -140,10 +140,10 @@ def main():
               "Qwen2.5-7B-Instruct",
               "Qwen2.5-72B-Instruct"]
     default_models = [
-        "Meta-Llama-3-8B-Instruct"
-        "Llama-3.2-1B-Instruct"
-        "Llama-3.2-3B-Instruct"
-        "OLMoE-1B-7B-0924-Instruct"
+        "Meta-Llama-3-8B-Instruct",
+        "Llama-3.2-1B-Instruct",
+        "Llama-3.2-3B-Instruct",
+        "OLMoE-1B-7B-0924-Instruct",
         "Mistral-7B-Instruct-v0.3"
     ]
     quantizations = ["None", '4int', '8int']
