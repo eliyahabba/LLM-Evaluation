@@ -125,6 +125,7 @@ def main():
         for dataset_name, dataset_info in datasets.items():
             datasets_to_groups[dataset_name] = group
     # Replace the dataset selection section in the main() function with:
+
     models = ["Llama-3.2-1B-Instruct",
               "Llama-3.2-3B-Instruct",
               "Meta-Llama-3-8B-Instruct",
@@ -138,8 +139,13 @@ def main():
               "Qwen2.5-3B-Instruct",
               "Qwen2.5-7B-Instruct",
               "Qwen2.5-72B-Instruct"]
-    default_models = [model for model in models if "Llama" in model]
-    default_models = models[:1]
+    default_models = [
+        "Meta-Llama-3-8B-Instruct"
+        "Llama-3.2-1B-Instruct"
+        "Llama-3.2-3B-Instruct"
+        "OLMoE-1B-7B-0924-Instruct"
+        "Mistral-7B-Instruct-v0.3"
+    ]
     quantizations = ["None", '4int', '8int']
     default_quant = ["None", '8int']
     shots = ["zero_shot", "five_shot"]
