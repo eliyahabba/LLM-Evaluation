@@ -8,7 +8,6 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from src.experiments.experiment_preparation.configuration_generation.generate_templates import BaseConfig
 from src.experiments.experiment_preparation.dataset_scheme.conversions.RunOutputMerger import RunOutputMerger
 from src.utils.Constants import Constants
 
@@ -220,7 +219,7 @@ class SchemaConverter:
         return {
             "model_info": {
                 "name": model_args['model'],
-                "family": BaseConfig.ModelConfigs.get_model_family(model_args['model'])
+                "family": model_metadata.get("ModelInfo", {}).get("family")
             },
             "configuration": {
                 "architecture": model_metadata.get("Configuration", {}).get("architecture"),
@@ -253,7 +252,6 @@ class SchemaConverter:
         return {
             "prompt_class": "MultipleChoice",
             "format": {
-                "type": "MultipleChoice",
                 "template": self._get_template(recipe),
                 "separator": separator,
                 "enumerator": enumerator,
@@ -284,6 +282,7 @@ class SchemaConverter:
         return {
             "task_type": "classification",
             "raw_input": eval(row['prompt']),
+            "language": "en",
             "sample_identifier": {
                 "dataset_name": recipe['card'].split("cards.")[1],
                 "split": "test",
@@ -337,7 +336,7 @@ class SchemaConverter:
 
 def main():
     """Main execution function."""
-    parquet_path = Path("~/Downloads/data.parquet").expanduser()
+    parquet_path = Path("../update_data.parquet").expanduser()
     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
 
     # Initialize converter
