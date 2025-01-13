@@ -198,12 +198,15 @@ class SchemaConverter:
         template_name = run_unitxt_recipe['template'].split('templates.huji_workshop.')[-1]
         if logger:
             logger.info(f"Template name: {template_name}")
-            catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
+        catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
+        if logger:
             logger.info(f"Catalog path: {catalog_path}")
-            template_name = template_name.replace(".", "/")
+        template_name = template_name.replace(".", "/")
+        if logger:
             logger.info(f"Template name: {template_name}")
 
-            template_path = Path(catalog_path, template_name + '.json')
+        template_path = Path(catalog_path, template_name + '.json')
+        if logger:
             logger.info(f"Template path: {template_path}")
         with open(template_path, 'r') as f:
             template_data = json.load(f)
