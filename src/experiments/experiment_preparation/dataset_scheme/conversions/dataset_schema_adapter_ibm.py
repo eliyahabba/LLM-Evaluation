@@ -101,7 +101,7 @@ class SchemaConverter:
             ]
 
             transformed_demo = {
-                "topic": demo["topic"],
+                "topic": None if 'topic' not in demo else demo['topic'],
                 "question": demo["question"],
                 "choices": choices,
                 "answer": demo["answer"]
