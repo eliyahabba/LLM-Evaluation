@@ -196,14 +196,15 @@ class SchemaConverter:
         """Extract template format from run_unitxt_recipe."""
         template_name = run_unitxt_recipe['template'].split('huji_workshop.')[1].split(".")[0]
         template_name = run_unitxt_recipe['template'].split('templates.huji_workshop.')[-1]
-        logger.info(f"Template name: {template_name}")
-        catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
-        logger.info(f"Catalog path: {catalog_path}")
-        template_name = template_name.replace(".", "/")
-        logger.info(f"Template name: {template_name}")
+        if logger:
+            logger.info(f"Template name: {template_name}")
+            catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
+            logger.info(f"Catalog path: {catalog_path}")
+            template_name = template_name.replace(".", "/")
+            logger.info(f"Template name: {template_name}")
 
-        template_path = Path(catalog_path, template_name + '.json')
-        logger.info(f"Template path: {template_path}")
+            template_path = Path(catalog_path, template_name + '.json')
+            logger.info(f"Template path: {template_path}")
         with open(template_path, 'r') as f:
             template_data = json.load(f)
         return template_data['input_format']
@@ -354,9 +355,9 @@ def main():
 
     for batch in tqdm(processor.process_batches()):
         # Process single batch for testing
-        batch = batch.head(10)
+        batch = batch.head(1000)
         converted_data.extend(converter.convert_dataframe(batch))
-        break
+
 
     # Save results
     output_path = Path("data_sample_ibm.json")
