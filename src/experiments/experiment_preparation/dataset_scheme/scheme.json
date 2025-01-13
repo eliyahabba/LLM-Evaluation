@@ -257,7 +257,7 @@
         "instance": {
             "type": "object",
             "description": "Specific instance and its metadata",
-            "required": ["task_type", "raw_input", "sample_identifier", "perplexity"],
+            "required": ["task_type", "raw_input", "language", "sample_identifier", "perplexity"],
             "additionalProperties": true,
             "properties": {
                 "task_type": {
@@ -284,6 +284,29 @@
                             "description": "Array of conversation turns with roles and content"
                         }
                     ]
+                },
+                "language":
+                {
+                    "type": "string",
+                    "description": "Language of the input text",
+                    "examples":
+                            [
+                                "en",
+                                "fr",
+                                "de",
+                                "es",
+                                "it",
+                                "pt",
+                                "nl",
+                                "pl",
+                                "ru",
+                                "tr",
+                                "ar",
+                                "ja",
+                                "ko",
+                                "zh",
+                                "he"
+                            ]
                 },
                 "sample_identifier": {
                     "type": "object",
