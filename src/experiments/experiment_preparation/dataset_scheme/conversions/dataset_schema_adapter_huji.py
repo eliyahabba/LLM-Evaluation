@@ -134,6 +134,7 @@ def convert_to_schema_format(dataset: Dict[str, Any], max_new_tokens: int, data:
             "instance": {
                 "task_type": "classification",
                 "raw_input": question,
+                "language": "en",
                 "sample_identifier": create_sample_identifier(data["card"], "test", idx),
                 "token_ids": None,
                 "perplexity": perplexity,
@@ -188,7 +189,7 @@ if __name__ == "__main__":
     template_name = input_data['template_name']
 
     if template_name.startswith('template_'):
-        template_name = "MultipleChoiceTemplatesInstructionsWithoutTopic/enumerator_capitals_choicesSeparator_comma_shuffleChoices_False"
+        template_name = "MultipleChoiceTemplatesInstructionsWithoutTopicFixed/enumerator_capitals_choicesSeparator_comma_shuffleChoices_False"
 
     catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
     template_name.replace('MultipleChoiceTemplatesStructuredTopic',
@@ -197,13 +198,8 @@ if __name__ == "__main__":
     template_name = template_name.replace('MultipleChoiceTemplatesStructuredTopic',
                                           'MultipleChoiceTemplatesStructuredWithTopic')
     template_name = template_name.replace('MultipleChoiceTemplatesStructured',
-                                          'MultipleChoiceTemplatesStructuredWithoutTopic')
-
-    template_path = os.path.join(catalog_path, template_name + '.json')
-    if not os.path.exists(template_path):
-        template_path = Path(
-            "/Users/ehabba/PycharmProjects/LLM-Evaluation/Data/Catalog/MultipleChoiceTemplatesInstructionsWithoutTopic/enumerator_capitals_choicesSeparator_comma_shuffleChoices_False.json")
-
+                                          'MultipleChoiceTemplatesStructuredWithoutTopicFixed')
+    template_name = "MMLU/" + template_name
     TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
     catalog_path = TemplatesGeneratorConstants.CATALOG_PATH
     from src.experiments.data_loading.CatalogManager import CatalogManager
