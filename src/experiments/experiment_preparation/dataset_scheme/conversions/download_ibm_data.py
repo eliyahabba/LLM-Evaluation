@@ -234,7 +234,7 @@ def convert_to_scheme_format(parquet_path, batch_size=1000, logger=None):
 
     # Process first batch
     first_batch = next(processor.process_batches())
-    first_converted = converter.convert_dataframe(first_batch)
+    first_converted = converter.convert_dataframe(first_batch,logger=logger)
 
     # Separate first batch by splits
     first_batch_splits = {}
@@ -254,7 +254,7 @@ def convert_to_scheme_format(parquet_path, batch_size=1000, logger=None):
             logger.info(f"Processing batch {i + 1}...")
         print(f"Processing batch {i + 1}...")
 
-        converted_data = converter.convert_dataframe(batch)
+        converted_data = converter.convert_dataframe(batch,logger=logger)
 
         # Separate batch by splits
         batch_splits = {}

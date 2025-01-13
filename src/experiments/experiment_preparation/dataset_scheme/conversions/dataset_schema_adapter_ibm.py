@@ -163,7 +163,7 @@ class SchemaConverter:
         logprob_values = np.array([item[0]['logprob'] for item in logprobs])
         return np.exp(-np.mean(logprob_values))
 
-    def convert_row(self, row: pd.Series, probs: bool = True) -> Dict:
+    def convert_row(self, row: pd.Series, probs: bool = True, logger: Optional = None) -> Dict:
         """Convert a single DataFrame row to schema format."""
         raw_input = json.loads(row['raw_input'])
         task_data = eval(raw_input['task_data'])
@@ -176,7 +176,8 @@ class SchemaConverter:
                 row
             ),
             "prompt_config": self._build_prompt_section(task_data,
-                                                        recipe
+                                                        recipe,
+                                                        logger=logger
                                                         ),
             "instance": self._build_instance_section(
                 row, task_data, recipe, probs
@@ -191,14 +192,18 @@ class SchemaConverter:
         """Parse configuration string to dictionary."""
         return dict(pair.split('=') for pair in config_string.split(','))
 
-    def _get_template(self, run_unitxt_recipe: dict) -> str:
+    def _get_template(self, run_unitxt_recipe: dict, logger=None) -> str:
         """Extract template format from run_unitxt_recipe."""
         template_name = run_unitxt_recipe['template'].split('huji_workshop.')[1].split(".")[0]
         template_name = run_unitxt_recipe['template'].split('templates.huji_workshop.')[-1]
-
+        logger.info(f"Template name: {template_name}")
         catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
+        logger.info(f"Catalog path: {catalog_path}")
         template_name = template_name.replace(".", "/")
+        logger.info(f"Template name: {template_name}")
+
         template_path = Path(catalog_path, template_name + '.json')
+        logger.info(f"Template path: {template_path}")
         with open(template_path, 'r') as f:
             template_data = json.load(f)
         return template_data['input_format']
@@ -236,8 +241,8 @@ class SchemaConverter:
             }
         }
 
-    def _build_prompt_section(self, task_data: Dict, recipe: Dict
-                              ) -> Dict:
+    def _build_prompt_section(self, task_data: Dict, recipe: Dict,
+                              logger=None) -> Dict:
         """Build prompt configuration section of schema."""
         # Process demonstration examples
         enumerator, separator, choices_order = self.parse_template_params(recipe)
@@ -246,7 +251,7 @@ class SchemaConverter:
         return {
             "prompt_class": "MultipleChoice",
             "format": {
-                "template": self._get_template(recipe),
+                "template": self._get_template(recipe,logger),
                 "separator": separator,
                 "enumerator": enumerator,
                 "choices_order": choices_order,
@@ -329,9 +334,9 @@ class SchemaConverter:
             "score": eval(row['scores'])['score']
         }
 
-    def convert_dataframe(self, df: pd.DataFrame, probs=True) -> List[Dict]:
+    def convert_dataframe(self, df: pd.DataFrame, logger=None, probs=True) -> List[Dict]:
         """Convert entire DataFrame to schema format."""
-        return [self.convert_row(row, probs) for _, row in df.iterrows()]
+        return [self.convert_row(row, probs,logger) for _, row in df.iterrows()]
 
 
 def main():
