@@ -88,13 +88,7 @@ class SchemaConverter:
 
     def add_token_index_to_tokens(self, token_dict: Dict) -> List[Dict]:
         """Transform log probabilities to schema format."""
-        transformed_token_data = [
-            {
-                "token_index": int(token_index),
-                **token_data
-            }
-            for token_index, token_data in token_dict.items()
-        ]
+        transformed_token_data = token_dict['log_probs'].tolist()
         return transformed_token_data
 
     def transform_demos(self, demos: List[Dict]) -> List[Dict]:
@@ -272,10 +266,16 @@ class SchemaConverter:
         ]
 
         # Transform log probabilities
-        prompt_logprobs = self.transform_logprobs(eval(row['prompt_logprobs']))
-        perplexity = self.calculate_perplexity(prompt_logprobs)
-        if not probs:
-            prompt_logprobs = []
+        if probs:
+            prompt_logprobs = row['prompt_logprobs']
+            prompt_tokens_logprobs = [
+                self.add_token_index_to_tokens(prompt_logprobs[i])
+                for i in range(len(prompt_logprobs))
+            ]
+            perplexity = self.calculate_perplexity(prompt_tokens_logprobs)
+        else:
+            prompt_tokens_logprobs = []
+            perplexity = None
 
         with open(f"{recipe['card'].split('.')[1]}_samples.json", 'r') as file:
             index_map = json.load(file)
@@ -298,13 +298,13 @@ class SchemaConverter:
                     "text": choices[task_data["answer"]]["text"]
                 }
             },
-            "prompt_logprobs": prompt_logprobs
+            "prompt_logprobs": prompt_tokens_logprobs
         }
 
     def _build_output_section(self, row: pd.Series, probs: bool) -> Dict:
         """Build output section of schema."""
         if probs:
-            logprobs = json.loads(row['logprobs'])
+            logprobs = row['logprobs']
             generated_tokens_logprobs = [
                 self.add_token_index_to_tokens(logprobs[i])
                 for i in range(len(logprobs))
@@ -314,7 +314,7 @@ class SchemaConverter:
         return {
             "response": row['generated_text'],
             "cumulative_logprob": row['cumulative_logprob'],
-            "generated_tokens_ids": json.loads(row['generated_text_tokens_ids']),
+            "generated_tokens_ids": row['generated_text_tokens_ids'].tolist(),
             "generated_tokens_logprobs": generated_tokens_logprobs
         }
 

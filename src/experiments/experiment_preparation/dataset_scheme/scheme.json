@@ -138,7 +138,7 @@
                     "oneOf": [
                         {
                             "type": "object",
-                            "required": ["type", "template", "separator", "enumerator", "choices_order", "shots"],
+                            "required": ["template", "separator", "enumerator", "choices_order", "shots"],
                             "properties": {
                                 "template": {
                                     "type": "string",
@@ -407,9 +407,9 @@
                                 "type": "array",
                                 "items": {
                                     "type": "object",
-                                    "required": ["token_index", "logprob", "rank", "decoded_token"],
+                                    "required": ["token_id", "logprob", "rank", "decoded_token"],
                                     "properties": {
-                                        "token_index": {
+                                        "token_id": {
                                             "type": "number",
                                             "description": "Index position of the token in the sequence"
                                         },
@@ -464,9 +464,9 @@
                                 "type": "array",
                                 "items": {
                                     "type": "object",
-                                    "required": ["token_index", "logprob", "rank", "decoded_token"],
+                                    "required": ["token_id", "logprob", "rank", "decoded_token"],
                                     "properties": {
-                                        "token_index": {
+                                        "token_id": {
                                             "type": "number",
                                             "description": "Index position of the token in the sequence"
                                         },
