@@ -28,7 +28,7 @@ class RunOutputMerger:
         Returns:
             Dict[str, Dict[str, Any]]: Processed runs dictionary
         """
-        runs_ds = load_dataset("OfirArviv/HujiCollabRun",     download_mode="force_redownload"  )
+        runs_ds = load_dataset("OfirArviv/HujiCollabRun")
         train_runs_ds = runs_ds['train']
         # print(len(set(train_runs_ds['run_id'])) == len(train_runs_ds['run_id']))
         # False
