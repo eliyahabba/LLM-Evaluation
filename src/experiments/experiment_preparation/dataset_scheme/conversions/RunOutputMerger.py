@@ -28,11 +28,12 @@ class RunOutputMerger:
         Returns:
             Dict[str, Dict[str, Any]]: Processed runs dictionary
         """
-        runs_ds = load_dataset("OfirArviv/HujiCollabRun")
-        return {
-            row['run_id']: {k: v for k, v in row.items() if k != 'run_id'}
-            for row in runs_ds['run']
-        }
+        runs_ds = load_dataset("OfirArviv/HujiCollabRun",     download_mode="force_redownload"  )
+        train_runs_ds = runs_ds['train']
+        # print(len(set(train_runs_ds['run_id'])) == len(train_runs_ds['run_id']))
+        # False
+        df = train_runs_ds.to_pandas()
+        return df
 
     def _get_run_info(self, run_id: str) -> Optional[Dict[str, Any]]:
         """
@@ -44,7 +45,7 @@ class RunOutputMerger:
         Returns:
             Optional[Dict[str, Any]]: Run information if found, None otherwise
         """
-        return self.runs_dict.get(run_id)
+        return self.runs_dict[self.runs_dict['run_id'] == run_id].iloc[0].to_dict()
 
     def _add_run_columns(self, df: pd.DataFrame) -> pd.DataFrame:
         """
@@ -59,7 +60,7 @@ class RunOutputMerger:
         # Map run information to DataFrame
         run_info = df['run_id'].map(self._get_run_info)
         # Add all remaining columns with 'run_' prefix
-        run_columns = list(next(iter(self.runs_dict.values())).keys())
+        run_columns = self.runs_dict.columns
         for col in run_columns:
             df[f'run_{col}'] = run_info.apply(
                 lambda x: x[col] if x is not None else None
@@ -89,7 +90,11 @@ class RunOutputMerger:
 
 def main():
     """Main function to demonstrate usage."""
+    f="data_2024-12-24T06.parquet"
     parquet_path = Path("~/Downloads/data_sample.parquet")
+    parquet_path = Path(f"~/Downloads/{f}")
+    # parquet_path = Path("/Users/ehabba/Downloads/data_sample_work.parquet.parquet")
+    # parquet_path = Path("/Users/ehabba/Downloads/data_ibm_not.parquet")
     processor = RunOutputMerger(parquet_path)
     for processed_batch in processor.process_batches():
         # Now you can work with each batch
