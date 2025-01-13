@@ -19,7 +19,9 @@ from config.get_config import Config
 from src.experiments.experiment_preparation.dataset_scheme.conversions.RunOutputMerger import RunOutputMerger
 from src.experiments.experiment_preparation.dataset_scheme.conversions.dataset_schema_adapter_ibm import SchemaConverter
 from src.utils.Constants import Constants
-
+import tempfile
+import shutil
+import os
 config = Config()
 TOKEN = config.config_values.get("hf_access_token", "")
 
@@ -369,16 +371,24 @@ def procces_file(url, output_dir:Path, repo_name, scheme_files_dir, probs, logge
         try:
             logger.info(f"Downloading {original_filename}...")
             print(f"Downloading {original_filename}...")
-            response = requests.get(url, stream=True)
-            response.raise_for_status()
 
-            with open(output_path, 'wb') as f:
+            with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+                temp_path = temp_file.name
+
+                response = requests.get(url, stream=True)
+                response.raise_for_status()
+
                 for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
+                    temp_file.write(chunk)
+
+            shutil.move(temp_path, output_path)
+
             logger.info(f"Download completed: {original_filename}")
             print(f"Download completed: {original_filename}")
 
-        except requests.exceptions.RequestException as e:
+        except (requests.exceptions.RequestException, IOError) as e:
+            if 'temp_path' in locals() and os.path.exists(temp_path):
+                os.unlink(temp_path)
             print(f"Error downloading {original_filename}: {e}")
             logger.error(f"Error downloading {original_filename}: {e}")
     convert_to_scheme_format(output_path, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
