@@ -200,11 +200,11 @@ class SchemaConverter:
     def _get_template(self, run_unitxt_recipe: dict) -> str:
         """Extract template format from run_unitxt_recipe."""
         template_name = run_unitxt_recipe['template'].split('huji_workshop.')[1].split(".")[0]
-        config = run_unitxt_recipe['template'].split('.')[-1]
+        template_name = run_unitxt_recipe['template'].split('templates.huji_workshop.')[-1]
 
         catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
-        template_path = Path(catalog_path, template_name, config + '.json')
-
+        template_name = template_name.replace(".", "/")
+        template_path = Path(catalog_path, template_name + '.json')
         with open(template_path, 'r') as f:
             template_data = json.load(f)
         return template_data['input_format']
@@ -336,7 +336,8 @@ class SchemaConverter:
 
 def main():
     """Main execution function."""
-    parquet_path = Path("../update_data.parquet").expanduser()
+    f = "data_2025-01.parquet"
+    parquet_path = Path(f"~/Downloads/{f}")
     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
 
     # Initialize converter
