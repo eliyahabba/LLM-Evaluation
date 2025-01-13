@@ -240,7 +240,7 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
     # Process first batch
     logger.info(f"Processing batch 0 ... for {parquet_path.stem}")
     first_batch = next(processor.process_batches())
-    first_converted = converter.convert_dataframe(first_batch, probs=probs)
+    first_converted = converter.convert_dataframe(first_batch, probs=probs, logger=logger)
 
     # Separate first batch by splits
     first_batch_splits = {}
@@ -259,7 +259,7 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
         if logger:
             logger.info(f"Processing batch {i + 1}... for {parquet_path.stem}")
 
-        converted_data = converter.convert_dataframe(batch, probs=probs)
+        converted_data = converter.convert_dataframe(batch, probs=probs, logger=logger)
 
         # Separate batch by splits
         batch_splits = {}
