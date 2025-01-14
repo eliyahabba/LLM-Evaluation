@@ -46,6 +46,7 @@ def create_sample_identifier(card_name: str, split: str, idx) -> Dict[str, Any]:
     return {
         "dataset_name": card_name.split('cards.')[1],
         "hf_repo": f"cais/{dataset_name}",
+        "hf_split": 'test',
         "hf_index": idx
     }
 
