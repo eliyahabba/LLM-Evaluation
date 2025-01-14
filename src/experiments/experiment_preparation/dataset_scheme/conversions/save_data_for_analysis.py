@@ -341,10 +341,11 @@ class Converter:
 #     print(f"Processed {num_of_batches} batches.")
 
 
-def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"), process_output_dir: Path = Path(f"~/Downloads/data_2025-01.parquet")):
+def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"), process_output_dir: Path = Path(f"~/Downloads/data_2025-01.parquet"),
+         logger=None):
     """Main function to demonstrate usage."""
-    return
     parquet_path = file_path
+    logger.info(f"Processing file: {parquet_path}")
     processor = RunOutputMerger(parquet_path)
     num_of_batches = 0
     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
@@ -352,7 +353,7 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"), process_ou
 
     # Create output path
     output_path = process_output_dir / f"processed_{parquet_path.name}"
-
+    logger.info(f"Output path: {output_path}")
     # Process first batch to get schema
     first_batch = next(processor.process_batches())
     data = converter.convert_dataframe(first_batch)
@@ -370,12 +371,12 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"), process_ou
     # Write first batch
     writer.write_table(table)
     num_of_batches = 1
-    print(f"Batches processed: {num_of_batches}")
+    logger.info(f"Batches processed: {num_of_batches}")
 
     # Process remaining batches
     for processed_batch in processor.process_batches():
         num_of_batches += 1
-        print(f"Batches processed: {num_of_batches}")
+        logger.info(f"Batches processed: {num_of_batches}")
 
         # Convert the batch
         data = converter.convert_dataframe(processed_batch)
@@ -386,9 +387,8 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"), process_ou
 
     # Close the writer
     writer.close()
-
-    print(f"Processed {num_of_batches} batches.")
-    print(f"Output saved to: {output_path}")
+    logger.info(f"Processed {num_of_batches} batches.")
+    logger.info(f"Output saved to: {output_path}")
 
 
 def download_huggingface_files_parllel(output_dir: Path, process_output_dir, urls, scheme_files_dir):
@@ -462,7 +462,7 @@ def process_file(url, output_dir: Path, process_output_dir:Path, scheme_files_di
                 os.unlink(temp_path)
             print(f"Error downloading {original_filename}: {e}")
             logger.error(f"Error downloading {original_filename}: {e}")
-    main(output_path,process_output_dir)
+    main(output_path,process_output_dir,logger)
 
 
 if __name__ == "__main__":
