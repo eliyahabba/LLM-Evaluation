@@ -45,7 +45,6 @@ def create_sample_identifier(card_name: str, split: str, idx) -> Dict[str, Any]:
     dataset_name = card_name.split('.')[1]  # e.g., 'mmlu' from 'cards.mmlu.abstract_algebra'
     return {
         "dataset_name": card_name.split('cards.')[1],
-        "split": split,
         "hf_repo": f"cais/{dataset_name}",
         "hf_index": idx
     }

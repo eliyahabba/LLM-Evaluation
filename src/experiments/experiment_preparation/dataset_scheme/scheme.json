@@ -317,14 +317,14 @@
                             "type": "string",
                             "description": "Name of the source dataset"
                         },
-                        "split": {
-                            "type": "string",
-                            "description": "Dataset split (e.g., train, test, validation)",
-                            "enum": ["train", "test", "validation"]
-                        },
                         "hf_repo": {
                             "type": "string",
                             "description": "HuggingFace repository identifier"
+                        },
+                        "hf_split":{
+                            "type": "string",
+                            "description": "HuggingFace split identifier",
+                            "enum": ["train", "test", "validation"]
                         },
                         "hf_index": {
                             "type": "integer",

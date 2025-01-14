@@ -9,7 +9,6 @@ import pandas as pd
 from tqdm import tqdm
 
 from src.experiments.experiment_preparation.dataset_scheme.conversions.RunOutputMerger import RunOutputMerger
-from src.experiments.experiment_preparation.dataset_scheme.conversions.hf_map_data.add_hf_map import questions
 from src.utils.Constants import Constants
 
 
@@ -311,9 +310,9 @@ class SchemaConverter:
             "language": "en",
             "sample_identifier": {
                 "dataset_name": recipe['card'].split("cards.")[1],
-                "split": "test",
                 "hf_repo": hf_repo,
-                "hf_index": index_map[task_data[question_key]]
+                "hf_index": index_map[task_data[question_key]]['index'],
+                "hf_split": index_map[task_data[question_key]]['source']
             },
             "perplexity": perplexity,
             "classification_fields": {

@@ -135,8 +135,8 @@ def create_instance_schema():
 
     sample_identifier_schema = pa.struct([
         ('dataset_name', pa.string()),
-        ('split', pa.string()),
         ('hf_repo', pa.string()),
+        ('hf_split', pa.string()),
         ('hf_index', pa.int64())
     ])
 

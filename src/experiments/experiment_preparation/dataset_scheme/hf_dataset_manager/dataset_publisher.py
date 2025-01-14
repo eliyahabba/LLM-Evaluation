@@ -36,9 +36,9 @@ def define_features():
             'RawInput': Value('string'),
             'SampleIdentifier': {
                 'dataset_name': Value('string'),
-                'split': Value('string'),
                 'hf_repo': Value('string'),
-                'hf_index': Value('int64')
+                'hf_split': Value('string'),
+                'hf_index': Value('int64'),
             },
             'Topic': Value('string'),
             'Question': Value('string'),
