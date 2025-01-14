@@ -9,6 +9,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from src.experiments.experiment_preparation.dataset_scheme.conversions.RunOutputMerger import RunOutputMerger
+from src.experiments.experiment_preparation.dataset_scheme.conversions.hf_map_data.add_hf_map import questions
 from src.utils.Constants import Constants
 
 
@@ -194,7 +195,6 @@ class SchemaConverter:
 
     def _get_template(self, run_unitxt_recipe: dict, logger=None) -> str:
         """Extract template format from run_unitxt_recipe."""
-        template_name = run_unitxt_recipe['template'].split('huji_workshop.')[1].split(".")[0]
         template_name = run_unitxt_recipe['template'].split('templates.huji_workshop.')[-1]
         if logger:
             logger.info(f"Template name: {template_name}")
@@ -290,8 +290,28 @@ class SchemaConverter:
         if map_file_name == "ai2_arc":
             map_file_name = recipe['card'].split('.')[1]
         map_file_path = Path("hf_map_data") / f"{map_file_name}_samples.json"
+        hf_repo = f"cais/{recipe['card'].split('.')[1]}" if map_file_name == "mmlu" else f"Rowan/hellaswag" if map_file_name == "hellaswag" else f"allenai/{map_file_name}"
         with open(map_file_path, 'r') as file:
             index_map = json.load(file)
+        card = map_file_name
+        if card == "mmlu":
+            hf_repo = f"cais/mmlu"
+        elif card == "mmlu_pro":
+            hf_repo = "TIGER-Lab/MMLU-Pro"
+        elif card == "hellaswag":
+            hf_repo = "Rowan/hellaswag"
+        elif card == "openbookqa":
+            hf_repo = "allenai/openbookqa"
+        elif card == "social_i_qa":
+            hf_repo = "allenai/social_i_qa"
+        elif "ai2_arc" in card:
+            if "ARC-Challenge" in card:
+                hf_repo = "allenai/ai2_arc/ARC-Challenge"
+            elif "ARC-Easy" in card:
+                hf_repo = "allenai/ai2_arc/ARC-Easy"
+        else:
+            hf_repo= None
+        question_key = 'question' if 'question' in task_data else 'context'
         return {
             "task_type": "classification",
             "raw_input": eval(row['prompt']),
@@ -299,12 +319,12 @@ class SchemaConverter:
             "sample_identifier": {
                 "dataset_name": recipe['card'].split("cards.")[1],
                 "split": "test",
-                "hf_repo": f"cais/{recipe['card'].split('.')[1]}",
-                "hf_index": index_map[task_data['question']]
+                "hf_repo": hf_repo,
+                "hf_index": index_map[task_data[question_key]]
             },
             "perplexity": perplexity,
             "classification_fields": {
-                "question": task_data['question'],
+                "question": task_data[question_key],
                 "choices": choices,
                 "ground_truth": {
                     "id": choices[task_data["answer"]]["id"],
