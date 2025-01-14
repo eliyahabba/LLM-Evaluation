@@ -99,11 +99,16 @@ class RunOutputMerger:
         """
         try:
             parquet_file = pq.ParquetFile(self.parquet_path)
-            columns_to_keep = ['run_id', 'scores', 'references', 'generated_text', 'cumulative_logprob']
+            columns_to_keep = ['run_id', 'scores', 'references', 'generated_text', 'cumulative_logprob','raw_input']
 
             # for batch in parquet_file.iter_batches(batch_size=self.batch_size):
             for batch in parquet_file.iter_batches(batch_size=self.batch_size, columns=columns_to_keep):
                 df = batch.to_pandas()
+                # eval on the raw_input column, and next take only task_data key
+                df['question'] = df['raw_input'].apply(lambda x: eval(x)['task_data']).apply(lambda x: eval(x)['question'
+                if 'question' in x else 'context'])
+                # drop the raw_input column
+                df.drop(columns=['raw_input'], inplace=True)
                 df = self._add_run_columns(df)
                 yield df
             # eval(df.iloc[0]['run_model_args'])['model']'scores',['run_unitxt_recipe']'card','generated_text'
@@ -267,10 +272,23 @@ class Converter:
         else:
             raise ValueError(f"Dataset {dataset} not found in DatasetConfigFactory")
 
+    def build_instance_section(self, row: pd.Series, recipe) -> Dict:
+        map_file_name = recipe['card'].split('.')[1]
+        if map_file_name == "ai2_arc":
+            map_file_name = recipe['card'].split('.')[1]
+        map_file_path = Path("hf_map_data") / f"{map_file_name}_samples.json"
+        with open(map_file_path, 'r') as file:
+            index_map = json.load(file)
+        return index_map[row['question']]['index']
+
+
     def convert_dataframe(self, df: pd.DataFrame):
         """Convert entire DataFrame using vectorized operations."""
         # Get recipes
         recipes = df['run_unitxt_recipe'].apply(self._parse_config_string)
+        index_map = df.apply(
+            lambda row: self.build_instance_section(row, self._parse_config_string(row['run_unitxt_recipe'])),
+            axis=1).rename('index')
 
         # Build all sections in parallel
         model_sections = df.apply(self._build_model_section, axis=1, result_type='expand') \
@@ -285,8 +303,12 @@ class Converter:
             .rename(columns={0: 'ground_truth', 1: 'score'})
 
         dataset = recipes.str['card'].str.split('.').str[1:].str.join('.').rename('dataset')
+
+
+
         # Combine all sections
         return pd.concat([
+            index_map,
             model_sections,
             dataset,
             prompt_sections,
@@ -301,47 +323,8 @@ class Converter:
         return pd.DataFrame(result_data)
 
 
-# def main():
-#     """Main function to demonstrate usage."""
-#     f = "data_2025-01.parquet"
-#     parquet_path = Path(f"~/Downloads/{f}")
-#     processor = RunOutputMerger(parquet_path)
-#     num_of_batches = 0
-#     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
-#     converter = Converter(models_metadata_path)
-#     first_batch = True
-#     output_path = Path(f"~/Downloads/processed_{f}")
-#     for processed_batch in processor.process_batches():
-#         # Now you can work with each batch
-#         # print(f"Batch shape: {processed_batch.shape}")
-#         num_of_batches += 1
-#         print(f"Batches processed: {num_of_batches}")
-#         # print(processed_batch.head())
-#         data = converter.convert_dataframe(processed_batch)
-#         # # Add any additional batch processing here
-#         # Write to parquet file
-#         if first_batch:
-#             # For first batch, create new file with schema
-#             data.to_parquet(
-#                 output_path,
-#                 engine='pyarrow',
-#                 compression='snappy',  # Good balance of speed and compression
-#                 index=False
-#             )
-#             first_batch = False
-#         else:
-#             # Append subsequent batches
-#             data.to_parquet(
-#                 output_path,
-#                 engine='pyarrow',
-#                 compression='snappy',
-#                 index=False,
-#                 append=True
-#             )
-#     print(f"Processed {num_of_batches} batches.")
-
-
-def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"), process_output_dir: Path = Path(f"~/Downloads/data_2025-01.parquet"),
+def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
+         process_output_dir: Path = Path(f"~/Downloads/data_2025-01.parquet"),
          logger=None):
     """Main function to demonstrate usage."""
     parquet_path = file_path
@@ -352,8 +335,8 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"), process_ou
     converter = Converter(models_metadata_path)
 
     # Create output path
-    output_path = os.path.join(process_output_dir ,
-                   f"processed_{parquet_path.name}")
+    output_path = os.path.join(process_output_dir,
+                               f"processed_{parquet_path.name}")
     logger.info(f"Output path: {output_path}")
     # Process first batch to get schema
     first_batch = next(processor.process_batches())
@@ -406,7 +389,7 @@ def download_huggingface_files_parllel(output_dir: Path, process_output_dir, url
     logger.info(f"Starting parallel processing with {num_processes} processes...")
 
     with Manager() as manager:
-        process_func = partial(process_file_safe, output_dir=output_dir,process_output_dir=process_output_dir,
+        process_func = partial(process_file_safe, output_dir=output_dir, process_output_dir=process_output_dir,
                                scheme_files_dir=scheme_files_dir, logger=logger)
 
         with Pool(processes=num_processes) as pool:
@@ -422,7 +405,8 @@ def process_file_safe(url, output_dir: Path, process_output_dir, scheme_files_di
     start_time = time.time()
     try:
         logger.info(f"Process {pid} starting to process file {url}")
-        process_file(url, output_dir=output_dir, process_output_dir=process_output_dir,scheme_files_dir=scheme_files_dir,
+        process_file(url, output_dir=output_dir, process_output_dir=process_output_dir,
+                     scheme_files_dir=scheme_files_dir,
                      logger=logger)
     except Exception as e:
         logger.error(f"Process {pid} encountered error processing file {url}: {e}")
@@ -433,7 +417,7 @@ def process_file_safe(url, output_dir: Path, process_output_dir, scheme_files_di
         logger.info(f"Process {pid} finished processing {url}. Processing time: {elapsed_time:.2f} seconds")
 
 
-def process_file(url, output_dir: Path, process_output_dir:Path, scheme_files_dir, logger):
+def process_file(url, output_dir: Path, process_output_dir: Path, scheme_files_dir, logger):
     # Extract date from URL for the output filename
     # Example: from URL get '2024-12-16' for the filename
     original_filename = url.split('/')[-1]
@@ -463,7 +447,7 @@ def process_file(url, output_dir: Path, process_output_dir:Path, scheme_files_di
                 os.unlink(temp_path)
             print(f"Error downloading {original_filename}: {e}")
             logger.error(f"Error downloading {original_filename}: {e}")
-    main(output_path,process_output_dir,logger)
+    main(output_path, process_output_dir, logger)
 
 
 if __name__ == "__main__":
@@ -476,7 +460,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     args.output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
     process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
-    os.makedirs(process_output_dir, exist_ok=True)
+    if not os.path.exists(process_output_dir):
+        process_output_dir = "/Users/ehabba/ibm_results_data_full_processed"
+        os.makedirs(process_output_dir, exist_ok=True)
 
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
@@ -495,6 +481,9 @@ if __name__ == "__main__":
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T11%3A00%3A00%2B00%3A00_2025-01-10T13%3A00%3A00%2B00%3A00.parquet",
     ]
 
+    args.output_dir = "/Users/ehabba/Downloads/"
+    args.urls = ["tmp/data_2025-01.parquet"]
+    logger = None
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), process_output_dir=process_output_dir,
                                        urls=args.urls,
                                        scheme_files_dir=args.scheme_files_dir)
