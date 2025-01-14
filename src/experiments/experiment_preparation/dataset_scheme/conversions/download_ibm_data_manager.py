@@ -204,10 +204,14 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
     schema = create_full_schema()
     logger.info(f"Created schema for {parquet_path.stem}")
 
+    current_dir = os.path.dirname(os.path.abspath(parquet_path))
+    if os.path.exists("/cs/snapless/gabis/eliyahabba"):
+        current_dir = "/cs/snapless/gabis/eliyahabba"
     def get_writer_for_split(split):
         if split not in writers:
             # Create a new temporary file for this split
-            temp_path = tempfile.mktemp(suffix=f'_{split}.parquet')
+            temp_filename = f'temp_{parquet_path.stem}_{split}.parquet'
+            temp_path = os.path.join(current_dir, temp_filename)
             temp_files[split] = temp_path
             writers[split] = pq.ParquetWriter(temp_path, schema)
             logging.info(f"Created writer for split {split}  at {temp_path}")
