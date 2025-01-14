@@ -199,8 +199,8 @@ class SchemaConverter:
         catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
         template_name = template_name.replace(".", "/")
         template_path = Path(catalog_path, template_name + '.json')
-        if logger:
-            logger.info(f"Template path: {template_path}")
+        # if logger:
+        #     logger.info(f"Template path: {template_path}")
         with open(template_path, 'r') as f:
             template_data = json.load(f)
         return template_data['input_format']
