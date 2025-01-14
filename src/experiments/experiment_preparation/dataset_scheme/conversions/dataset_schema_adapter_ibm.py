@@ -99,10 +99,11 @@ class SchemaConverter:
                 {"id": opt.split(".")[0], "text": choice}
                 for opt, choice in zip(demo['options'], demo['choices'])
             ]
+            question_key = 'question' if 'question' in demo else 'context'
 
             transformed_demo = {
                 "topic": None if 'topic' not in demo else demo['topic'],
-                "question": demo["question"],
+                "question": demo[question_key],
                 "choices": choices,
                 "answer": demo["answer"]
             }
