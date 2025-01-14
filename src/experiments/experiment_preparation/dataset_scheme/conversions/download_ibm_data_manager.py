@@ -255,7 +255,6 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
         write_rows(items, split, batch_num=0)
 
     # Process remaining batches
-    count = 0
     for i, batch in tqdm(enumerate(processor.process_batches()), desc="Processing batches"):
         if logger:
             logger.info(f"Processing batch {i + 1}... for {parquet_path.stem}")
@@ -273,9 +272,6 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
         # Write each split's data
         for split, items in batch_splits.items():
             write_rows(items, split, batch_num=i + 1)
-        count+=1
-        if count == 10:
-            break
     logger.info(f"Finished processing all batches for {parquet_path.stem}")
     # Close all writers
     for writer in writers.values():
@@ -290,7 +286,7 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
         )
     except Exception as e:
         logger.info(f"Repository already exists or error occurred: {e}")
-    return
+
     api = HfApi()
     base_filename = parquet_path.stem  # Get filename without extension
 
@@ -367,9 +363,6 @@ def procces_file(url, output_dir: Path, repo_name, scheme_files_dir, probs, logg
     # Example: from URL get '2024-12-16' for the filename
     original_filename = url.split('/')[-1]
     output_path = output_dir / original_filename
-    f = "data_2025-01.parquet"
-    parquet_path = Path(f"/Users/ehabba/Downloads/{f}")
-    output_path = parquet_path
     if output_path.exists():
         logger.info(f"File already exists: {output_path}")
     else:
@@ -396,7 +389,7 @@ def procces_file(url, output_dir: Path, repo_name, scheme_files_dir, probs, logg
             print(f"Error downloading {original_filename}: {e}")
             logger.error(f"Error downloading {original_filename}: {e}")
     convert_to_scheme_format(output_path, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
-                             logger=logger, batch_size=100)
+                             logger=logger, batch_size=1000)
 
 
 if __name__ == "__main__":
@@ -416,9 +409,7 @@ if __name__ == "__main__":
     # convert_to_scheme_format(parquet_path, batch_size=100)
 
     # List of URLs to download
-    args.urls = [
-        "a"
+    urls = [
     ]
-    args.output_dir = "/Users/ehabba/down_ibm_sdata"
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), urls=args.urls, repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
