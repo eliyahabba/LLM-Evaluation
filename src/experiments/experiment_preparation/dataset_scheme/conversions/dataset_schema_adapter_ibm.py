@@ -116,17 +116,49 @@ class SchemaConverter:
 
         enumerator = config.split('enumerator_')[1].split("_")[0]
         choice_sep = config.split('choicesSeparator_')[1].split("_")[0]
-        shuffle = config.split('shuffleChoices_')[1] == 'True'
-        if shuffle:
-            choices_order = {
-                "method": "random",
-                "description": "Randomly shuffles all choices"
-            }
-        else:
-            choices_order = {
-                "method": "none",
-                "description": "Preserves the original order of choices as provided"
-            }
+        shuffle = config.split('shuffleChoices_')[1]
+
+        choices_order_map = {"randiom": {
+            "method": "random",
+            "description": "Randomly shuffles all choices"
+        },
+            "False":
+                {
+                    "method": "none",
+                    "description": "Preserves the original order of choices as provided"
+                },
+            "lengthSort":
+                {
+                    "method": "shortest_to_longest",
+                    "description": "Orders choices by length, from shortest to longest text"
+                },
+            "lengthSortReverse":
+                {
+                    "method": "longest_to_shortest",
+                    "description": "Orders choices by length, from longest to shortest text"
+                },
+            "placeCorrectChoiceFirst":
+                {
+                    "method": "correct_first",
+                    "description": "Places the correct answer as the first choice"
+                },
+            "placeCorrectChoiceFourth":
+                {
+                    "method": "correct_last",
+                    "description": "Places the correct answer as the last choice"
+                },
+            "alphabeticalSort":
+                {
+                    "method": "alphabetical",
+                    "description": "Orders choices alphabetically (A to Z)"
+                },
+            "alphabeticalSortReverse":
+                {
+                    "method": "reverse_alphabetical",
+                    "description": "Orders choices in reverse alphabetical order (Z to A)"
+                }
+        }
+        choices_order = choices_order_map[shuffle]
 
         separator = SeparatorMap.get_separator(choice_sep)
         return enumerator, separator, choices_order

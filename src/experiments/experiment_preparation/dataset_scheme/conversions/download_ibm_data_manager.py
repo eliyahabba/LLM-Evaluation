@@ -2,7 +2,9 @@ import argparse
 import json
 import logging
 import os
+import random
 import shutil
+import string
 import tempfile
 import time
 from datetime import datetime
@@ -207,10 +209,13 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
     current_dir = os.path.dirname(os.path.abspath(parquet_path))
     if os.path.exists("/cs/snapless/gabis/eliyahabba"):
         current_dir = "/cs/snapless/gabis/eliyahabba"
+
     def get_writer_for_split(split):
         if split not in writers:
             # Create a new temporary file for this split
-            temp_filename = f'temp_{parquet_path.stem}_{split}.parquet'
+            # generate a temporary file name
+            random_file_name = random_string()
+            temp_filename = f'{random_file_name}_{parquet_path.stem}_{split}.parquet'
             temp_path = os.path.join(current_dir, temp_filename)
             temp_files[split] = temp_path
             writers[split] = pq.ParquetWriter(temp_path, schema)
@@ -394,6 +399,12 @@ def procces_file(url, output_dir: Path, repo_name, scheme_files_dir, probs, logg
             logger.error(f"Error downloading {original_filename}: {e}")
     convert_to_scheme_format(output_path, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
                              logger=logger, batch_size=1000)
+
+
+def random_string(length=10):
+    """Generate random string of specified length"""
+    chars = string.ascii_letters + string.digits  # a-z, A-Z, 0-9
+    return ''.join(random.choices(chars, k=length))
 
 
 if __name__ == "__main__":
