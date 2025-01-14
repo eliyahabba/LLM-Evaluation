@@ -132,7 +132,7 @@ if __name__ == "__main__":
     # Set start date
     # REPO_NAME = "eliyahabba/llm-evaluation-without-probs"  # Replace with your desired repo name
     # scheme_files_dir = "/cs/snapless/gabis/eliyahabba/scheme_files_without_probs"
-    # output_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    args.output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
     main_path = 'https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/'
