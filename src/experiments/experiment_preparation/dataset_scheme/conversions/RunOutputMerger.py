@@ -28,8 +28,8 @@ class RunOutputMerger:
         Returns:
             Dict[str, Dict[str, Any]]: Processed runs dictionary
         """
-        runs_ds = load_dataset("OfirArviv/HujiCollabRun")
-        train_runs_ds = runs_ds['train']
+        runs_ds = load_dataset("OfirArviv/HujiCollabRun", download_mode="force_redownload")
+        train_runs_ds = runs_ds['run']
         # print(len(set(train_runs_ds['run_id'])) == len(train_runs_ds['run_id']))
         # False
         df = train_runs_ds.to_pandas()
@@ -90,18 +90,18 @@ class RunOutputMerger:
 
 def main():
     """Main function to demonstrate usage."""
-    f="data_2024-12-24T06.parquet"
-    parquet_path = Path("~/Downloads/data_sample.parquet")
+    f = "data_2025-01.parquet"
     parquet_path = Path(f"~/Downloads/{f}")
-    # parquet_path = Path("/Users/ehabba/Downloads/data_sample_work.parquet.parquet")
-    # parquet_path = Path("/Users/ehabba/Downloads/data_ibm_not.parquet")
     processor = RunOutputMerger(parquet_path)
+    num_of_batches = 0
     for processed_batch in processor.process_batches():
         # Now you can work with each batch
-        print(f"Batch shape: {processed_batch.shape}")
-        print(processed_batch.head())
-        # Add any additional batch processing here
-        break
-
+        # print(f"Batch shape: {processed_batch.shape}")
+        num_of_batches += 1
+        print(f"Batches processed: {num_of_batches}")
+        # print(processed_batch.head())
+        # # Add any additional batch processing here
+        # break
+    print(f"Processed {num_of_batches} batches.")
 if __name__ == "__main__":
     main()
