@@ -76,15 +76,15 @@ class SchemaConverter:
         with open(self.models_metadata_path) as f:
             self.models_metadata = json.load(f)
 
-    def transform_logprobs(self, logprobs: Union[str, List]) -> Optional[List]:
-        """Transform log probabilities to schema format."""
-        transformed = []
-        for token_dict in logprobs:
-            if token_dict == 'None':
-                transformed.append(None)
-                continue
-            transformed.append(self.add_token_index_to_tokens(token_dict))
-        return transformed
+    # def transform_logprobs(self, logprobs: Union[str, List]) -> Optional[List]:
+    #     """Transform log probabilities to schema format."""
+    #     transformed = []
+    #     for token_dict in logprobs:
+    #         if token_dict == 'None':
+    #             transformed.append(None)
+    #             continue
+    #         transformed.append(self.add_token_index_to_tokens(token_dict))
+    #     return transformed
 
     def add_token_index_to_tokens(self, token_dict: Dict) -> List[Dict]:
         """Transform log probabilities to schema format."""
@@ -372,11 +372,14 @@ def main():
     # Process data in batches
     processor = RunOutputMerger(parquet_path)
     converted_data = []
-
+    i=0
     for batch in tqdm(processor.process_batches()):
         # Process single batch for testing
         batch = batch.head(1000)
         converted_data.extend(converter.convert_dataframe(batch))
+        i+=1
+        if i==10:
+            break
 
 
     # Save results
