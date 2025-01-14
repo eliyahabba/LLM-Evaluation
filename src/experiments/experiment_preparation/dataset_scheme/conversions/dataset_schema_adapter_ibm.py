@@ -286,7 +286,11 @@ class SchemaConverter:
             prompt_tokens_logprobs = []
             perplexity = None
 
-        with open(f"{recipe['card'].split('.')[1]}_samples.json", 'r') as file:
+        map_file_name = recipe['card'].split('.')[1]
+        if map_file_name == "ai2_arc":
+            map_file_name = recipe['card'].split('.')[1]
+        map_file_path = Path("hf_map_data") / f"{map_file_name}_samples.json"
+        with open(map_file_path, 'r') as file:
             index_map = json.load(file)
         return {
             "task_type": "classification",
