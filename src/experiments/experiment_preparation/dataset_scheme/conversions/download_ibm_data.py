@@ -87,9 +87,12 @@ def procces_file(url, output_dir: Path, repo_name, scheme_files_dir, probs, logg
         try:
             logger.info(f"Downloading {original_filename}...")
 
-            with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-                temp_path = temp_file.name
+            temp_dir = output_path.parent / 'temp'
+            os.makedirs(temp_dir, exist_ok=True)
+            temp_filename = f'temp_{original_filename}'
+            temp_path = os.path.join(temp_dir, temp_filename)
 
+            with open(temp_path, 'wb') as temp_file:
                 response = requests.get(url, stream=True)
                 response.raise_for_status()
 
@@ -97,15 +100,13 @@ def procces_file(url, output_dir: Path, repo_name, scheme_files_dir, probs, logg
                     temp_file.write(chunk)
 
             shutil.move(temp_path, output_path)
+            logger.info(f"Downloaded {original_filename} successfully")
 
-            logger.info(f"Download completed: {original_filename}")
-            print(f"Download completed: {original_filename}")
-
-        except (requests.exceptions.RequestException, IOError) as e:
-            if 'temp_path' in locals() and os.path.exists(temp_path):
-                os.unlink(temp_path)
-            print(f"Error downloading {original_filename}: {e}")
+        except Exception as e:
             logger.error(f"Error downloading {original_filename}: {e}")
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            raise
 
 
 def generate_file_names(start_time, end_time):
