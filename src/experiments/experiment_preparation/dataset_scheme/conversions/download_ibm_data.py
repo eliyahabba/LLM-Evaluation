@@ -142,6 +142,7 @@ if __name__ == "__main__":
     end_time = datetime(2025, 1, 12, 19, 0, tzinfo=pytz.UTC)
 
     files = generate_file_names(start_time, end_time)
-    urls = [f"{main_path}{file}" for file in files]
-    for file in urls:
-        print(file)
+    args.urls = [f"{main_path}{file}" for file in files]
+    download_huggingface_files_parllel(output_dir=Path(args.output_dir), urls=args.urls, repo_name=args.repo_name,
+                                       scheme_files_dir=args.scheme_files_dir, probs=args.probs)
+
