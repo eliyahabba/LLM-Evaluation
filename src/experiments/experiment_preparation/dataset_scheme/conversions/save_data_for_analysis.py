@@ -352,7 +352,8 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"), process_ou
     converter = Converter(models_metadata_path)
 
     # Create output path
-    output_path = process_output_dir / f"processed_{parquet_path.name}"
+    output_path = os.path.join(process_output_dir ,
+                   f"processed_{parquet_path.name}")
     logger.info(f"Output path: {output_path}")
     # Process first batch to get schema
     first_batch = next(processor.process_batches())
