@@ -244,7 +244,7 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
     # Separate first batch by splits
     first_batch_splits = {}
     for item in first_converted:
-        split = item['instance']['sample_identifier']['test']
+        split = 'test'
         if split not in first_batch_splits:
             first_batch_splits[split] = []
         first_batch_splits[split].append(item)
@@ -263,7 +263,7 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
         # Separate batch by splits
         batch_splits = {}
         for item in converted_data:
-            split = item['instance']['sample_identifier']['test']
+            split = 'test'
             if split not in batch_splits:
                 batch_splits[split] = []
             batch_splits[split].append(item)
