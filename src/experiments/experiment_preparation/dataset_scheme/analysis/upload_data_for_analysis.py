@@ -42,9 +42,9 @@ def process_file(process_file_path, logger):
             token=TOKEN,
             repo_type="dataset"
         )
-        logger.info(f"Successfully uploaded {process_file_path.name}")
+        logger.info(f"Successfully uploaded {Path(process_file_path).name}")
     except Exception as e:
-        logger.info(f"Error uploading {process_file_path.name}: {e}")
+        logger.info(f"Error uploading {Path(process_file_path).name}: {e}")
 
 
 def download_huggingface_files_parllel(process_output_dir):
