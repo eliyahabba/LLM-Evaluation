@@ -215,7 +215,7 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
             # Create a new temporary file for this split
             # generate a temporary file name
             random_file_name = random_string()
-            temp_filename = f'{random_file_name}_{parquet_path.stem}_{split}.parquet'
+            temp_filename = f'{random_file_name}_{parquet_path.stem}_{split}_{probs}_probs.parquet'
             temp_path = os.path.join(current_dir, temp_filename)
             temp_files[split] = temp_path
             writers[split] = pq.ParquetWriter(temp_path, schema)
@@ -253,11 +253,11 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
 
     # Separate first batch by splits
     first_batch_splits = {}
-    for item in first_converted:
-        split = 'test'
-        if split not in first_batch_splits:
-            first_batch_splits[split] = []
-        first_batch_splits[split].append(item)
+    split = 'test'
+    if split not in first_batch_splits:
+        first_batch_splits[split] = []
+    first_batch_splits[split].extend(first_converted)
+
 
     # Write first batch for each split
     for split, items in first_batch_splits.items():
@@ -272,11 +272,10 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
 
         # Separate batch by splits
         batch_splits = {}
-        for item in converted_data:
-            split = 'test'
-            if split not in batch_splits:
-                batch_splits[split] = []
-            batch_splits[split].append(item)
+        split = 'test'
+        if split not in batch_splits:
+            batch_splits[split] = []
+        batch_splits[split].extend(converted_data)
 
         # Write each split's data
         for split, items in batch_splits.items():

@@ -76,20 +76,9 @@ class SchemaConverter:
         with open(self.models_metadata_path) as f:
             self.models_metadata = json.load(f)
 
-    # def transform_logprobs(self, logprobs: Union[str, List]) -> Optional[List]:
-    #     """Transform log probabilities to schema format."""
-    #     transformed = []
-    #     for token_dict in logprobs:
-    #         if token_dict == 'None':
-    #             transformed.append(None)
-    #             continue
-    #         transformed.append(self.add_token_index_to_tokens(token_dict))
-    #     return transformed
-
-    def add_token_index_to_tokens(self, token_dict: Dict) -> List[Dict]:
+    def add_token_index_to_tokens(self, log_probs_array: np.ndarray) -> List[Dict]:
         """Transform log probabilities to schema format."""
-        transformed_token_data = token_dict['log_probs'].tolist()
-        return transformed_token_data
+        return log_probs_array.tolist()
 
     def transform_demos(self, demos: List[Dict]) -> List[Dict]:
         """Transform demonstration examples to schema format."""
@@ -163,9 +152,8 @@ class SchemaConverter:
         separator = SeparatorMap.get_separator(choice_sep)
         return enumerator, separator, choices_order
 
-    def parse_generation_args(self, args_str: str) -> Dict:
+    def parse_generation_args(self, args: dict) -> Dict:
         """Parse generation arguments from string format."""
-        args = json.loads(args_str)
         return {
             "use_vllm": True,
             "temperature": args.get("temperature"),
@@ -198,8 +186,7 @@ class SchemaConverter:
 
     def convert_row(self, row: pd.Series, probs: bool = True, logger: Optional = None) -> Dict:
         """Convert a single DataFrame row to schema format."""
-        raw_input = json.loads(row['raw_input'])
-        task_data = eval(raw_input['task_data'])
+        task_data = row['task_data']
         recipe = self._parse_config_string(row['run_unitxt_recipe'])
 
         # Build schema sections
@@ -242,7 +229,7 @@ class SchemaConverter:
         """Build model section of schema."""
 
         # Get model configuration
-        model_args = json.loads(row['run_model_args'])
+        model_args = row['run_model_args']
         model_metadata = self.models_metadata[model_args['model']]
         return {
             "model_info": {
@@ -280,7 +267,7 @@ class SchemaConverter:
         return {
             "prompt_class": "MultipleChoice",
             "format": {
-                "template": self._get_template(recipe,logger),
+                "template": self._get_template(recipe, logger),
                 "separator": separator,
                 "enumerator": enumerator,
                 "choices_order": choices_order,
@@ -302,9 +289,10 @@ class SchemaConverter:
         # Transform log probabilities
         if probs:
             prompt_logprobs = row['prompt_logprobs']
-            prompt_tokens_logprobs = [
-                self.add_token_index_to_tokens(prompt_logprobs[i])
-                for i in range(len(prompt_logprobs))
+
+            prompt_tokens_logprobs= [
+                self.add_token_index_to_tokens(logprob_dict['log_probs'])
+                for logprob_dict in prompt_logprobs
             ]
             perplexity = self.calculate_perplexity(prompt_tokens_logprobs)
         else:
@@ -335,11 +323,11 @@ class SchemaConverter:
             elif "ARC-Easy" in card:
                 hf_repo = "allenai/ai2_arc/ARC-Easy"
         else:
-            hf_repo= None
+            hf_repo = None
         question_key = 'question' if 'question' in task_data else 'context'
         return {
             "task_type": "classification",
-            "raw_input": eval(row['prompt']),
+            "raw_input": row['prompt'],
             "language": "en",
             "sample_identifier": {
                 "dataset_name": recipe['card'].split("cards.")[1],
@@ -364,8 +352,8 @@ class SchemaConverter:
         if probs:
             logprobs = row['logprobs']
             generated_tokens_logprobs = [
-                self.add_token_index_to_tokens(logprobs[i])
-                for i in range(len(logprobs))
+                self.add_token_index_to_tokens(logprob_dict['log_probs'])
+                for logprob_dict in logprobs
             ]
         else:
             generated_tokens_logprobs = []
@@ -379,17 +367,36 @@ class SchemaConverter:
     def _build_evaluation_section(self, row: pd.Series) -> Dict:
         """Build evaluation section of schema."""
         return {
-            "ground_truth": eval(row['references'])[0],
+            "ground_truth": row['references'][0],
             "evaluation_method": {
                 "method_name": "content_similarity",
                 "description": "Finds the most similar answer among the given choices by comparing the textual content"
             },
-            "score": eval(row['scores'])['score']
+            "score": row['scores']['score']
         }
 
     def convert_dataframe(self, df: pd.DataFrame, logger=None, probs=True) -> List[Dict]:
-        """Convert entire DataFrame to schema format."""
-        return [self.convert_row(row, probs,logger) for _, row in df.iterrows()]
+        conversion_map = {'prompt': eval, 'references': eval, 'scores': eval, 'run_generation_args': json.loads,
+                          'run_model_args': json.loads, }
+
+        try:
+            # Apply conversions in a vectorized manner
+            for col, func in conversion_map.items():
+                df[col] = df[col].apply(func)
+
+            # Handle nested task_data conversion
+            df['task_data'] = df['raw_input'].apply(lambda x: eval(eval(x)['task_data']))
+
+            # Drop raw_input column after extraction
+            df = df.drop(columns=['raw_input'])
+
+            # Convert rows in parallel using pandas apply
+            return df.apply(lambda row: self.convert_row(row, probs, logger), axis=1).tolist()
+
+        except Exception as e:
+            if logger:
+                logger.error(f"Error converting DataFrame: {str(e)}")
+            raise
 
 
 def main():
@@ -404,15 +411,15 @@ def main():
     # Process data in batches
     processor = RunOutputMerger(parquet_path)
     converted_data = []
-    i=0
+    i = 0
     for batch in tqdm(processor.process_batches()):
         # Process single batch for testing
         batch = batch.head(1000)
         converted_data.extend(converter.convert_dataframe(batch))
-        i+=1
-        if i==10:
+        print(f"Batch {i} processed")
+        i += 1
+        if i == 10:
             break
-
 
     # Save results
     output_path = Path("data_sample_ibm.json")
