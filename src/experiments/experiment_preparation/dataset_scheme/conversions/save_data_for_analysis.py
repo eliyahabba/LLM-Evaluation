@@ -481,9 +481,8 @@ if __name__ == "__main__":
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T11%3A00%3A00%2B00%3A00_2025-01-10T13%3A00%3A00%2B00%3A00.parquet",
     ]
 
-    args.output_dir = "/Users/ehabba/Downloads/"
-    args.urls = ["tmp/data_2025-01.parquet"]
-    logger = None
+    # args.output_dir = "/Users/ehabba/Downloads/"
+    # args.urls = ["tmp/data_2025-01.parquet"]
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), process_output_dir=process_output_dir,
                                        urls=args.urls,
                                        scheme_files_dir=args.scheme_files_dir)
