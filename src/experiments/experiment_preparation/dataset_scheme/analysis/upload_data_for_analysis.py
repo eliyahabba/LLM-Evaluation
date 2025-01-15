@@ -7,7 +7,7 @@ from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
 from pathlib import Path
 
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, create_repo
 from tqdm import tqdm
 
 from config.get_config import Config
@@ -15,7 +15,8 @@ from config.get_config import Config
 config = Config()
 TOKEN = config.config_values.get("hf_access_token", "")
 repo_name = "eliyahabba/llm-evaluation-analysis"
-
+config = Config()
+TOKEN = config.config_values.get("hf_access_token", "")
 
 def setup_logging():
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -92,4 +93,14 @@ if __name__ == "__main__":
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
     os.makedirs(process_output_dir, exist_ok=True)
+    try:
+        create_repo(
+            repo_id=repo_name,
+            token=TOKEN,
+            private=True,
+            repo_type="dataset"
+        )
+    except Exception as e:
+        print(f"Repository already exists or error occurred: {e}")
+
     download_huggingface_files_parllel(process_output_dir=process_output_dir)
