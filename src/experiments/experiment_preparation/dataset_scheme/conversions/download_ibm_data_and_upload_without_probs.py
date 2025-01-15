@@ -1,6 +1,7 @@
 import argparse
 from pathlib import Path
 
+from src.experiments.experiment_preparation.dataset_scheme.conversions.download_ibm_data import generate_file_names
 from src.experiments.experiment_preparation.dataset_scheme.conversions.download_ibm_data_manager import \
     download_huggingface_files_parllel
 
@@ -18,11 +19,23 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # List of URLs to download
-    args.urls = [
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-09T19%3A00%3A00%2B00%3A00_2025-01-09T23%3A00%3A00%2B00%3A00.parquet",
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T14%3A00%3A00%2B00%3A00_2025-01-11T18%3A00%3A00%2B00%3A00.parquet",
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T00%3A00%3A00%2B00%3A00_2025-01-10T10%3A00%3A00%2B00%3A00.parquet",
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T11%3A00%3A00%2B00%3A00_2025-01-10T13%3A00%3A00%2B00%3A00.parquet",
-    ]
+    from datetime import datetime
+    import pytz
+    # List of URLs to download
+    main_path = 'https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/'
+    # List of URLs to download
+    start_time = datetime(2025, 1, 11, 19, 0, tzinfo=pytz.UTC)
+
+    end_time = datetime(2025, 1, 12, 19, 0, tzinfo=pytz.UTC)
+
+    files = generate_file_names(start_time, end_time)
+    args.urls = [f"{main_path}{file}" for file in files]
+    # args.urls = args.urls + [
+    #     "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-09T19%3A00%3A00%2B00%3A00_2025-01-09T23%3A00%3A00%2B00%3A00.parquet",
+    #     "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T14%3A00%3A00%2B00%3A00_2025-01-11T18%3A00%3A00%2B00%3A00.parquet",
+    #     "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T00%3A00%3A00%2B00%3A00_2025-01-10T10%3A00%3A00%2B00%3A00.parquet",
+    #     "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T11%3A00%3A00%2B00%3A00_2025-01-10T13%3A00%3A00%2B00%3A00.parquet",
+    # ]
+
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), urls=args.urls, repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
