@@ -123,7 +123,7 @@ class Converter:
         self.models_metadata_path = Path(models_metadata_path)
         self._load_models_metadata()
         self._template_cache = {}  # Cache for templates
-
+        self._index_map_cache = {}  # Cache for index map
     def _load_models_metadata(self) -> None:
         """Load models metadata from file."""
         with open(self.models_metadata_path) as f:
@@ -278,8 +278,12 @@ class Converter:
             map_file_name = recipe['card'].split('.')[1]
         current_dir = Path(__file__).parents[1] / "conversions"
         map_file_path = current_dir / "hf_map_data" / f"{map_file_name}_samples.json"
-        with open(map_file_path, 'r') as file:
-            index_map = json.load(file)
+        if map_file_name in self._index_map_cache:
+            index_map = self._index_map_cache[map_file_name]
+        else:
+            with open(map_file_path, 'r') as file:
+                index_map = json.load(file)
+            self._index_map_cache[map_file_name] = index_map
         return index_map[row['question']]['index']
 
 
