@@ -70,6 +70,8 @@ class SchemaConverter:
         """Initialize converter with path to models metadata."""
         self.models_metadata_path = Path(models_metadata_path)
         self._load_models_metadata()
+        self._template_cache = {}  # Cache for templates
+        self._index_map_cache = {}  # Cache for index map
 
     def _load_models_metadata(self) -> None:
         """Load models metadata from file."""
@@ -213,15 +215,18 @@ class SchemaConverter:
         return dict(pair.split('=') for pair in config_string.split(','))
 
     def _get_template(self, run_unitxt_recipe: dict, logger=None) -> str:
-        """Extract template format from run_unitxt_recipe."""
         template_name = run_unitxt_recipe['template'].split('templates.huji_workshop.')[-1]
+        if template_name in self._template_cache:
+            return self._template_cache[template_name]
+
         catalog_path = Constants.TemplatesGeneratorConstants.CATALOG_PATH
         template_name = template_name.replace(".", "/")
         template_path = Path(catalog_path, template_name + '.json')
-        # if logger:
-        #     logger.info(f"Template path: {template_path}")
+
         with open(template_path, 'r') as f:
             template_data = json.load(f)
+
+        self._template_cache[template_name] = template_data['input_format']
         return template_data['input_format']
 
     def _build_model_section(self, row: pd.Series
@@ -304,8 +309,13 @@ class SchemaConverter:
             map_file_name = recipe['card'].split('.')[1]
         map_file_path = Path("hf_map_data") / f"{map_file_name}_samples.json"
         hf_repo = f"cais/{recipe['card'].split('.')[1]}" if map_file_name == "mmlu" else f"Rowan/hellaswag" if map_file_name == "hellaswag" else f"allenai/{map_file_name}"
-        with open(map_file_path, 'r') as file:
-            index_map = json.load(file)
+        if map_file_name not in self._index_map_cache:
+            with open(map_file_path, 'r') as file:
+                index_map = json.load(file)
+                self._index_map_cache[map_file_name] = index_map
+        else:
+            index_map = self._index_map_cache[map_file_name]
+
         card = map_file_name
         if card == "mmlu":
             hf_repo = f"cais/mmlu"
@@ -409,7 +419,7 @@ def main():
     converter = SchemaConverter(models_metadata_path)
 
     # Process data in batches
-    processor = RunOutputMerger(parquet_path)
+    processor = RunOutputMerger(parquet_path, batch_size=1000)
     converted_data = []
     i = 0
     for batch in tqdm(processor.process_batches()):
