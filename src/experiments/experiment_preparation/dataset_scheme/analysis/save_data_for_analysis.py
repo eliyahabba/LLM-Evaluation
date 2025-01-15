@@ -138,7 +138,7 @@ class Converter:
         """Build model section of schema."""
 
         # Get model configuration
-        model_args = json.loads(row['run_model_args'])
+        model_args = row['run_model_args']
         model_metadata = self.models_metadata[model_args['model']]
         return model_args['model'], model_metadata.get("ModelInfo", {}).get("family")
 
@@ -252,8 +252,8 @@ class Converter:
 
     def _build_evaluation_section(self, row: pd.Series) -> Dict:
         """Build evaluation section of schema."""
-        ground_truth = eval(row['references'])[0]
-        score = eval(row['scores'])['score']
+        ground_truth = row['references'][0]
+        score = row['scores']['score']
         return ground_truth, score
 
     def get_prompt_paraphrasing(self, dataset):
@@ -294,7 +294,9 @@ class Converter:
         index_map = df.apply(
             lambda row: self.build_instance_section(row, self._parse_config_string(row['run_unitxt_recipe'])),
             axis=1).rename('index')
-
+        df['run_model_args']= df['run_model_args'].apply(lambda x: json.loads(x))
+        df['references'] = df['references'].apply(lambda x: eval(x))
+        df['scores'] = df['scores'].apply(lambda x: eval(x))
         # Build all sections in parallel
         model_sections = df.apply(self._build_model_section, axis=1, result_type='expand') \
             .rename(columns={0: 'model', 1: 'family'})
