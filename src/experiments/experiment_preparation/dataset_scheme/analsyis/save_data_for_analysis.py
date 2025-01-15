@@ -337,6 +337,9 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
     # Create output path
     output_path = os.path.join(process_output_dir,
                                f"processed_{parquet_path.name}")
+    if os.path.exists(output_path):
+        logger.info(f"Output file already exists: {output_path}")
+        return
     logger.info(f"Output path: {output_path}")
     # Process first batch to get schema
     first_batch = next(processor.process_batches())
@@ -481,8 +484,6 @@ if __name__ == "__main__":
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T11%3A00%3A00%2B00%3A00_2025-01-10T13%3A00%3A00%2B00%3A00.parquet",
     ]
 
-    # args.output_dir = "/Users/ehabba/Downloads/"
-    # args.urls = ["tmp/data_2025-01.parquet"]
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), process_output_dir=process_output_dir,
                                        urls=args.urls,
                                        scheme_files_dir=args.scheme_files_dir)
