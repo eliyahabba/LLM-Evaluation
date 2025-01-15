@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
+from pathlib import Path
 
 from huggingface_hub import HfApi
 from tqdm import tqdm
@@ -36,7 +37,7 @@ def process_file(process_file_path, logger):
     try:
         api.upload_file(
             path_or_fileobj=process_file_path,
-            path_in_repo=process_file_path.name,
+            path_in_repo=Path(process_file_path).name,
             repo_id=repo_name,
             token=TOKEN,
             repo_type="dataset"
