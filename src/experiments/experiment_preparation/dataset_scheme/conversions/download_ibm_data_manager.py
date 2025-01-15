@@ -308,7 +308,7 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
         try:
             logger.info(f"Uploading {split} file to Hugging Face...")
             api.upload_file(
-                path_or_fileobj=scheme_files_dir,
+                path_or_fileobj=scheme_file_path,
                 path_in_repo=filename,
                 repo_id=repo_name,
                 token=TOKEN,
