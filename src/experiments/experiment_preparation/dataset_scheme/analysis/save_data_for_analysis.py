@@ -276,7 +276,8 @@ class Converter:
         map_file_name = recipe['card'].split('.')[1]
         if map_file_name == "ai2_arc":
             map_file_name = recipe['card'].split('.')[1]
-        map_file_path = Path("hf_map_data") / f"{map_file_name}_samples.json"
+        current_dir = Path(__file__).parent / "conversions"
+        map_file_path = current_dir / "hf_map_data" / f"{map_file_name}_samples.json"
         with open(map_file_path, 'r') as file:
             index_map = json.load(file)
         return index_map[row['question']]['index']
