@@ -483,10 +483,10 @@ if __name__ == "__main__":
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T00%3A00%3A00%2B00%3A00_2025-01-10T10%3A00%3A00%2B00%3A00.parquet",
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T11%3A00%3A00%2B00%3A00_2025-01-10T13%3A00%3A00%2B00%3A00.parquet",
     ]
-    args.output_dir = "/Users/ehabba/Downloads/"
-    args.urls = ["tmp/data_2025-01.parquet"]
-    process_output_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_output_dir"
-    os.makedirs(process_output_dir, exist_ok=True)
+    # args.output_dir = "/Users/ehabba/Downloads/"
+    # args.urls = ["tmp/data_2025-01.parquet"]
+    # process_output_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_output_dir"
+    # os.makedirs(process_output_dir, exist_ok=True)
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), process_output_dir=process_output_dir,
                                        urls=args.urls,
                                        scheme_files_dir=args.scheme_files_dir)
