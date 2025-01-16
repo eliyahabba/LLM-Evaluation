@@ -323,12 +323,6 @@ class Converter:
             eval_sections
         ], axis=1)
 
-        # Add prompt config columns
-        for key in ['template', 'separator', 'enumerator', 'choices_order', 'shots']:
-            result_data[key] = prompt_configs.apply(lambda x: x[key])
-
-        return pd.DataFrame(result_data)
-
 
 def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
          process_output_dir: Path = Path(f"~/Downloads/data_2025-01.parquet"),
