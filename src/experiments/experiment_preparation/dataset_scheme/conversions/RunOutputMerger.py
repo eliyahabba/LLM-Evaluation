@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, Optional, Any, Iterator
+from typing import Dict, Optional, Iterator
 
 import pandas as pd
 import pyarrow.parquet as pq
@@ -19,9 +19,9 @@ class RunOutputMerger:
         """
         self.parquet_path = parquet_path
         self.batch_size = batch_size
-        self.runs_dict = self._load_runs_dataset()
+        self.runs_df = self._load_runs_dataset()
 
-    def _load_runs_dataset(self) -> Dict[str, Dict[str, Any]]:
+    def _load_runs_dataset(self) -> pd.DataFrame:
         """
         Load and process the runs dataset into a dictionary for O(1) lookups.
 
@@ -29,22 +29,9 @@ class RunOutputMerger:
             Dict[str, Dict[str, Any]]: Processed runs dictionary
         """
         runs_ds = load_dataset("OfirArviv/HujiCollabRun")
-        return {
-            row['run_id']: {k: v for k, v in row.items() if k != 'run_id'}
-            for row in runs_ds['run']
-        }
-
-    def _get_run_info(self, run_id: str) -> Optional[Dict[str, Any]]:
-        """
-        Get run information for a specific run_id.
-
-        Args:
-            run_id (str): The run ID to look up
-
-        Returns:
-            Optional[Dict[str, Any]]: Run information if found, None otherwise
-        """
-        return self.runs_dict.get(run_id)
+        train_runs_ds = runs_ds['run']
+        df = train_runs_ds.to_pandas()
+        return df
 
     def _add_run_columns(self, df: pd.DataFrame) -> pd.DataFrame:
         """
@@ -56,16 +43,18 @@ class RunOutputMerger:
         Returns:
             pd.DataFrame: DataFrame with added run columns
         """
-        # Map run information to DataFrame
-        run_info = df['run_id'].map(self._get_run_info)
-        # Add all remaining columns with 'run_' prefix
-        run_columns = list(next(iter(self.runs_dict.values())).keys())
-        for col in run_columns:
-            df[f'run_{col}'] = run_info.apply(
-                lambda x: x[col] if x is not None else None
-            )
 
-        return df
+        # Map run information to DataFrame
+        run_df_unique = self.runs_df.drop_duplicates(subset=['run_id'])
+        run_df_unique.columns = ['run_' + col if col != 'run_id' else col for col in run_df_unique.columns]
+
+        merged_df = df.merge(
+            run_df_unique,
+            on='run_id',
+            how='left'
+        )
+
+        return merged_df
 
     def process_batches(self) -> Iterator[pd.DataFrame]:
         """
@@ -89,14 +78,20 @@ class RunOutputMerger:
 
 def main():
     """Main function to demonstrate usage."""
-    parquet_path = Path("~/Downloads/data_sample.parquet")
+    f = "data_2025-01.parquet"
+    parquet_path = Path(f"~/Downloads/{f}")
     processor = RunOutputMerger(parquet_path)
+    num_of_batches = 0
     for processed_batch in processor.process_batches():
         # Now you can work with each batch
-        print(f"Batch shape: {processed_batch.shape}")
+        # print(f"Batch shape: {processed_batch.shape}")
+        num_of_batches += 1
+        print(f"Batches processed: {num_of_batches}")
         print(processed_batch.head())
-        # Add any additional batch processing here
+        # # Add any additional batch processing here
         break
+    print(f"Processed {num_of_batches} batches.")
+
 
 if __name__ == "__main__":
     main()

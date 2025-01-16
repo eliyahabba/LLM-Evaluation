@@ -1,52 +1,38 @@
-from src.experiments.experiment_preparation.datasets_configurations import BoolQConfig
-from src.experiments.experiment_preparation.datasets_configurations.AI2ARCChallengeConfig import AI2ARCChallengeConfig
-from src.experiments.experiment_preparation.datasets_configurations.BoolQConfig import BoolQConfig
-from src.experiments.experiment_preparation.datasets_configurations.HellaSwagConfig import HellaSwagConfig
-from src.experiments.experiment_preparation.datasets_configurations.MMLUConfig import MMLUConfig
-from src.utils.MMLUData import MMLUData
+from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.AI2ARCPrompts import AI2ARCPrompts
+from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.BasicMCPrompts import BasicMCPrompts
+from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.HellaSwagPrompts import \
+    HellaSwagPrompts
+from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.MMLUPrompts import MMLUPrompts
+from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.OpenBookQAPrompts import \
+    OpenBookQAPrompts
+from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.SocialQaPrompts import \
+    SocialQaPrompts
 
 
 class DatasetConfigFactory:
     @staticmethod
-    def get_create_mmlu_config() -> dict:
-        mmlu_dataset_classes = {}
-        MMLUData.initialize()
-        for mmlu_dataset in MMLUData.get_mmlu_datasets():
-            mmlu_dataset_classes[f"{mmlu_dataset}"] = MMLUConfig
-        return mmlu_dataset_classes
-
-    @staticmethod
-    def get_create_mmlu_pro_config() -> dict:
-        mmlu_dataset_classes = {}
-        MMLUData.initialize()
-        for mmlu_dataset in MMLUData.get_mmlu_pro_datasets():
-            mmlu_dataset_classes[f"{mmlu_dataset}"] = MMLUConfig
-        return mmlu_dataset_classes
-
-    @staticmethod
-    def get_dataset(dataset_name):
-        dataset_classes = {
-            'ai2_arc.arc_challenge': AI2ARCChallengeConfig,
-            'boolq.multiple_choice': BoolQConfig,
-            'hellaswag': HellaSwagConfig,
+    def get_all_instruct_prompts():
+        dataset_instruct_prompts = {
+            'AI2_ARC': AI2ARCPrompts(),
+            'HellaSwag': HellaSwagPrompts(),
+            'MMLU': MMLUPrompts(),
+            'MMLU_PRO': MMLUPrompts(),
+            'OpenBookQA': OpenBookQAPrompts(),
+            'Social_IQa': SocialQaPrompts()
             # Add other datasets here
         }
-        mmlu_dataset_classes = DatasetConfigFactory.get_create_mmlu_config()
-        mmlu_pro_dataset_classes = DatasetConfigFactory.get_create_mmlu_pro_config()
-        dataset_classes.update(mmlu_dataset_classes)
-        dataset_classes.update(mmlu_pro_dataset_classes)
-        return {dataset_name: dataset_classes[dataset_name]}
+        return dataset_instruct_prompts
 
     @staticmethod
-    def get_all_datasets():
-        mmlu_dataset_classes = DatasetConfigFactory.get_create_mmlu_config()
-        mmlu_pro_dataset_classes = DatasetConfigFactory.get_create_mmlu_pro_config()
-        dataset_classes = {
-            'ai2_arc.arc_challenge': AI2ARCChallengeConfig,
-            'boolq.multiple_choice': BoolQConfig,
-            'hellaswag': HellaSwagConfig,
+    def get_instruct_prompts(dataset_name):
+        dataset_instruct_prompts = {
+            'AI2_ARC': AI2ARCPrompts(),
+            'HellaSwag': HellaSwagPrompts(),
+            'MMLU': MMLUPrompts(),
+            'MMLU_PRO': MMLUPrompts(),
+            'OpenBookQA': OpenBookQAPrompts(),
+            'Social_IQa': SocialQaPrompts()
             # Add other datasets here
         }
-        dataset_classes.update(mmlu_dataset_classes)
-        dataset_classes.update(mmlu_pro_dataset_classes)
-        return dataset_classes
+        return BasicMCPrompts() if dataset_name not in dataset_instruct_prompts else \
+            dataset_instruct_prompts[dataset_name]

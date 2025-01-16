@@ -138,11 +138,8 @@
                     "oneOf": [
                         {
                             "type": "object",
-                            "required": ["type", "template", "separator", "enumerator", "choices_order", "shots"],
+                            "required": ["template", "separator", "enumerator", "choices_order", "shots"],
                             "properties": {
-                                "type": {
-                                    "const": "MultipleChoice"
-                                },
                                 "template": {
                                     "type": "string",
                                     "description": "Base template format with placeholders for topic, question, choices, and answer"
@@ -260,7 +257,7 @@
         "instance": {
             "type": "object",
             "description": "Specific instance and its metadata",
-            "required": ["task_type", "raw_input", "sample_identifier", "perplexity"],
+            "required": ["task_type", "raw_input", "language", "sample_identifier", "perplexity"],
             "additionalProperties": true,
             "properties": {
                 "task_type": {
@@ -288,6 +285,29 @@
                         }
                     ]
                 },
+                "language":
+                {
+                    "type": "string",
+                    "description": "Language of the input text",
+                    "examples":
+                            [
+                                "en",
+                                "fr",
+                                "de",
+                                "es",
+                                "it",
+                                "pt",
+                                "nl",
+                                "pl",
+                                "ru",
+                                "tr",
+                                "ar",
+                                "ja",
+                                "ko",
+                                "zh",
+                                "he"
+                            ]
+                },
                 "sample_identifier": {
                     "type": "object",
                     "description": "Metadata to help identify and match the sample to the dataset",
@@ -297,14 +317,14 @@
                             "type": "string",
                             "description": "Name of the source dataset"
                         },
-                        "split": {
-                            "type": "string",
-                            "description": "Dataset split (e.g., train, test, validation)",
-                            "enum": ["train", "test", "validation"]
-                        },
                         "hf_repo": {
                             "type": "string",
                             "description": "HuggingFace repository identifier"
+                        },
+                        "hf_split":{
+                            "type": "string",
+                            "description": "HuggingFace split identifier",
+                            "enum": ["train", "test", "validation"]
                         },
                         "hf_index": {
                             "type": "integer",
@@ -387,9 +407,9 @@
                                 "type": "array",
                                 "items": {
                                     "type": "object",
-                                    "required": ["token_index", "logprob", "rank", "decoded_token"],
+                                    "required": ["token_id", "logprob", "rank", "decoded_token"],
                                     "properties": {
-                                        "token_index": {
+                                        "token_id": {
                                             "type": "number",
                                             "description": "Index position of the token in the sequence"
                                         },
@@ -444,9 +464,9 @@
                                 "type": "array",
                                 "items": {
                                     "type": "object",
-                                    "required": ["token_index", "logprob", "rank", "decoded_token"],
+                                    "required": ["token_id", "logprob", "rank", "decoded_token"],
                                     "properties": {
-                                        "token_index": {
+                                        "token_id": {
                                             "type": "number",
                                             "description": "Index position of the token in the sequence"
                                         },

@@ -2,6 +2,7 @@
 import json
 import logging
 import os
+import time
 from datetime import datetime
 from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
@@ -15,7 +16,7 @@ from src.experiments.experiment_preparation.dataset_scheme.conversions.JSON_sche
 from src.experiments.experiment_preparation.dataset_scheme.conversions.dataset_schema_adapter_huji import \
     convert_dataset
 from src.experiments.experiment_preparation.dataset_scheme.hf_dataset_manager.dataset_publisher import \
-    check_and_upload_file_to_huggingface, check_and_upload_parq_file_to_huggingface
+    check_and_upload_parq_file_to_huggingface
 
 
 def setup_logging():
@@ -105,8 +106,27 @@ def run_on_files(exp_dir: str, logger) -> list[Path]:
                         tqdm.write(f"Found {len(exp_files)} files in {model_folder}/{shot_number}")
                         dataset_files.extend(exp_files)
                         # return mapping
-            mapping.append((file_name,dataset_files))
+            mapping.append((file_name, dataset_files))
     return mapping
+
+
+def convert_to_scheme_safe(items, config_params,
+                           file_lock,
+                           logger):
+    start_time = time.time()
+    try:
+        convert_to_scheme(items, config_params,
+                          file_lock,
+                          logger)
+    except Exception as e:
+        file_name, dataset_files = items
+        logger.error(f"Error processing file {file_name}: {e}")
+        return None
+    finally:
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        file_name, dataset_files = items
+        logger.info(f"Processing time for {file_name}: {elapsed_time:.2f} seconds")
 
 
 def convert_to_scheme(items: list[Path], config_params, file_lock, logger: logging.Logger) -> None:
@@ -187,7 +207,8 @@ def convert_to_scheme(items: list[Path], config_params, file_lock, logger: loggi
     REPO_NAME = "eliyahabba/llm-evaluation-dataset"  # Replace with your desired repo name
     config = Config()
     TOKEN = config.config_values.get("hf_access_token", "")
-    check_and_upload_parq_file_to_huggingface(all_data, repo_name=REPO_NAME, token=TOKEN, private=False, file_name=file_name)
+    check_and_upload_parq_file_to_huggingface(all_data, repo_name=REPO_NAME, token=TOKEN, private=False,
+                                              file_name=file_name, logger=logger)
     # After successful upload
     logger.info(f"Successfully processed and uploaded {file_name}")
 
@@ -195,6 +216,7 @@ def convert_to_scheme(items: list[Path], config_params, file_lock, logger: loggi
 def rename_files_parallel(file_mapping: list[Path], config_params: ConfigParams,
                           logger: logging.Logger) -> None:
     num_processes = max(1, cpu_count() - 1)
+    num_processes = max(1, 8)
     logger.info(f"Starting parallel processing with {num_processes} processes...")
 
     with Manager() as manager:

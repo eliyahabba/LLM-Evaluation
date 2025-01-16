@@ -1,57 +1,253 @@
 template_name,enumerator,choices_separator,shuffle_choices
 template_0,capitals,\s,False
-template_1,capitals,\s,True
-template_2,capitals,\n,False
-template_3,capitals,\n,True
-template_4,capitals,", ",False
-template_5,capitals,", ",True
-template_6,capitals,; ,False
-template_7,capitals,; ,True
-template_8,capitals, | ,False
-template_9,capitals, | ,True
-template_10,capitals, OR ,False
-template_11,capitals, OR ,True
-template_12,capitals, or ,False
-template_13,capitals, or ,True
-template_14,lowercase,\s,False
-template_15,lowercase,\s,True
-template_16,lowercase,\n,False
-template_17,lowercase,\n,True
-template_18,lowercase,", ",False
-template_19,lowercase,", ",True
-template_20,lowercase,; ,False
-template_21,lowercase,; ,True
-template_22,lowercase, | ,False
-template_23,lowercase, | ,True
-template_24,lowercase, OR ,False
-template_25,lowercase, OR ,True
-template_26,lowercase, or ,False
-template_27,lowercase, or ,True
-template_28,numbers,\s,False
-template_29,numbers,\s,True
-template_30,numbers,\n,False
-template_31,numbers,\n,True
-template_32,numbers,", ",False
-template_33,numbers,", ",True
-template_34,numbers,; ,False
-template_35,numbers,; ,True
-template_36,numbers, | ,False
-template_37,numbers, | ,True
-template_38,numbers, OR ,False
-template_39,numbers, OR ,True
-template_40,numbers, or ,False
-template_41,numbers, or ,True
-template_42,roman,\s,False
-template_43,roman,\s,True
-template_44,roman,\n,False
-template_45,roman,\n,True
-template_46,roman,", ",False
-template_47,roman,", ",True
-template_48,roman,; ,False
-template_49,roman,; ,True
-template_50,roman, | ,False
-template_51,roman, | ,True
-template_52,roman, OR ,False
-template_53,roman, OR ,True
-template_54,roman, or ,False
-template_55,roman, or ,True
+template_1,capitals,\s,False
+template_2,capitals,\s,False
+template_3,capitals,\s,False
+template_4,capitals,\s,False
+template_5,capitals,\s,False
+template_6,capitals,\n,False
+template_7,capitals,\n,False
+template_8,capitals,\n,False
+template_9,capitals,\n,False
+template_10,capitals,\n,False
+template_11,capitals,\n,False
+template_12,capitals,", ",False
+template_13,capitals,", ",False
+template_14,capitals,", ",False
+template_15,capitals,", ",False
+template_16,capitals,", ",False
+template_17,capitals,", ",False
+template_18,capitals,; ,False
+template_19,capitals,; ,False
+template_20,capitals,; ,False
+template_21,capitals,; ,False
+template_22,capitals,; ,False
+template_23,capitals,; ,False
+template_24,capitals, | ,False
+template_25,capitals, | ,False
+template_26,capitals, | ,False
+template_27,capitals, | ,False
+template_28,capitals, | ,False
+template_29,capitals, | ,False
+template_30,capitals, OR ,False
+template_31,capitals, OR ,False
+template_32,capitals, OR ,False
+template_33,capitals, OR ,False
+template_34,capitals, OR ,False
+template_35,capitals, OR ,False
+template_36,capitals, or ,False
+template_37,capitals, or ,False
+template_38,capitals, or ,False
+template_39,capitals, or ,False
+template_40,capitals, or ,False
+template_41,capitals, or ,False
+template_42,lowercase,\s,False
+template_43,lowercase,\s,False
+template_44,lowercase,\s,False
+template_45,lowercase,\s,False
+template_46,lowercase,\s,False
+template_47,lowercase,\s,False
+template_48,lowercase,\n,False
+template_49,lowercase,\n,False
+template_50,lowercase,\n,False
+template_51,lowercase,\n,False
+template_52,lowercase,\n,False
+template_53,lowercase,\n,False
+template_54,lowercase,", ",False
+template_55,lowercase,", ",False
+template_56,lowercase,", ",False
+template_57,lowercase,", ",False
+template_58,lowercase,", ",False
+template_59,lowercase,", ",False
+template_60,lowercase,; ,False
+template_61,lowercase,; ,False
+template_62,lowercase,; ,False
+template_63,lowercase,; ,False
+template_64,lowercase,; ,False
+template_65,lowercase,; ,False
+template_66,lowercase, | ,False
+template_67,lowercase, | ,False
+template_68,lowercase, | ,False
+template_69,lowercase, | ,False
+template_70,lowercase, | ,False
+template_71,lowercase, | ,False
+template_72,lowercase, OR ,False
+template_73,lowercase, OR ,False
+template_74,lowercase, OR ,False
+template_75,lowercase, OR ,False
+template_76,lowercase, OR ,False
+template_77,lowercase, OR ,False
+template_78,lowercase, or ,False
+template_79,lowercase, or ,False
+template_80,lowercase, or ,False
+template_81,lowercase, or ,False
+template_82,lowercase, or ,False
+template_83,lowercase, or ,False
+template_84,numbers,\s,False
+template_85,numbers,\s,False
+template_86,numbers,\s,False
+template_87,numbers,\s,False
+template_88,numbers,\s,False
+template_89,numbers,\s,False
+template_90,numbers,\n,False
+template_91,numbers,\n,False
+template_92,numbers,\n,False
+template_93,numbers,\n,False
+template_94,numbers,\n,False
+template_95,numbers,\n,False
+template_96,numbers,", ",False
+template_97,numbers,", ",False
+template_98,numbers,", ",False
+template_99,numbers,", ",False
+template_100,numbers,", ",False
+template_101,numbers,", ",False
+template_102,numbers,; ,False
+template_103,numbers,; ,False
+template_104,numbers,; ,False
+template_105,numbers,; ,False
+template_106,numbers,; ,False
+template_107,numbers,; ,False
+template_108,numbers, | ,False
+template_109,numbers, | ,False
+template_110,numbers, | ,False
+template_111,numbers, | ,False
+template_112,numbers, | ,False
+template_113,numbers, | ,False
+template_114,numbers, OR ,False
+template_115,numbers, OR ,False
+template_116,numbers, OR ,False
+template_117,numbers, OR ,False
+template_118,numbers, OR ,False
+template_119,numbers, OR ,False
+template_120,numbers, or ,False
+template_121,numbers, or ,False
+template_122,numbers, or ,False
+template_123,numbers, or ,False
+template_124,numbers, or ,False
+template_125,numbers, or ,False
+template_126,roman,\s,False
+template_127,roman,\s,False
+template_128,roman,\s,False
+template_129,roman,\s,False
+template_130,roman,\s,False
+template_131,roman,\s,False
+template_132,roman,\n,False
+template_133,roman,\n,False
+template_134,roman,\n,False
+template_135,roman,\n,False
+template_136,roman,\n,False
+template_137,roman,\n,False
+template_138,roman,", ",False
+template_139,roman,", ",False
+template_140,roman,", ",False
+template_141,roman,", ",False
+template_142,roman,", ",False
+template_143,roman,", ",False
+template_144,roman,; ,False
+template_145,roman,; ,False
+template_146,roman,; ,False
+template_147,roman,; ,False
+template_148,roman,; ,False
+template_149,roman,; ,False
+template_150,roman, | ,False
+template_151,roman, | ,False
+template_152,roman, | ,False
+template_153,roman, | ,False
+template_154,roman, | ,False
+template_155,roman, | ,False
+template_156,roman, OR ,False
+template_157,roman, OR ,False
+template_158,roman, OR ,False
+template_159,roman, OR ,False
+template_160,roman, OR ,False
+template_161,roman, OR ,False
+template_162,roman, or ,False
+template_163,roman, or ,False
+template_164,roman, or ,False
+template_165,roman, or ,False
+template_166,roman, or ,False
+template_167,roman, or ,False
+template_168,keyboard,\s,False
+template_169,keyboard,\s,False
+template_170,keyboard,\s,False
+template_171,keyboard,\s,False
+template_172,keyboard,\s,False
+template_173,keyboard,\s,False
+template_174,keyboard,\n,False
+template_175,keyboard,\n,False
+template_176,keyboard,\n,False
+template_177,keyboard,\n,False
+template_178,keyboard,\n,False
+template_179,keyboard,\n,False
+template_180,keyboard,", ",False
+template_181,keyboard,", ",False
+template_182,keyboard,", ",False
+template_183,keyboard,", ",False
+template_184,keyboard,", ",False
+template_185,keyboard,", ",False
+template_186,keyboard,; ,False
+template_187,keyboard,; ,False
+template_188,keyboard,; ,False
+template_189,keyboard,; ,False
+template_190,keyboard,; ,False
+template_191,keyboard,; ,False
+template_192,keyboard, | ,False
+template_193,keyboard, | ,False
+template_194,keyboard, | ,False
+template_195,keyboard, | ,False
+template_196,keyboard, | ,False
+template_197,keyboard, | ,False
+template_198,keyboard, OR ,False
+template_199,keyboard, OR ,False
+template_200,keyboard, OR ,False
+template_201,keyboard, OR ,False
+template_202,keyboard, OR ,False
+template_203,keyboard, OR ,False
+template_204,keyboard, or ,False
+template_205,keyboard, or ,False
+template_206,keyboard, or ,False
+template_207,keyboard, or ,False
+template_208,keyboard, or ,False
+template_209,keyboard, or ,False
+template_210,greek,\s,False
+template_211,greek,\s,False
+template_212,greek,\s,False
+template_213,greek,\s,False
+template_214,greek,\s,False
+template_215,greek,\s,False
+template_216,greek,\n,False
+template_217,greek,\n,False
+template_218,greek,\n,False
+template_219,greek,\n,False
+template_220,greek,\n,False
+template_221,greek,\n,False
+template_222,greek,", ",False
+template_223,greek,", ",False
+template_224,greek,", ",False
+template_225,greek,", ",False
+template_226,greek,", ",False
+template_227,greek,", ",False
+template_228,greek,; ,False
+template_229,greek,; ,False
+template_230,greek,; ,False
+template_231,greek,; ,False
+template_232,greek,; ,False
+template_233,greek,; ,False
+template_234,greek, | ,False
+template_235,greek, | ,False
+template_236,greek, | ,False
+template_237,greek, | ,False
+template_238,greek, | ,False
+template_239,greek, | ,False
+template_240,greek, OR ,False
+template_241,greek, OR ,False
+template_242,greek, OR ,False
+template_243,greek, OR ,False
+template_244,greek, OR ,False
+template_245,greek, OR ,False
+template_246,greek, or ,False
+template_247,greek, or ,False
+template_248,greek, or ,False
+template_249,greek, or ,False
+template_250,greek, or ,False
+template_251,greek, or ,False
