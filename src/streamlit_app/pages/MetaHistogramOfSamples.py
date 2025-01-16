@@ -350,7 +350,7 @@ class MetaHistogramOfSamples:
                     self._display_example_content(sample)
                     self._add_example_annotation(idx, row['dataset'])
             except Exception as e:
-                st.error(f"Error loading example {index+1}: {str(e)}")
+                st.error(f"Error loading example {index + 1}: {str(e)}")
 
     def _get_example_details(self, row, model):
         try:
@@ -406,13 +406,13 @@ class MetaHistogramOfSamples:
         st.markdown("### Annotation Statistics")
         categories = [ann['category'] for ann in annotations.values()]
         datasets = [ann['dataset'] for ann in annotations.values()]
-        
+
         # Display only category distribution and dataset distribution
         tab1 = st.tabs(["Category Distribution"])[0]
-        
+
         with tab1:
             self._plot_category_distribution(categories)
-        
+
         #  dataset distribution but kept for future use
         # with tab2:
         #     self._plot_dataset_distribution(datasets)
