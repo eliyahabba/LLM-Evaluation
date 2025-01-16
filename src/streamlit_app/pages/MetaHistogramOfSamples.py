@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from pathlib import Path
 
 from src.streamlit_app.ui_components.MetaHistogramCalculator import MetaHistogramCalculator
 from src.streamlit_app.ui_components.ResultsLoader import ResultsLoader
@@ -22,7 +23,6 @@ MAIN_RESULTS_PATH = ExperimentConstants.MAIN_RESULTS_PATH
 
 class MetaHistogramOfSamples:
     def __init__(self, dataset_sizes_path):
-
         self.dataset_sizes_path = dataset_sizes_path
 
     def display_page(self):
@@ -274,78 +274,176 @@ class MetaHistogramOfSamples:
         )
 
     def display_error_categorization(self, examples):
-        
-        st.markdown("### Error Category Analysis")
-        if 'all_annotations' not in st.session_state:
-            st.session_state.all_annotations = {}
-        if 'current_session_annotations' not in st.session_state:
-            st.session_state.current_session_annotations = {}
-        
+        # Initialize annotation manager
+        if 'annotation_manager' not in st.session_state:
+            st.session_state.annotation_manager = AnnotationManager()
         try:
+            annotations_file = Path(Constants.ResultConstants.ANNOTATIONS_FILE)
+            if st.button("🗑️ Clear All Annotations"):
+                if annotations_file.exists():
+                    with open(annotations_file, 'w') as f:
+                        json.dump({"annotations": [], "total_annotations": 0}, f, indent=2)
+                    st.success("All annotations cleared successfully!")
+                    st.experimental_rerun()
+
+            mistake_examples = pd.DataFrame()
+            default_model = Constants.LLMProcessorConstants.MISTRAL_V2_MODEL
+            model = st.session_state.get('models', [default_model])[0]
+
+            for idx, row in examples.iterrows():
+                try:
+                    sample = self._get_example_details(row, model)
+                    if sample and sample.get('Score', 1) == 0:
+                        mistake_examples = pd.concat([mistake_examples, pd.DataFrame([row])])
+                except Exception:
+                    continue
+
+            if len(mistake_examples) == 0:
+                st.warning("No mistakes found in the current selection.")
+                return
+
             max_examples = st.number_input(
-                "Number of examples to analyze:", 
-                min_value=1, 
-                max_value=len(examples), 
-                value=min(10, len(examples))
+                "Number of examples to analyze:",
+                min_value=1,
+                max_value=min(len(mistake_examples), 100),
+                value=min(10, len(mistake_examples))
             )
-            
-            selected_examples = self._sample_examples(examples, max_examples)
-            
+
+            selected_examples = self._sample_examples(mistake_examples, max_examples)
+
+            # Store categories in session state
+            if 'example_categories' not in st.session_state:
+                st.session_state.example_categories = {}
+
+            self._display_error_categories_legend()
+
+            # Create form for all examples
             with st.form("annotation_form"):
-                self._display_error_categories_legend()
-                
                 for i, (idx, row) in enumerate(selected_examples.iterrows()):
-                    self._display_single_example_annotation(i, idx, row)
-                
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    submit_button = st.form_submit_button("Submit Annotations", 
-                        help="Save current annotations and view statistics")
-                with col2:
-                    clear_button = st.form_submit_button("Clear All", 
-                        help="Clear all saved annotations")
-            
-            if submit_button:
-                st.session_state.all_annotations.update(
-                    st.session_state.current_session_annotations)
-                self.display_annotation_statistics(st.session_state.all_annotations)
-                st.success("Annotations submitted successfully!")
-            
-            if clear_button:
-                self._handle_clear_annotations()
-                
+                    st.markdown("---")
+                    with st.expander(f"Example {i + 1} (Dataset: {row['dataset']})", expanded=True):
+                        try:
+                            sample = self._get_example_details(row, model)
+                            if sample:
+                                self._display_example_content(sample)
+                                category = st.selectbox(
+                                    "Select error category:",
+                                    ErrorCategories.get_all_categories(),
+                                    key=f"cat_{idx}"
+                                )
+                                st.session_state.example_categories[idx] = {
+                                    "category": category,
+                                    "sample": sample,
+                                    "dataset": row['dataset']
+                                }
+                        except Exception as e:
+                            st.error(f"Error loading example {i + 1}: {str(e)}")
+
+                if st.form_submit_button("Save All Annotations"):
+                    if annotations_file.exists():
+                        with open(annotations_file, 'r') as f:
+                            all_annotations = json.load(f)
+                    else:
+                        all_annotations = {"annotations": [], "total_annotations": 0}
+
+                    # Add new annotations
+                    for idx, data in st.session_state.example_categories.items():
+                        annotation_data = {
+                            "model": str(model),
+                            "id": str(idx),
+                            "dataset": data["dataset"],
+                            "category": data["category"],
+                            "example_content": {
+                                "instance": data["sample"]['Instance'],
+                                "ground_truth": data["sample"]['GroundTruth'],
+                                "prediction": data["sample"]['Result'],
+                            }
+                        }
+                        all_annotations["annotations"].append(annotation_data)
+
+                    all_annotations["total_annotations"] = len(all_annotations["annotations"])
+
+                    with open(annotations_file, 'w') as f:
+                        json.dump(all_annotations, f, indent=2)
+                    st.success("All annotations saved successfully!")
+
+            st.markdown("### Annotation Statistics")
+            if annotations_file.exists():
+                with open(annotations_file, 'r') as f:
+                    current_annotations = json.load(f)
+
+                if current_annotations["total_annotations"] > 0:
+                    model_annotations = [ann for ann in current_annotations["annotations"]
+                                         if ann.get('model') == model]
+
+                    if model_annotations:
+                        categories = [ann['category'] for ann in model_annotations]
+                        category_counts = pd.Series(categories).value_counts()
+
+                        fig = px.bar(
+                            x=category_counts.index,
+                            y=category_counts.values,
+                            labels={'x': 'Category', 'y': 'Count'},
+                            title=f'Distribution of Error Categories for {model}'
+                        )
+                        fig.update_traces(texttemplate='%{y}', textposition='outside')
+                        st.plotly_chart(fig)
+
+                        datasets = [ann['dataset'] for ann in model_annotations]
+                        dataset_counts = pd.Series(datasets).value_counts()
+
+                        fig = px.bar(
+                            x=dataset_counts.index,
+                            y=dataset_counts.values,
+                            labels={'x': 'Dataset', 'y': 'Count'},
+                            title=f'Distribution of Annotations by Dataset for {model}'
+                        )
+                        fig.update_traces(texttemplate='%{y}', textposition='outside')
+                        fig.update_layout(xaxis_tickangle=-45)
+                        st.plotly_chart(fig)
+
+                        st.info(f"Total annotations for {model}: {len(model_annotations)}")
+                    else:
+                        st.info(f"No annotations yet for {model}")
+                else:
+                    st.info("No annotations have been made yet. Start by selecting categories for the examples above.")
+
         except Exception as e:
             st.error(f"Error in error categorization display: {str(e)}")
 
     def _sample_examples(self, examples, max_examples):
-        if len(examples) > max_examples:
-            if 'sampled_indices' not in st.session_state or \
-               len(st.session_state.sampled_indices) != max_examples:
-                st.session_state.sampled_indices = random.sample(
-                    range(len(examples)), max_examples)
-            return examples.iloc[st.session_state.sampled_indices]
-        return examples
+        """Sample examples from 3 datasets with most mistakes."""
+        top_3_datasets = examples['dataset'].value_counts().head(3).index
+        samples_per_dataset = max_examples // 3
+        remainder = max_examples % 3
+        sampled = []
+        for i, dataset in enumerate(top_3_datasets):
+            # Add one extra sample for any remainder
+            current_samples = samples_per_dataset + (1 if i < remainder else 0)
+            dataset_examples = examples[examples['dataset'] == dataset].head(current_samples)
+            sampled.append(dataset_examples)
+        return pd.concat(sampled)
 
     def _display_error_categories_legend(self):
         st.markdown("""
         #### Error Categories
-        1. **Instruction Error/Hallucination** - Model fails to follow format or provide answer
-           
+        1. **Format Error** - Model fails to follow format or provide answer
+
         2. **Wrong Reasoning** - Model's logic path contains flaws
-        
+
         3. **Wrong Annotation** - Answer could be debatable or incorrect
-           
+
         4. **Lack of Knowledge** - Model lacks necessary knowledge that's not in prompt
         """)
 
     def _display_single_example_annotation(self, index, idx, row):
         st.markdown("---")
-        with st.expander(f"Example {index+1} (Dataset: {row['dataset']})", expanded=True):
+        with st.expander(f"Example {index + 1} (Dataset: {row['dataset']})", expanded=True):
             try:
                 default_model = Constants.LLMProcessorConstants.MISTRAL_V2_MODEL
                 model = st.session_state.get('models', [default_model])[0]
                 sample = self._get_example_details(row, model)
-                
+
                 if sample:
                     self._display_example_content(sample)
                     self._add_example_annotation(idx, row['dataset'])
@@ -355,12 +453,12 @@ class MetaHistogramOfSamples:
     def _get_example_details(self, row, model):
         try:
             full_results_path = (
-                self.results_folder / 
-                model / 
-                row['dataset'] / 
-                Constants.ResultConstants.ZERO_SHOT / 
-                Constants.ResultConstants.EMPTY_SYSTEM_FORMAT / 
-                "experiment_template_0.json"
+                    self.results_folder /
+                    model /
+                    row['dataset'] /
+                    Constants.ResultConstants.ZERO_SHOT /
+                    Constants.ResultConstants.EMPTY_SYSTEM_FORMAT /
+                    "experiment_template_0.json"
             )
             
             with open(full_results_path, "r") as file:
@@ -442,10 +540,70 @@ class MetaHistogramOfSamples:
         fig.update_layout(xaxis_tickangle=-45)
         st.plotly_chart(fig)
 
-   
+
+    def _create_download_section(self):
+        """Creates a download button for annotations if they exist in session state"""
+        if 'download_ready' not in st.session_state:
+            st.session_state.download_ready = False
+
+        if st.session_state.download_ready:
+            test_data = {
+                "annotations": [
+                    {"id": 1, "category": "test category", "dataset": "test dataset"}
+                ],
+                "total_annotations": 1
+            }
+            st.markdown("---")
+
+            st.download_button(
+                label="Download JSON",
+                data=json.dumps(test_data, indent=2),
+                file_name=ResultConstants.ANNOTATIONS_FILE,
+                mime="text/plain",
+            )
+
+
+class AnnotationManager:
+    def __init__(self):
+        self.save_dir = ResultConstants.ANNOTATIONS_DIR
+        self.annotations = self._load_current_annotations()
+        self.filepath = Path(self.save_dir) / ResultConstants.ANNOTATIONS_FILE
+
+    def _load_current_annotations(self):
+        try:
+            if self.filepath.exists():
+                with open(self.filepath, 'r') as f:
+                    return json.load(f)
+        except Exception as e:
+            print(f"Error loading annotations: {e}")
+        return {
+            "annotations": [],
+            "total_annotations": 0
+        }
+
+    def save_annotation(self, annotation_data):
+        self.annotations["annotations"].append(annotation_data)
+        self.annotations["total_annotations"] = len(self.annotations["annotations"])
+        try:
+            with open(self.filepath, 'w') as f:
+                json.dump(self.annotations, f, indent=2)
+        except Exception as e:
+            print(f"Error saving annotation: {e}, filepath: {self.filepath}")
+
+    def clear_annotations(self):
+        try:
+            self.annotations = {"annotations": [], "total_annotations": 0}
+            with open(self.filepath, 'w') as f:
+                json.dump(self.annotations, f, indent=2)
+            return True
+        except Exception as e:
+            print(f"Failed to clear annotations: {e}")
+            return False
+    def get_annotations(self):
+        return self.annotations
 class ErrorCategories:
     """Constants for error categories"""
-    INSTRUCTION_ERROR = "1. Instruction Error/Hallucination"
+    FORMAT_ERROR = "1. Format Error"
     WRONG_REASONING = "2. Wrong Reasoning"
     WRONG_ANNOTATION = "3. Wrong Annotation"
     LACK_KNOWLEDGE = "4. Lack of Knowledge"
@@ -453,7 +611,7 @@ class ErrorCategories:
     @classmethod
     def get_all_categories(cls):
         return [
-            cls.INSTRUCTION_ERROR,
+            cls.FORMAT_ERROR,
             cls.WRONG_REASONING,
             cls.WRONG_ANNOTATION,
             cls.LACK_KNOWLEDGE

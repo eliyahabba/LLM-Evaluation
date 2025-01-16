@@ -4,7 +4,7 @@
       "model": "Mistral-7B-Instruct-v0.2",
       "id": "mmlu.professional_law_2",
       "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
+      "category": "2. Wrong Reasoning",
       "example_content": {
         "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A taxpayer was notified by the government that her individual income tax was underpaid by $1,012. 69. The taxpayer retained an attorney to represent her in contesting the assessment. During the preparation of his client's case, the attorney suggested that it might be a good idea if the taxpayer hired an accountant to organize her records and prepare a financial statement for the year in question. Following the attorney's advice, the taxpayer consulted an accountant, an old family friend, who prepared a financial statement, which the attorney referred to at trial. During the trial, the attorney representing the government called the accountant to testif' about statements that the taxpayer made to him. The accountant's proposed testimony is Choices: A. inadmissible, because it would violate the attorney-client privilege. B. inadmissible, because it would violate the taxpayer's privilege against self-incrimination. C. inadmissible as violative of the work-product rule. D. admissible as an admission. Answer:\n",
         "ground_truth": "D. admissible as an admission.",
@@ -15,7 +15,7 @@
       "model": "Mistral-7B-Instruct-v0.2",
       "id": "mmlu.professional_law_6",
       "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
+      "category": "2. Wrong Reasoning",
       "example_content": {
         "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A devastating earthquake struck a foreign country. The earthquake destroyed hundreds of homes and buildings. Thousands of residents were killed, injured, and left homeless by the earthquake. The leader of the foreign country sought the assistance of the United States in providing emergency aid. The President initially wanted to send troops from a west coast military base but learned that they were out on training maneuvers. As a result, the President issued an executive order directing members of a federal agency under the supervision of the Immigration and Naturalization Service, to travel to the foreign country to engage in emergency rescue operations. This federal agency's main function is to patrol the borders to prevent illegal aliens from entering the United States. A member of this federal agency refused to comply with the executive order and assist in the relief effort. He claimed that participating in such operations in a foreign country is beyond the scope of his job responsibilities. He brought suit in federal court challenging the validity of the President's executive order. Assuming the member of the federal agency has adequate standing, the court should rule the executive order Choices: A. valid, because as commander-in-chief, the President has unfettered authority to require federal employees to participate in an international relief effort. B. valid, because employees of an executive agency can be required to perform such emergency functions. C. invalid, because the executive order is beyond the scope of presidential power absent congressional authorization. D. invalid, because the director of the INS, not the President, has the power to issue directives to federal agencies under its supervision. Answer:\n",
         "ground_truth": "B. valid, because employees of an executive agency can be required to perform such emergency functions.",
@@ -26,7 +26,7 @@
       "model": "Mistral-7B-Instruct-v0.2",
       "id": "mmlu.professional_law_9",
       "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
+      "category": "2. Wrong Reasoning",
       "example_content": {
         "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A man who was separated but never divorced from his first wife, married another woman and lived with her as husband and wife. The man and his purported second wife bought a home together as tenants by the entirety. They lived there together for a few years, when the man was accused and convicted of killing his purported wife. He was given a life sentence. The decedent's estate brought a quiet title action to declare the property forfeited to the decedent on the basis that a murderer cannot benefit from his crime. The trial court awarded the property to the estate. The man appealed from his prison cell. Under the common law, will the appellate court affirm the trial court's decision and strip the man of all ownership rights in the home? Choices: A. Yes, because a murderer cannot reap the benefits of his ill-doing. B. Yes, because the murderer was also a bigamist who could not take good title to the property in the first place, thus putting full title in the decedent from the date of purchase. C. No, the court will as a policy matter recognize the murderer's pre-slaying right to one-half of the property as a tenant in common. D. No, there is no rule of law that gives the victim or her estate any additional rights in the property that she had before the homicide. Answer:\n",
         "ground_truth": "C. No, the court will as a policy matter recognize the murderer's pre-slaying right to one-half of the property as a tenant in common.",
@@ -37,7 +37,7 @@
       "model": "Mistral-7B-Instruct-v0.2",
       "id": "mmlu.professional_law_34",
       "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
+      "category": "3. Wrong Annotation",
       "example_content": {
         "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: The President announced that a newly created military rapid deployment force would be engaging in joint training exercises with the military forces in a foreign country. Following the President's announcement, Congress enacted a statute that unequivocally prohibited \"the U. S. Armed Forces from conducting military exercises with foreign military forces unless Congress has received notice of such intention to take such action at least three months before the joint military exercises become effective. \"This statute is most likely Choices: A. constitutional, because the President, in this instance, has not been called by Congress into actual service as Commander-in-Chief. B. constitutional, because of Congressional power under the War Powers Act. C. unconstitutional, because of the President's authority to execute the laws of the United States. D. unconstitutional, because of the President's authority as Commander-in-Chief of the Armed Forces. Answer:\n",
         "ground_truth": "A. constitutional, because the President, in this instance, has not been called by Congress into actual service as Commander-in-Chief.",
@@ -59,7 +59,7 @@
       "model": "Mistral-7B-Instruct-v0.2",
       "id": "mmlu.elementary_mathematics_9",
       "dataset": "mmlu.elementary_mathematics",
-      "category": "1. Format Error",
+      "category": "2. Wrong Reasoning",
       "example_content": {
         "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Find the quotient of 5.04/0.7 Choices: A. 0.72 B. 0.702 C. 10.0571 D. 7.2 Answer:\n",
         "ground_truth": "D. 7.2",
@@ -109,227 +109,7 @@
         "ground_truth": "C. 5.5",
         "prediction": "\nLet's reason through this problem:\n\n1. The original size of"
       }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.professional_law_46",
-      "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A young lawyer worked late at her office one night. When she finally decided to go home, she headed to the elevator, got in, and pushed the button for the ground floor. The elevator went all the way to the ground floor, but then just stopped there. The doors did not open. The lawyer tried pushing each of the buttons in the elevator and tried to use the intercom in the elevator to call for help, but nothing on the elevator's control panel seemed to be functioning. The lawyer was afraid that she would be stuck in the elevator all night. She began pounding on the doors and yelling. She started to feel panicked, hyperventilated, lost consciousness, and fell to the floor of the elevator. As she fell, she struck her head on the elevator wall, causing a large bump and bruise on her head. She was unconscious in the elevator for about 30 minutes before a security guard tried to use the elevator and realized it wasn't working. The guard managed to force the doors open and found the lawyer. At that moment, the lawyer regained consciousness. An investigation revealed that the elevator stopped working because it had not been properly maintained. The owner of the building had canceled all service and maintenance work on the elevator in order to save money. If the lawyer sues the building owner for false imprisonment, she will most likely Choices: A. prevail, because she was confined in the elevator for an unreasonably long period of time. B. prevail, because she was injured during her confinement in the elevator. C. not prevail, because the building owner did not intentionally cause the lawyer to be confined. D. not prevail, because the lawyer was unconscious and unaware of what was happening for most of the confinement period. Answer:\n",
-        "ground_truth": "C. not prevail, because the building owner did not intentionally cause the lawyer to be confined.",
-        "prediction": "\nA. prevail, because she was confined in the elevator for an unreasonably long period of time.\n"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.professional_law_48",
-      "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A buyer purchased a gallon of nonfat milk from a market. The milk, which was sold in a plastic container, had been processed and packaged by a dairy. That evening, the buyer was preparing dinner and poured himself a glass of milk from the container purchased at the market. He then sat down to eat his meal and proceeded to take a mouthful of milk. As he did so, the buyer felt something furry lodge in his mouth. He immediately spat out the furry object and saw that it was a dead mouse. The buyer suffered severe emotional distress but did not suffer any physical illness or injury. If the buyer asserts a claim against the dairy based on negligent manufacturing, he will most likely Choices: A. recover, because he suffered severe emotional distress. B. recover, under the doctrine of res ipsa loquitur. C. not recover, because the dairy's negligence only caused mental disturbance. D. not recover, because the buyer's proper cause of action is for intentional infliction of mental distress. Answer:\n",
-        "ground_truth": "C. not recover, because the dairy's negligence only caused mental disturbance.",
-        "prediction": "\nB. recover, under the doctrine of res ipsa loquitur.\n\nExplanation:\n"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.professional_law_51",
-      "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A builder contracted in writing to construct a small greenhouse on a homeowner's property for $20,000, payable upon completion. After the builder had spent $9,000 framing the greenhouse and an additional $1,000 for materials not yet incorporated into the greenhouse, the homeowner wrongfully ordered the builder to stop work. The builder then resold the unused materials that he had already purchased for the greenhouse to another contractor for $1,000. At the time the homeowner stopped the work, it would have cost the builder an additional $5,000 to complete the project. The an additional $5,000 to complete the project. The partially built greenhouse increased the value of the homeowner's property by $3,000. In a suit by the builder against the homeowner, how much is the builder likely to recover? Choices: A. $3,000, the increase in the value of the homeowner's property. B. $10,000, the total cost expended by the builder at the time of the breach. C. $14,000, the total cost expended by the builder ($10,000) plus the builder's expected profit ($5,000), minus the loss avoided by the resale of the unused materials ($1,000). D. $15,000, the contract price ($20,000) minus the costs saved by the breach ($5,000). Answer:\n",
-        "ground_truth": "C. $14,000, the total cost expended by the builder ($10,000) plus the builder's expected profit ($5,000), minus the loss avoided by the resale of the unused materials ($1,000).",
-        "prediction": "\nC. $14,000\n\nExplanation:\n\nThe builder spent $10,"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.elementary_mathematics_32",
-      "dataset": "mmlu.elementary_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Write 8 and 2 over 4 as an improper fraction in simplest form. Choices: A. 17 over 2 B. 34 over 4 C. 17 over 4 D. 19 over 2 Answer:\n",
-        "ground_truth": "A. 17 over 2",
-        "prediction": "\nTo write 8 and 2 over 4 as an improper fraction"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.elementary_mathematics_39",
-      "dataset": "mmlu.elementary_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Let 12-9+c=12. What value of c makes the equation true? Choices: A. 0 B. 3 C. 9 D. 12 Answer:\n",
-        "ground_truth": "C. 9",
-        "prediction": "\nThe given equation is 12-9+c=12."
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.elementary_mathematics_59",
-      "dataset": "mmlu.elementary_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: What is the least common multiple of 4 and 10? Choices: A. 14 B. 20 C. 40 D. 60 Answer:\n",
-        "ground_truth": "B. 20",
-        "prediction": "\nThe least common multiple (LCM) of two numbers is the smallest positive"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.elementary_mathematics_64",
-      "dataset": "mmlu.elementary_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Evaluate \u22122(x \u2212 3) for x = 2. Choices: A. \u22124 B. \u22122 C. 10 D. 2 Answer:\n",
-        "ground_truth": "D. 2",
-        "prediction": "\nThe expression \u22122(x \u2212 3) can be evaluated by distribut"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.high_school_mathematics_38",
-      "dataset": "mmlu.high_school_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: What is the smallest positive integer with factors of 16, 15, and 12? Choices: A. 240 B. 120 C. 60 D. 111 Answer:\n",
-        "ground_truth": "A. 240",
-        "prediction": "\nTo find the smallest positive integer with factors of 16, 15"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.high_school_mathematics_51",
-      "dataset": "mmlu.high_school_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Suppose that the graph of a certain function, $y=f(x)$, has the property that if it is shifted $20$ units to the right, then the resulting graph is identical to the original graph of $y=f(x)$. What is the smallest positive $a$ such that if the graph of $y=f\\left(\\frac x5\\right)$ is shifted $a$ units to the right, then we know that the resulting graph is identical to the original graph of $y=f\\left(\\frac x5\\right)$? Choices: A. 100 B. 4 C. 5 D. 20 Answer:\n",
-        "ground_truth": "A. 100",
-        "prediction": "\nTo find the answer, we need to understand the given property of the function'"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.high_school_mathematics_58",
-      "dataset": "mmlu.high_school_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: The least common multiple of two integers is 240, and the greatest common divisor is 24. Given that one of the integers is 48, what is the other integer? Choices: A. 1 B. 120 C. 20 D. 12 Answer:\n",
-        "ground_truth": "B. 120",
-        "prediction": "\nTo find the other integer, we need to find a number that is a multiple"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.professional_law_53",
-      "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A man filed a federal diversity action against a bus company, seeking damages for injuries he had sustained in an accident while riding a bus owned by the company. The man demanded a jury trial. After the parties' attorneys examined the prospective jurors and exercised their challenges, six jurors and two alternate jurors were chosen. During the trial, two jurors became ill and were replaced by the alternate jurors. At the conclusion of replaced by the alternate jurors. At the conclusion of the trial, a third juror also became ill, and the court excused that juror. The parties' attorneys stipulated to the return of a verdict from a five-person jury. The jury then deliberated and returned a verdict for the company. The man timely filed a motion for a new trial, arguing that the five-person jury was not large enough to return a verdict. Should the court grant the motion? Choices: A. No, because the court properly excused the three jurors due to illness. B. No, because the parties stipulated to a verdict from a jury of fewer than six jurors. C. Yes, because there must be at least six jurors on a federal civil jury. D. Yes, because there must be at least 12 jurors on a federal civil jury. Answer:\n",
-        "ground_truth": "B. No, because the parties stipulated to a verdict from a jury of fewer than six jurors.",
-        "prediction": "\nC. Yes, because there must be at least six jurors on a federal civil jury.\n\nExplanation"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.professional_law_62",
-      "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A wealthy retiree had amassed a fortune after selling his pharmaceutical company. The retiree and his wife lived in an exquisitely decorated penthouse apartment overlooking a park. One night, the retiree and his wife were returning home from dinner when they were accosted by a man outside their apartment building. The man brandished a gun and told the retiree and his wife to take him to their apartment. Upon entering the apartment, the man blindfolded the retiree and his wife and tied them up with duct tape to chairs in the living room. The man then stole the retiree's wallet and assorted jewelry from the bedroom. After the man exited the apartment, the retiree and his wife tried desperately to free themselves from their constraints. As the retiree was struggling, he suffered a heart attack and died. The man should be found guilty of Choices: A. burglary. B. robbery and burglary. C. robbery and murder. D. burglary, robbery, and murder. Answer:\n",
-        "ground_truth": "D. burglary, robbery, and murder.",
-        "prediction": "\nC. robbery and murder.\n\nExplanation:\n\nThe man's actions meet the definition of"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.professional_law_79",
-      "dataset": "mmlu.professional_law",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A defendant and a victim were roommates at college. The defendant was playing the role of a serial killer in the school play and asked the victim if she could leave their apartment for a few hours while she rehearsed. The victim agreed but returned to the apartment shortly thereafter because she was curious and wanted to see the defendant rehearse. The victim quietly came back into the apartment and hid behind some curtains in the dining room in order to watch the defendant rehearse. In her role, the defendant earned a large butcher's knife, with which she stabbed the curtains at her \"victim. \" Unknown to the defendant, the victim, who was hiding behind the curtain, was stabbed in the chest and killed. If the defendant is prosecuted for the victim's death, she should be found Choices: A. guilty of murder. B. guilty of manslaughter. C. guilty of battery. D. not guilty. Answer:\n",
-        "ground_truth": "D. not guilty.",
-        "prediction": "\nA. guilty of murder.\n\nExplanation:\n\nThe defendant's actions resulted in the victim"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.elementary_mathematics_102",
-      "dataset": "mmlu.elementary_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A model of a park was built on a scale of 1.5 centimeters to 50 meters. If the distance between two trees in the park is 150 meters, what is this distance on the model? Choices: A. 0.5 centimeter B. 4.5 centimeters C. 75 centimeters D. 225 centimeters Answer:\n",
-        "ground_truth": "B. 4.5 centimeters",
-        "prediction": "\nTo find the distance on the model, we need to use the given scale factor:\n\nScale factor = Real"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.elementary_mathematics_104",
-      "dataset": "mmlu.elementary_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Stephanie flew 2,448 miles from Los Angeles to New York City. What is the number of miles Stephanie flew rounded to the nearest thousand? Choices: A. 2,000 B. 2,400 C. 2,500 D. 3,000 Answer:\n",
-        "ground_truth": "A. 2,000",
-        "prediction": "\nB. 2,400\n\nExplanation:\n\nTo find the answer, we need"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.elementary_mathematics_108",
-      "dataset": "mmlu.elementary_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Max and Jonathon were picking strawberries. Max picked 187 strawberries. Jonathon picked 223 strawberries. Together they ate 26 of the strawberries. Which expression shows a way to find the total number of strawberries Max and Jonathon have left? Choices: A. 190 + 220 \u2013 30 + 4 B. 185 + 225 \u2013 25 + 1 C. 200 + 200 \u2013 30 \u2013 4 D. 200 + 200 \u2013 25 \u2013 1 Answer:\n",
-        "ground_truth": "A. 190 + 220 \u2013 30 + 4",
-        "prediction": "\nC. 200 + 200 \u2013 25 \u2013 1\n\nExplanation"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.high_school_mathematics_66",
-      "dataset": "mmlu.high_school_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: If 3^(x \u2013 3) + 10 = 19, then x = Choices: A. 3 B. 4 C. 5 D. 6 Answer:\n",
-        "ground_truth": "C. 5",
-        "prediction": "\nTo solve for x, we need to isolate it on one side of the"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.high_school_mathematics_73",
-      "dataset": "mmlu.high_school_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: If $(2x + 3y)^2 = 4$ and $xy = -5$, what is the value of $4x^2 + 9y^2$? Choices: A. -5 B. 13 C. 64 D. 25 Answer:\n",
-        "ground_truth": "C. 64",
-        "prediction": "\nTo find the value of $4x^2 +9y^2$,"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.high_school_mathematics_108",
-      "dataset": "mmlu.high_school_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: If f(2x) = x + 5 and f(g(6)) = 13, then 2 * g(6) = Choices: A. 6 B. 16 C. 32 D. 36 Answer:\n",
-        "ground_truth": "C. 32",
-        "prediction": "\nTo find the value of g(6), we need to find the inverse function"
-      }
-    },
-    {
-      "model": "Mistral-7B-Instruct-v0.2",
-      "id": "mmlu.high_school_mathematics_118",
-      "dataset": "mmlu.high_school_mathematics",
-      "category": "1. Format Error",
-      "example_content": {
-        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A number $x$ equals $2^{15}\\cdot3^6$. What number's cube equals $x$? Choices: A. 288 B. 27 C. 125 D. 121 Answer:\n",
-        "ground_truth": "A. 288",
-        "prediction": "\nTo find the number whose cube equals $x$, we need to find the"
-      }
     }
   ],
-  "total_annotations": 30
+  "total_annotations": 10
 }
