@@ -293,7 +293,7 @@ class Converter:
         recipes = df['run_unitxt_recipe'].apply(self._parse_config_string)
         index_map = df.apply(
             lambda row: self.build_instance_section(row, self._parse_config_string(row['run_unitxt_recipe'])),
-            axis=1).rename('index')
+            axis=1).rename('sample_index')
         df['run_model_args']= df['run_model_args'].apply(lambda x: json.loads(x))
         df['references'] = df['references'].apply(lambda x: eval(x))
         df['scores'] = df['scores'].apply(lambda x: eval(x))
