@@ -1,5 +1,10 @@
+import sys
+from pathlib import Path
+
 import streamlit as st
 
+file_path = Path(__file__).parents[4]
+sys.path.append(str(file_path))
 from src.analysis.create_plots.DataLoader import DataLoader
 
 
@@ -19,7 +24,6 @@ def load_data(model_name=None, shots=None, max_samples=None):
     # dataset = load_dataset(self.dataset_name, split=self.split, max_samples=max_samples)
     # For brevity, let's assume you fetch the data as a DataFrame directly:
     # Here is a trivial example (replace with real huggingface logic).
-
 
     data_loader = DataLoader()
     df_partial = data_loader.load_and_process_data(model_name, shots=shots,
