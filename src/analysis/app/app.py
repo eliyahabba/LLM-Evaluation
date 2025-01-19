@@ -61,39 +61,38 @@ def plot_accuracy_distribution(config_data: pd.DataFrame, x_column="accuracy"):
 def plot_accuracy_distribution2(config_data: pd.DataFrame, x_column="accuracy"):
     """Create and return a histogram of 'accuracy' values with count annotations."""
 
-    # מחשב ממוצע accuracy לכל קבוצת quad
+    # Calculate average accuracy for each quad group
     grouped_data = config_data.groupby('quad').agg({
         x_column: 'mean',
-        'combination_count': 'first'  # מניח שהערך זהה לכל quad
+        'combination_count': 'first'  # Assuming the value is the same for each quad
     }).reset_index()
 
     fig = px.bar(
         grouped_data,
         x='quad',
         y=x_column,
-        text='combination_count',  # הערכים שיוצגו מעל העמודות
+        text='combination_count',  # Values to display above the bars
         title="Accuracy Distribution"
     )
 
     fig.update_traces(
-        textposition='outside',  # מיקום הטקסט מעל העמודות
-        cliponaxis=False  # מאפשר לטקסט לחרוג מגבולות הציר
+        textposition='outside',  # Text position above the bars
+        cliponaxis=False  # Allows text to extend beyond axis boundaries
     )
 
     fig.update_layout(
         xaxis_title="Configuration",
         yaxis_title="Accuracy",
-        # מגדיל את המרווח למעלה כדי שיהיה מקום לטקסט
+        # Increases top margin to make room for text
         margin=dict(t=50)
     )
-
 
     fig.update_traces(
         textposition='outside',
         cliponaxis=False,
-        textfont=dict(size=12, color='black'),  # גודל וצבע הטקסט
-        texttemplate = 'Configurations: %{text:,}'  # או בעברית: 'דגימות: %{text:,}'
-)
+        textfont=dict(size=12, color='black'),  # Text size and color
+        texttemplate='Configurations: %{text:,}'  # Text template for the labels
+    )
     return fig
 
 
