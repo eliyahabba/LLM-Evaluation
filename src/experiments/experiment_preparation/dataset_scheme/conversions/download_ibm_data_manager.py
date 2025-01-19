@@ -16,6 +16,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import requests
 from huggingface_hub import HfApi, create_repo
+from huggingface_hub import HfFileSystem
 from tqdm import tqdm
 
 from config.get_config import Config
@@ -258,7 +259,6 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
         first_batch_splits[split] = []
     first_batch_splits[split].extend(first_converted)
 
-
     # Write first batch for each split
     for split, items in first_batch_splits.items():
         write_rows(items, split, batch_num=0)
@@ -396,8 +396,29 @@ def procces_file(url, output_dir: Path, repo_name, scheme_files_dir, probs, logg
                 os.unlink(temp_path)
             print(f"Error downloading {original_filename}: {e}")
             logger.error(f"Error downloading {original_filename}: {e}")
+    if check_if_file_exists(repo_name, output_path):
+        logger.info(f"File {output_path} already exists in repository")
+        return None
     convert_to_scheme_format(output_path, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
                              logger=logger, batch_size=1000)
+
+
+def check_if_file_exists(repo_name, filename):
+    base_filename = filename.stem  # Get filename without extension
+    filename = f"{base_filename}_test.parquet"
+    fs = HfFileSystem()
+
+    try:
+        existing_files = fs.ls(f"datasets/{repo_name}", detail=False)
+        if any(Path(file).name == filename for file in existing_files):
+            print(f"File {filename} already exists in repository")
+            return True
+
+    except Exception as e:
+        print(f"Error checking repository: {e}")
+        return False
+
+    return False
 
 
 def random_string(length=10):

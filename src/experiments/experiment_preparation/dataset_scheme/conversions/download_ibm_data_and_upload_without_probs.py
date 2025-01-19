@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # List of URLs to download
     start_time = datetime(2025, 1, 11, 19, 0, tzinfo=pytz.UTC)
 
-    end_time = datetime(2025, 1, 12, 19, 0, tzinfo=pytz.UTC)
+    end_time = datetime(2025, 1, 13, 4, 0, tzinfo=pytz.UTC)
 
     files = generate_file_names(start_time, end_time)
     args.urls = [f"{main_path}{file}" for file in files]
