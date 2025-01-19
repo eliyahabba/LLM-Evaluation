@@ -231,7 +231,8 @@ def main():
     selected_shots = st.sidebar.selectbox("Select Shots", shots_options)
 
     # Load available models/datasets
-    models_data = load_model_datasets(base_dir=Path(__file__).parent/ "results_local")
+    results_dir = Path(__file__).parent / "results_local"
+    models_data = load_model_datasets(base_dir=results_dir)
     if not models_data:
         st.error("No data found in results_local directory.")
         return
@@ -254,7 +255,7 @@ def main():
         return
 
     # Load the "quad"-level data
-    config_data, distance_matrix = load_data(models_data, selected_shots, selected_model, selected_dataset)
+    config_data, distance_matrix = load_data(results_dir, selected_shots, selected_model, selected_dataset)
 
     # Create tabs: "All Data" + 4 dimension tabs
     columns_to_analyze = ["template", "separator", "enumerator", "choices_order"]
@@ -294,7 +295,7 @@ def main():
             st.header(f"Dimension: {dimension.title()} - {selected_dataset}")
 
             # 1) Load dimension-based accuracy data
-            dimension_data = load_dimension_data(models_data, selected_shots, selected_model, selected_dataset, dimension)
+            dimension_data = load_dimension_data(results_dir, selected_shots, selected_model, selected_dataset, dimension)
             if dimension_data is not None and not dimension_data.empty:
                 st.subheader(f"{dimension.title()} Accuracy Data (Mean/Median)")
 
@@ -317,7 +318,7 @@ def main():
                 st.warning(f"No {dimension.title()} dimension accuracy data available.")
 
             # 2) Load dimension-based distance matrix
-            dim_dist_matrix = load_dimension_distance_matrix(models_data, selected_shots, selected_model, selected_dataset, dimension)
+            dim_dist_matrix = load_dimension_distance_matrix(results_dir, selected_shots, selected_model, selected_dataset, dimension)
             if dim_dist_matrix is not None and not dim_dist_matrix.empty:
                 st.subheader(f"Hamming Distance Matrix - {dimension.title()}")
                 fig_dim_heatmap = plot_heatmap(dim_dist_matrix, height=800, width=800)
