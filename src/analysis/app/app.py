@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
@@ -170,7 +171,7 @@ def plot_heatmap(distance_matrix: pd.DataFrame, height=1600, width=1600):
 # ---------------------------------------------------------------------
 # Loaders for model, dataset, overall data
 # ---------------------------------------------------------------------
-def load_model_datasets(base_dir="results_local"):
+def load_model_datasets(base_dir: Path):
     """Load available models and their datasets from the given base_dir."""
     models = {}
     if not os.path.isdir(base_dir):
@@ -230,8 +231,7 @@ def main():
     selected_shots = st.sidebar.selectbox("Select Shots", shots_options)
 
     # Load available models/datasets
-    models_data = load_model_datasets(base_dir="results_local")
-
+    models_data = load_model_datasets(base_dir=Path(__file__).parent/ "results_local")
     if not models_data:
         st.error("No data found in results_local directory.")
         return

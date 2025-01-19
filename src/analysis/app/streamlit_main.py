@@ -16,7 +16,7 @@ matplotlib.use('Agg')
 # "global.suppressWarning", "true",
 # "global.sharingMode", "off"]
 # add python path to the sys.path
-file_path = Path(__file__).parents[2]
+file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 # add python path to the sys.path
 
