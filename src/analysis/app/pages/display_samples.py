@@ -1,6 +1,6 @@
 import streamlit as st
 
-from src.experiments.experiment_preparation.dataset_scheme.analysis.create_plots.DataLoader import DataLoader
+from src.analysis.create_plots.DataLoader import DataLoader
 
 
 # Make sure your data_loader.py is accessible (e.g., same folder or a proper Python package).
@@ -19,11 +19,10 @@ def load_data(model_name=None, shots=None, max_samples=None):
     # dataset = load_dataset(self.dataset_name, split=self.split, max_samples=max_samples)
     # For brevity, let's assume you fetch the data as a DataFrame directly:
     # Here is a trivial example (replace with real huggingface logic).
-    shots_selected = 5
-    model_name = "allenai/OLMoE-1B-7B-0924-Instruct"
+
 
     data_loader = DataLoader()
-    df_partial = data_loader.load_and_process_data(model_name, shots_selected,
+    df_partial = data_loader.load_and_process_data(model_name, shots=shots,
                                                    max_samples=max_samples, drop=False)
 
     return df_partial

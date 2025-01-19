@@ -1,10 +1,8 @@
 import os
 
-from src.experiments.experiment_preparation.dataset_scheme.analysis.new.DataLoader import DataLoader
-from src.experiments.experiment_preparation.dataset_scheme.analysis.new.HammingDistanceClusterAnalyzerAxes import \
-    HammingDistanceClusterAnalyzerAxes
-from src.experiments.experiment_preparation.dataset_scheme.analysis.new.PromptConfigurationAnalyzerAxes import \
-    PromptConfigurationAnalyzerAxes
+from src.analysis.create_plots.DataLoader import DataLoader
+from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxes import HammingDistanceClusterAnalyzerAxes
+from src.analysis.create_plots.PromptConfigurationAnalyzerAxes import PromptConfigurationAnalyzerAxes
 
 
 def run_configuration_analysis() -> None:
