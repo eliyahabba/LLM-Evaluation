@@ -19,7 +19,6 @@ import requests
 from datasets import load_dataset
 from tqdm import tqdm
 
-from src.experiments.experiment_preparation.dataset_scheme.conversions.RunOutputMerger import RunOutputMerger
 from src.experiments.experiment_preparation.dataset_scheme.conversions.download_ibm_data import generate_file_names
 from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 from src.utils.Constants import Constants
@@ -111,7 +110,6 @@ class RunOutputMerger:
                 df.drop(columns=['raw_input'], inplace=True)
                 df = self._add_run_columns(df)
                 yield df
-            # eval(df.iloc[0]['run_model_args'])['model']'scores',['run_unitxt_recipe']'card','generated_text'
         except Exception as e:
             print(f"Error processing parquet file: {str(e)}")
             raise
