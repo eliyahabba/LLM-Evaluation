@@ -331,14 +331,13 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
     parquet_path = file_path
     logger.info(f"Processing file: {parquet_path}")
     processor = RunOutputMerger(parquet_path)
-    num_of_batches = 0
     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
     converter = Converter(models_metadata_path)
 
     # Create output path
     output_path = os.path.join(process_output_dir,
                                f"processed_{parquet_path.name}")
-    if os.path.exists(output_path) and False:
+    if os.path.exists(output_path):
         logger.info(f"Output file already exists: {output_path}")
         return
     logger.info(f"Output path: {output_path}")
@@ -473,7 +472,7 @@ if __name__ == "__main__":
     # List of URLs to download
     start_time = datetime(2025, 1, 11, 19, 0, tzinfo=pytz.UTC)
 
-    end_time = datetime(2025, 1, 12, 19, 0, tzinfo=pytz.UTC)
+    end_time = datetime(2025, 1, 13, 4, 0, tzinfo=pytz.UTC)
 
     files = generate_file_names(start_time, end_time)
     args.urls = [f"{main_path}{file}" for file in files]
