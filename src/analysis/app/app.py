@@ -467,11 +467,11 @@ def plot_heatmap(distance_matrix: pd.DataFrame, height=1600, width=1600):
         margin=dict(l=50, r=50, t=50, b=50)
     )
     return fig, """
-This heatmap shows how similar different configurations are to each other:
-- Each cell shows the Hamming distance between two configurations
-- Darker colors indicate configurations that are more similar
-- The diagonal is always darkest (each configuration is identical to itself)
-- This visualization helps identify clusters of similar configurations
+    This heatmap shows similarity between groups of configurations based on their majority vectors:
+ - Each cell shows the Hamming distance between majority vectors of two dimension values
+ - The majority vector for each dimension value is created by taking the most common bit (0/1) at each position across all configurations sharing that dimension value
+ - Darker colors indicate dimension values whose majority patterns are more similar
+ - The diagonal is always darkest (each dimension value's majority pattern is identical to itself)
 """
 
 
@@ -516,11 +516,11 @@ This scatter plot analyzes the impact of different {focus_dimension} choices:
 # ---------------------------------------------------------------------
 # Loaders for model, dataset, overall data
 # ---------------------------------------------------------------------
-def load_model_datasets(base_dir: Path):
-    """Load available models and their datasets from the given base_dir."""
-    models = {}
+def load_shots_models_datasets(base_dir: Path):
+    """Load available shots, models and their datasets from the given base_dir."""
+    hierarchy = {}  # shots -> model -> datasets
     if not os.path.isdir(base_dir):
-        return models
+        return hierarchy
 
     for shots_dir in os.listdir(base_dir):
         if not shots_dir.startswith("Shots_"):
@@ -529,22 +529,25 @@ def load_model_datasets(base_dir: Path):
         if not os.path.isdir(shots_path):
             continue
 
+        # Initialize shots level
+        shots_key = shots_dir.split("_")[-1]
+        hierarchy[shots_key] = {}
+
         for model in os.listdir(shots_path):
             model_path = os.path.join(shots_path, model)
             if not os.path.isdir(model_path):
                 continue
 
-            # Initialize if new model
-            if model not in models:
-                models[model] = set()
+            # Initialize model level
+            hierarchy[shots_key][model] = set()
 
             # Add datasets for this model
             for dataset in os.listdir(model_path):
                 dataset_path = os.path.join(model_path, dataset)
                 if os.path.isdir(dataset_path):
-                    models[model].add(dataset)
+                    hierarchy[shots_key][model].add(dataset)
 
-    return models
+    return hierarchy
 
 
 def load_data(base_dir, shots, model, dataset):
@@ -578,26 +581,32 @@ def main():
     st.sidebar.header("Settings")
 
     # Shot selection
-    shots_options = [0, 5]
-    selected_shots = st.sidebar.selectbox("Select Shots", shots_options)
-
     # Load available models/datasets
     results_dir = Path(__file__).parent / "results_local"
-    models_data = load_model_datasets(base_dir=results_dir)
-    if not models_data:
+    shots_models_data = load_shots_models_datasets(base_dir=results_dir)
+    if not shots_models_data:
         st.error("No data found in results_local directory.")
         return
 
+    # Shots selection
+    selected_shots = st.sidebar.selectbox(
+        "Select Number of Shots",
+        options=sorted(shots_models_data.keys())
+    )
+    if not selected_shots:
+        return
+
     # Model selection
+    models = sorted(shots_models_data[selected_shots].keys())
     selected_model = st.sidebar.selectbox(
         "Select Model",
-        options=sorted(models_data.keys())
+        options=models
     )
     if not selected_model:
         return
 
     # Dataset selection
-    datasets = sorted(models_data[selected_model])
+    datasets = sorted(shots_models_data[selected_shots][selected_model])
     selected_dataset = st.sidebar.selectbox(
         "Select Dataset",
         options=datasets
