@@ -189,7 +189,7 @@ class PromptConfigurationAnalyzerAxes:
 
             # Save plot
             output_fig_file = os.path.join(dataset_dir, "prompt_configuration_analyzer.html")
-            fig.write_html(output_fig_file)
+            # fig.write_html(output_fig_file)
 
             # Save data as parquet
             output_parquet_file = os.path.join(dataset_dir, "prompt_configuration_analyzer.parquet")
@@ -390,9 +390,9 @@ class PromptConfigurationAnalyzerAxes:
             )
 
             # Save the figure as an HTML file
-            output_fig_file = os.path.join(dimension_dir, f"{focus_column}_{metric}_analysis.html")
-            fig.write_html(output_fig_file)
+            output_fig_file = os.path.join(dimension_dir, f"prompt_configuration_analyzer.html")
+            # fig.write_html(output_fig_file)
 
             # Also save the entire dimension DataFrame subset to Parquet
-            output_parquet_file = os.path.join(dimension_dir, f"{focus_column}_analysis.parquet")
+            output_parquet_file = os.path.join(dimension_dir, f"prompt_configuration_analyzer.parquet")
             dim_df_subset.to_parquet(output_parquet_file, index=False)

@@ -136,11 +136,11 @@ class HammingDistanceClusterAnalyzerAxes:
         plt.setp(ax.get_xticklabels(), rotation=70, ha="right", rotation_mode="anchor")
         plt.setp(ax.get_yticklabels(), rotation=0)
 
-        heatmap_file = os.path.join(dataset_dir, "hamming_distance_heatmap.png")
-        plt.tight_layout()
-        plt.savefig(heatmap_file, dpi=300, bbox_inches='tight')
-        plt.close()
-        print(f"Saved heatmap to: {heatmap_file}")
+        # heatmap_file = os.path.join(dataset_dir, "hamming_distance_heatmap.png")
+        # plt.tight_layout()
+        # plt.savefig(heatmap_file, dpi=300, bbox_inches='tight')
+        # plt.close()
+        # print(f"Saved heatmap to: {heatmap_file}")
 
         # Save matrix to parquet
         data_output_path = os.path.join(dataset_dir, "hamming_distance_matrix.parquet")
@@ -261,14 +261,14 @@ class HammingDistanceClusterAnalyzerAxes:
         plt.setp(ax.get_yticklabels(), rotation=0)
 
         # Save figure
-        heatmap_file = os.path.join(dim_subdir, f"hamming_distance_heatmap_{dim_name}.png")
-        plt.tight_layout()
-        plt.savefig(heatmap_file, dpi=300, bbox_inches='tight')
-        plt.close()
-        print(f"Saved {dim_name} dimension heatmap to: {heatmap_file}")
+        # heatmap_file = os.path.join(dim_subdir, f"hamming_distance_heatmap.png")
+        # plt.tight_layout()
+        # plt.savefig(heatmap_file, dpi=300, bbox_inches='tight')
+        # plt.close()
+        # print(f"Saved {dim_name} dimension heatmap to: {heatmap_file}")
 
         # Save matrix to parquet
-        data_output_path = os.path.join(dim_subdir, f"hamming_distance_matrix_{dim_name}.parquet")
+        data_output_path = os.path.join(dim_subdir, f"hamming_distance_matrix.parquet")
         dist_df = pd.DataFrame(distance_matrix, index=dim_ids, columns=dim_ids)
         dist_df.to_parquet(data_output_path)
         print(f"Saved {dim_name} dimension distance matrix to: {data_output_path}")
