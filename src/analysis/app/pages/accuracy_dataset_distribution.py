@@ -430,7 +430,7 @@ def main():
         num_datasets = st.slider(
             "Number of random datasets to compare",
             min_value=2,
-            max_value=10,
+            max_value=30,
             value=5
         )
 
