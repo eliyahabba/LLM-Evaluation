@@ -366,7 +366,7 @@ def generate_model_dataset_comparison(config_data_all_models, shots_selected, nu
             fig.add_annotation(
                 x=model_name,
                 y=0,  # Adjusted to align at the bottom of the graph
-                text=f"n={count}",
+                text=f"number of configurations: {count}",
                 showarrow=False,
                 yanchor='top',
                 font=dict(size=10)
