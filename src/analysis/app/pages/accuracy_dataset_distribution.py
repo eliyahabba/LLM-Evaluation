@@ -4,9 +4,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
-from matplotlib import pyplot as plt
 
 st.set_page_config(layout="wide")
 
@@ -191,6 +189,8 @@ def generate_model_performance_comparison(
     #     )
 
     return fig
+
+
 # Add this at the beginning of your app.py, right after the imports:
 def add_description_style():
     st.markdown("""
@@ -220,8 +220,9 @@ def load_data_all_datasets(base_dir, shots, model):
 
 
 def generate_model_performance_comparison_all_datasets(config_data_all_models, shots_selected):
-    min_num_of_configurations = st.radio("Minimum sample threshold per configuration (configurations must meet this threshold when counting samples across all datasets combined)",
-                                         [100, 500, 1000, 1500, 2000, 2500, 3000], index=1)
+    min_num_of_configurations = st.radio(
+        "Minimum sample threshold per configuration (configurations must meet this threshold when counting samples across all datasets combined)",
+        [100, 500, 1000, 1500, 2000, 2500, 3000], index=1)
     all_dataset_statistics = []
     for model, config_data in config_data_all_models.items():
         # Filter by minimum configurations
@@ -289,9 +290,90 @@ def generate_model_performance_comparison_all_datasets(config_data_all_models, s
         error_x=dict(color='gray', thickness=1.5)
     )
     return fig
-    # new:
-    # Create boxplot
 
+
+def generate_model_dataset_comparison(config_data_all_models, shots_selected, num_datasets=5):
+    """
+    Generate box plots comparing models across randomly selected datasets.
+    """
+    # Prepare data for plotting
+    plot_data = []
+
+    # Get all unique datasets
+    all_datasets = set()
+    for model, data in config_data_all_models.items():
+        all_datasets.update(data['dataset'].unique())
+
+    # Randomly select datasets
+    selected_datasets = np.random.choice(list(all_datasets), min(num_datasets, len(all_datasets)), replace=False)
+
+    # Prepare data for selected datasets
+    for model, data in config_data_all_models.items():
+        filtered_data = data[data['dataset'].isin(selected_datasets)]
+        for _, row in filtered_data.iterrows():
+            plot_data.append({
+                'model': model.split('_')[-1],  # Clean model name
+                'dataset': row['dataset'],
+                'accuracy': row['accuracy']
+            })
+
+    plot_df = pd.DataFrame(plot_data)
+
+    # Create a figure for each dataset
+    figs = []
+    for dataset in selected_datasets:
+        # Filter data for the current dataset
+        dataset_data = plot_df[plot_df['dataset'] == dataset]
+
+        # Count samples per model
+        model_counts = dataset_data['model'].value_counts().to_dict()
+
+        # Create a box plot for the current dataset
+        fig = px.box(
+            dataset_data,
+            x='model',
+            y='accuracy',
+            title=f'Model Performance Comparison: {dataset}',
+            labels={
+                'model': 'Model',
+                'accuracy': 'Accuracy'
+            },
+        )
+
+        # Update layout
+        fig.update_layout(
+            plot_bgcolor='white',
+            width=1000,
+            height=500,
+            title_x=0.5,
+            margin=dict(l=50, r=50, t=50, b=150),
+            xaxis=dict(
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='lightgray',
+                zeroline=False,
+                tickangle=45
+            ),
+            yaxis=dict(
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='lightgray',
+                zeroline=False,
+                range=[0, 1]
+            ),
+        )
+        for model_name, count in model_counts.items():
+            fig.add_annotation(
+                x=model_name,
+                y=0,  # Adjusted to align at the bottom of the graph
+                text=f"n={count}",
+                showarrow=False,
+                yanchor='top',
+                font=dict(size=10)
+            )
+        figs.append(fig)
+
+    return figs
 
 def main():
     st.title("Model Configuration Analysis Viewer")
@@ -314,7 +396,7 @@ def main():
     if not selected_shots:
         return
     # create 2 tabs
-    tabs = st.tabs(["Model Performance", "Model Performance Split by Dataset"])
+    tabs = st.tabs(["Model Performance", "Model Performance Split by Dataset", "Performance Comparison Across Models"])
     # Model selection
     models = sorted(shots_models_data[selected_shots].keys())
     with tabs[0]:
@@ -329,9 +411,10 @@ def main():
         )
         st.plotly_chart(fig, use_container_width=True)
 
-
+    config_data_all_models_by_dataset = {}
     for model in models:
         config_data = load_data(results_dir, selected_shots, model)
+        config_data_all_models_by_dataset[model] = config_data
         fig = generate_model_performance_comparison(
             dataset_statistics=config_data,
             model_name=model,
@@ -342,7 +425,24 @@ def main():
         for fig in figs:
             st.plotly_chart(fig, use_container_width=True)
 
+    with tabs[2]:
+        # Add dataset count selector
+        num_datasets = st.slider(
+            "Number of random datasets to compare",
+            min_value=2,
+            max_value=10,
+            value=5
+        )
 
+        # Generate and show the plot
+        figs = generate_model_dataset_comparison(
+            config_data_all_models=config_data_all_models_by_dataset,
+            shots_selected=selected_shots,
+            num_datasets=num_datasets
+        )
+        # Display each figure separately
+        for fig in figs:
+            st.plotly_chart(fig, use_container_width=False)
 
 
 if __name__ == "__main__":
