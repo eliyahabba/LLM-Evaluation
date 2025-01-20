@@ -22,42 +22,20 @@ def load_dimension_data(base_dir, shots, model, dataset, dimension):
     """
     model_dir = os.path.join(base_dir, f"Shots_{shots}", model)
     dimension_dir = os.path.join(model_dir, dataset, dimension)
-    data_path = os.path.join(dimension_dir, f"{dimension}_analysis.parquet")
 
-    if os.path.exists(data_path):
-        return pd.read_parquet(data_path)
-    return None
+    data_path = os.path.join(dimension_dir, f"prompt_configuration_analyzer.parquet")
+    config_data = pd.read_parquet(data_path) if os.path.exists(data_path) else None
 
+    # Load distance matrix (quad-based)
+    matrix_path = os.path.join(dimension_dir, "hamming_distance_matrix.parquet")
+    distance_matrix = pd.read_parquet(matrix_path) if os.path.exists(matrix_path) else None
 
-def load_dimension_distance_matrix(base_dir, shots, model, dataset, dimension):
-    """
-    Load the dimension-based Hamming distance matrix Parquet file.
-    Assumes it's located under:
-       {base_dir}/Shots_{shots}/{model}/{dataset}/{dimension}/hamming_distance_matrix_{dimension}.parquet
-    """
-    model_dir = os.path.join(base_dir, f"Shots_{shots}", model)
-    dimension_dir = os.path.join(model_dir, dataset, dimension)
-    dist_path = os.path.join(dimension_dir, f"hamming_distance_matrix_{dimension}.parquet")
+    # Load samples data
+    samples_path = os.path.join(dimension_dir, "samples_accuracy.parquet")
+    samples_data = pd.read_parquet(samples_path) if os.path.exists(samples_path) else None
 
-    if os.path.exists(dist_path):
-        return pd.read_parquet(dist_path)
-    return None
+    return config_data, distance_matrix, samples_data
 
-
-
-def load_dimension_sample_accuracy(base_dir, shots, model, dataset, dimension):
-    """
-    Load the dimension-based Hamming distance matrix Parquet file.
-    Assumes it's located under:
-       {base_dir}/Shots_{shots}/{model}/{dataset}/{dimension}/hamming_distance_matrix_{dimension}.parquet
-    """
-    model_dir = os.path.join(base_dir, f"Shots_{shots}", model)
-    dimension_dir = os.path.join(model_dir, dataset, dimension)
-    dist_path = os.path.join(dimension_dir, f"samples_accuracy.parquet")
-
-    if os.path.exists(dist_path):
-        return pd.read_parquet(dist_path)
-    return None
 
 # ---------------------------------------------------------------------
 # Plotting functions
@@ -82,6 +60,7 @@ def add_description_style():
         </style>
     """, unsafe_allow_html=True)
 
+
 def description_box(title: str, description: str):
     """
     Creates a styled description box with a title and description text.
@@ -94,33 +73,6 @@ def description_box(title: str, description: str):
 
 
 def plot_accuracy_distribution(config_data: pd.DataFrame, x_column="accuracy"):
-    """Create and return a histogram of accuracy values with clear descriptions."""
-    fig = px.histogram(
-        config_data,
-        x=x_column,
-        nbins=30,
-        title="Distribution of Configuration Accuracies"
-    )
-    fig.update_layout(
-        xaxis_title="Accuracy Score (0-1)",
-        yaxis_title="Number of Configurations",
-        title={
-            'text': "Distribution of Configuration Accuracies<br><sup>Shows how many configurations achieve each accuracy level</sup>",
-            'y': 0.95,
-            'x': 0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'
-        }
-    )
-    return fig, """
-This histogram shows how many configurations achieve different accuracy levels. 
-- The x-axis shows the accuracy score from 0 (0%) to 1 (100%)
-- The y-axis shows how many different configurations achieved that accuracy level
-- Taller bars indicate more configurations achieved that accuracy level
-"""
-
-
-def plot_accuracy_distribution_new(config_data: pd.DataFrame, x_column="accuracy"):
     """
     Create a histogram showing the distribution of configuration accuracies with improved styling.
     Values are displayed as percentages (0-100).
@@ -188,7 +140,8 @@ This histogram shows the distribution of accuracy scores across different config
 - Numbers above bars indicate the exact count of configurations
 """
 
-def plot_accuracy_distribution2(config_data: pd.DataFrame, x_column="accuracy"):
+
+def plot_accuracy_distribution_dim(config_data: pd.DataFrame, x_column="accuracy"):
     """Create a bar chart of accuracy values with configuration counts."""
     grouped_data = config_data.groupby('quad').agg({
         x_column: 'mean',
@@ -267,29 +220,7 @@ This scatter plot shows detailed performance for each configuration:
 """
 
 
-
 def plot_histogram(data: pd.DataFrame, column: str, title: str):
-    # convert the fraction_correct to percentage
-
-    fig = px.histogram(
-        data,
-        x=column,
-        nbins=20,
-        title=title,
-        labels={column: "Fraction Correct"}
-    )
-    fig.update_layout(
-        xaxis=dict(range=[0, 100]),
-        yaxis_title="Count of Questions",
-    )
-    return fig, f"""
-This histogram shows the distribution of the fraction correct (in percentages) for each question:
-- The x-axis shows the fraction correct across all the configurations for one sample
-- The y-axis shows the number of samples that fall into each bin
-"""
-
-
-def plot_histogram2(data: pd.DataFrame, column: str, title: str):
     """
     Plot a histogram of fraction correct with improved styling.
 
@@ -355,6 +286,7 @@ This histogram shows the distribution of the fraction correct (in percentages) a
 - Numbers above bars indicate the exact count in each bin
 """
 
+
 def plot_square_heatmap(data: pd.DataFrame, axis_name: str, title: str, height=800, width=400):
     """
     Create an interactive heatmap where each cell is a square, and values are displayed in percentages.
@@ -387,7 +319,7 @@ def plot_square_heatmap(data: pd.DataFrame, axis_name: str, title: str, height=8
         colorbar=dict(
             title="Fraction Correct (%)",
             len=0.9,  # Make colorbar shorter than plot height
-            y=0.5,    # Center the colorbar
+            y=0.5,  # Center the colorbar
             yanchor='middle'
         ),
     ))
@@ -436,8 +368,42 @@ def plot_square_heatmap(data: pd.DataFrame, axis_name: str, title: str, height=8
     - The aspect ratio ensures each cell is a square for better readability.
     """
     return fig, description
-def plot_heatmap(distance_matrix: pd.DataFrame, height=1600, width=1600):
+
+
+def plot_distance_heatmap(distance_matrix, threshold=0.2):
+    """
+    Plot interactive heatmap of configuration pairs based on Hamming distance.
+
+    Args:
+        distance_matrix: pandas DataFrame with Hamming distances (0=identical, 1=completely different)
+        threshold: distance threshold (default: 0.2)
+        show_similar: if True, show pairs with distance below threshold (default: True)
+    """
+    # Get upper triangle indices and values (excluding diagonal)
+    rows, cols = np.triu_indices_from(distance_matrix.values, k=1)
+    distances = distance_matrix.values[rows, cols]
+
+    # Filter by threshold (lower distance = more similar)
+    mask = distances <= threshold
+    filtered_rows = rows[mask]
+    filtered_cols = cols[mask]
+
+    if len(filtered_rows) == 0:
+        return
+
+    # Get unique indices for filtered pairs
+    unique_indices = sorted(set(filtered_rows) | set(filtered_cols))
+    filtered_matrix = distance_matrix.iloc[unique_indices, unique_indices]
+    return filtered_matrix
+
+
+def plot_heatmap(distance_matrix: pd.DataFrame, threshold=1., height=1600, width=1600):
     """Create an interactive heatmap showing configuration similarities."""
+    distance_matrix = plot_distance_heatmap(distance_matrix, threshold=threshold)
+    if distance_matrix is None:
+        st.warning("No pairs found matching the criteria")
+        return None, ""
+
     config_labels = distance_matrix.columns.tolist()
 
     fig = go.Figure(data=go.Heatmap(
@@ -472,44 +438,6 @@ def plot_heatmap(distance_matrix: pd.DataFrame, height=1600, width=1600):
  - The majority vector for each dimension value is created by taking the most common bit (0/1) at each position across all configurations sharing that dimension value
  - Darker colors indicate dimension values whose majority patterns are more similar
  - The diagonal is always darkest (each dimension value's majority pattern is identical to itself)
-"""
-
-
-def plot_dimension_scatter(dimension_data: pd.DataFrame, y_column: str, focus_dimension: str):
-    """Create a scatter plot for dimension-based analysis."""
-    metric_name = y_column.replace('_', ' ').title()
-
-    fig = px.scatter(
-        dimension_data,
-        x="quad",
-        y=y_column,
-        text="combination_count",
-        labels={
-            "quad": f"{focus_dimension.title()} Configuration",
-            y_column: f"{metric_name} (0-1)"
-        },
-        title=f"Performance Analysis by {focus_dimension.title()}"
-    )
-
-    fig.update_traces(textposition="top center")
-    fig.update_layout(
-        xaxis=dict(tickangle=45),
-        yaxis=dict(range=[0, 1.05]),
-        title={
-            'text': f"Performance Analysis by {focus_dimension.title()}<br><sup>Shows how each {focus_dimension} option performs across all other settings</sup>",
-            'y': 0.95,
-            'x': 0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'
-        }
-    )
-    return fig, f"""
-This scatter plot analyzes the impact of different {focus_dimension} choices:
-- Each point represents a specific {focus_dimension} option
-- The y-axis shows the {metric_name.lower()} (0-1 scale)
-- The number above each point shows how many different combinations were tested
-- Higher points indicate better performing {focus_dimension} options
-- Points with higher numbers were tested in more combinations, making their results more reliable
 """
 
 
@@ -615,7 +543,8 @@ def main():
         return
 
     # Load the "quad"-level data
-    config_data, distance_matrix, samples_data = load_data(results_dir, selected_shots, selected_model, selected_dataset)
+    config_data, distance_matrix, samples_data = load_data(results_dir, selected_shots, selected_model,
+                                                           selected_dataset)
 
     # Create tabs: "All Data" + 4 dimension tabs
     columns_to_analyze = ["template", "separator", "enumerator", "choices_order"]
@@ -630,7 +559,7 @@ def main():
 
         if config_data is not None and not config_data.empty:
             st.subheader(f"Accuracy Distribution - {len(config_data)} configurations")
-            fig_accuracy, acc_desc = plot_accuracy_distribution_new(config_data)
+            fig_accuracy, acc_desc = plot_accuracy_distribution(config_data)
             st.plotly_chart(fig_accuracy, use_container_width=False)
             description_box("Understanding the Accuracy Distribution", acc_desc)
 
@@ -644,16 +573,19 @@ def main():
         # Quad-level distance matrix
         if distance_matrix is not None and not distance_matrix.empty:
             st.subheader(f"Hamming Distance Matrix - Quad")
-            fig_quad_heatmap, heatmap_desc = plot_heatmap(distance_matrix)
-            st.plotly_chart(fig_quad_heatmap, use_container_width=True)
-            description_box("Understanding the Hamming Distance Matrix", heatmap_desc)
+            threshold = st.slider("Distance Threshold", min_value=0.0, max_value=1.0, value=1., step=0.05)
+            fig_quad_heatmap, heatmap_desc = plot_heatmap(distance_matrix, threshold=threshold)
+            if fig_quad_heatmap is not None:
+                st.plotly_chart(fig_quad_heatmap, use_container_width=True)
+                description_box("Understanding the Hamming Distance Matrix", heatmap_desc)
+
         else:
             st.warning("No quad-level distance matrix available.")
 
         if samples_data is not None and not samples_data.empty:
             st.subheader("Samples Accuracy Data")
-            fig_dim_samples_hist, dim_samples_hist_desc = plot_histogram2(samples_data, "fraction_correct",
-                                                                        "Fraction Correct by Sample")
+            fig_dim_samples_hist, dim_samples_hist_desc = plot_histogram(samples_data, "fraction_correct",
+                                                                         "Fraction Correct by Sample")
             st.plotly_chart(fig_dim_samples_hist, use_container_width=False)
             description_box(f"Understanding the Samples Histogram", dim_samples_hist_desc)
 
@@ -664,42 +596,41 @@ def main():
         with tabs[i]:
             st.header(f"Dimension: {dimension.title()} - {selected_dataset}")
 
-            dimension_data = load_dimension_data(results_dir, selected_shots, selected_model, selected_dataset,
-                                                 dimension)
-            if dimension_data is not None and not dimension_data.empty:
+            config_data, distance_matrix, samples_data = load_dimension_data(results_dir, selected_shots,
+                                                                             selected_model, selected_dataset,
+                                                                             dimension)
+            if config_data is not None and not config_data.empty:
                 st.subheader(f"{dimension.title()} Accuracy Data (Mean/Median)")
 
                 col1, col2 = st.columns(2)
                 with col1:
                     st.subheader("Mean Accuracy")
-                    fig_accuracy, mean_desc = plot_accuracy_distribution2(dimension_data, x_column="mean_accuracy")
+                    fig_accuracy, mean_desc = plot_accuracy_distribution_dim(config_data, x_column="mean_accuracy")
                     st.plotly_chart(fig_accuracy, use_container_width=True)
                     description_box(f"Understanding Mean Accuracy for {dimension.title()}", mean_desc)
 
                 with col2:
                     st.subheader("Median Accuracy")
-                    fig_accuracy, median_desc = plot_accuracy_distribution2(dimension_data, x_column="median_accuracy")
+                    fig_accuracy, median_desc = plot_accuracy_distribution_dim(config_data, x_column="median_accuracy")
                     st.plotly_chart(fig_accuracy, use_container_width=True)
                     description_box(f"Understanding Median Accuracy for {dimension.title()}", median_desc)
             else:
                 st.warning(f"No {dimension.title()} dimension accuracy data available.")
 
-            dim_dist_matrix = load_dimension_distance_matrix(results_dir, selected_shots, selected_model,
-                                                             selected_dataset, dimension)
-            if dim_dist_matrix is not None and not dim_dist_matrix.empty:
+            if distance_matrix is not None and not distance_matrix.empty:
                 st.subheader(f"Hamming Distance Matrix - {dimension.title()}")
-                fig_dim_heatmap, dim_heatmap_desc = plot_heatmap(dim_dist_matrix, height=800, width=800)
-                st.plotly_chart(fig_dim_heatmap, use_container_width=True)
-                description_box(f"Understanding the {dimension.title()} Hamming Distance Matrix", dim_heatmap_desc)
+                fig_dim_heatmap, dim_heatmap_desc = plot_heatmap(distance_matrix, height=800, width=800)
+                if fig_dim_heatmap is not None:
+                    st.plotly_chart(fig_dim_heatmap, use_container_width=True)
+                    description_box(f"Understanding the {dimension.title()} Hamming Distance Matrix", dim_heatmap_desc)
             else:
                 st.warning(f"No {dimension.title()} dimension distance matrix available.")
 
-            dim_sample_accuracy = load_dimension_sample_accuracy(results_dir, selected_shots, selected_model,
-                                                                selected_dataset, dimension)
-            if dim_sample_accuracy is not None and not dim_sample_accuracy.empty:
+            if samples_data is not None and not samples_data.empty:
                 st.subheader(f"Samples Accuracy Data - {dimension.title()}")
-                fig_dim_samples_hist, dim_samples_hist_desc = plot_square_heatmap(dim_sample_accuracy, dimension,     title="Square Heatmap of Fraction Correct by Template"
-)
+                fig_dim_samples_hist, dim_samples_hist_desc = plot_square_heatmap(samples_data, dimension,
+                                                                                  title="Square Heatmap of Fraction Correct by Template"
+                                                                                  )
                 st.plotly_chart(fig_dim_samples_hist, use_container_width=False)
                 description_box(f"Understanding the {dimension.title()} Samples Histogram", dim_samples_hist_desc)
 
