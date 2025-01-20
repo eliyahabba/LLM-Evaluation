@@ -14,6 +14,7 @@ from multiprocessing import Pool, cpu_count, Manager
 from pathlib import Path
 
 import requests
+from huggingface_hub import HfFileSystem
 from tqdm import tqdm
 
 from config.get_config import Config
@@ -140,10 +141,13 @@ if __name__ == "__main__":
     # List of URLs to download
     start_time = datetime(2025, 1, 11, 19, 0, tzinfo=pytz.UTC)
 
-    end_time = datetime(2025, 1, 13, 7, 0, tzinfo=pytz.UTC)
+    end_time = datetime(2025, 1, 15, 7, 0, tzinfo=pytz.UTC)
+    fs = HfFileSystem()
 
-    files = generate_file_names(start_time, end_time)
-    args.urls = [f"{main_path}{file}" for file in files]
+    existing_files = fs.ls(f"datasets/OfirArviv/HujiCollabOutput", detail=False)
+    existing_files= [file.split("/")[-1] for file in existing_files if file.endswith('.parquet')]
+    # files = generate_file_names(start_time, end_time)
+    args.urls = [f"{main_path}{file}" for file in existing_files]
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), urls=args.urls, repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
 
