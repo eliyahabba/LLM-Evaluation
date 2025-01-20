@@ -1,4 +1,7 @@
 import os
+from multiprocessing import Pool, Manager
+
+from tqdm import tqdm
 
 from src.analysis.create_plots.DataLoader import DataLoader
 from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxes import HammingDistanceClusterAnalyzerAxes
@@ -6,9 +9,54 @@ from src.analysis.create_plots.PromptConfigurationAnalyzerAxes import PromptConf
 from src.analysis.create_plots.PromptQuestionAnalyzer import PromptQuestionAnalyzer
 
 
-def run_configuration_analysis() -> None:
+def process_configuration(params):
     """
-    Run the main analysis pipeline for evaluating prompt configurations
+    Process a single configuration of model and shots count
+    """
+    model_name, shots_selected, interesting_datasets, base_results_dir = params
+
+    print(f"Processing model: {model_name} with {shots_selected} shots")
+
+    data_loader = DataLoader()
+    analyzer = PromptConfigurationAnalyzerAxes()
+    hamming = HammingDistanceClusterAnalyzerAxes()
+    prompt_question_analyzer = PromptQuestionAnalyzer()
+
+    # Load data for current configuration
+    df_partial = data_loader.load_and_process_data(model_name, shots_selected)
+    if shots_selected == 5:
+        df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
+
+    filtered_datasets = analyzer.process_and_visualize_configurations(
+        df=df_partial,
+        model_name=model_name,
+        shots_selected=shots_selected,
+        interesting_datasets=interesting_datasets,
+        base_results_dir=base_results_dir
+    )
+
+    interesting_datasets = list(filtered_datasets)
+
+    hamming.perform_clustering_for_model(
+        df=df_partial,
+        model_name=model_name,
+        shots_selected=shots_selected,
+        interesting_datasets=interesting_datasets,
+        base_results_dir=base_results_dir
+    )
+
+    prompt_question_analyzer.process_and_visualize_questions(
+        df=df_partial,
+        model_name=model_name,
+        shots_selected=shots_selected,
+        interesting_datasets=interesting_datasets,
+        base_results_dir=base_results_dir
+    )
+
+
+def run_configuration_analysis(num_processes=1) -> None:
+    """
+    Run the main analysis pipeline in parallel for evaluating prompt configurations
     across different models and shot counts.
     """
     # Configuration parameters
@@ -28,52 +76,25 @@ def run_configuration_analysis() -> None:
         "social_iqa"
     ]
 
-    # Initialize components
-    data_loader = DataLoader()
-    analyzer = PromptConfigurationAnalyzerAxes()
-    hamming = HammingDistanceClusterAnalyzerAxes()
-    prompt_question_analyzer = PromptQuestionAnalyzer()
     # Setup results directory
     base_results_dir = "../app/results_local"
     os.makedirs(base_results_dir, exist_ok=True)
 
-    # Process each combination of shots and models
-    for shots_selected in shots_to_evaluate:
-        print(f"\nProcessing configurations with {shots_selected} shots\n")
+    # Create parameter combinations for parallel processing
+    params_list = [
+        (model_name, shots_selected, interesting_datasets, base_results_dir)
+        for shots_selected in shots_to_evaluate
+        for model_name in models_to_evaluate
+    ]
 
-        for model_name in models_to_evaluate:
-            print(f"Processing model: {model_name}")
+    with Manager() as manager:
+        with Pool(processes=num_processes) as pool:
+            list(tqdm(
+                pool.imap_unordered(process_configuration, params_list),
+                total=len(params_list),
+                desc="Processing configurations"
+            ))
 
-            # Load data for current configuration
-            df_partial = data_loader.load_and_process_data(model_name, shots_selected)
-
-            # Analyze and visualize results
-
-            filtered_datasets = analyzer.process_and_visualize_configurations(
-                df=df_partial,
-                model_name=model_name,
-                shots_selected=shots_selected,
-                interesting_datasets=interesting_datasets,
-                base_results_dir=base_results_dir
-            )
-            # Analyze and visualize results
-            interesting_datasets = list(filtered_datasets)
-
-            hamming.perform_clustering_for_model(
-                df=df_partial,
-                model_name=model_name,
-                shots_selected=shots_selected,
-                interesting_datasets=interesting_datasets,
-                base_results_dir=base_results_dir
-            )
-
-            prompt_question_analyzer.process_and_visualize_questions(
-                df=df_partial,
-                model_name=model_name,
-                shots_selected=shots_selected,
-                interesting_datasets=interesting_datasets,
-                base_results_dir=base_results_dir
-            )
 
 if __name__ == "__main__":
-    run_configuration_analysis()
+    run_configuration_analysis(num_processes=16)
