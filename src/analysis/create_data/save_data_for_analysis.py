@@ -6,6 +6,7 @@ import shutil
 import tempfile
 import time
 from datetime import datetime
+from difflib import get_close_matches
 from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
 from pathlib import Path
@@ -106,6 +107,7 @@ class RunOutputMerger:
                 # eval on the raw_input column, and next take only task_data key
                 df['question'] = df['raw_input'].apply(lambda x: eval(x)['task_data']).apply(lambda x: eval(x)['question'
                 if 'question' in x else 'context'])
+                df['options'] =  df['raw_input'].apply(lambda x: eval(x)['task_data']).apply(lambda x: eval(x)['options'])
                 # drop the raw_input column
                 df.drop(columns=['raw_input'], inplace=True)
                 df = self._add_run_columns(df)
@@ -274,8 +276,8 @@ class Converter:
         map_file_name = recipe['card'].split('.')[1]
         if map_file_name == "ai2_arc":
             map_file_name = recipe['card'].split('.')[1]
-        current_dir = Path(__file__).parents[1] / "conversions"
-        map_file_path = current_dir / "hf_map_data" / f"{map_file_name}_samples.json"
+        current_dir = Path(__file__).parents[2]
+        map_file_path = current_dir / "experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
         if map_file_name in self._index_map_cache:
             index_map = self._index_map_cache[map_file_name]
         else:
@@ -284,6 +286,15 @@ class Converter:
             self._index_map_cache[map_file_name] = index_map
         return index_map[row['question']]['index']
 
+    def get_closest_answer(self,answer, options):
+        ai_answer = answer.strip().split("\n")
+        ai_answer = ai_answer[0].strip()
+        return get_close_matches(ai_answer, options, n=1, cutoff=0.0)[0]
+
+    def process_row(self, row_data: pd.Series) -> str:
+        choices = row_data['options']
+        generated_answer = row_data['generated_text']
+        return self.get_closest_answer(generated_answer, choices)
 
     def convert_dataframe(self, df: pd.DataFrame):
         """Convert entire DataFrame using vectorized operations."""
@@ -308,9 +319,9 @@ class Converter:
             .rename(columns={0: 'ground_truth', 1: 'score'})
 
         dataset = recipes.str['card'].str.split('.').str[1:].str.join('.').rename('dataset')
-
-
-
+        # run get_closest_answer on 2 columns : generated_text and options and crate a new column with the result
+        closest_answer = df.apply(self.process_row, axis=1)
+        closest_answer.name = 'closest_answer'
         # Combine all sections
         return pd.concat([
             index_map,
@@ -318,6 +329,7 @@ class Converter:
             dataset,
             prompt_sections,
             output_sections,
+            closest_answer,
             eval_sections
         ], axis=1)
 
@@ -463,6 +475,9 @@ if __name__ == "__main__":
     if not os.path.exists(process_output_dir):
         process_output_dir = "/Users/ehabba/ibm_results_data_full_processed"
         os.makedirs(process_output_dir, exist_ok=True)
+    if not os.path.exists(args.output_dir):
+        args.output_dir = "/Users/ehabba/ibm_results_data_full"
+        os.makedirs(args.output_dir, exist_ok=True)
 
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
@@ -480,10 +495,10 @@ if __name__ == "__main__":
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T00%3A00%3A00%2B00%3A00_2025-01-10T10%3A00%3A00%2B00%3A00.parquet",
         "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T11%3A00%3A00%2B00%3A00_2025-01-10T13%3A00%3A00%2B00%3A00.parquet",
     ]
-    # args.output_dir = "/Users/ehabba/Downloads/"
-    # args.urls = ["tmp/data_2025-01.parquet"]
-    # process_output_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_output_dir"
-    # os.makedirs(process_output_dir, exist_ok=True)
+    args.output_dir = "/Users/ehabba/Downloads/"
+    args.urls = ["/Users/ehabba/Downloads/data_2025-01.parquet"]
+    process_output_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_output_dir"
+    os.makedirs(process_output_dir, exist_ok=True)
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), process_output_dir=process_output_dir,
                                        urls=args.urls,
                                        scheme_files_dir=args.scheme_files_dir)
