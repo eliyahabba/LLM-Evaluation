@@ -3,6 +3,7 @@ import os
 from src.analysis.create_plots.DataLoader import DataLoader
 from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxes import HammingDistanceClusterAnalyzerAxes
 from src.analysis.create_plots.PromptConfigurationAnalyzerAxes import PromptConfigurationAnalyzerAxes
+from src.analysis.create_plots.PromptQuestionAnalyzer import PromptQuestionAnalyzer
 
 
 def run_configuration_analysis() -> None:
@@ -31,8 +32,9 @@ def run_configuration_analysis() -> None:
     data_loader = DataLoader()
     analyzer = PromptConfigurationAnalyzerAxes()
     hamming = HammingDistanceClusterAnalyzerAxes()
+    prompt_question_analyzer = PromptQuestionAnalyzer()
     # Setup results directory
-    base_results_dir = "results_local"
+    base_results_dir = "../app/results_local"
     os.makedirs(base_results_dir, exist_ok=True)
 
     # Process each combination of shots and models
@@ -46,8 +48,7 @@ def run_configuration_analysis() -> None:
             df_partial = data_loader.load_and_process_data(model_name, shots_selected)
 
             # Analyze and visualize results
-            # datasets = ['hellaswag']
-            # interesting_datasets = datasets
+
             filtered_datasets = analyzer.process_and_visualize_configurations(
                 df=df_partial,
                 model_name=model_name,
@@ -56,16 +57,23 @@ def run_configuration_analysis() -> None:
                 base_results_dir=base_results_dir
             )
             # Analyze and visualize results
+            interesting_datasets = list(filtered_datasets)
 
-            datasets = list(filtered_datasets)
             hamming.perform_clustering_for_model(
                 df=df_partial,
                 model_name=model_name,
                 shots_selected=shots_selected,
-                interesting_datasets=datasets,
+                interesting_datasets=interesting_datasets,
                 base_results_dir=base_results_dir
             )
 
+            prompt_question_analyzer.process_and_visualize_questions(
+                df=df_partial,
+                model_name=model_name,
+                shots_selected=shots_selected,
+                interesting_datasets=interesting_datasets,
+                base_results_dir=base_results_dir
+            )
 
 if __name__ == "__main__":
     run_configuration_analysis()
