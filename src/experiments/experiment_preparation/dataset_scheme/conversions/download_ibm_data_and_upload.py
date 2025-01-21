@@ -26,7 +26,8 @@ if __name__ == "__main__":
     existing_files = fs.ls(f"datasets/eliyahabba/llm-evaluation-ibm", detail=False)
     existing_files = [file.split("/")[-1] for file in existing_files if file.endswith('.parquet')]
 
-    args.urls = [f"{main_path}{file}" for file in existing_files if file not in os.listdir(args.input_dir)]
+    args.urls = [file for file in os.listdir(args.input_dir) if file not in existing_files]
+    print(len(args.urls))
     print(args.urls)
     exit(9)
 
