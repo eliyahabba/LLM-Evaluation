@@ -337,6 +337,7 @@ def download_huggingface_files_parllel(input_dir: Path, file_names, repo_name, s
     logger = setup_logging()
     logger.info("Starting processing...")
     logger.info(f"Starting parallel processing with {num_processes} processes...")
+    logger.info(f"Downloading {len(file_names)} files to {input_dir}")
 
     with Manager() as manager:
         process_func = partial(process_file_safe, probs=probs, input_dir=input_dir, repo_name=repo_name,
@@ -367,13 +368,13 @@ def process_file_safe(file_name, input_dir: Path, repo_name, scheme_files_dir, p
 
 
 def procces_file(file_name, input_dir: Path, repo_name, scheme_files_dir, probs, logger):
-    output_path = input_dir / file_name
-    logger.info(f"File path: {output_path}")
-    if not output_path.exists():
-        logger.info(f"File no exists: {output_path}")
+    input_path = input_dir / file_name
+    logger.info(f"File path: {input_path}")
+    if not input_path.exists():
+        logger.info(f"File no exists: {input_path}")
         return
 
-    convert_to_scheme_format(output_path, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
+    convert_to_scheme_format(input_path, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
                              logger=logger, batch_size=1000)
 
 
