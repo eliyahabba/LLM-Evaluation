@@ -325,13 +325,13 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
                 logger.info(f"Temporary file for {split} cleaned up")
 
 
-def download_huggingface_files_parllel(output_dir: Path, urls, repo_name, scheme_files_dir, probs=True):
+def download_huggingface_files_parllel(input_dir: Path, file_names, repo_name, scheme_files_dir, probs=True):
     """
     Downloads parquet files from Hugging Face to a specified directory
 
     """
     # Create directory if it doesn't exist
-    os.makedirs(output_dir, exist_ok=True)
+    os.makedirs(input_dir, exist_ok=True)
 
     num_processes = min(24, cpu_count() - 1)
     logger = setup_logging()
@@ -339,66 +339,39 @@ def download_huggingface_files_parllel(output_dir: Path, urls, repo_name, scheme
     logger.info(f"Starting parallel processing with {num_processes} processes...")
 
     with Manager() as manager:
-        process_func = partial(process_file_safe, probs=probs, output_dir=output_dir, repo_name=repo_name,
+        process_func = partial(process_file_safe, probs=probs, input_dir=input_dir, repo_name=repo_name,
                                scheme_files_dir=scheme_files_dir, logger=logger)
 
         with Pool(processes=num_processes) as pool:
             list(tqdm(
-                pool.imap_unordered(process_func, urls),
-                total=len(urls),
+                pool.imap_unordered(process_func, file_names),
+                total=len(file_names),
                 desc="Processing files"
             ))
 
 
-def process_file_safe(url, output_dir: Path, repo_name, scheme_files_dir, probs, logger):
+def process_file_safe(file_name, input_dir: Path, repo_name, scheme_files_dir, probs, logger):
     pid = os.getpid()
     start_time = time.time()
     try:
-        logger.info(f"Process {pid} starting to process file {url}")
-        procces_file(url, output_dir=output_dir, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
+        logger.info(f"Process {pid} starting to process file {file_name}")
+        procces_file(file_name, input_dir=input_dir, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
                      logger=logger)
     except Exception as e:
-        logger.error(f"Process {pid} encountered error processing file {url}: {e}")
+        logger.error(f"Process {pid} encountered error processing file {file_name}: {e}")
         return None
     finally:
         end_time = time.time()
         elapsed_time = end_time - start_time
-        logger.info(f"Process {pid} finished processing {url}. Processing time: {elapsed_time:.2f} seconds")
+        logger.info(f"Process {pid} finished processing {file_name}. Processing time: {elapsed_time:.2f} seconds")
 
 
-def procces_file(url, output_dir: Path, repo_name, scheme_files_dir, probs, logger):
-    # Extract date from URL for the output filename
-    # Example: from URL get '2024-12-16' for the filename
-    original_filename = url.split('/')[-1]
-    output_path = output_dir / original_filename
-    if output_path.exists():
-        logger.info(f"File already exists: {output_path}")
-    else:
-        try:
-            logger.info(f"Downloading {original_filename}...")
+def procces_file(file_name, input_dir: Path, repo_name, scheme_files_dir, probs, logger):
+    output_path = input_dir / file_name
+    if not output_path.exists():
+        logger.info(f"File no exists: {output_path}")
+        return
 
-            with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-                temp_path = temp_file.name
-
-                response = requests.get(url, stream=True)
-                response.raise_for_status()
-
-                for chunk in response.iter_content(chunk_size=8192):
-                    temp_file.write(chunk)
-
-            shutil.move(temp_path, output_path)
-
-            logger.info(f"Download completed: {original_filename}")
-            print(f"Download completed: {original_filename}")
-
-        except (requests.exceptions.RequestException, IOError) as e:
-            if 'temp_path' in locals() and os.path.exists(temp_path):
-                os.unlink(temp_path)
-            print(f"Error downloading {original_filename}: {e}")
-            logger.error(f"Error downloading {original_filename}: {e}")
-    if check_if_file_exists(repo_name, output_path):
-        logger.info(f"File {output_path} already exists in repository")
-        return None
     convert_to_scheme_format(output_path, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
                              logger=logger, batch_size=1000)
 
@@ -429,8 +402,8 @@ def random_string(length=10):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--urls', nargs='+', help='List of urls to download')
-    parser.add_argument('--output_dir', help='Output directory')
+    parser.add_argument('--file_names', nargs='+', help='List of file_names to download')
+    parser.add_argument('--input_dir', help='Output directory')
     parser.add_argument('--probs', type=bool, help='Whether to include probs in the schema')
     parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=1000)
     parser.add_argument('--repo_name', help='Repository name for the schema files')
@@ -439,12 +412,12 @@ if __name__ == "__main__":
     # Set start date
     # REPO_NAME = "eliyahabba/llm-evaluation-without-probs"  # Replace with your desired repo name
     # scheme_files_dir = "/cs/snapless/gabis/eliyahabba/scheme_files_without_probs"
-    # output_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    # input_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
 
     # List of URLs to download
-    urls = [
+    file_names = [
     ]
-    download_huggingface_files_parllel(output_dir=Path(args.output_dir), urls=args.urls, repo_name=args.repo_name,
+    download_huggingface_files_parllel(input_dir=Path(args.input_dir), file_names=args.file_names, repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)

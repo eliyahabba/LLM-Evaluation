@@ -1,14 +1,10 @@
-from datetime import datetime, timedelta
-import pytz
-
-
 import argparse
 import logging
 import os
 import shutil
-import tempfile
 import time
 from datetime import datetime
+from datetime import timedelta
 from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
 from pathlib import Path
@@ -59,6 +55,10 @@ def download_huggingface_files_parllel(output_dir: Path, urls, repo_name, scheme
                 total=len(urls),
                 desc="Processing files"
             ))
+    # remove temp directory if it exists
+    temp_dir = output_dir / 'temp'
+    if os.path.exists(temp_dir):
+        shutil.rmtree(temp_dir)
 
 
 def process_file_safe(url, output_dir: Path, repo_name, scheme_files_dir, probs, logger):
@@ -132,22 +132,17 @@ if __name__ == "__main__":
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
     args = parser.parse_args()
     # Set start date
-    # REPO_NAME = "eliyahabba/llm-evaluation-without-probs"  # Replace with your desired repo name
-    # scheme_files_dir = "/cs/snapless/gabis/eliyahabba/scheme_files_without_probs"
+
     args.output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
     # parquet_path = Path("~/Downloads/data_sample.parquet")
-    # convert_to_scheme_format(parquet_path, batch_size=100)
     main_path = 'https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/'
-    # List of URLs to download
-    start_time = datetime(2025, 1, 11, 19, 0, tzinfo=pytz.UTC)
 
-    end_time = datetime(2025, 1, 15, 7, 0, tzinfo=pytz.UTC)
+    # List of URLs to download
     fs = HfFileSystem()
 
     existing_files = fs.ls(f"datasets/OfirArviv/HujiCollabOutput", detail=False)
-    existing_files= [file.split("/")[-1] for file in existing_files if file.endswith('.parquet')]
-    # files = generate_file_names(start_time, end_time)
+    existing_files = [file.split("/")[-1] for file in existing_files if file.endswith('.parquet')]
     args.urls = [f"{main_path}{file}" for file in existing_files]
+
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), urls=args.urls, repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
-
