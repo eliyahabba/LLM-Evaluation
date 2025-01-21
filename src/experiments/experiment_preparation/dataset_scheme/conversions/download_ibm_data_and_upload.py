@@ -25,11 +25,7 @@ if __name__ == "__main__":
     fs = HfFileSystem()
     existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
     existing_files = [Path(file).stem.split("_test")[0] for file in existing_files if file.endswith('.parquet')]
-
-    args.urls = [Path(file).stem for file in os.listdir(args.input_dir) if file not in existing_files]
-    print(len(args.urls))
-    print(args.urls)
-    exit(9)
+    args.urls = [file for file in os.listdir(args.input_dir) if Path(file).stem not in existing_files]
 
     download_huggingface_files_parllel(input_dir=Path(args.input_dir), file_names=args.file_names,
                                        repo_name=args.repo_name,
