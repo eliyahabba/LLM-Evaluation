@@ -23,10 +23,10 @@ if __name__ == "__main__":
     main_path = 'https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/'
 
     fs = HfFileSystem()
-    existing_files = fs.ls(f"datasets/eliyahabba/llm-evaluation-ibm", detail=False)
-    existing_files = [file.split("/")[-1] for file in existing_files if file.endswith('.parquet')]
+    existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
+    existing_files = [Path(file).stem.split("_test")[0] for file in existing_files if file.endswith('.parquet')]
 
-    args.urls = [file for file in os.listdir(args.input_dir) if file not in existing_files]
+    args.urls = [Path(file).stem for file in os.listdir(args.input_dir) if file not in existing_files]
     print(len(args.urls))
     print(args.urls)
     exit(9)
