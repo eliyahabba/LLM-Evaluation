@@ -1,6 +1,7 @@
 import argparse
 import logging
 import os
+import random
 import shutil
 import time
 from datetime import datetime
@@ -44,6 +45,7 @@ def download_huggingface_files_parllel(output_dir: Path, urls, repo_name, scheme
     logger = setup_logging()
     logger.info("Starting processing...")
     logger.info(f"Starting parallel processing with {num_processes} processes...")
+    logger.info(f"Downloading {len(urls)} files to {output_dir}")
 
     with Manager() as manager:
         process_func = partial(process_file_safe, probs=probs, output_dir=output_dir, repo_name=repo_name,
@@ -143,6 +145,6 @@ if __name__ == "__main__":
     existing_files = fs.ls(f"datasets/OfirArviv/HujiCollabOutput", detail=False)
     existing_files = [file.split("/")[-1] for file in existing_files if file.endswith('.parquet')]
     args.urls = [f"{main_path}{file}" for file in existing_files]
-
+    random.shuffle(args.urls)
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), urls=args.urls, repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
