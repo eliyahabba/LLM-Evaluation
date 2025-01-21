@@ -368,6 +368,7 @@ def process_file_safe(file_name, input_dir: Path, repo_name, scheme_files_dir, p
 
 def procces_file(file_name, input_dir: Path, repo_name, scheme_files_dir, probs, logger):
     output_path = input_dir / file_name
+    logger.info(f"File path: {output_path}")
     if not output_path.exists():
         logger.info(f"File no exists: {output_path}")
         return
