@@ -2,6 +2,7 @@ import argparse
 import json
 import logging
 import os
+import random
 import shutil
 import tempfile
 import time
@@ -18,6 +19,7 @@ import pyarrow.parquet as pq
 import pytz
 import requests
 from datasets import load_dataset
+from huggingface_hub import HfFileSystem
 from tqdm import tqdm
 
 from src.experiments.experiment_preparation.dataset_scheme.conversions.download_ibm_data import generate_file_names
@@ -335,7 +337,7 @@ class Converter:
 
 
 def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
-         process_output_dir: Path = Path(f"~/Downloads/data_2025-01.parquet"),
+         process_input_dir: Path = Path(f"~/Downloads/data_2025-01.parquet"),
          logger=None):
     """Main function to demonstrate usage."""
     parquet_path = file_path
@@ -345,7 +347,7 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
     converter = Converter(models_metadata_path)
 
     # Create output path
-    output_path = os.path.join(process_output_dir,
+    output_path = os.path.join(process_input_dir,
                                f"processed_{parquet_path.name}")
     if os.path.exists(output_path) and False:
         logger.info(f"Output file already exists: {output_path}")
@@ -387,13 +389,13 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
     logger.info(f"Output saved to: {output_path}")
 
 
-def download_huggingface_files_parllel(output_dir: Path, process_output_dir, urls, scheme_files_dir):
+def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_names, scheme_files_dir):
     """
     Downloads parquet files from Hugging Face to a specified directory
 /Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/analsyis/save_data_for_analysis.py
     """
     # Create directory if it doesn't exist
-    os.makedirs(output_dir, exist_ok=True)
+    os.makedirs(input_dir, exist_ok=True)
 
     num_processes = min(24, cpu_count() - 1)
     logger = setup_logging()
@@ -401,23 +403,23 @@ def download_huggingface_files_parllel(output_dir: Path, process_output_dir, url
     logger.info(f"Starting parallel processing with {num_processes} processes...")
 
     with Manager() as manager:
-        process_func = partial(process_file_safe, output_dir=output_dir, process_output_dir=process_output_dir,
+        process_func = partial(process_file_safe, input_dir=input_dir, process_input_dir=process_input_dir,
                                scheme_files_dir=scheme_files_dir, logger=logger)
 
         with Pool(processes=num_processes) as pool:
             list(tqdm(
-                pool.imap_unordered(process_func, urls),
-                total=len(urls),
+                pool.imap_unordered(process_func, file_names),
+                total=len(file_names),
                 desc="Processing files"
             ))
 
 
-def process_file_safe(url, output_dir: Path, process_output_dir, scheme_files_dir, logger):
+def process_file_safe(url, input_dir: Path, process_input_dir, scheme_files_dir, logger):
     pid = os.getpid()
     start_time = time.time()
     try:
         logger.info(f"Process {pid} starting to process file {url}")
-        process_file(url, output_dir=output_dir, process_output_dir=process_output_dir,
+        process_file(url, input_dir=input_dir, process_input_dir=process_input_dir,
                      scheme_files_dir=scheme_files_dir,
                      logger=logger)
     except Exception as e:
@@ -429,11 +431,11 @@ def process_file_safe(url, output_dir: Path, process_output_dir, scheme_files_di
         logger.info(f"Process {pid} finished processing {url}. Processing time: {elapsed_time:.2f} seconds")
 
 
-def process_file(url, output_dir: Path, process_output_dir: Path, scheme_files_dir, logger):
+def process_file(url, input_dir: Path, process_input_dir: Path, scheme_files_dir, logger):
     # Extract date from URL for the output filename
     # Example: from URL get '2024-12-16' for the filename
     original_filename = url.split('/')[-1]
-    output_path = output_dir / original_filename
+    output_path = input_dir / original_filename
     if output_path.exists():
         logger.info(f"File already exists: {output_path}")
     else:
@@ -459,46 +461,45 @@ def process_file(url, output_dir: Path, process_output_dir: Path, scheme_files_d
                 os.unlink(temp_path)
             print(f"Error downloading {original_filename}: {e}")
             logger.error(f"Error downloading {original_filename}: {e}")
-    main(output_path, process_output_dir, logger)
+    main(output_path, process_input_dir, logger)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--urls', nargs='+', help='List of urls to download')
-    parser.add_argument('--output_dir', help='Output directory')
+    parser.add_argument('--file_names', nargs='+', help='List of file_names to download')
+    parser.add_argument('--input_dir', help='Output directory')
     parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=1000)
     parser.add_argument('--repo_name', help='Repository name for the schema files')
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
     args = parser.parse_args()
-    args.output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
-    process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
-    if not os.path.exists(process_output_dir):
-        process_output_dir = "/Users/ehabba/ibm_results_data_full_processed"
-        os.makedirs(process_output_dir, exist_ok=True)
-    if not os.path.exists(args.output_dir):
-        args.output_dir = "/Users/ehabba/ibm_results_data_full"
-        os.makedirs(args.output_dir, exist_ok=True)
+    args.input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    process_input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
+    if not os.path.exists(process_input_dir):
+        process_input_dir = "/Users/ehabba/ibm_results_data_full_processed"
+        os.makedirs(process_input_dir, exist_ok=True)
+    if not os.path.exists(args.input_dir):
+        args.input_dir = "/Users/ehabba/ibm_results_data_full"
+        os.makedirs(args.input_dir, exist_ok=True)
 
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
     main_path = 'https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/'
     # List of URLs to download
-    start_time = datetime(2025, 1, 11, 19, 0, tzinfo=pytz.UTC)
 
-    end_time = datetime(2025, 1, 13, 4, 0, tzinfo=pytz.UTC)
+    # args.input_dir = "/Users/ehabba/Downloads/"
+    # args.file_names = ["/Users/ehabba/Downloads/data_2025-01.parquet"]
+    # process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
+    # os.makedirs(process_input_dir, exist_ok=True)
 
-    files = generate_file_names(start_time, end_time)
-    args.urls = [f"{main_path}{file}" for file in files]
-    args.urls = args.urls + [
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-09T19%3A00%3A00%2B00%3A00_2025-01-09T23%3A00%3A00%2B00%3A00.parquet",
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T14%3A00%3A00%2B00%3A00_2025-01-11T18%3A00%3A00%2B00%3A00.parquet",
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T00%3A00%3A00%2B00%3A00_2025-01-10T10%3A00%3A00%2B00%3A00.parquet",
-        "https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/data_2025-01-10T11%3A00%3A00%2B00%3A00_2025-01-10T13%3A00%3A00%2B00%3A00.parquet",
-    ]
-    # args.output_dir = "/Users/ehabba/Downloads/"
-    # args.urls = ["/Users/ehabba/Downloads/data_2025-01.parquet"]
-    # process_output_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_output_dir"
-    # os.makedirs(process_output_dir, exist_ok=True)
-    download_huggingface_files_parllel(output_dir=Path(args.output_dir), process_output_dir=process_output_dir,
-                                       urls=args.urls,
+    fs = HfFileSystem()
+    existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
+    existing_files = [Path(file).stem for file in existing_files if file.endswith('.parquet')]
+    args.file_names = [file for file in os.listdir(args.input_dir) if Path(file).stem not in existing_files]
+
+    random.shuffle(args.file_names)
+    print(args.file_names)
+
+    exit(0)
+    download_huggingface_files_parllel(input_dir=Path(args.input_dir), process_input_dir=process_input_dir,
+                                       file_names=args.file_names,
                                        scheme_files_dir=args.scheme_files_dir)
