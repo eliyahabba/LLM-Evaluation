@@ -493,13 +493,12 @@ if __name__ == "__main__":
 
     fs = HfFileSystem()
     existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
-    existing_files = [Path(file).stem for file in existing_files if file.endswith('.parquet')]
+    existing_files = [Path(file).stem.split("processed_")[0] for file in existing_files if file.endswith('.parquet')]
     args.file_names = [file for file in os.listdir(args.input_dir) if Path(file).stem not in existing_files]
 
     random.shuffle(args.file_names)
     print(args.file_names)
-
-    exit(0)
+    print(len(args.file_names))
     download_huggingface_files_parllel(input_dir=Path(args.input_dir), process_input_dir=process_input_dir,
                                        file_names=args.file_names,
                                        scheme_files_dir=args.scheme_files_dir)
