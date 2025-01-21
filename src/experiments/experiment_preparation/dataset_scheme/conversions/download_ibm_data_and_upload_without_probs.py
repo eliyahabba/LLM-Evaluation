@@ -1,5 +1,6 @@
 import argparse
 import os
+import random
 from pathlib import Path
 
 from huggingface_hub import HfFileSystem
@@ -26,5 +27,6 @@ if __name__ == "__main__":
     existing_files = [Path(file).stem.split("_test")[0] for file in existing_files if file.endswith('.parquet')]
     args.urls = [file for file in os.listdir(args.input_dir) if Path(file).stem not in existing_files]
 
+    random.shuffle(args.urls)
     download_huggingface_files_parllel(input_dir=Path(args.input_dir), file_names=args.file_names, repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
