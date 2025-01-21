@@ -469,7 +469,7 @@ if __name__ == "__main__":
     parser.add_argument('--file_names', nargs='+', help='List of file_names to download')
     parser.add_argument('--input_dir', help='Output directory')
     parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=1000)
-    parser.add_argument('--repo_name', help='Repository name for the schema files')
+    parser.add_argument('--repo_name', help='Repository name for the schema files', default="eliyahabba/llm-evaluation-analysis")
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
     args = parser.parse_args()
     args.input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
