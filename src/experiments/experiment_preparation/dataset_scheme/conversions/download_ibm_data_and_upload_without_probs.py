@@ -28,5 +28,6 @@ if __name__ == "__main__":
     args.urls = [file for file in os.listdir(args.input_dir) if Path(file).stem not in existing_files]
 
     random.shuffle(args.urls)
+    print(args.urls)
     download_huggingface_files_parllel(input_dir=Path(args.input_dir), file_names=args.file_names, repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
