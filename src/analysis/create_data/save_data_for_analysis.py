@@ -38,7 +38,7 @@ def setup_logging():
 class RunOutputMerger:
     """A class to process and merge run data with associated metadata."""
 
-    def __init__(self, parquet_path: Path, batch_size: int = 1000):
+    def __init__(self, parquet_path: Path, batch_size: int = 100000):
         """
         Initialize the RunDataProcessor.
 
@@ -479,7 +479,7 @@ if __name__ == "__main__":
     print(len(args.file_names))
 
     # args.input_dir = ("/Users/ehabba/Downloads/")
-    # args.file_names = ["data_2025-01-14.parquet"]
+    # args.file_names = ["data_2025-01-15T03_for_Save.parquet"]
     # process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
     # os.makedirs(process_input_dir, exist_ok=True)
 
