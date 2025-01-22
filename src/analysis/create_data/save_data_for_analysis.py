@@ -396,7 +396,7 @@ def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_
     # Create directory if it doesn't exist
     os.makedirs(input_dir, exist_ok=True)
 
-    num_processes = min(1, cpu_count() - 1)
+    num_processes = min(24, cpu_count() - 1)
     logger = setup_logging()
     logger.info("Starting processing...")
     logger.info(f"Starting parallel processing with {num_processes} processes...")
