@@ -53,7 +53,7 @@ class RunOutputMerger:
             on='run_id',
             how='left'
         )
-
+        merged_df.dropna(subset=['run_model_args'], inplace=True)
         return merged_df
 
     def process_batches(self) -> Iterator[pd.DataFrame]:

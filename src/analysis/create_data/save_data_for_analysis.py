@@ -3,8 +3,6 @@ import json
 import logging
 import os
 import random
-import shutil
-import tempfile
 import time
 from datetime import datetime
 from difflib import get_close_matches
@@ -16,13 +14,10 @@ from typing import Dict, Optional, Iterator, Union, Tuple
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-import pytz
-import requests
 from datasets import load_dataset
 from huggingface_hub import HfFileSystem
 from tqdm import tqdm
 
-from src.experiments.experiment_preparation.dataset_scheme.conversions.download_ibm_data import generate_file_names
 from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 from src.utils.Constants import Constants
 
@@ -101,18 +96,21 @@ class RunOutputMerger:
         """
         try:
             parquet_file = pq.ParquetFile(self.parquet_path)
-            columns_to_keep = ['run_id', 'scores', 'references', 'generated_text', 'cumulative_logprob','raw_input']
+            columns_to_keep = ['run_id', 'scores', 'references', 'generated_text', 'cumulative_logprob', 'raw_input']
 
             # for batch in parquet_file.iter_batches(batch_size=self.batch_size):
             for batch in parquet_file.iter_batches(batch_size=self.batch_size, columns=columns_to_keep):
                 df = batch.to_pandas()
                 # eval on the raw_input column, and next take only task_data key
-                df['question'] = df['raw_input'].apply(lambda x: eval(x)['task_data']).apply(lambda x: eval(x)['question'
-                if 'question' in x else 'context'])
-                df['options'] =  df['raw_input'].apply(lambda x: eval(x)['task_data']).apply(lambda x: eval(x)['options'])
+                df['question'] = df['raw_input'].apply(lambda x: eval(x)['task_data']).apply(
+                    lambda x: eval(x)['question'
+                    if 'question' in x else 'context'])
+                df['options'] = df['raw_input'].apply(lambda x: eval(x)['task_data']).apply(
+                    lambda x: eval(x)['options'])
                 # drop the raw_input column
                 df.drop(columns=['raw_input'], inplace=True)
                 df = self._add_run_columns(df)
+                df.dropna(subset=['run_model_args'], inplace=True)
                 yield df
         except Exception as e:
             print(f"Error processing parquet file: {str(e)}")
@@ -126,6 +124,7 @@ class Converter:
         self._load_models_metadata()
         self._template_cache = {}  # Cache for templates
         self._index_map_cache = {}  # Cache for index map
+
     def _load_models_metadata(self) -> None:
         """Load models metadata from file."""
         with open(self.models_metadata_path) as f:
@@ -288,7 +287,7 @@ class Converter:
             self._index_map_cache[map_file_name] = index_map
         return index_map[row['question']]['index']
 
-    def get_closest_answer(self,answer, options):
+    def get_closest_answer(self, answer, options):
         ai_answer = answer.strip().split("\n")
         ai_answer = ai_answer[0].strip()
         return get_close_matches(ai_answer, options, n=1, cutoff=0.0)[0]
@@ -305,7 +304,7 @@ class Converter:
         index_map = df.apply(
             lambda row: self.build_instance_section(row, self._parse_config_string(row['run_unitxt_recipe'])),
             axis=1).rename('sample_index')
-        df['run_model_args']= df['run_model_args'].apply(lambda x: json.loads(x))
+        df['run_model_args'] = df['run_model_args'].apply(lambda x: json.loads(x))
         df['references'] = df['references'].apply(lambda x: eval(x))
         df['scores'] = df['scores'].apply(lambda x: eval(x))
         # Build all sections in parallel
@@ -397,7 +396,7 @@ def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_
     # Create directory if it doesn't exist
     os.makedirs(input_dir, exist_ok=True)
 
-    num_processes = min(24, cpu_count() - 1)
+    num_processes = min(1, cpu_count() - 1)
     logger = setup_logging()
     logger.info("Starting processing...")
     logger.info(f"Starting parallel processing with {num_processes} processes...")
@@ -436,31 +435,9 @@ def process_file(url, input_dir: Path, process_input_dir: Path, scheme_files_dir
     # Example: from URL get '2024-12-16' for the filename
     original_filename = url.split('/')[-1]
     output_path = input_dir / original_filename
-    if output_path.exists():
-        logger.info(f"File already exists: {output_path}")
-    else:
-        try:
-            logger.info(f"Downloading {original_filename}...")
-
-            with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-                temp_path = temp_file.name
-
-                response = requests.get(url, stream=True)
-                response.raise_for_status()
-
-                for chunk in response.iter_content(chunk_size=8192):
-                    temp_file.write(chunk)
-
-            shutil.move(temp_path, output_path)
-
-            logger.info(f"Download completed: {original_filename}")
-            print(f"Download completed: {original_filename}")
-
-        except (requests.exceptions.RequestException, IOError) as e:
-            if 'temp_path' in locals() and os.path.exists(temp_path):
-                os.unlink(temp_path)
-            print(f"Error downloading {original_filename}: {e}")
-            logger.error(f"Error downloading {original_filename}: {e}")
+    if not output_path.exists():
+        logger.info(f"File already not exists: {output_path}")
+        return
     main(output_path, process_input_dir, logger)
 
 
@@ -469,7 +446,8 @@ if __name__ == "__main__":
     parser.add_argument('--file_names', nargs='+', help='List of file_names to download')
     parser.add_argument('--input_dir', help='Output directory')
     parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=1000)
-    parser.add_argument('--repo_name', help='Repository name for the schema files', default="eliyahabba/llm-evaluation-analysis")
+    parser.add_argument('--repo_name', help='Repository name for the schema files',
+                        default="eliyahabba/llm-evaluation-analysis")
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
     args = parser.parse_args()
     args.input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
@@ -499,6 +477,12 @@ if __name__ == "__main__":
     random.shuffle(args.file_names)
     print(args.file_names)
     print(len(args.file_names))
+
+    args.input_dir = ("/Users/ehabba/Downloads/")
+    args.file_names = ["data_2025-01-14.parquet"]
+    process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
+    os.makedirs(process_input_dir, exist_ok=True)
+
     download_huggingface_files_parllel(input_dir=Path(args.input_dir), process_input_dir=process_input_dir,
                                        file_names=args.file_names,
                                        scheme_files_dir=args.scheme_files_dir)
