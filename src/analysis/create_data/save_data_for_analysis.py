@@ -481,10 +481,10 @@ if __name__ == "__main__":
     print(args.file_names)
     print(len(args.file_names))
 
-    args.input_dir = ("/Users/ehabba/Downloads/")
-    args.file_names = ["data_2025-01-15T03_for_Save.parquet"]
-    process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
-    os.makedirs(process_input_dir, exist_ok=True)
+    # args.input_dir = ("/Users/ehabba/Downloads/")
+    # args.file_names = ["data_2025-01-15T03_for_Save.parquet"]
+    # process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
+    # os.makedirs(process_input_dir, exist_ok=True)
 
     download_huggingface_files_parllel(input_dir=Path(args.input_dir), process_input_dir=process_input_dir,
                                        file_names=args.file_names,
