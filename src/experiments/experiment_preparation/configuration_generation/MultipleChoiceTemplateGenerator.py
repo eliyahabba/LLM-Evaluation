@@ -71,8 +71,8 @@ if __name__ == "__main__":
     for dataset_name, datasetConfig in dataset_names_to_configs.items():
         override_options = deepcopy(ConfigParams.override_options)
 
-        if dataset_name in ["MMLU_PRO", "Social_IQa"]:
-            override_options['shuffle_choices'].remove('placeCorrectChoiceFourth')
+        # if dataset_name in ["MMLU_PRO", "Social_IQa"]:
+        #     override_options['shuffle_choices'].remove('placeCorrectChoiceFourth')
         prompts_instruct_data = datasetConfig.get_all_prompts()
         for prompts_instruct in prompts_instruct_data:
             instruct_folder_name = prompts_instruct.name

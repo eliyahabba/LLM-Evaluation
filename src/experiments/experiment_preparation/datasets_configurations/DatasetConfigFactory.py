@@ -5,6 +5,7 @@ from src.experiments.experiment_preparation.datasets_configurations.InstructProm
 from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.MMLUPrompts import MMLUPrompts
 from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.OpenBookQAPrompts import \
     OpenBookQAPrompts
+from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.RacePrompts import RacePrompts
 from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.SocialQaPrompts import \
     SocialQaPrompts
 
@@ -18,7 +19,8 @@ class DatasetConfigFactory:
             'MMLU': MMLUPrompts(),
             'MMLU_PRO': MMLUPrompts(),
             'OpenBookQA': OpenBookQAPrompts(),
-            'Social_IQa': SocialQaPrompts()
+            'Social_IQa': SocialQaPrompts(),
+            'Race': RacePrompts()
             # Add other datasets here
         }
         return dataset_instruct_prompts
@@ -31,7 +33,8 @@ class DatasetConfigFactory:
             'MMLU': MMLUPrompts(),
             'MMLU_PRO': MMLUPrompts(),
             'OpenBookQA': OpenBookQAPrompts(),
-            'Social_IQa': SocialQaPrompts()
+            'Social_IQa': SocialQaPrompts(),
+            'Race': RacePrompts()
             # Add other datasets here
         }
         return BasicMCPrompts() if dataset_name not in dataset_instruct_prompts else \

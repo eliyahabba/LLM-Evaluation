@@ -72,19 +72,19 @@ def get_run_data(dataset_name: str) -> List[Tuple[str, List[str]]]:
     template_names = dataset_config["template_names"]
     for subset in MultiChoiceDatasetsConfig.get_card_list(dataset_name):
         card_name = f"{subset}"
-        templates = [f"{dataset_catalog_name}.{prompt}.{template}"
-                     for prompt in prompt_paraphrases
-                     for template in template_names]
-        results.append((card_name, templates))
+        templates = [
+            f"{dataset_catalog_name}.{prompt}.{template}"
+            for prompt in prompt_paraphrases
+            for template in template_names
+        ]
+        if any("placeCorrectChoiceFirst" in t or "placeCorrectChoiceFourth" in t for t in templates):
+            num_demos = [0]
+        else:
+            num_demos = [0, 5]
 
-    for result in results:
-        templates = result[1]
-        for template in templates:
-            temp = template.replace(".", "/")
-            path = f"/Users/ehabba/PycharmProjects/LLM-Evaluation/Data/Catalog/{temp}.json"
-            assert os.path.exists(path), f"Template {template} does not exist at path {path}"
-        print(result)
+        results.append((card_name, templates, num_demos))
     return results
+
 
 
 def get_templates(self):
@@ -112,10 +112,9 @@ def run_experiment(local_catalog_path: str):
     for config in configs:
         unitxt_recipe_args_by_groupings = [
             (card_name,
-                    templates)
-
-                for card_name, templates in get_run_data(config)
-            ]
+                    templates, num_demos)
+            for card_name, templates, num_demos in get_run_data(config)
+        ]
         pass
 
 
