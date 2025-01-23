@@ -1,0 +1,18 @@
+Name,Category,Sub_Category
+high_school_biology,STEM,biology
+business_ethics,"other (business, health, misc.)",business
+high_school_chemistry,STEM,chemistry
+computer_security,STEM,computer science
+sociology,social sciences,culture
+econometrics,social sciences,economics
+electrical_engineering,STEM,engineering
+high_school_geography,social sciences,geography
+clinical_knowledge,"other (business, health, misc.)",health
+high_school_us_history,humanities,history
+international_law,humanities,law
+college_mathematics,STEM,math
+global_facts,"other (business, health, misc.)",other
+formal_logic,humanities,philosophy
+high_school_physics,STEM,physics
+public_relations,social sciences,politics
+professional_psychology,social sciences,psychology
