@@ -354,41 +354,42 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
         logger.info(f"Output file already exists: {output_path}")
         return
     logger.info(f"Output path: {output_path}")
-    # Process first batch to get schema
-    first_batch = next(processor.process_batches())
-    data = converter.convert_dataframe(first_batch)
 
-    # Convert to PyArrow table and get schema
-    table = pa.Table.from_pandas(data)
+    # Initialize writer as None
+    writer = None
+    num_of_batches = 0
 
-    # Create ParquetWriter with the schema
-    writer = pq.ParquetWriter(
-        output_path,
-        schema=table.schema,
-    )
-
-    # Write first batch
-    writer.write_table(table)
-    num_of_batches = 1
-    logger.info(f"Batches processed: {num_of_batches}")
-
-    # Process remaining batches
+    # Process all batches
     for processed_batch in processor.process_batches():
         num_of_batches += 1
         logger.info(f"Batches processed: {num_of_batches}")
 
         # Convert the batch
         data = converter.convert_dataframe(processed_batch)
+
+        # Skip empty batches
+        if len(data) == 0:
+            continue
+
         table = pa.Table.from_pandas(data)
+
+        # Initialize writer with first non-empty batch's schema
+        if writer is None:
+            writer = pq.ParquetWriter(
+                output_path,
+                schema=table.schema,
+            )
 
         # Write batch
         writer.write_table(table)
 
-    # Close the writer
-    writer.close()
-    logger.info(f"Processed {num_of_batches} batches.")
-    logger.info(f"Output saved to: {output_path}")
-
+    # Close the writer if it was created
+    if writer:
+        writer.close()
+        logger.info(f"Processed {num_of_batches} batches.")
+        logger.info(f"Output saved to: {output_path}")
+    else:
+        logger.warning("No data was written - all batches were empty")
 
 def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_names, scheme_files_dir):
     """
