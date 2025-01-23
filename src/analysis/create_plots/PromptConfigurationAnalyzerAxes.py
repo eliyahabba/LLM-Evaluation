@@ -53,7 +53,7 @@ class PromptConfigurationAnalyzerAxes:
         # 2) NEW: Analyze each column individually
         # -------------------------
         self._analyze_each_dimension(
-            final_data,    # or grouped_data, depending on your filtering needs
+            final_data,  # or grouped_data, depending on your filtering needs
             model_name,
             shots_selected,
             filtered_datasets,
@@ -64,26 +64,6 @@ class PromptConfigurationAnalyzerAxes:
         print(f"Total processing time for {model_name}: {total_time:.2f} seconds")
         print("-" * 50)
         return filtered_datasets
-
-    def _aggregate_configuration_scores_old(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        (Legacy approach kept for reference.)
-
-        Aggregate scores for each configuration combination by grouping on:
-        (dataset, template, separator, enumerator, choices_order).
-        """
-        group_start = time.time()
-        data = (
-            df.groupby(["dataset", "template", "separator", "enumerator", "choices_order"], as_index=False)
-              .agg({
-                  "sum_scores": "sum",
-                  "count": "sum"
-              })
-        )
-        data["accuracy"] = data["sum_scores"] / data["count"]
-
-        print(f"Initial grouping completed in {time.time() - group_start:.2f} seconds")
-        return data
 
     def _aggregate_configuration_scores(self, df: pd.DataFrame) -> pd.DataFrame:
         """
@@ -127,8 +107,8 @@ class PromptConfigurationAnalyzerAxes:
         # Get datasets with the most configurations
         dataset_counts = (
             filtered_df.groupby("dataset")["count"]
-                       .count()
-                       .reset_index(name="num_quads")
+            .count()
+            .reset_index(name="num_quads")
         )
 
         top5_datasets = dataset_counts.nlargest(5, "num_quads")["dataset"].tolist()
@@ -147,10 +127,10 @@ class PromptConfigurationAnalyzerAxes:
         filtered_df = data[data["dataset"].isin(selected_datasets)].copy()
 
         filtered_df["quad"] = (
-            filtered_df["template"] + " | " +
-            filtered_df["separator"] + " | " +
-            filtered_df["enumerator"] + " | " +
-            filtered_df["choices_order"]
+                filtered_df["template"] + " | " +
+                filtered_df["separator"] + " | " +
+                filtered_df["enumerator"] + " | " +
+                filtered_df["choices_order"]
         )
         return filtered_df
 
@@ -183,7 +163,7 @@ class PromptConfigurationAnalyzerAxes:
             if subset.empty:
                 continue
 
-            fig = self._create_accuracy_plot(subset, dataset, title_suffix="(Quad Analysis)")
+            # fig = self._create_accuracy_plot(subset, dataset, title_suffix="(Quad Analysis)")
             dataset_dir = os.path.join(model_dir, f"{dataset.replace('/', '_')}")
             os.makedirs(dataset_dir, exist_ok=True)
 
@@ -290,7 +270,6 @@ class PromptConfigurationAnalyzerAxes:
         dim_total_count_mean = grouped["count"].mean().round(2)
         dim_total_count_median = grouped["count"].median().round(2)
 
-
         # Count how many distinct combos contributed
         dim_combo_count = grouped["other_combo"].nunique()
 
@@ -312,10 +291,10 @@ class PromptConfigurationAnalyzerAxes:
 
         # Create a 'quad' label for plotting, e.g., "X | ALL | ALL | ALL"
         dim_df["quad"] = (
-            dim_df["template"] + " | " +
-            dim_df["separator"] + " | " +
-            dim_df["enumerator"] + " | " +
-            dim_df["choices_order"]
+                dim_df["template"] + " | " +
+                dim_df["separator"] + " | " +
+                dim_df["enumerator"] + " | " +
+                dim_df["choices_order"]
         )
 
         # Clean up temporary column
@@ -369,30 +348,29 @@ class PromptConfigurationAnalyzerAxes:
         dataset_dir = os.path.join(model_dir, f"{dataset.replace('/', '_')}")
         dimension_dir = os.path.join(dataset_dir, focus_column)
         os.makedirs(dimension_dir, exist_ok=True)
+        # Also save the entire dimension DataFrame subset to Parquet
+        output_parquet_file = os.path.join(dimension_dir, f"prompt_configuration_analyzer.parquet")
+        dim_df_subset.to_parquet(output_parquet_file, index=False)
 
         # Generate and save a plot for each metric
-        for metric in metrics_to_plot:
-            fig = px.scatter(
-                dim_df_subset,
-                x="quad",
-                y=metric,
-                text="combination_count",
-                title=f"{metric.replace('_', ' ').title()} by '{focus_column}' - {dataset}",
-                labels={
-                    "quad": f"{focus_column} (others = ALL)",
-                    metric: metric.replace("_", " ").title()
-                }
-            )
-            fig.update_traces(textposition="top center")
-            fig.update_layout(
-                xaxis=dict(tickangle=45),
-                yaxis=dict(range=[0, 1.05]),
-            )
+        # for metric in metrics_to_plot:
+        #     fig = px.scatter(
+        #         dim_df_subset,
+        #         x="quad",
+        #         y=metric,
+        #         text="combination_count",
+        #         title=f"{metric.replace('_', ' ').title()} by '{focus_column}' - {dataset}",
+        #         labels={
+        #             "quad": f"{focus_column} (others = ALL)",
+        #             metric: metric.replace("_", " ").title()
+        #         }
+        #     )
+        #     fig.update_traces(textposition="top center")
+        #     fig.update_layout(
+        #         xaxis=dict(tickangle=45),
+        #         yaxis=dict(range=[0, 1.05]),
+        #     )
 
-            # Save the figure as an HTML file
-            output_fig_file = os.path.join(dimension_dir, f"prompt_configuration_analyzer.html")
-            # fig.write_html(output_fig_file)
-
-            # Also save the entire dimension DataFrame subset to Parquet
-            output_parquet_file = os.path.join(dimension_dir, f"prompt_configuration_analyzer.parquet")
-            dim_df_subset.to_parquet(output_parquet_file, index=False)
+        # Save the figure as an HTML file
+        # output_fig_file = os.path.join(dimension_dir, f"prompt_configuration_analyzer.html")
+        # fig.write_html(output_fig_file)

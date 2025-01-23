@@ -47,20 +47,6 @@ class PromptConfigurationAnalyzer:
         print("-" * 50)
         return filtered_datasets
 
-    def _aggregate_configuration_scores_old(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Aggregate scores for each configuration combination."""
-        group_start = time.time()
-        data = (df
-        .groupby(["dataset", "template", "separator", "enumerator", "choices_order"], as_index=False)
-        .agg({
-            "sum_scores": "sum",
-            "count": "sum"
-        }))
-        data["accuracy"] = data["sum_scores"] / data["count"]
-
-        print(f"Initial grouping completed in {time.time() - group_start:.2f} seconds")
-        return data
-
     def _aggregate_configuration_scores(self, df: pd.DataFrame) -> pd.DataFrame:
         """Aggregate scores for each configuration combination."""
         group_start = time.time()
@@ -141,11 +127,11 @@ class PromptConfigurationAnalyzer:
             if subset.empty:
                 continue
 
-            fig = self._create_accuracy_plot(subset, dataset)
+            # fig = self._create_accuracy_plot(subset, dataset)
             dataset_dir = os.path.join(model_dir, f"{dataset.replace('/', '_')}")
             os.makedirs(dataset_dir, exist_ok=True)
             output_fig_file = os.path.join(dataset_dir, "prompt_configuration_analyzer.html")
-            fig.write_html(output_fig_file)
+            # fig.write_html(output_fig_file)
             # save also the data itself to parquet
             output_parquet_file = os.path.join(dataset_dir, "prompt_configuration_analyzer.parquet")
             subset.to_parquet(output_parquet_file, index=False)

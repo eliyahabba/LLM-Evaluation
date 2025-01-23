@@ -121,20 +121,20 @@ class HammingDistanceClusterAnalyzerAxes:
         """
         Plot and save a heatmap of the given distance_matrix. Also save it as a parquet file.
         """
-        plt.figure(figsize=(12, 10))
-        ax = sns.heatmap(
-            distance_matrix,
-            xticklabels=config_ids,
-            yticklabels=config_ids,
-            cmap="viridis",
-            annot=False
-        )
-        ax.set_title("Hamming Distance Matrix Heatmap", fontsize=14)
-        ax.set_xlabel("Configurations", fontsize=12)
-        ax.set_ylabel("Configurations", fontsize=12)
-
-        plt.setp(ax.get_xticklabels(), rotation=70, ha="right", rotation_mode="anchor")
-        plt.setp(ax.get_yticklabels(), rotation=0)
+        # plt.figure(figsize=(12, 10))
+        # ax = sns.heatmap(
+        #     distance_matrix,
+        #     xticklabels=config_ids,
+        #     yticklabels=config_ids,
+        #     cmap="viridis",
+        #     annot=False
+        # )
+        # ax.set_title("Hamming Distance Matrix Heatmap", fontsize=14)
+        # ax.set_xlabel("Configurations", fontsize=12)
+        # ax.set_ylabel("Configurations", fontsize=12)
+        #
+        # plt.setp(ax.get_xticklabels(), rotation=70, ha="right", rotation_mode="anchor")
+        # plt.setp(ax.get_yticklabels(), rotation=0)
 
         # heatmap_file = os.path.join(dataset_dir, "hamming_distance_heatmap.png")
         # plt.tight_layout()
@@ -245,20 +245,20 @@ class HammingDistanceClusterAnalyzerAxes:
         Plot and save a distance heatmap specifically for one dimension.
         Also save it as a parquet file.
         """
-        plt.figure(figsize=(12, 10))
-        ax = sns.heatmap(
-            distance_matrix,
-            xticklabels=dim_ids,
-            yticklabels=dim_ids,
-            cmap="viridis",
-            annot=False
-        )
-        ax.set_title(f"Hamming Distance Matrix - Dimension: {dim_name}", fontsize=14)
-        ax.set_xlabel(f"{dim_name} Values", fontsize=12)
-        ax.set_ylabel(f"{dim_name} Values", fontsize=12)
-
-        plt.setp(ax.get_xticklabels(), rotation=70, ha="right", rotation_mode="anchor")
-        plt.setp(ax.get_yticklabels(), rotation=0)
+        # plt.figure(figsize=(12, 10))
+        # ax = sns.heatmap(
+        #     distance_matrix,
+        #     xticklabels=dim_ids,
+        #     yticklabels=dim_ids,
+        #     cmap="viridis",
+        #     annot=False
+        # )
+        # ax.set_title(f"Hamming Distance Matrix - Dimension: {dim_name}", fontsize=14)
+        # ax.set_xlabel(f"{dim_name} Values", fontsize=12)
+        # ax.set_ylabel(f"{dim_name} Values", fontsize=12)
+        #
+        # plt.setp(ax.get_xticklabels(), rotation=70, ha="right", rotation_mode="anchor")
+        # plt.setp(ax.get_yticklabels(), rotation=0)
 
         # Save figure
         # heatmap_file = os.path.join(dim_subdir, f"hamming_distance_heatmap.png")

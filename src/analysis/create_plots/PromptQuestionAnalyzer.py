@@ -224,5 +224,5 @@ class PromptQuestionAnalyzer:
             yaxis_title="Count of Questions",
         )
 
-        fig_file = os.path.join(plot_dir, f"fraction_correct_histogram_{suffix}.html")
-        fig.write_html(fig_file)
+        # fig_file = os.path.join(plot_dir, f"fraction_correct_histogram_{suffix}.html")
+        # fig.write_html(fig_file)
