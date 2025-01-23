@@ -5,6 +5,7 @@ from tqdm import tqdm
 
 from src.analysis.create_plots.DataLoader import DataLoader
 from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxes import HammingDistanceClusterAnalyzerAxes
+from src.analysis.create_plots.ModelPerformanceAnalyzer import ModelPerformanceAnalyzer
 from src.analysis.create_plots.PromptConfigurationAnalyzerAxes import PromptConfigurationAnalyzerAxes
 from src.analysis.create_plots.PromptQuestionAnalyzer import PromptQuestionAnalyzer
 
@@ -13,19 +14,33 @@ def process_configuration(params):
     """
     Process a single configuration of model and shots count
     """
-    model_name, shots_selected, interesting_datasets, base_results_dir = params
-
+    model_name, shots_selected, interesting_datasets = params
+    # for Debugging:
+    # model_name = "mistralai/Mistral-7B-Instruct-v0.3"
     print(f"Processing model: {model_name} with {shots_selected} shots")
 
     data_loader = DataLoader()
     analyzer = PromptConfigurationAnalyzerAxes()
     hamming = HammingDistanceClusterAnalyzerAxes()
     prompt_question_analyzer = PromptQuestionAnalyzer()
-
+    performance_analyzer = ModelPerformanceAnalyzer()
     # Load data for current configuration
-    df_partial = data_loader.load_and_process_data(model_name, shots_selected)
-    if shots_selected == 5:
-        df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
+    df_partial = data_loader.load_and_process_data(model_name, shots_selected, max_samples=10000)
+    # if shots_selected == 5:
+    #     df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
+    # base_results_dir = "../app/results_local"
+
+    df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
+    base_results_dir = "../app/results_local"
+    os.makedirs(base_results_dir, exist_ok=True)
+
+
+    performance_analyzer.generate_model_performance_comparison(
+        df=df_partial,
+        model_name=model_name,
+        shots_selected=shots_selected,
+        base_results_dir=base_results_dir
+    )
 
     filtered_datasets = analyzer.process_and_visualize_configurations(
         df=df_partial,
@@ -77,12 +92,10 @@ def run_configuration_analysis(num_processes=1) -> None:
     ]
 
     # Setup results directory
-    base_results_dir = "../app/results_local"
-    os.makedirs(base_results_dir, exist_ok=True)
 
     # Create parameter combinations for parallel processing
     params_list = [
-        (model_name, shots_selected, interesting_datasets, base_results_dir)
+        (model_name, shots_selected, interesting_datasets)
         for shots_selected in shots_to_evaluate
         for model_name in models_to_evaluate
     ]
