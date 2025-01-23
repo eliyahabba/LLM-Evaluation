@@ -2721,7 +2721,7 @@ class MultiChoiceDatasetsConfig:
                 "computer_security",
                 "electrical_engineering",
                 "college_mathematics",
-                "college_physics",
+                "high_school_physics",
                 "high_school_us_history",
                 "international_law",
                 "formal_logic",
