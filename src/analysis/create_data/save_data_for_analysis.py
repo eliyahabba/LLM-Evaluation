@@ -326,7 +326,7 @@ class Converter:
         closest_answer = df.apply(self.process_row, axis=1)
         closest_answer.name = 'closest_answer'
         # Combine all sections
-        return pd.concat([
+        result_df = pd.concat([
             index_map,
             model_sections,
             dataset,
@@ -335,6 +335,9 @@ class Converter:
             closest_answer,
             eval_sections
         ], axis=1)
+
+        result_df.reset_index(drop=True, inplace=True)
+        return result_df
 
 
 def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
@@ -482,7 +485,7 @@ if __name__ == "__main__":
     print(len(args.file_names))
 
     # args.input_dir = ("/Users/ehabba/Downloads/")
-    # args.file_names = ["data_2025-01-15T03_for_Save.parquet"]
+    # args.file_names = ["data_2025-01-15T03_00_00+00_00_2025-01-15T04_00_00+00_00.parquet"]
     # process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
     # os.makedirs(process_input_dir, exist_ok=True)
 
