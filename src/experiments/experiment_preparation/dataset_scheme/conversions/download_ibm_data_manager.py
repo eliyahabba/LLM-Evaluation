@@ -214,13 +214,12 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
     def get_writer_for_split(split):
         if split not in writers:
             # Create a new temporary file for this split
-            # generate a temporary file name
             random_file_name = random_string()
             temp_filename = f'{random_file_name}_{parquet_path.stem}_{split}_{probs}_probs.parquet'
             temp_path = os.path.join(current_dir, temp_filename)
             temp_files[split] = temp_path
             writers[split] = pq.ParquetWriter(temp_path, schema)
-            logging.info(f"Created writer for split {split}  at {temp_path}")
+            logging.info(f"Created writer for split {split} at {temp_path}")
         return writers[split]
 
     def write_rows(rows, split, batch_num=None):
@@ -247,30 +246,21 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
                     print(f"Error writing row {i} in split {split}: {e}")
                     print(json.dumps(row, indent=4))
 
-    # Process first batch
-    logger.info(f"Processing batch 0 ... for {parquet_path.stem}")
-    first_batch = next(processor.process_batches())
-    first_converted = converter.convert_dataframe(first_batch, probs=probs, logger=logger)
-
-    # Separate first batch by splits
-    first_batch_splits = {}
-    split = 'test'
-    if split not in first_batch_splits:
-        first_batch_splits[split] = []
-    first_batch_splits[split].extend(first_converted)
-
-    # Write first batch for each split
-    for split, items in first_batch_splits.items():
-        write_rows(items, split, batch_num=0)
-
-    # Process remaining batches
+    has_data = False
+    # Process all batches in one loop
     for i, batch in tqdm(enumerate(processor.process_batches()), desc="Processing batches"):
         if logger:
-            logger.info(f"Processing batch {i + 1}... for {parquet_path.stem}")
+            logger.info(f"Processing batch {i}... for {parquet_path.stem}")
 
         converted_data = converter.convert_dataframe(batch, probs=probs, logger=logger)
 
-        # Separate batch by splits
+        # Skip if no data
+        if not converted_data:
+            logger.warning(f"Batch {i} is empty for {parquet_path.stem}")
+            continue
+
+        has_data = True
+        # Process batch
         batch_splits = {}
         split = 'test'
         if split not in batch_splits:
@@ -279,11 +269,16 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
 
         # Write each split's data
         for split, items in batch_splits.items():
-            write_rows(items, split, batch_num=i + 1)
+            write_rows(items, split, batch_num=i)
+
     logger.info(f"Finished processing all batches for {parquet_path.stem}")
+
     # Close all writers
     for writer in writers.values():
         writer.close()
+
+    if not has_data:
+        logger.warning(f"No data was written for {parquet_path.stem} - all batches were empty")
 
     try:
         create_repo(
