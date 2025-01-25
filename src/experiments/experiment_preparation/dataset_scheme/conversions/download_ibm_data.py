@@ -144,7 +144,10 @@ if __name__ == "__main__":
 
     existing_files = fs.ls(f"datasets/OfirArviv/HujiCollabOutput", detail=False)
     existing_files = [file.split("/")[-1] for file in existing_files if file.endswith('.parquet')]
+    existing_files = [file for file in existing_files if not os.path.exists(f"{args.output_dir}/{file}")]
+    # filter the file that not already exist in the output directory
     args.urls = [f"{main_path}{file}" for file in existing_files]
+
     random.shuffle(args.urls)
     download_huggingface_files_parllel(output_dir=Path(args.output_dir), urls=args.urls, repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
