@@ -16,7 +16,7 @@ if __name__ == "__main__":
     parser.add_argument('--probs', type=bool, help='Whether to include probs in the schema', default=True)
     parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=1000)
     parser.add_argument('--repo_name', help='Repository name for the schema files',
-                        default="eliyahabba/llm-evaluation-ibm")
+                        default="eliyahabba/llm-evaluation")
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files',
                         default="/cs/snapless/gabis/eliyahabba/scheme_files")
 
