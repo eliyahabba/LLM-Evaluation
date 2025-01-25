@@ -456,7 +456,9 @@ if __name__ == "__main__":
                         default="eliyahabba/llm-evaluation-analysis")
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
     args = parser.parse_args()
-    args.input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    args.old_input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    args.input_dir = "/cs/cs/gabis/eliyahabba/ibm_results_data_full"
+
     process_input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
     if not os.path.exists(process_input_dir):
         process_input_dir = "/Users/ehabba/ibm_results_data_full_processed"
@@ -467,7 +469,6 @@ if __name__ == "__main__":
 
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
-    main_path = 'https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/'
     # List of URLs to download
 
     # args.input_dir = "/Users/ehabba/Downloads/"
@@ -478,7 +479,7 @@ if __name__ == "__main__":
     fs = HfFileSystem()
     existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
     existing_files = [Path(file).stem.split("processed_")[1] for file in existing_files if file.endswith('.parquet')]
-    args.file_names = [file for file in os.listdir(args.input_dir) if f'processed_{file}' not in os.listdir(process_input_dir)]
+    args.file_names = [file for file in os.listdir(args.input_dir) if (f'processed_{file}' not in os.listdir(process_input_dir) and f'processed_{file}' not in existing_files)]
     random.shuffle(args.file_names)
     print(args.file_names)
     print(len(args.file_names))
