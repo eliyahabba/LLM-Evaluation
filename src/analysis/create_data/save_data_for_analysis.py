@@ -457,7 +457,7 @@ if __name__ == "__main__":
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
     args = parser.parse_args()
     args.old_input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
-    args.input_dir = "/cs/cs/gabis/eliyahabba/ibm_results_data_full"
+    args.input_dir = "/cs/labs/gabis/eliyahabba/ibm_results_data_full"
 
     process_input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
     if not os.path.exists(process_input_dir):
