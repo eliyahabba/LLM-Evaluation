@@ -135,7 +135,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
     # Set start date
 
-    args.output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    args.old_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    args.output_dir = "/cs/labs/gabis/eliyahabba/ibm_results_data_full"
+    os.makedirs(args.output_dir, exist_ok=True)
+
+
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     main_path = 'https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/'
 
@@ -144,7 +148,9 @@ if __name__ == "__main__":
 
     existing_files = fs.ls(f"datasets/OfirArviv/HujiCollabOutput", detail=False)
     existing_files = [file.split("/")[-1] for file in existing_files if file.endswith('.parquet')]
-    existing_files = [file for file in existing_files if not os.path.exists(f"{args.output_dir}/{file}")]
+    existing_files = [file for file in existing_files if not os.path.exists(f"{args.output_dir}/{file}")
+                      and not os.path.exists(f"{args.old_output_dir}/{file}")
+                      ]
     # filter the file that not already exist in the output directory
     args.urls = [f"{main_path}{file}" for file in existing_files]
 
