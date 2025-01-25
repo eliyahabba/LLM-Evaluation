@@ -510,7 +510,7 @@ def main():
 
     # Shot selection
     # Load available models/datasets
-    results_dir = Path(__file__).parent / "results_local_without_place_correct_first_last"
+    results_dir = Path(__file__).parent / "results_local"
     shots_models_data = load_shots_models_datasets(base_dir=results_dir)
     if not shots_models_data:
         st.error("No data found in results_local directory.")
