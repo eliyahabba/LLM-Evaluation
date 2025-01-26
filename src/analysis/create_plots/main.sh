@@ -6,9 +6,10 @@
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 
-
-# Now HF_HOME is available to use in this script
+# Set HF_HOME environment variable
+export HF_HOME=/cs/snapless/gabis/gabis/shared
 echo "HF_HOME is set to: $HF_HOME"
+
 export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
 
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
