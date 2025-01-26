@@ -20,7 +20,7 @@ echo "HF_HOME is set to: $HF_HOME"
 export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
 
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
-dir="/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/analysis/create_data"
+dir="/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/analysis/create_plots"
 absolute_path=$(readlink -f $dir)
 # print the full (not relative) path of the dir variable
 echo "current dir is set to: $absolute_path"
