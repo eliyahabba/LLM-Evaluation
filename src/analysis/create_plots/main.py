@@ -129,8 +129,7 @@ def process_configuration_with_immediate_error(params):
         return process_configuration(params)
     except Exception as e:
         immediate_error_callback(e, params)
-        # אפשר גם להוסיף כאן raise אם רוצים לעצור את כל הריצה בעת שגיאה
         return {'status': 'error', 'params': params, 'error': str(e)}
 
 if __name__ == "__main__":
-    run_configuration_analysis(num_processes=4)
+    run_configuration_analysis(num_processes=1)
