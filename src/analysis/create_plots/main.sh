@@ -7,6 +7,13 @@
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 
 # Set HF_HOME environment variable
+
+
+load_config_path="load_config.sh"
+config_bash=$(readlink -f $load_config_path)
+echo "Loading config with: " $config_bash
+source $config_bash
+
 export HF_HOME=/cs/snapless/gabis/gabis/shared
 echo "HF_HOME is set to: $HF_HOME"
 
