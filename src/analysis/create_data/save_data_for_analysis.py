@@ -79,7 +79,7 @@ class RunOutputMerger:
         # Map run information to DataFrame
         run_df_unique = self.runs_df.drop_duplicates(subset=['run_id'])
         run_df_unique.columns = ['run_' + col if col != 'run_id' else col for col in run_df_unique.columns]
-        keep_columns = ['run_id', 'run_model_args', 'run_unitxt_recipe']
+        keep_columns = ['run_id', 'run_model_args', 'run_unitxt_recipe','run_quantization_bit_count']
         run_df_unique = run_df_unique[keep_columns]
 
         merged_df = df.merge(
