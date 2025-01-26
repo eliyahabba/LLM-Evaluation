@@ -14,7 +14,7 @@ config_bash=$(readlink -f $load_config_path)
 echo "Loading config with: " $config_bash
 source $config_bash
 
-export HF_HOME=/cs/snapless/gabis/gabis/shared
+export HF_HOME=/cs/snapless/gabis/gabis/shared/huggingface/
 echo "HF_HOME is set to: $HF_HOME"
 
 export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
