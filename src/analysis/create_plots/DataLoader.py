@@ -38,8 +38,10 @@ class DataLoader:
                               max_samples=None, drop=True):
         start_time = time.time()
         # print(f"Processing model: {model_name}")
-        full_results = self.load_data(model_name, shots, dataset, template, separator, enumerator, choices_order,
-                                      max_samples, drop)
+        self.load_data(max_samples, drop)
+        full_results = self.extract_data(model_name, shots,
+                                         dataset=dataset, template=template, separator=separator, enumerator=enumerator,
+                                         choices_order=choices_order)
         clean_df = self.remove_duplicates(full_results)
         load_time = time.time()
         print(f"The size of the data after removing duplicates is: {len(clean_df)}")
@@ -81,8 +83,7 @@ class DataLoader:
             processed_batch = self.no_process_batch(df_batch)
             yield processed_batch
 
-    def load_data(self, model_name, shots, dataset=None, template=None, separator=None, enumerator=None,
-                  choices_order=None, max_samples=None,
+    def load_data(self, max_samples=None,
                   drop=True):
         """
         Efficiently loads data using the `datasets` and `pyarrow` libraries.
@@ -102,8 +103,9 @@ class DataLoader:
             except Exception as e:
                 raise Exception(f"Error loading dataset: {str(e)}")
 
-        # Get the Arrow table
-        print("Extracting Arrow table...")
+    def extract_data(self, model_name, shots, dataset=None, template=None, separator=None, enumerator=None,
+                     choices_order=None):
+
         arrow_table = self.dataset.data.table
 
         conditions = [
@@ -131,10 +133,7 @@ class DataLoader:
             print("Filtering data...")
             filtered_table = arrow_table.filter(combined_condition)
             df_filtered = filtered_table.to_pandas()
-
-            if max_samples is not None and len(df_filtered) > max_samples:
-                df_filtered = df_filtered.head(max_samples)
-
+            print(df_filtered['model'].value_counts())
             return df_filtered
         except Exception as e:
             raise Exception(f"Error filtering data: {str(e)}")

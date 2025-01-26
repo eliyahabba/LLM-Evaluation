@@ -15,12 +15,11 @@ def process_configuration(params):
     """
     Process a single configuration of model and shots count
     """
-    model_name, shots_selected, interesting_datasets = params
+    data_loader, model_name, shots_selected, interesting_datasets = params
     # for Debugging:
     # model_name = "mistralai/Mistral-7B-Instruct-v0.3"
     print(f"Processing model: {model_name} with {shots_selected} shots")
 
-    data_loader = DataLoader()
     analyzer = PromptConfigurationAnalyzerAxes()
     hamming = HammingDistanceClusterAnalyzerAxes()
     prompt_question_analyzer = PromptQuestionAnalyzer()
@@ -32,7 +31,7 @@ def process_configuration(params):
     # base_results_dir = "../app/results_local"
 
     df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
-    base_results_dir = "../app/results_local_without_place_correct_first_last2"
+    base_results_dir = "../app/results_local2"
     os.makedirs(base_results_dir, exist_ok=True)
 
     performance_analyzer.generate_model_performance_comparison(
@@ -94,8 +93,11 @@ def run_configuration_analysis(num_processes=1) -> None:
     # Setup results directory
 
     # Create parameter combinations for parallel processing
+    data_loader = DataLoader()
+    data_loader.load_data(max_samples=None)
+
     params_list = [
-        (model_name, shots_selected, interesting_datasets)
+        (data_loader, model_name, shots_selected, interesting_datasets)
         for shots_selected in shots_to_evaluate
         for model_name in models_to_evaluate
     ]
@@ -132,4 +134,4 @@ def process_configuration_with_immediate_error(params):
         return {'status': 'error', 'params': params, 'error': str(e)}
 
 if __name__ == "__main__":
-    run_configuration_analysis(num_processes=1)
+    run_configuration_analysis(num_processes=2)
