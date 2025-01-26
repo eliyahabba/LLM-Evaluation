@@ -333,7 +333,7 @@ def download_huggingface_files_parllel(input_dir: Path, file_names, repo_name, s
     # Create directory if it doesn't exist
     os.makedirs(input_dir, exist_ok=True)
 
-    num_processes = min(24, cpu_count() - 1)
+    num_processes = min(4, cpu_count() - 1)
     logger = setup_logging()
     logger.info("Starting processing...")
     logger.info(f"Starting parallel processing with {num_processes} processes...")
@@ -359,7 +359,7 @@ def process_file_safe(file_name, input_dir: Path, repo_name, scheme_files_dir, p
         procces_file(file_name, input_dir=input_dir, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
                      logger=logger)
     except Exception as e:
-        logger.error(f"Process {pid} encountered error processing file {file_name}: {e}")
+        logger.error(f"Process {pid} encountered error processing file {file_name}")
         return None
     finally:
         end_time = time.time()
