@@ -305,6 +305,7 @@ class Converter:
         # Get recipes
         combined_strings = df['run_id'].astype(str) + df['id'].astype(str)
         evaluation_id = combined_strings.apply(lambda x: hashlib.sha256(x.encode()).hexdigest())
+        evaluation_id.name = 'evaluation_id'
 
         recipes = df['run_unitxt_recipe'].apply(self._parse_config_string)
         index_map = df.apply(
@@ -491,10 +492,10 @@ if __name__ == "__main__":
     print(args.file_names)
     print(len(args.file_names))
 
-    # args.input_dir = ("/Users/ehabba/Downloads/")
-    # args.file_names = ["data_2025-01-15T03_00_00+00_00_2025-01-15T04_00_00+00_00.parquet"]
-    # process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
-    # os.makedirs(process_input_dir, exist_ok=True)
+    args.input_dir = ("/Users/ehabba/Downloads/")
+    args.file_names = ["data_2025-01-15T03_00_00+00_00_2025-01-15T04_00_00+00_00.parquet"]
+    process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
+    os.makedirs(process_input_dir, exist_ok=True)
 
     download_huggingface_files_parllel(input_dir=Path(args.input_dir), process_input_dir=process_input_dir,
                                        file_names=args.file_names,
