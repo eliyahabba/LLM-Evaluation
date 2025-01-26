@@ -1,3 +1,4 @@
+import json
 import os
 from multiprocessing import Pool, Manager
 
@@ -25,15 +26,14 @@ def process_configuration(params):
     prompt_question_analyzer = PromptQuestionAnalyzer()
     performance_analyzer = ModelPerformanceAnalyzer()
     # Load data for current configuration
-    df_partial = data_loader.load_and_process_data(model_name, shots_selected, max_samples=10000)
+    df_partial = data_loader.load_and_process_data(model_name, shots_selected)
     # if shots_selected == 5:
     #     df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
     # base_results_dir = "../app/results_local"
 
     df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
-    base_results_dir = "../app/results_local"
+    base_results_dir = "../app/results_local_without_place_correct_first_last2"
     os.makedirs(base_results_dir, exist_ok=True)
-
 
     performance_analyzer.generate_model_performance_comparison(
         df=df_partial,
@@ -102,12 +102,35 @@ def run_configuration_analysis(num_processes=1) -> None:
 
     with Manager() as manager:
         with Pool(processes=num_processes) as pool:
-            list(tqdm(
-                pool.imap_unordered(process_configuration, params_list),
-                total=len(params_list),
-                desc="Processing configurations"
-            ))
+            for _ in tqdm(
+                    pool.imap_unordered(process_configuration_with_immediate_error, params_list),
+                    total=len(params_list),
+                    desc="Processing configurations"
+            ):
+                pass
 
+
+import traceback
+from datetime import datetime
+
+
+def immediate_error_callback(error, params):
+    print("\n" + "=" * 50)
+    print(f"Error occurred at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Parameters that failed: {json.dumps(params, indent=2)}")
+    print(f"Error message: {str(error)}")
+    print("Traceback:")
+    print(traceback.format_exc())
+    print("=" * 50 + "\n")
+
+
+def process_configuration_with_immediate_error(params):
+    try:
+        return process_configuration(params)
+    except Exception as e:
+        immediate_error_callback(e, params)
+        # אפשר גם להוסיף כאן raise אם רוצים לעצור את כל הריצה בעת שגיאה
+        return {'status': 'error', 'params': params, 'error': str(e)}
 
 if __name__ == "__main__":
-    run_configuration_analysis(num_processes=16)
+    run_configuration_analysis(num_processes=4)
