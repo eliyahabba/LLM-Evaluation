@@ -297,19 +297,24 @@ def convert_to_scheme_format(parquet_path, repo_name, scheme_files_dir, probs=Tr
     for split, temp_path in temp_files.items():
         filename = f"{base_filename}_{split}.parquet"
         # move the tmp file into the scheme_files directory and then upload it
-        scheme_file_path = Path(scheme_files_dir) / filename
-        Path(temp_path).replace(scheme_file_path)
+        # scheme_file_path = Path(scheme_files_dir) / filename
+        # Path(temp_path).replace(scheme_file_path)
         logger.info(f"The file {filename} has been moved to {scheme_files_dir}")
         try:
             logger.info(f"Uploading {split} file to Hugging Face...")
             api.upload_file(
-                path_or_fileobj=scheme_file_path,
+                path_or_fileobj=temp_path,
                 path_in_repo=filename,
                 repo_id=repo_name,
                 token=TOKEN,
                 repo_type="dataset"
             )
             logger.info(f"Successfully uploaded {split} file as {filename} to {repo_name}")
+            # Clean up scheme_file_path file
+            if Path(temp_path).exists():
+                Path(temp_path).unlink()
+                logger.info(f"Scheme file for {split} cleaned up")
+
         except Exception as e:
             logger.info(f"Error uploading {split} file: {e}")
 
