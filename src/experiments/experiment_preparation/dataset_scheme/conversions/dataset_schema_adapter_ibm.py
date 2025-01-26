@@ -192,7 +192,7 @@ class SchemaConverter:
         task_data = row['task_data']
         recipe = self._parse_config_string(row['run_unitxt_recipe'])
         combined_strings = row['run_id'] + row['id']
-        evaluation_id = combined_strings.apply(lambda x: hashlib.sha256(x.encode()).hexdigest())
+        evaluation_id = hashlib.sha256(combined_strings.encode()).hexdigest()
 
         # Build schema sections
         schema = {
