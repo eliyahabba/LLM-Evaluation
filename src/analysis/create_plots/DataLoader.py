@@ -42,6 +42,7 @@ class DataLoader:
                                       max_samples, drop)
         clean_df = self.remove_duplicates(full_results)
         load_time = time.time()
+        print(f"The size of the data after removing duplicates is: {len(clean_df)}")
         print(f"Data loading completed in {load_time - start_time:.2f} seconds")
         return clean_df
 
@@ -94,7 +95,8 @@ class DataLoader:
                     self.dataset = load_dataset(self.dataset_name, split=split_with_max_samples)
                 else:
                     self.dataset = load_dataset(self.dataset_name, split=self.split)
-
+                # print the dataset features (not the data)
+                print(self.dataset)
                 if drop:
                     self.dataset = self.dataset.remove_columns(['family', 'generated_text', 'ground_truth'])
             except Exception as e:
@@ -104,13 +106,11 @@ class DataLoader:
         print("Extracting Arrow table...")
         arrow_table = self.dataset.data.table
 
-        # בניית רשימת התנאים
         conditions = [
             pc.equal(arrow_table['model'], model_name),
             pc.equal(arrow_table['shots'], shots)
         ]
 
-        # הוספת תנאים אופציונליים
         optional_filters = {
             'dataset': dataset,
             'template': template,
