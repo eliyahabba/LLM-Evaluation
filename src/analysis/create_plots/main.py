@@ -31,7 +31,7 @@ def process_configuration(params):
     # base_results_dir = "../app/results_local"
 
     df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
-    base_results_dir = "../app/results_local2"
+    base_results_dir = "../app/results_local"
     os.makedirs(base_results_dir, exist_ok=True)
 
     performance_analyzer.generate_model_performance_comparison(
@@ -134,4 +134,4 @@ def process_configuration_with_immediate_error(params):
         return {'status': 'error', 'params': params, 'error': str(e)}
 
 if __name__ == "__main__":
-    run_configuration_analysis(num_processes=2)
+    run_configuration_analysis(num_processes=1)

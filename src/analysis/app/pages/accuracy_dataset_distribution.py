@@ -393,6 +393,12 @@ def main():
         "Select Number of Shots",
         options=sorted(shots_models_data.keys())
     )
+
+    selected_model = st.sidebar.selectbox(
+        "Select Models",
+        options=sorted(shots_models_data[selected_shots].keys())
+    )
+
     if not selected_shots:
         return
     # create 2 tabs
@@ -412,15 +418,14 @@ def main():
         st.plotly_chart(fig, use_container_width=True)
 
     config_data_all_models_by_dataset = {}
-    for model in models:
-        config_data = load_data(results_dir, selected_shots, model)
-        config_data_all_models_by_dataset[model] = config_data
-        fig = generate_model_performance_comparison(
-            dataset_statistics=config_data,
-            model_name=model,
-            shots_selected=selected_shots
-        )
-        figs.append(fig)
+    config_data = load_data(results_dir, selected_shots, selected_model)
+    config_data_all_models_by_dataset[selected_model] = config_data
+    fig = generate_model_performance_comparison(
+        dataset_statistics=config_data,
+        model_name=selected_model,
+        shots_selected=selected_shots
+    )
+    figs.append(fig)
     with tabs[1]:
         for fig in figs:
             st.plotly_chart(fig, use_container_width=True)
