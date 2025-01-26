@@ -59,6 +59,7 @@ def download_huggingface_files_parllel(process_output_dir):
     logger.info(f"Starting parallel processing with {num_processes} processes...")
     files = os.listdir(process_output_dir)
     files = [os.path.join(process_output_dir, file) for file in files]
+    print(f"Processing {len(files)} files")
     with Manager() as manager:
         process_func = partial(process_file_safe, logger=logger)
 
