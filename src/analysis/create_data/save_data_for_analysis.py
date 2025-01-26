@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import json
 import logging
 import os
@@ -96,7 +97,7 @@ class RunOutputMerger:
         """
         try:
             parquet_file = pq.ParquetFile(self.parquet_path)
-            columns_to_keep = ['run_id', 'scores', 'references', 'generated_text', 'cumulative_logprob', 'raw_input']
+            columns_to_keep = ['id','run_id', 'scores', 'references', 'generated_text', 'cumulative_logprob', 'raw_input']
 
             # for batch in parquet_file.iter_batches(batch_size=self.batch_size):
             for batch in parquet_file.iter_batches(batch_size=self.batch_size, columns=columns_to_keep):
@@ -302,6 +303,9 @@ class Converter:
     def convert_dataframe(self, df: pd.DataFrame):
         """Convert entire DataFrame using vectorized operations."""
         # Get recipes
+        combined_strings = df['run_id'].astype(str) + df['id'].astype(str)
+        evaluation_id = combined_strings.apply(lambda x: hashlib.sha256(x.encode()).hexdigest())
+
         recipes = df['run_unitxt_recipe'].apply(self._parse_config_string)
         index_map = df.apply(
             lambda row: self.build_instance_section(row, self._parse_config_string(row['run_unitxt_recipe'])),
@@ -327,6 +331,7 @@ class Converter:
         closest_answer.name = 'closest_answer'
         # Combine all sections
         result_df = pd.concat([
+            evaluation_id,
             index_map,
             model_sections,
             dataset,
