@@ -19,6 +19,8 @@ from datasets import load_dataset
 from huggingface_hub import HfFileSystem
 from tqdm import tqdm
 
+from src.experiments.experiment_preparation.dataset_scheme.conversions.dataset_schema_adapter_ibm import \
+    QuantizationPrecision
 from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 from src.utils.Constants import Constants
 
@@ -97,7 +99,8 @@ class RunOutputMerger:
         """
         try:
             parquet_file = pq.ParquetFile(self.parquet_path)
-            columns_to_keep = ['id','run_id', 'scores', 'references', 'generated_text', 'cumulative_logprob', 'raw_input']
+            columns_to_keep = ['id', 'run_id', 'scores', 'references', 'generated_text', 'cumulative_logprob',
+                               'raw_input']
 
             # for batch in parquet_file.iter_batches(batch_size=self.batch_size):
             for batch in parquet_file.iter_batches(batch_size=self.batch_size, columns=columns_to_keep):
@@ -143,6 +146,14 @@ class Converter:
         model_args = row['run_model_args']
         model_metadata = self.models_metadata[model_args['model']]
         return model_args['model'], model_metadata.get("ModelInfo", {}).get("family")
+
+    def _build_model_section_without_family(self, row: pd.Series
+                                            ) -> str:
+        """Build model section of schema."""
+
+        # Get model configuration
+        model_args = row['run_model_args']
+        return model_args['model']
 
     def parse_template_params(self, recipe: Dict) -> Tuple[str, str, dict]:
         """Extract template parameters from recipe configuration."""
@@ -241,16 +252,34 @@ class Converter:
         # Process demonstration examples
         enumerator, separator, choices_order = self.parse_template_params(recipe)
         return {
+            "shots": int(recipe['num_demos']),
             "template": self._get_template(recipe, logger),
             "separator": separator,
             "enumerator": enumerator,
             "choices_order": choices_order['method'],
-            "shots": int(recipe['num_demos']),
         }
 
     def _build_output_section(self, row: pd.Series) -> Tuple[str, float]:
         """Build output section of schema."""
         return row['generated_text'], row['cumulative_logprob']
+
+    def convert_quantization(self, value: str) -> str:
+        """Convert quantization value to schema format."""
+        mapping = {
+            "None": QuantizationPrecision.NONE,
+            "half": QuantizationPrecision.FLOAT16,
+            "float16": QuantizationPrecision.FLOAT16,
+            "float32": QuantizationPrecision.FLOAT32,
+            "int8": QuantizationPrecision.INT8,
+            "int4": QuantizationPrecision.INT4
+        }
+        if value not in mapping:
+            raise ValueError(f"Unsupported quantization value: {value}")
+        return mapping[value]
+
+    def _build_quantization_section(self, row: pd.Series) -> str:
+        """Build quantization section of schema."""
+        return self.convert_quantization(row['run_quantization_bit_count'])
 
     def _build_evaluation_section(self, row: pd.Series) -> Dict:
         """Build evaluation section of schema."""
@@ -315,9 +344,12 @@ class Converter:
         df['references'] = df['references'].apply(lambda x: eval(x))
         df['scores'] = df['scores'].apply(lambda x: eval(x))
         # Build all sections in parallel
-        model_sections = df.apply(self._build_model_section, axis=1, result_type='expand') \
-            .rename(columns={0: 'model', 1: 'family'})
-
+        model_sections = df['run_model_args']['model']
+        model_sections.name = 'model'
+        quantization = df.apply(self._build_quantization_section, axis=1, result_type='expand') \
+            .rename(columns={0: 'bit_precision'})
+        # self.convert_quantization(
+        #     row['run_quantization_bit_count']
         prompt_sections = recipes.apply(lambda x: pd.Series(self._build_prompt_section(x)))
 
         output_sections = df.apply(self._build_output_section, axis=1, result_type='expand') \
@@ -333,9 +365,10 @@ class Converter:
         # Combine all sections
         result_df = pd.concat([
             evaluation_id,
+            dataset,
             index_map,
             model_sections,
-            dataset,
+            quantization,
             prompt_sections,
             output_sections,
             closest_answer,
@@ -399,6 +432,7 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
         logger.info(f"Output saved to: {output_path}")
     else:
         logger.warning("No data was written - all batches were empty")
+
 
 def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_names, scheme_files_dir):
     """
