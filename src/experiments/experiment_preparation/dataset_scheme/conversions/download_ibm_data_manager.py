@@ -375,7 +375,7 @@ def procces_file(file_name, input_dir: Path, repo_name, scheme_files_dir, probs,
         return
 
     convert_to_scheme_format(input_path, repo_name=repo_name, scheme_files_dir=scheme_files_dir, probs=probs,
-                             logger=logger, batch_size=10000)
+                             logger=logger, batch_size=100000)
 
 
 def check_if_file_exists(repo_name, filename):

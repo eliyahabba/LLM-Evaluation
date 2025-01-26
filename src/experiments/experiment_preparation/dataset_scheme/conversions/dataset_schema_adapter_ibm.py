@@ -389,7 +389,7 @@ class SchemaConverter:
         }
 
     def convert_dataframe(self, df: pd.DataFrame, logger=None, probs=True) -> List[Dict]:
-        conversion_map = {'prompt': eval, 'references': eval, 'scores': eval, 'run_generation_args': json.loads,
+        conversion_map = {'prompt': json.loads, 'references': eval, 'scores': eval, 'run_generation_args': json.loads,
                           'run_model_args': json.loads, }
 
         try:
@@ -398,7 +398,7 @@ class SchemaConverter:
                 df[col] = df[col].apply(func)
 
             # Handle nested task_data conversion
-            df['task_data'] = df['raw_input'].apply(lambda x: eval(eval(x)['task_data']))
+            df['task_data'] = df['raw_input'].apply(lambda x: json.loads(json.loads(x)['task_data']))
 
             # Drop raw_input column after extraction
             df = df.drop(columns=['raw_input'])
