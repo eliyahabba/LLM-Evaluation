@@ -1,3 +1,4 @@
+import hashlib
 import json
 from dataclasses import dataclass
 from enum import Enum
@@ -190,10 +191,12 @@ class SchemaConverter:
         """Convert a single DataFrame row to schema format."""
         task_data = row['task_data']
         recipe = self._parse_config_string(row['run_unitxt_recipe'])
+        combined_strings = row['run_id'].astype(str) + row['id'].astype(str)
+        evaluation_id = combined_strings.apply(lambda x: hashlib.sha256(x.encode()).hexdigest())
 
         # Build schema sections
         schema = {
-            "evaluation_id": row['id'],
+            "evaluation_id": evaluation_id,
             "model": self._build_model_section(
                 row
             ),
