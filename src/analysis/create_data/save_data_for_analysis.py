@@ -392,7 +392,7 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
     # Create output path
     output_path = os.path.join(process_input_dir,
                                f"processed_{parquet_path.name}")
-    if os.path.exists(output_path) and False:
+    if os.path.exists(output_path):
         logger.info(f"Output file already exists: {output_path}")
         return
     logger.info(f"Output path: {output_path}")
