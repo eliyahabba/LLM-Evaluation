@@ -1,5 +1,7 @@
 # data_loader.py
 import time
+from typing import Dict, List, Any
+from typing import Optional
 
 import pandas as pd
 import pyarrow.compute as pc
@@ -72,7 +74,6 @@ class DataLoader:
 
         # Convert to Arrow table for efficient processing
         filtered_flat = filtered_dataset.flatten_indices()
-        # filtered_flat.data.table כעת משקף פיזית רק את השורות המסוננות
         arrow_table = filtered_flat.data.table
 
         # Process in batches
@@ -89,19 +90,129 @@ class DataLoader:
         Efficiently loads data using the `datasets` and `pyarrow` libraries.
         """
         # Load the dataset if not already loaded
+
+        num_proc = 8
         if self.dataset is None:
             try:
                 if max_samples is not None:
                     split_with_max_samples = f"{self.split}[:{max_samples}]"
-                    self.dataset = load_dataset(self.dataset_name, split=split_with_max_samples)
+                    self.dataset = load_dataset(self.dataset_name, split=split_with_max_samples, num_proc=num_proc)
                 else:
-                    self.dataset = load_dataset(self.dataset_name, split=self.split)
+                    self.dataset = load_dataset(self.dataset_name, split=self.split, num_proc=num_proc)
                 # print the dataset features (not the data)
                 print(self.dataset)
                 if drop:
                     self.dataset = self.dataset.remove_columns(['family', 'generated_text', 'ground_truth'])
             except Exception as e:
                 raise Exception(f"Error loading dataset: {str(e)}")
+
+    def extract_data2(
+            self,
+            model_name: str,
+            shots: int,
+            dataset: Optional[str] = None,
+            template: Optional[str] = None,
+            separator: Optional[str] = None,
+            enumerator: Optional[str] = None,
+            choices_order: Optional[str] = None
+    ) -> pd.DataFrame:
+        """
+        Efficiently filter a large dataset using batched processing and parallel execution.
+
+        Args:
+            model_name: Name of the model to filter by
+            shots: Number of shots to filter by
+            dataset: Optional dataset name filter
+            template: Optional template filter
+            separator: Optional separator filter
+            enumerator: Optional enumerator filter
+            choices_order: Optional choices order filter
+
+        Returns:
+            pd.DataFrame: Filtered dataset as a pandas DataFrame
+        """
+        try:
+            print("Starting data filtering process...")
+
+            # Step 1: Define the columns we need to keep
+            # Add any additional columns you need in the final output
+            required_columns = [
+                'model',
+                'shots',
+                'dataset',
+                'template',
+                'separator',
+                'enumerator',
+                'choices_order'
+            ]
+
+            # Step 2: Select only necessary columns to reduce memory usage
+            dataset_subset = self.dataset.select_columns(required_columns)
+
+            # Step 3: Define the batch filtering function
+            def filter_batch(examples: Dict[str, List[Any]]) -> Dict[str, List[bool]]:
+                """
+                Process a batch of examples and return a boolean mask for filtering.
+
+                Args:
+                    examples: Dictionary of column names to lists of values
+
+                Returns:
+                    Dictionary with a single 'keep' key containing boolean mask
+                """
+                batch_size = len(examples['model'])
+                # Initialize all rows as True
+                mask = [True] * batch_size
+
+                # Apply each filter condition if it exists
+                # Required filters
+                mask = [m and (mod == model_name) for m, mod in zip(mask, examples['model'])]
+                mask = [m and (s == shots) for m, s in zip(mask, examples['shots'])]
+
+                # Optional filters
+                if dataset is not None:
+                    mask = [m and (d == dataset) for m, d in zip(mask, examples['dataset'])]
+
+                if template is not None:
+                    mask = [m and (t == template) for m, t in zip(mask, examples['template'])]
+
+                if separator is not None:
+                    mask = [m and (sep == separator) for m, sep in zip(mask, examples['separator'])]
+
+                if enumerator is not None:
+                    mask = [m and (e == enumerator) for m, e in zip(mask, examples['enumerator'])]
+
+                if choices_order is not None:
+                    mask = [m and (c == choices_order) for m, c in zip(mask, examples['choices_order'])]
+
+                return {'keep': mask}
+
+            # Step 4: Apply the batched filtering
+            print("Applying filters...")
+            filtered_dataset = dataset_subset.map(
+                filter_batch,
+                batched=True,
+                batch_size=100000,  # Adjust based on available memory
+                num_proc=4,
+                remove_columns=dataset_subset.column_names,
+                load_from_cache_file=True,
+                desc="Filtering dataset"
+            )
+
+            # Step 5: Convert to pandas DataFrame
+            print("Converting to pandas DataFrame...")
+            df_filtered = filtered_dataset.to_pandas()
+
+            # Step 6: Print summary statistics
+            print("\nFiltering results:")
+            print(f"Total rows after filtering: {len(df_filtered)}")
+            print("\nModel distribution:")
+            print(df_filtered['model'].value_counts())
+
+            return df_filtered
+
+        except Exception as e:
+            raise Exception(f"Error during data filtering: {str(e)}")
 
     def extract_data(self, model_name, shots, dataset=None, template=None, separator=None, enumerator=None,
                      choices_order=None):
