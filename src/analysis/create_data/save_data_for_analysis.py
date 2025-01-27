@@ -346,7 +346,8 @@ class Converter:
         # Build all sections in parallel
         model_sections = df['run_model_args'].apply(lambda x: x['model'])
         model_sections.name = 'model'
-        quantization = df.apply(self._build_quantization_section, axis=1, result_type='expand') \
+        quantization = df.apply(self._build_quantization_section, axis=1, result_type='expand')
+        quantization.name = 'quantization'
         # self.convert_quantization(
         #     row['run_quantization_bit_count']
         prompt_sections = recipes.apply(lambda x: pd.Series(self._build_prompt_section(x)))
