@@ -135,8 +135,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     # Set start date
 
-    args.old_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
-    args.output_dir = "/cs/labs/gabis/eliyahabba/ibm_results_data_full"
+    args.output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    # args.output_dir = "/cs/labs/gabis/eliyahabba/ibm_results_data_full"
     os.makedirs(args.output_dir, exist_ok=True)
 
 
