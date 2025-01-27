@@ -1,10 +1,9 @@
 import os
 import time
-from typing import List
-
 import pandas as pd
 import plotly.express as px
-
+from pathlib import Path
+from typing import Dict, List, Optional, Union
 
 class PromptQuestionAnalyzer:
     def process_and_visualize_questions(
@@ -57,9 +56,17 @@ class PromptQuestionAnalyzer:
             if dataset_df.empty:
                 print(f"No data for dataset {dataset}. Skipping.")
                 continue
-        # 2) Compute accuracy for each question (without grouping by additional axes)
-            overall_question_stats = self._aggregate_samples_accuracy(dataset_df)
+            self._process_accuracy_stats(dataset_df, model_dir, df_filtered)
+            # Process and save enumerator analysis
+            self._process_enumerator_analysis(
+                dataset_df,
+                model_name,
+                dataset,
+                model_dir
+            )
 
+            # 2) Compute accuracy for each question (without grouping by additional axes)
+            overall_question_stats = self._aggregate_samples_accuracy(dataset_df)
             # 3) Save general tables and plots (no axis grouping)
             # Save tables for each dataset
             self._save_samples_accuracy_tables(
@@ -88,6 +95,280 @@ class PromptQuestionAnalyzer:
         print(f"Total question-level processing time for {model_name}: {total_time:.2f} seconds")
         print("-" * 50)
 
+    def _process_enumerator_analysis(
+            self,
+            df: pd.DataFrame,
+            model_name: str,
+            dataset: str,
+            model_dir: str,
+            threshold: float = 0.1
+    ) -> None:
+        """Analyze answer distributions for poorly performing questions."""
+        enum_dir = os.path.join(model_dir, dataset.replace('/', '_'), 'enumerator_analysis')
+        os.makedirs(enum_dir, exist_ok=True)
+
+        # Position mappings
+        position_mappings = {
+            'greek': "αβγδεζηθικ",
+            'keyboard': "!@#$%^₪*)(",
+            'capitals': "ABCDEFGHIJ",
+            'lowercase': "abcdefghij",
+            'numbers': [str(i + 1) for i in range(10)],
+            'roman': ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+        }
+
+        def map_to_position(answer: str, enum_type: str) -> int:
+            prefix = answer.split('.')[0].strip()
+            mapping = position_mappings.get(enum_type, "")
+            return mapping.index(prefix) + 1 if prefix in mapping else 0
+
+        # Calculate question accuracies
+        accuracy_stats = (
+            df.groupby('sample_index')
+            .agg({
+                'score': ['sum', 'count']
+            })
+            .reset_index()
+        )
+        accuracy_stats.columns = ['sample_index', 'correct_count', 'total_count']
+        accuracy_stats['accuracy'] = (accuracy_stats['correct_count'] / accuracy_stats['total_count']).round(3)
+
+        # Identify poor performers
+        poor_performers = accuracy_stats[accuracy_stats['accuracy'] < threshold]
+
+        if not poor_performers.empty:
+            # Create main scatter plot for most common answers
+            position_stats = self._create_position_stats(
+                df,
+                poor_performers['sample_index'],
+                map_to_position,
+                accuracy_stats
+            )
+
+            # Save position statistics
+            position_stats.to_parquet(os.path.join(enum_dir, 'position_distribution.parquet'))
+
+            # Create and save scatter plot
+            self._create_scatter_plot(
+                position_stats,
+                model_name,
+                dataset,
+                threshold,
+                enum_dir
+            )
+
+            # Create and save heatmap
+            self._create_answer_heatmap(
+                df,
+                poor_performers['sample_index'],
+                map_to_position,
+                enum_dir,
+                model_name,
+                dataset
+            )
+
+    def _create_answer_heatmap(
+            self,
+            df: pd.DataFrame,
+            poor_performers_idx: pd.Index,
+            position_mapping_func,
+            save_dir: str,
+            model_name: str,
+            dataset: str
+    ) -> None:
+        """Create a normalized confusion matrix of answer distributions.
+
+        Each cell shows the proportion of answers for that position (0 to 1),
+        with rows summing to 1 across all possible answer positions.
+        """
+        # Get answer positions and counts
+        answer_distributions = (
+            df[df['sample_index'].isin(poor_performers_idx)]
+            .assign(
+                position=lambda x: x.apply(
+                    lambda row: position_mapping_func(row['closest_answer'], row['enumerator']),
+                    axis=1
+                )
+            )
+            .groupby(['sample_index', 'position'])
+            .size()
+            .reset_index(name='count')
+        )
+
+        # Calculate proportions for each question
+        answer_distributions['total'] = answer_distributions.groupby('sample_index')['count'].transform('sum')
+        answer_distributions['proportion'] = answer_distributions['count'] / answer_distributions['total']
+
+        # Create the confusion matrix
+        confusion_matrix = (
+            answer_distributions
+            .pivot(
+                index='sample_index',
+                columns='position',
+                values='proportion'
+            )
+            .fillna(0)
+        )
+
+        # Sort by question index for consistent display
+        confusion_matrix = confusion_matrix.sort_index()
+
+        # Create heatmap
+        fig = px.imshow(
+            confusion_matrix,
+            labels={
+                'x': 'Answer Position',
+                'y': 'Question ID',
+                'color': 'Proportion'
+            },
+            x=[str(i) for i in confusion_matrix.columns],
+            y=[str(i) for i in confusion_matrix.index],
+            aspect='auto',
+            title=f"{model_name} - {dataset}"
+        )
+
+        # Update layout
+        fig.update_layout(
+            xaxis_title="Answer Position",
+            yaxis_title="Question ID",
+            coloraxis=dict(
+                colorscale='Blues',
+                cmin=0,
+                cmax=1,
+                colorbar_title="Proportion"
+            ),
+            plot_bgcolor='white',
+            paper_bgcolor='white'
+        )
+
+        # Add informative hover text
+        fig.update_traces(
+            hovertemplate=(
+                    "Question ID: %{y}<br>" +
+                    "Answer Position: %{x}<br>" +
+                    "Proportion: %{z:.3f}<br>" +
+                    "<extra></extra>"
+            )
+        )
+
+        # Save and display
+        output_path = os.path.join(save_dir, 'answer_distribution_heatmap.html')
+        fig.write_html(output_path)
+        fig.show()
+    def _create_position_stats(
+            self,
+            df: pd.DataFrame,
+            poor_performers_idx: pd.Index,
+            position_mapping_func,
+            accuracy_stats: pd.DataFrame
+    ) -> pd.DataFrame:
+        """Create position statistics for scatter plot."""
+        return (
+            df[df['sample_index'].isin(poor_performers_idx)]
+            .assign(
+                position=lambda x: x.apply(
+                    lambda row: position_mapping_func(row['closest_answer'], row['enumerator']),
+                    axis=1
+                )
+            )
+            .groupby(['sample_index', 'position'])
+            .size()
+            .reset_index(name='frequency')
+            .merge(
+                accuracy_stats[['sample_index', 'accuracy', 'correct_count', 'total_count']],
+                on='sample_index'
+            )
+            .assign(
+                percentage=lambda x: x.groupby('sample_index')['frequency']
+                .transform(lambda y: y / y.sum() * 100)
+            )
+            .sort_values(['sample_index', 'frequency'], ascending=[True, False])
+            .drop_duplicates('sample_index')
+            .assign(question_number=lambda x: range(1, len(x) + 1))
+            .round({'percentage': 2, 'accuracy': 3})
+        )
+
+    def _create_scatter_plot(
+            self,
+            position_stats: pd.DataFrame,
+            model_name: str,
+            dataset: str,
+            threshold: float,
+            save_dir: str
+    ) -> None:
+        """Create scatter plot of most common answer positions."""
+        fig = px.scatter(
+            position_stats,
+            x='question_number',
+            y='percentage',
+            custom_data=['position', 'accuracy', 'correct_count', 'total_count'],
+            title=f"{model_name} - {dataset}\nMost Common Answer Position (Accuracy < {threshold})",
+            labels={
+                'question_number': 'Question Number',
+                'percentage': 'Percentage (%)'
+            }
+        )
+
+        fig.update_traces(
+            marker=dict(size=10),
+            hovertemplate=(
+                "Question: %{x}<br>"
+                "Position: %{customdata[0]}<br>"
+                "Frequency: %{y:.1f}%<br>"
+                "Accuracy: %{customdata[1]:.3f}<br>"
+                "Correct: %{customdata[2]} / %{customdata[3]}"
+            )
+        )
+
+        fig.update_layout(
+            xaxis=dict(
+                tickmode='linear',
+                dtick=1,
+                gridcolor='lightgrey',
+                showgrid=True
+            ),
+            yaxis=dict(
+                range=[0, 100],
+                gridcolor='lightgrey',
+                showgrid=True
+            ),
+            showlegend=False,
+            plot_bgcolor='white',
+            paper_bgcolor='white'
+        )
+        fig.show()
+        fig.write_html(os.path.join(save_dir, 'position_distribution.html'))
+
+    def _process_accuracy_stats(
+            self,
+            dataset_df: pd.DataFrame,
+            model_dir: str,
+            df_filtered: pd.DataFrame
+    ) -> None:
+        """Process accuracy statistics for a dataset."""
+        overall_question_stats = self._aggregate_samples_accuracy(dataset_df)
+        self._save_samples_accuracy_tables(overall_question_stats, model_dir, suffix="overall")
+
+        dimensions = ["template", "separator", "enumerator", "choices_order"]
+        for dim in dimensions:
+            print(f"Computing question accuracy grouped by '{dim}'...")
+            question_stats = self._aggregate_samples_accuracy_by_axis(df_filtered, dim)
+            self._save_samples_accuracy_tables(question_stats, model_dir, dim, suffix=f"by_{dim}")
+
+    def _prepare_output_directory(
+            self,
+            base_results_dir: str,
+            shots_selected: int,
+            model_name: str
+    ) -> str:
+        """Prepare output directory structure."""
+        model_dir = os.path.join(
+            base_results_dir,
+            f"Shots_{shots_selected}",
+            model_name.replace('/', '_')
+        )
+        os.makedirs(model_dir, exist_ok=True)
+        return model_dir
     # ------------------------------------------------------------------------------------
     # Helper Functions for Aggregation
     # ------------------------------------------------------------------------------------
@@ -157,7 +438,7 @@ class PromptQuestionAnalyzer:
             data: pd.DataFrame,
             model_dir: str,
             dim_subdir: str = None,
-            suffix: str="overall"
+            suffix: str = "overall"
     ) -> None:
         """
         Saves the question-accuracy DataFrame(s) in parquet format,
