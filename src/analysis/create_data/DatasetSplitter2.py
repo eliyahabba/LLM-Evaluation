@@ -165,68 +165,65 @@ class ParallelDatasetSplitter:
     def merge_temp_files(self):
         """ממזג את הקבצים הזמניים"""
         self.logger.info("Starting to merge temporary files")
-        temp_files_map = {}
 
-        # מיפוי הקבצים הזמניים
-        for temp_file in self.temp_dir.glob("*.parquet"):
+        # מוצא את כל החברות הייחודיות (allenai, mistralai וכו')
+        companies = set()
+        for temp_file in self.temp_dir.glob("*"):
             try:
-                # מחלץ את השם ללא ה-UUID בהתחלה
-                uuid_and_rest = temp_file.name.split('_', 1)  # מפצל רק פעם אחת כדי להפריד את ה-UUID
-                if len(uuid_and_rest) < 2:
-                    self.logger.warning(f"Unexpected filename format: {temp_file.name}")
-                    continue
-
-                final_name = uuid_and_rest[1]  # לוקח את כל מה שאחרי ה-UUID
-                if final_name not in temp_files_map:
-                    temp_files_map[final_name] = []
-                temp_files_map[final_name].append(temp_file)
-
+                # מניחים שהחלק האחרון אחרי ה-UUID הוא שם החברה
+                company = temp_file.name.split('_')[-1]
+                companies.add(company)
             except Exception as e:
-                self.logger.error(f"Error processing temp file name {temp_file}: {str(e)}")
-                continue
+                self.logger.error(f"Error extracting company from filename {temp_file}: {str(e)}")
 
-        self.logger.info(f"Found {len(temp_files_map)} unique combinations to merge")
+        self.logger.info(f"Found companies: {companies}")
 
-        if len(temp_files_map) == 0:
-            self.logger.error("No files found to merge! Printing all files in temp directory:")
-            for f in self.temp_dir.glob("*"):
-                self.logger.error(f"File in temp dir: {f}")
+        if not companies:
+            self.logger.error("No companies found!")
             return
 
-        # מיזוג עם progress bar
-        with tqdm(total=len(temp_files_map), desc="Merging files") as pbar:
-            for final_name, temp_files in temp_files_map.items():
+        # עבור כל חברה, מוצא את כל הקבצים שלה וממזג אותם
+        with tqdm(total=len(companies), desc="Merging files by company") as pbar:
+            for company in companies:
                 try:
-                    final_file = self.output_dir / final_name
-                    self.logger.info(f"Merging {len(temp_files)} files into {final_file}")
+                    # מוצא את כל הקבצים של החברה הזו
+                    company_files = list(self.temp_dir.glob(f"*_{company}"))
+                    if not company_files:
+                        self.logger.warning(f"No files found for company {company}")
+                        continue
 
+                    self.logger.info(f"Found {len(company_files)} files for company {company}")
+
+                    # קורא את כל הקבצים
                     dfs = []
-                    for f in temp_files:
+                    for f in company_files:
                         try:
                             df = pd.read_parquet(f)
                             dfs.append(df)
+                            self.logger.info(f"Successfully read {f} with {len(df)} rows")
                         except Exception as e:
-                            self.logger.error(f"Error reading temp file {f}: {str(e)}")
-                            continue
+                            self.logger.error(f"Error reading file {f}: {str(e)}")
 
-                    if not dfs:  # אם לא הצלחנו לקרוא אף קובץ
-                        self.logger.error(f"No valid dataframes to merge for {final_name}")
+                    if not dfs:
+                        self.logger.error(f"No valid data found for company {company}")
                         continue
 
+                    # ממזג את כל הדאטה של החברה
                     combined_df = pd.concat(dfs, ignore_index=True)
-                    combined_df.to_parquet(final_file, index=False)
+                    output_file = self.output_dir / f"{company}.parquet"
+                    combined_df.to_parquet(output_file, index=False)
+                    self.logger.info(f"Successfully created {output_file} with {len(combined_df)} rows")
 
-                    # מחיקת קבצים זמניים רק אחרי שהמיזוג הצליח
-                    for f in temp_files:
+                    # מוחק את הקבצים הזמניים
+                    for f in company_files:
                         try:
                             f.unlink()
+                            self.logger.info(f"Deleted temporary file {f}")
                         except Exception as e:
                             self.logger.error(f"Error deleting temp file {f}: {str(e)}")
 
-                    self.logger.info(f"Successfully created {final_file} with {len(combined_df)} rows")
-
                 except Exception as e:
-                    self.logger.error(f"Error merging files for {final_name}: {str(e)}", exc_info=True)
+                    self.logger.error(f"Error processing company {company}: {str(e)}", exc_info=True)
 
                 pbar.update(1)
     def process_all_files2(self):
