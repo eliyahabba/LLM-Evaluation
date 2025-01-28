@@ -163,67 +163,91 @@ class ParallelDatasetSplitter:
         return failed_files
 
     def merge_temp_files(self):
-        """ממזג את הקבצים הזמניים"""
+        """ממזג את הקבצים הזמניים לפי שלישיות של model-shots-dataset"""
         self.logger.info("Starting to merge temporary files")
 
-        # מוצא את כל החברות הייחודיות (allenai, mistralai וכו')
-        companies = set()
+        # מיפוי של כל הקבצים הזמניים לפי השלישייה שלהם
+        triplet_files_map = {}
+
+        # בודק כל קובץ בתיקייה הזמנית
         for temp_file in self.temp_dir.glob("*"):
             try:
-                # מניחים שהחלק האחרון אחרי ה-UUID הוא שם החברה
-                company = temp_file.name.split('_')[-1]
-                companies.add(company)
+                # בודק אם יש קובץ parquet בתוך התיקייה
+                if temp_file.is_dir():
+                    parquet_files = list(temp_file.glob("*.parquet"))
+                    if not parquet_files:
+                        self.logger.warning(f"No parquet files found in directory {temp_file}")
+                        continue
+
+                    # קורא את הדאטה כדי לחלץ את השלישייה
+                    df = pd.read_parquet(parquet_files[0])
+                    if len(df) == 0:
+                        self.logger.warning(f"Empty dataframe in {temp_file}")
+                        continue
+
+                    # מחלץ את הערכים של השלישייה מהשורה הראשונה
+                    model = df.iloc[0]['model']
+                    shots = df.iloc[0]['shots']
+                    dataset = df.iloc[0]['dataset']
+
+                    triplet_key = f"{model}_shots{shots}_{dataset}"
+
+                    if triplet_key not in triplet_files_map:
+                        triplet_files_map[triplet_key] = []
+                    triplet_files_map[triplet_key].append(temp_file)
+
             except Exception as e:
-                self.logger.error(f"Error extracting company from filename {temp_file}: {str(e)}")
+                self.logger.error(f"Error processing temp file/dir {temp_file}: {str(e)}")
 
-        self.logger.info(f"Found companies: {companies}")
+        self.logger.info(f"Found {len(triplet_files_map)} unique triplets to merge")
 
-        if not companies:
-            self.logger.error("No companies found!")
+        if not triplet_files_map:
+            self.logger.error("No triplets found to merge! Printing all files in temp directory:")
+            for f in self.temp_dir.glob("*"):
+                self.logger.error(f"File in temp dir: {f}")
             return
 
-        # עבור כל חברה, מוצא את כל הקבצים שלה וממזג אותם
-        with tqdm(total=len(companies), desc="Merging files by company") as pbar:
-            for company in companies:
+        # מיזוג הקבצים לפי השלישיות
+        with tqdm(total=len(triplet_files_map), desc="Merging files by triplet") as pbar:
+            for triplet_key, temp_dirs in triplet_files_map.items():
                 try:
-                    # מוצא את כל הקבצים של החברה הזו
-                    company_files = list(self.temp_dir.glob(f"*_{company}"))
-                    if not company_files:
-                        self.logger.warning(f"No files found for company {company}")
-                        continue
+                    self.logger.info(f"Processing triplet {triplet_key} with {len(temp_dirs)} files")
 
-                    self.logger.info(f"Found {len(company_files)} files for company {company}")
-
-                    # קורא את כל הקבצים
+                    # קורא את כל הקבצים של השלישייה הזו
                     dfs = []
-                    for f in company_files:
+                    for temp_dir in temp_dirs:
                         try:
-                            df = pd.read_parquet(f)
-                            dfs.append(df)
-                            self.logger.info(f"Successfully read {f} with {len(df)} rows")
+                            parquet_files = list(temp_dir.glob("*.parquet"))
+                            if parquet_files:
+                                df = pd.read_parquet(parquet_files[0])
+                                dfs.append(df)
+                                self.logger.info(f"Successfully read {temp_dir} with {len(df)} rows")
                         except Exception as e:
-                            self.logger.error(f"Error reading file {f}: {str(e)}")
+                            self.logger.error(f"Error reading from directory {temp_dir}: {str(e)}")
 
                     if not dfs:
-                        self.logger.error(f"No valid data found for company {company}")
+                        self.logger.error(f"No valid data found for triplet {triplet_key}")
                         continue
 
-                    # ממזג את כל הדאטה של החברה
+                    # ממזג את כל הדאטה של השלישייה
                     combined_df = pd.concat(dfs, ignore_index=True)
-                    output_file = self.output_dir / f"{company}.parquet"
+                    output_file = self.output_dir / f"{triplet_key}.parquet"
                     combined_df.to_parquet(output_file, index=False)
                     self.logger.info(f"Successfully created {output_file} with {len(combined_df)} rows")
 
-                    # מוחק את הקבצים הזמניים
-                    for f in company_files:
+                    # מוחק את התיקיות הזמניות
+                    for temp_dir in temp_dirs:
                         try:
-                            f.unlink()
-                            self.logger.info(f"Deleted temporary file {f}")
+                            if temp_dir.is_dir():
+                                shutil.rmtree(temp_dir)
+                            else:
+                                temp_dir.unlink()
+                            self.logger.info(f"Deleted temporary directory {temp_dir}")
                         except Exception as e:
-                            self.logger.error(f"Error deleting temp file {f}: {str(e)}")
+                            self.logger.error(f"Error deleting temp directory {temp_dir}: {str(e)}")
 
                 except Exception as e:
-                    self.logger.error(f"Error processing company {company}: {str(e)}", exc_info=True)
+                    self.logger.error(f"Error processing triplet {triplet_key}: {str(e)}", exc_info=True)
 
                 pbar.update(1)
     def process_all_files2(self):
