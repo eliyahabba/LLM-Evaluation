@@ -242,6 +242,6 @@ if __name__ == "__main__":
     splitter = ParallelDatasetSplitter(
         input_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed",
         output_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split",
-        num_workers=4
+        num_workers=24
     )
     splitter.process_all_files()
