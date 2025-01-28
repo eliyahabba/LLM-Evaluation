@@ -35,7 +35,7 @@ class DatasetSplitter:
 
             for (model, shots, dataset), group_df in grouped:
                 output_file = self.output_dir / self.get_output_filename(model, shots, dataset)
-
+                os.makedirs(output_file.parent, exist_ok=True)
                 # אם הקובץ כבר קיים, מוסיף את הדאטה החדשה
                 if output_file.exists():
                     existing_df = pd.read_parquet(output_file)
