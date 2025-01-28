@@ -59,9 +59,11 @@ def download_huggingface_files_parllel(process_output_dir):
     logger.info(f"Starting parallel processing with {num_processes} processes...")
 
     sub_folderfiles = [folder for folder in os.listdir(process_output_dir) if os.path.isdir(os.path.join(process_output_dir, folder))]
+    sub_folderfiles = [os.path.join(process_output_dir, folder) for folder in sub_folderfiles]
     files = []
     for folder in sub_folderfiles:
-        files.extend([os.path.join(folder, file) for file in os.listdir(os.path.join(process_output_dir, folder))])
+        files.extend([os.path.join(folder, file) for file in os.listdir(folder) if file.endswith(".parquet")])
+
     print(f"Processing {len(files)} files")
     with Manager() as manager:
         process_func = partial(process_file_safe, logger=logger)
