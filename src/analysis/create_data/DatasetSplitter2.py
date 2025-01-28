@@ -109,7 +109,7 @@ class ParallelDatasetSplitter:
         self.logger.info("Starting processing all files")
         start_time = datetime.now()
 
-        parquet_files = list(self.input_dir.glob("*.parquet"))
+        parquet_files = list(self.input_dir.glob("*.parquet"))[:2]
         self.logger.info(f"Found {len(parquet_files)} parquet files to process")
 
         failed_files = []
@@ -169,14 +169,29 @@ class ParallelDatasetSplitter:
 
         # מיפוי הקבצים הזמניים
         for temp_file in self.temp_dir.glob("*.parquet"):
-            parts = temp_file.name.split('_')
-            if len(parts) >= 4:
-                final_name = '_'.join(parts[1:])
+            try:
+                # מחלץ את השם ללא ה-UUID בהתחלה
+                uuid_and_rest = temp_file.name.split('_', 1)  # מפצל רק פעם אחת כדי להפריד את ה-UUID
+                if len(uuid_and_rest) < 2:
+                    self.logger.warning(f"Unexpected filename format: {temp_file.name}")
+                    continue
+
+                final_name = uuid_and_rest[1]  # לוקח את כל מה שאחרי ה-UUID
                 if final_name not in temp_files_map:
                     temp_files_map[final_name] = []
                 temp_files_map[final_name].append(temp_file)
 
+            except Exception as e:
+                self.logger.error(f"Error processing temp file name {temp_file}: {str(e)}")
+                continue
+
         self.logger.info(f"Found {len(temp_files_map)} unique combinations to merge")
+
+        if len(temp_files_map) == 0:
+            self.logger.error("No files found to merge! Printing all files in temp directory:")
+            for f in self.temp_dir.glob("*"):
+                self.logger.error(f"File in temp dir: {f}")
+            return
 
         # מיזוג עם progress bar
         with tqdm(total=len(temp_files_map), desc="Merging files") as pbar:
@@ -185,13 +200,28 @@ class ParallelDatasetSplitter:
                     final_file = self.output_dir / final_name
                     self.logger.info(f"Merging {len(temp_files)} files into {final_file}")
 
-                    dfs = [pd.read_parquet(f) for f in temp_files]
+                    dfs = []
+                    for f in temp_files:
+                        try:
+                            df = pd.read_parquet(f)
+                            dfs.append(df)
+                        except Exception as e:
+                            self.logger.error(f"Error reading temp file {f}: {str(e)}")
+                            continue
+
+                    if not dfs:  # אם לא הצלחנו לקרוא אף קובץ
+                        self.logger.error(f"No valid dataframes to merge for {final_name}")
+                        continue
+
                     combined_df = pd.concat(dfs, ignore_index=True)
                     combined_df.to_parquet(final_file, index=False)
 
-                    # מחיקת קבצים זמניים
+                    # מחיקת קבצים זמניים רק אחרי שהמיזוג הצליח
                     for f in temp_files:
-                        f.unlink()
+                        try:
+                            f.unlink()
+                        except Exception as e:
+                            self.logger.error(f"Error deleting temp file {f}: {str(e)}")
 
                     self.logger.info(f"Successfully created {final_file} with {len(combined_df)} rows")
 
@@ -199,7 +229,6 @@ class ParallelDatasetSplitter:
                     self.logger.error(f"Error merging files for {final_name}: {str(e)}", exc_info=True)
 
                 pbar.update(1)
-
     def process_all_files2(self):
         """מעבד את כל הקבצים"""
         self.logger.info("Starting processing all files")
