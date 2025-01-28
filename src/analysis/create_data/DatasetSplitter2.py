@@ -218,9 +218,12 @@ class ParallelDatasetSplitter:
                     for temp_dir in temp_dirs:
                         try:
                             parquet_files = list(temp_dir.glob("*.parquet"))
-                            if parquet_files:
-                                df = pd.read_parquet(parquet_files[0])
-                                dfs.append(df)
+                            parquet_fileswith_triplet_key = list(temp_dir.glob(f"*{triplet_key}.parquet"))
+                            if parquet_fileswith_triplet_key:
+                                for parquet_file in parquet_fileswith_triplet_key:
+                                    df = pd.read_parquet(parquet_file)
+                                    dfs.append(df)
+                                    parquet_file.unlink()
                                 self.logger.info(f"Successfully read {temp_dir} with {len(df)} rows")
                         except Exception as e:
                             self.logger.error(f"Error reading from directory {temp_dir}: {str(e)}")
@@ -235,17 +238,6 @@ class ParallelDatasetSplitter:
                     os.makedirs(output_file.parent, exist_ok=True)
                     combined_df.to_parquet(output_file, index=False)
                     self.logger.info(f"Successfully created {output_file} with {len(combined_df)} rows")
-
-                    # מוחק את התיקיות הזמניות
-                    for temp_dir in temp_dirs:
-                        try:
-                            if temp_dir.is_dir():
-                                shutil.rmtree(temp_dir)
-                            else:
-                                temp_dir.unlink()
-                            self.logger.info(f"Deleted temporary directory {temp_dir}")
-                        except Exception as e:
-                            self.logger.error(f"Error deleting temp directory {temp_dir}: {str(e)}")
 
                 except Exception as e:
                     self.logger.error(f"Error processing triplet {triplet_key}: {str(e)}", exc_info=True)
