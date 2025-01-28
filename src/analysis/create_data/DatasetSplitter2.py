@@ -109,7 +109,7 @@ class ParallelDatasetSplitter:
         self.logger.info("Starting processing all files")
         start_time = datetime.now()
 
-        parquet_files = list(self.input_dir.glob("*.parquet"))[:1]
+        parquet_files = list(self.input_dir.glob("*.parquet"))
         self.logger.info(f"Found {len(parquet_files)} parquet files to process")
 
         failed_files = []
