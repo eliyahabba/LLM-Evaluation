@@ -218,6 +218,7 @@ class ParallelDatasetSplitter:
                     for temp_dir in temp_dirs:
                         try:
                             parquet_files = list(temp_dir.glob("*.parquet"))
+                            self.logger.info(f"Looking for parquet files in {temp_dir} with {triplet_key}")
                             parquet_fileswith_triplet_key = list(temp_dir.glob(f"*{triplet_key}.parquet"))
                             if parquet_fileswith_triplet_key:
                                 for parquet_file in parquet_fileswith_triplet_key:
