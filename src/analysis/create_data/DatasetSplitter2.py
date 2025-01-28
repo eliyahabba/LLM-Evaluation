@@ -71,6 +71,7 @@ class ParallelDatasetSplitter:
 
                     for (model, shots, dataset), group_df in grouped:
                         temp_file = self.temp_dir / f"{worker_id}_{model}_shots{shots}_{dataset}.parquet"
+                        os.makedirs(temp_file.parent, exist_ok=True)
                         group_df.to_parquet(temp_file, index=False)
                         temp_files.append(str(temp_file))
 
