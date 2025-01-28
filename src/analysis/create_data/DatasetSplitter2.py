@@ -109,7 +109,7 @@ class ParallelDatasetSplitter:
         self.logger.info("Starting processing all files")
         start_time = datetime.now()
 
-        parquet_files = list(self.input_dir.glob("*.parquet"))[:2]
+        parquet_files = list(self.input_dir.glob("*.parquet"))[:1]
         self.logger.info(f"Found {len(parquet_files)} parquet files to process")
 
         failed_files = []
@@ -232,6 +232,7 @@ class ParallelDatasetSplitter:
                     # ממזג את כל הדאטה של השלישייה
                     combined_df = pd.concat(dfs, ignore_index=True)
                     output_file = self.output_dir / f"{triplet_key}.parquet"
+                    os.makedirs(output_file.parent, exist_ok=True)
                     combined_df.to_parquet(output_file, index=False)
                     self.logger.info(f"Successfully created {output_file} with {len(combined_df)} rows")
 
