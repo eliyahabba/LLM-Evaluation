@@ -186,7 +186,7 @@ class ParallelDatasetSplitter:
                         continue
 
                     # מחלץ את הערכים של השלישייה מהשורה הראשונה
-                    model = df.iloc[0]['model']
+                    model = df.iloc[0]['model'].split("/")[-1]
                     shots = df.iloc[0]['shots']
                     dataset = df.iloc[0]['dataset']
 
