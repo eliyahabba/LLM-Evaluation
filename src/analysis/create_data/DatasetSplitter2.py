@@ -1,13 +1,16 @@
+import concurrent
+import logging
 import os
+import shutil
+import uuid
+from concurrent.futures import ProcessPoolExecutor
+from datetime import datetime
 from pathlib import Path
+from typing import List
+
 import pandas as pd
 import pyarrow.parquet as pq
-from concurrent.futures import ProcessPoolExecutor
-import uuid
-from typing import List, Tuple
 from tqdm import tqdm
-import logging
-from datetime import datetime
 
 
 class ParallelDatasetSplitter:
@@ -54,37 +57,109 @@ class ParallelDatasetSplitter:
         return f"{model}_shots{shots}_{dataset}.parquet"
 
     def process_single_file(self, input_file: Path) -> List[str]:
-        """מעבד קובץ בודד"""
+        """מעבד קובץ בודד ומחזיר רשימה של קבצים זמניים או רשימה ריקה אם נכשל"""
         worker_id = uuid.uuid4()
         temp_files = []
 
         self.logger.info(f"Starting to process file: {input_file}")
         try:
+            os.makedirs(self.temp_dir, exist_ok=True)
             parquet_file = pq.ParquetFile(input_file)
             total_rows = parquet_file.metadata.num_rows
 
-            # יוצר progress bar לכל קובץ
             with tqdm(total=total_rows, desc=f"Processing {input_file.name}", unit="rows") as pbar:
-                for batch in parquet_file.iter_batches(batch_size=100000):
-                    df = batch.to_pandas()
-                    grouped = df.groupby(['model', 'shots', 'dataset'])
+                for batch in parquet_file.iter_batches(batch_size=10000):
+                    try:
+                        df = batch.to_pandas()
+                        grouped = df.groupby(['model', 'shots', 'dataset'])
 
-                    for (model, shots, dataset), group_df in grouped:
-                        temp_file = self.temp_dir / f"{worker_id}_{model}_shots{shots}_{dataset}.parquet"
-                        os.makedirs(temp_file.parent, exist_ok=True)
-                        group_df.to_parquet(temp_file, index=False)
-                        temp_files.append(str(temp_file))
+                        for (model, shots, dataset), group_df in grouped:
+                            try:
+                                temp_file = self.temp_dir / f"{worker_id}_{model}_shots{shots}_{dataset}.parquet"
+                                group_df.to_parquet(temp_file, index=False)
+                                temp_files.append(str(temp_file))
+                            except Exception as e:
+                                self.logger.error(
+                                    f"Error saving group {model}_{shots}_{dataset} from {input_file}: {str(e)}")
+                                # ממשיך לקבוצה הבאה
+                                continue
 
-                    pbar.update(len(df))
+                        pbar.update(len(df))
+                    except Exception as e:
+                        self.logger.error(f"Error processing batch from {input_file}: {str(e)}")
+                        # ממשיך לבאצ' הבא
+                        continue
 
             self.logger.info(f"Completed processing file: {input_file}")
-            self.logger.info(f"Created {len(temp_files)} temporary files")
+            return temp_files
 
         except Exception as e:
-            self.logger.error(f"Error processing file {input_file}: {str(e)}", exc_info=True)
-            raise
+            self.logger.error(f"Fatal error processing file {input_file}: {str(e)}", exc_info=True)
+            # מנקה קבצים זמניים שנוצרו אם יש כאלה
+            for temp_file in temp_files:
+                try:
+                    Path(temp_file).unlink(missing_ok=True)
+                except Exception as cleanup_error:
+                    self.logger.error(f"Error cleaning up temp file {temp_file}: {str(cleanup_error)}")
+            return []
 
-        return temp_files
+    def process_all_files(self):
+        """מעבד את כל הקבצים עם טיפול שגיאות משופר"""
+        self.logger.info("Starting processing all files")
+        start_time = datetime.now()
+
+        parquet_files = list(self.input_dir.glob("*.parquet"))
+        self.logger.info(f"Found {len(parquet_files)} parquet files to process")
+
+        failed_files = []
+        processed_files = []
+
+        with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
+            future_to_file = {executor.submit(self.process_single_file, f): f for f in parquet_files}
+
+            with tqdm(total=len(parquet_files), desc="Processing files", unit="file") as pbar:
+                for future in concurrent.futures.as_completed(future_to_file):
+                    input_file = future_to_file[future]
+                    try:
+                        temp_files = future.result()
+                        if temp_files:  # אם הקובץ עובד בהצלחה
+                            processed_files.append(input_file)
+                        else:  # אם הקובץ נכשל
+                            failed_files.append(input_file)
+                    except Exception as e:
+                        self.logger.error(f"Error processing {input_file}: {str(e)}")
+                        failed_files.append(input_file)
+                    pbar.update(1)
+
+        # סיכום התוצאות
+        self.logger.info(f"Successfully processed {len(processed_files)} files")
+        if failed_files:
+            self.logger.warning(f"Failed to process {len(failed_files)} files:")
+            for failed_file in failed_files:
+                self.logger.warning(f"  - {failed_file}")
+
+        # ממשיך למיזוג רק אם יש קבצים שעובדו בהצלחה
+        if processed_files:
+            try:
+                self.merge_temp_files()
+            except Exception as e:
+                self.logger.error(f"Error during merge phase: {str(e)}", exc_info=True)
+                raise
+
+        # ניקוי
+        try:
+            if self.temp_dir.exists():
+                shutil.rmtree(self.temp_dir)
+                self.logger.info("Temporary directory cleaned up")
+        except Exception as e:
+            self.logger.warning(f"Could not remove temp directory: {str(e)}")
+
+        end_time = datetime.now()
+        duration = end_time - start_time
+        self.logger.info(f"Processing completed! Total duration: {duration}")
+
+        # מחזיר רשימת הקבצים שנכשלו כדי שאפשר יהיה לנסות אותם שוב
+        return failed_files
 
     def merge_temp_files(self):
         """ממזג את הקבצים הזמניים"""
@@ -124,7 +199,7 @@ class ParallelDatasetSplitter:
 
                 pbar.update(1)
 
-    def process_all_files(self):
+    def process_all_files2(self):
         """מעבד את כל הקבצים"""
         self.logger.info("Starting processing all files")
         start_time = datetime.now()
