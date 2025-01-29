@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Dict
 
 import numpy as np
 import pandas as pd
@@ -7,6 +8,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 from matplotlib import pyplot as plt
+
+from src.analysis.create_plots.ConfigurationClusterer import ConfigurationClusterer
 
 st.set_page_config(layout="wide")
 
@@ -441,7 +444,33 @@ def plot_heatmap(distance_matrix: pd.DataFrame, threshold=1., height=1600, width
 """
 
 
-# ---------------------------------------------------------------------
+def create_distance_heatmap(distance_matrix: np.ndarray, config_ids: pd.Index, clusters: Dict[str, int]):
+    ordered_ids = sorted(config_ids, key=lambda x: clusters[x])
+
+    orig_idx = [config_ids.get_loc(config_id) for config_id in ordered_ids]
+    reordered_matrix = distance_matrix[orig_idx][:, orig_idx]
+
+    cluster_labels = [f"Cluster {clusters[id]}" for id in ordered_ids]
+
+    fig = go.Figure(data=go.Heatmap(
+        z=reordered_matrix,
+        x=ordered_ids,
+        y=ordered_ids,
+        colorscale='Viridis',
+        customdata=cluster_labels
+    ))
+
+    fig.update_layout(
+        title='Hamming Distance Matrix (Ordered by Clusters)',
+        xaxis_title='Configuration ID',
+        yaxis_title='Configuration ID',
+        width=1200,
+        height=1200
+    )
+
+    return fig, """clustering"""
+
+
 # Loaders for model, dataset, overall data
 # ---------------------------------------------------------------------
 def load_shots_models_datasets(base_dir: Path):
@@ -495,12 +524,116 @@ def load_data(base_dir, shots, model, dataset):
     samples_path = os.path.join(dataset_dir, "samples_accuracy.parquet")
     samples_data = pd.read_parquet(samples_path) if os.path.exists(samples_path) else None
 
-    return config_data, distance_matrix, samples_data
+    clusterer_path = os.path.join(dataset_dir, "clusterer.npz")
+    clusterer = ConfigurationClusterer()
+    if os.path.exists(clusterer_path):
+        compact_results = clusterer.load_compact(clusterer_path)
+        config_data['cluster'] = config_data['quad'].map(compact_results.assignments)
+
+    enumerator_analysis_path = os.path.join(dataset_dir, "enumerator_analysis")
+    if os.path.exists(enumerator_analysis_path):
+        answer_distribution_matrix = pd.read_parquet(
+            os.path.join(dataset_dir, "enumerator_analysis", 'answer_distribution_matrix.parquet'))
+        position_distribution = pd.read_parquet(
+            os.path.join(dataset_dir, "enumerator_analysis", 'position_distribution.parquet'))
+    else:
+        answer_distribution_matrix = None
+        position_distribution = None
+
+    return config_data, distance_matrix, samples_data, answer_distribution_matrix, position_distribution
 
 
 # ---------------------------------------------------------------------
 # Streamlit main
 # ---------------------------------------------------------------------
+def plot_position_distribution(position_distribution):
+    fig = px.scatter(
+        position_distribution,
+        x='question_number',
+        y='percentage',
+        custom_data=['position', 'accuracy', 'correct_count', 'total_count'],
+        labels={
+            'question_number': 'Question Number',
+            'percentage': 'Percentage (%)'
+        }
+    )
+
+    fig.update_traces(
+        marker=dict(size=10),
+        hovertemplate=(
+            "Question: %{x}<br>"
+            "Position: %{customdata[0]}<br>"
+            "Frequency: %{y:.1f}%<br>"
+            "Accuracy: %{customdata[1]:.3f}<br>"
+            "Correct: %{customdata[2]} / %{customdata[3]}"
+        )
+    )
+
+    fig.update_layout(
+        xaxis=dict(
+            tickmode='linear',
+            dtick=1,
+            gridcolor='lightgrey',
+            showgrid=True
+        ),
+        yaxis=dict(
+            range=[0, 100],
+            gridcolor='lightgrey',
+            showgrid=True
+        ),
+        showlegend=False,
+        plot_bgcolor='white',
+        paper_bgcolor='white'
+    )
+    # fig.show()
+    return fig, "Position Distribution"
+
+
+def plot_answer_distribution(confusion_matrix):
+    x_labels = [str(i) for i in confusion_matrix.columns]
+    y_labels = [str(i) for i in confusion_matrix.index]
+    z_values = confusion_matrix.values
+
+    fig = go.Figure(data=go.Heatmap(
+        z=z_values,
+        x=x_labels,
+        y=y_labels,
+        colorscale='Blues',
+        zmin=0,
+        zmax=1,
+        colorbar=dict(title="Proportion"),
+        hovertemplate=(
+                "Question ID: %{y}<br>" +
+                "Answer Position: %{x}<br>" +
+                "Proportion: %{z:.3f}<br>" +
+                "<extra></extra>"
+        )
+    ))
+
+    fig.update_layout(
+        xaxis=dict(
+            title="Answer Position",
+            tickmode='array',
+            tickvals=x_labels,
+            ticktext=x_labels
+        ),
+        yaxis=dict(
+            title="Question ID",
+            tickmode='array',
+            tickvals=y_labels,
+            ticktext=y_labels
+        ),
+        autosize=True,
+        width=600,
+        height=600,
+        margin=dict(l=80, r=80, t=50, b=50),
+        plot_bgcolor='white',
+        paper_bgcolor='white'
+    )
+
+    return fig, "Answer Distribution Matrix"
+
+
 def main():
     st.title("Model Configuration Analysis Viewer")
     add_description_style()
@@ -543,8 +676,9 @@ def main():
         return
 
     # Load the "quad"-level data
-    config_data, distance_matrix, samples_data = load_data(results_dir, selected_shots, selected_model,
-                                                           selected_dataset)
+    config_data, distance_matrix, samples_data, answer_distribution_matrix, position_distribution = load_data(
+        results_dir, selected_shots, selected_model,
+        selected_dataset)
 
     # Create tabs: "All Data" + 4 dimension tabs
     columns_to_analyze = ["template", "separator", "enumerator", "choices_order"]
@@ -589,6 +723,18 @@ def main():
             st.plotly_chart(fig_dim_samples_hist, use_container_width=False)
             description_box(f"Understanding the Samples Histogram", dim_samples_hist_desc)
 
+        if "cluster" in config_data.columns:
+            st.subheader("Configuration Clustering")
+            fig_cluster, des = create_distance_heatmap(distance_matrix.values, distance_matrix.columns,
+                                                       config_data.set_index('quad')['cluster'].to_dict())
+            st.plotly_chart(fig_cluster, use_container_width=True)
+
+        if answer_distribution_matrix is not None and not answer_distribution_matrix.empty:
+            st.subheader("Answer Distribution Matrix")
+            fig_answer_distribution, des = plot_answer_distribution(answer_distribution_matrix)
+            st.plotly_chart(fig_answer_distribution, use_container_width=False)
+            fig_position_distribution, des = plot_position_distribution(position_distribution)
+            st.plotly_chart(fig_position_distribution, use_container_width=True)
         # -----------------------------------------------------
         # Tabs 1..4: Each dimension
         # -----------------------------------------------------
