@@ -392,7 +392,7 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
     # Create output path
     output_path = os.path.join(process_input_dir,
                                f"processed_{parquet_path.name}")
-    if os.path.exists(output_path) and False:
+    if os.path.exists(output_path):
         logger.info(f"Output file already exists: {output_path}")
         return
     logger.info(f"Output path: {output_path}")
@@ -443,6 +443,7 @@ def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_
     os.makedirs(input_dir, exist_ok=True)
 
     num_processes = min(24, cpu_count() - 1)
+    num_processes = 12
     logger = setup_logging()
     logger.info("Starting processing...")
     logger.info(f"Starting parallel processing with {num_processes} processes...")
@@ -496,8 +497,8 @@ if __name__ == "__main__":
                         default="eliyahabba/llm-evaluation-analysis")
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
     args = parser.parse_args()
-    args.old_input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
-    args.input_dir = "/cs/labs/gabis/eliyahabba/ibm_results_data_full"
+    args.input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
+    # args.input_dir = "/cs/labs/gabis/eliyahabba/ibm_results_data_full"
 
     process_input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
     if not os.path.exists(process_input_dir):

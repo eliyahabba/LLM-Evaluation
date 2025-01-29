@@ -6,8 +6,6 @@ from tqdm import tqdm
 
 from src.analysis.create_plots.DataLoader import DataLoader
 from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxes import HammingDistanceClusterAnalyzerAxes
-from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxesDatasets import \
-    HammingDistanceClusterAnalyzerAxesDatasets
 from src.analysis.create_plots.ModelPerformanceAnalyzer import ModelPerformanceAnalyzer
 from src.analysis.create_plots.PromptConfigurationAnalyzerAxes import PromptConfigurationAnalyzerAxes
 from src.analysis.create_plots.PromptQuestionAnalyzer import PromptQuestionAnalyzer
@@ -24,14 +22,12 @@ def process_configuration(params):
 
     analyzer = PromptConfigurationAnalyzerAxes()
     hamming = HammingDistanceClusterAnalyzerAxes()
-    hamming_datasets = HammingDistanceClusterAnalyzerAxesDatasets()
     prompt_question_analyzer = PromptQuestionAnalyzer()
     performance_analyzer = ModelPerformanceAnalyzer()
     # Load data for current configuration
     data_loader = DataLoader()
     df_partial = data_loader.load_and_process_data(model_name=model_name,
                                                    shots=shots_selected,
-                                                   datasets=interesting_datasets,
                                                    max_samples=None)
     # if shots_selected == 5:
     #     df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
@@ -66,13 +62,6 @@ def process_configuration(params):
         base_results_dir=base_results_dir
     )
 
-    hamming_datasets.perform_clustering_for_model(
-        df=df_partial,
-        model_name=model_name,
-        shots_selected=shots_selected,
-        interesting_datasets=interesting_datasets,
-        base_results_dir=base_results_dir
-    )
     prompt_question_analyzer.process_and_visualize_questions(
         df=df_partial,
         model_name=model_name,
@@ -101,8 +90,7 @@ def run_configuration_analysis(num_processes=1) -> None:
         "ai2_arc.arc_easy",
         "hellaswag",
         "openbook_qa",
-        "social_iqa",
-        "mmlu",
+        "social_iqa"
     ]
 
     # Setup results directory
@@ -115,6 +103,14 @@ def run_configuration_analysis(num_processes=1) -> None:
         for model_name in models_to_evaluate
     ]
 
+    # data_loader = DataLoader()
+    # data_loader.load_data(max_samples=None)
+    data_loader = DataLoader()
+    df_partial = data_loader.load_and_process_data(model_name=models_to_evaluate[0],
+                                                   shots=shots_to_evaluate[0],
+                                                   max_samples=None)
+
+    exit(11)
     with Manager() as manager:
         with Pool(processes=num_processes) as pool:
             for _ in tqdm(
