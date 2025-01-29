@@ -86,15 +86,12 @@ class DataLoader:
             data_files = [file for file in existing_files if any(dataset in file for dataset in datasets)]
 
         if len(data_files) > 0:
-            config = Config()
-            TOKEN = config.config_values.get("hf_access_token", "")
-            files = get_parquet_files_from_hf(repo_name, TOKEN)
-            files = [file[0] for file in files]
+            files = ['https://huggingface.co/'+file for file in data_files]
             if self.dataset is None:
                 # split = split_with_filter
-                self.dataset = load_dataset(self.dataset_name, data_files=files, split=self.split, cache_dir=None)
+                self.dataset = load_dataset(self.dataset_name, data_files=files, split=self.split)
             else:
-                self.dataset = load_dataset(self.dataset_name, split=self.split, cache_dir=None)
+                self.dataset = load_dataset(self.dataset_name, split=self.split)
         print("The size of the data after filtering is: ", len(self.dataset))
         if drop:
             self.dataset = self.dataset.remove_columns(['cumulative_logprob', 'generated_text', 'ground_truth'])
