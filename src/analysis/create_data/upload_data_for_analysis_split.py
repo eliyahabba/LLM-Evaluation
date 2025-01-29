@@ -11,6 +11,7 @@ from huggingface_hub import HfApi, create_repo
 from tqdm import tqdm
 
 from config.get_config import Config
+from src.analysis.create_plots.check_data import get_parquet_files_from_hf
 
 config = Config()
 TOKEN = config.config_values.get("hf_access_token", "")
@@ -60,6 +61,11 @@ def download_huggingface_files_parllel(process_output_dir):
     files = os.listdir(process_output_dir)
     files = [os.path.join(process_output_dir, file) for file in files]
     print(f"Processing {len(files)} files")
+    config = Config()
+    TOKEN = config.config_values.get("hf_access_token", "")
+    ex_files = get_parquet_files_from_hf(repo_name, TOKEN)
+    ex_files = [file[1].split("/")[-1] for file in ex_files]
+    files = [file for file in files if Path(file).stem not in ex_files]
     with Manager() as manager:
         process_func = partial(process_file_safe, logger=logger)
 
