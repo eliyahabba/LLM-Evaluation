@@ -57,13 +57,8 @@ def download_huggingface_files_parllel(process_output_dir):
     logger = setup_logging()
     logger.info("Starting processing...")
     logger.info(f"Starting parallel processing with {num_processes} processes...")
-
-    sub_folderfiles = [folder for folder in os.listdir(process_output_dir) if os.path.isdir(os.path.join(process_output_dir, folder))]
-    sub_folderfiles = [os.path.join(process_output_dir, folder) for folder in sub_folderfiles]
-    files = []
-    for folder in sub_folderfiles:
-        files.extend([os.path.join(folder, file) for file in os.listdir(folder) if file.endswith(".parquet")])
-
+    files = os.listdir(process_output_dir)
+    files = [os.path.join(process_output_dir, file) for file in files]
     print(f"Processing {len(files)} files")
     with Manager() as manager:
         process_func = partial(process_file_safe, logger=logger)
@@ -95,7 +90,7 @@ def process_file_safe(file, logger):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
-    process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split2"
+    process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split"
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
     os.makedirs(process_output_dir, exist_ok=True)
