@@ -1,9 +1,10 @@
 import os
 import time
+from typing import List
+
 import pandas as pd
 import plotly.express as px
-from pathlib import Path
-from typing import Dict, List, Optional, Union
+
 
 class PromptQuestionAnalyzer:
     def process_and_visualize_questions(
@@ -64,32 +65,6 @@ class PromptQuestionAnalyzer:
                 dataset,
                 model_dir
             )
-
-            # 2) Compute accuracy for each question (without grouping by additional axes)
-            overall_question_stats = self._aggregate_samples_accuracy(dataset_df)
-            # 3) Save general tables and plots (no axis grouping)
-            # Save tables for each dataset
-            self._save_samples_accuracy_tables(
-                overall_question_stats,
-                model_dir,
-                suffix="overall"
-            )
-
-            # 4) Compute accuracy grouped by specified axes, if provided
-            dimensions = ["template", "separator", "enumerator", "choices_order"]
-            for dim in dimensions:
-                print(f"Computing question accuracy grouped by '{dim}'...")
-                question_stats_by_axis = self._aggregate_samples_accuracy_by_axis(
-                    df_filtered,
-                    dim
-                )
-                # Save tables
-                self._save_samples_accuracy_tables(
-                    question_stats_by_axis,
-                    model_dir,
-                    dim,
-                    suffix=f"by_{dim}"
-                )
 
         total_time = time.time() - start_time
         print(f"Total question-level processing time for {model_name}: {total_time:.2f} seconds")
@@ -254,7 +229,10 @@ class PromptQuestionAnalyzer:
         # Save and display
         output_path = os.path.join(save_dir, 'answer_distribution_heatmap.html')
         fig.write_html(output_path)
-        fig.show()
+        # fig.show()
+        # save the matrix as a parquet file
+        confusion_matrix.to_parquet(os.path.join(save_dir, 'answer_distribution_matrix.parquet'))
+
     def _create_position_stats(
             self,
             df: pd.DataFrame,
@@ -336,7 +314,7 @@ class PromptQuestionAnalyzer:
             plot_bgcolor='white',
             paper_bgcolor='white'
         )
-        fig.show()
+        # fig.show()
         fig.write_html(os.path.join(save_dir, 'position_distribution.html'))
 
     def _process_accuracy_stats(
@@ -369,6 +347,7 @@ class PromptQuestionAnalyzer:
         )
         os.makedirs(model_dir, exist_ok=True)
         return model_dir
+
     # ------------------------------------------------------------------------------------
     # Helper Functions for Aggregation
     # ------------------------------------------------------------------------------------
