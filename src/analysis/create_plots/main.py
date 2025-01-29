@@ -36,7 +36,8 @@ def process_configuration(params):
     # if shots_selected == 5:
     #     df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
     # base_results_dir = "../app/results_local"
-
+    if df_partial.empty:
+        return
     df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
     base_results_dir = "../app/results_local"
     os.makedirs(base_results_dir, exist_ok=True)
@@ -88,10 +89,10 @@ def run_configuration_analysis(num_processes=1) -> None:
     across different models and shot counts.
     """
     # Configuration parameters
-    shots_to_evaluate = [0, 5]
+    shots_to_evaluate = [0,5]
     models_to_evaluate = [
-        'allenai/OLMoE-1B-7B-0924-Instruct',
         'meta-llama/Llama-3.2-1B-Instruct',
+        'allenai/OLMoE-1B-7B-0924-Instruct',
         'meta-llama/Meta-Llama-3-8B-Instruct',
         'meta-llama/Llama-3.2-3B-Instruct',
         'mistralai/Mistral-7B-Instruct-v0.3',
@@ -102,7 +103,10 @@ def run_configuration_analysis(num_processes=1) -> None:
         "hellaswag",
         "openbook_qa",
         "social_iqa",
-        "mmlu",
+        "mmlu.global_facts",
+        "mmlu.sociology",
+        "mmlu.econometrics",
+        "mmlu.high_school_geography",
     ]
 
     # Setup results directory
