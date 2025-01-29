@@ -66,6 +66,59 @@ class ParallelDatasetSplitter:
             parquet_file = pq.ParquetFile(input_file)
             total_rows = parquet_file.metadata.num_rows
 
+            with tqdm(total=total_rows, desc=f"Processing {input_file.name}", unit="rows") as pbar:
+                for batch in parquet_file.iter_batches(batch_size=10000):
+                    try:
+                        df = batch.to_pandas()
+                        grouped = df.groupby(['model', 'shots', 'dataset'])
+
+                        for (model, shots, dataset), group_df in grouped:
+                            try:
+                                temp_file = self.temp_dir / f"{worker_id}_{model}_shots{shots}_{dataset}.parquet"
+                                if not temp_file.exists():
+                                    # אם הקובץ לא קיים, כותבים אותו בפעם הראשונה
+                                    os.makedirs(temp_file.parent, exist_ok=True)
+                                    group_df.to_parquet(temp_file, index=False)
+                                else:
+                                    # אם הקובץ קיים, מוסיפים אליו את הדאטה החדשה
+                                    table = pa.Table.from_pandas(group_df)
+                                    pq.write_table(table, temp_file, append=True)
+
+                                temp_files.add(str(temp_file))
+                            except Exception as e:
+                                self.logger.error(
+                                    f"Error saving group {model}_{shots}_{dataset} from {input_file}: {str(e)}")
+                                continue
+
+                        pbar.update(len(df))
+                    except Exception as e:
+                        self.logger.error(f"Error processing batch from {input_file}: {str(e)}")
+                        continue
+
+            self.logger.info(f"Completed processing file: {input_file}")
+            self.logger.info(f"Created/Updated {len(temp_files)} temporary files")
+
+        except Exception as e:
+            self.logger.error(f"Fatal error processing file {input_file}: {str(e)}", exc_info=True)
+            # מנקה קבצים זמניים שנוצרו אם יש כאלה
+            for temp_file in temp_files:
+                try:
+                    Path(temp_file).unlink(missing_ok=True)
+                except Exception as cleanup_error:
+                    self.logger.error(f"Error cleaning up temp file {temp_file}: {str(cleanup_error)}")
+            return []
+
+        return list(temp_files)
+    def process_single_file1(self, input_file: Path) -> List[str]:
+        """מעבד קובץ בודד"""
+        worker_id = uuid.uuid4()
+        temp_files = set()  # משתמשים בset כדי למנוע כפילויות
+
+        self.logger.info(f"Starting to process file: {input_file}")
+        try:
+            parquet_file = pq.ParquetFile(input_file)
+            total_rows = parquet_file.metadata.num_rows
+
             # מיפוי בזיכרון של DataFrames לפי שלישיות
             temp_dfs = {}
 
