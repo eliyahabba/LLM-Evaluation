@@ -8,6 +8,8 @@ import pandas as pd
 import seaborn as sns
 from scipy.spatial.distance import pdist, squareform
 
+from src.analysis.create_plots.ConfigurationClusterer import ConfigurationClusterer
+
 
 # from scipy.cluster.hierarchy import linkage, fcluster
 
@@ -61,6 +63,10 @@ class HammingDistanceClusterAnalyzerAxes:
             dataset_dir = os.path.join(model_dir, f"{dataset.replace('/', '_')}")
             os.makedirs(dataset_dir, exist_ok=True)
             self._plot_and_save_heatmap(distance_matrix, config_ids, dataset_dir)
+            clusterer = ConfigurationClusterer()
+            results = clusterer.cluster_configs(config_vectors)
+            clusterer_file = os.path.join(dataset_dir, "clusterer.npz")
+            clusterer.save_compact(results, clusterer_file)
 
             # Optionally, you can do hierarchical clustering here:
             # cluster_assignments = self._hierarchical_clustering(distance_matrix)
@@ -70,7 +76,7 @@ class HammingDistanceClusterAnalyzerAxes:
             # -----------------------------
             # New step: Analyze each dimension individually
             # -----------------------------
-            self._analyze_each_dimension(dataset_df, dataset_dir)
+            # self._analyze_each_dimension(dataset_df, dataset_dir)
 
         total_time = time.time() - start_time
         print(f"Total Hamming Clustering processing time for {model_name}: {total_time:.2f} seconds")
