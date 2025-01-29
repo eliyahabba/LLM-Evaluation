@@ -6,6 +6,7 @@ from datetime import datetime
 from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
 from pathlib import Path
+from typing import List, Tuple
 
 from huggingface_hub import HfApi, create_repo, HfFileSystem
 from tqdm import tqdm
