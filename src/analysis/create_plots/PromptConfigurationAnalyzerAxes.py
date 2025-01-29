@@ -225,6 +225,8 @@ class PromptConfigurationAnalyzerAxes:
         for dataset in datasets:
             for column in columns_to_analyze:
                 subset = data[data["dataset"] == dataset]
+                if subset.empty:
+                    continue
                 dim_df = self._compute_dimension_averages(subset, column)
                 if dim_df.empty:
                     continue
