@@ -1,5 +1,6 @@
 import hashlib
 import json
+import time
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -194,21 +195,18 @@ class SchemaConverter:
         combined_strings = row['run_id'] + row['id']
         evaluation_id = hashlib.sha256(combined_strings.encode()).hexdigest()
 
-        # Build schema sections
+        model_section = self._build_model_section(row)
+        prompt_section = self._build_prompt_section(task_data, recipe, logger=logger)
+        instance_section = self._build_instance_section(row, task_data, recipe, probs)
+        output_section = self._build_output_section(row, probs)
+        evaluation_section = self._build_evaluation_section(row)
         schema = {
             "evaluation_id": evaluation_id,
-            "model": self._build_model_section(
-                row
-            ),
-            "prompt_config": self._build_prompt_section(task_data,
-                                                        recipe,
-                                                        logger=logger
-                                                        ),
-            "instance": self._build_instance_section(
-                row, task_data, recipe, probs
-            ),
-            "output": self._build_output_section(row, probs),
-            "evaluation": self._build_evaluation_section(row)
+            "model": model_section,
+            "prompt_config": prompt_section,
+            "instance": instance_section,
+            "output": output_section,
+            "evaluation": evaluation_section
         }
 
         return schema
@@ -414,7 +412,7 @@ class SchemaConverter:
 
 def main():
     """Main execution function."""
-    f = "data_2025-01.parquet"
+    f = "data_2025-01-09T19_00_00+00_00_2025-01-09T23_00_00+00_00.parquet"
     parquet_path = Path(f"~/Downloads/{f}")
     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
 
