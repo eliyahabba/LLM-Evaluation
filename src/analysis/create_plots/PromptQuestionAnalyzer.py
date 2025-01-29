@@ -284,7 +284,7 @@ class PromptQuestionAnalyzer:
             )
             .sort_values(['sample_index', 'frequency'], ascending=[True, False])
             .drop_duplicates('sample_index')
-            .assign(question_number=lambda x: range(1, len(x) + 1))
+            .assign(question_number=lambda x: x['sample_index'])
             .round({'percentage': 2, 'accuracy': 3})
         )
 
