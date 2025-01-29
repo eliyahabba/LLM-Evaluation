@@ -35,6 +35,9 @@ class DataLoader:
         start_time = time.time()
         # print(f"Processing model: {model_name}")
         self.load_data_with_filter(max_samples, drop, model_name, shots, datasets)
+        if len(self.dataset) == 0:
+            print(f"No data found for model {model_name} and shots {shots}")
+            return pd.DataFrame()
         full_results = self.extract_data(model_name, shots,
                                          dataset=datasets, template=template, separator=separator,
                                          enumerator=enumerator,
@@ -71,25 +74,23 @@ class DataLoader:
         # Load the dataset if not already loaded
         fs = HfFileSystem()
         existing_files = fs.ls(f"datasets/{repo_name}", detail=False)
-        existing_files = [file for file in existing_files if
+        existing_files = [file.split('/')[-1] for file in existing_files if
                           file.endswith('.parquet')]
-        data_files = existing_files
         # split only the file name that contains the model name and shots and dataset
         if model_name is not None:
             model_name = model_name.split("/")[-1]
-            data_files = [file for file in existing_files if model_name in file]
+            existing_files = [file for file in existing_files if model_name in file]
         if shots is not None:
             shots = "shots" + str(shots)
-            data_files = [file for file in existing_files if shots in file]
+            existing_files = [file for file in existing_files if shots in file]
         if datasets is not None:
             datasets = [dataset.split("/")[-1] for dataset in datasets]
-            data_files = [file for file in existing_files if any(dataset in file for dataset in datasets)]
+            existing_files = [file for file in existing_files if any(dataset in file for dataset in datasets)]
 
-        if len(data_files) > 0:
-            files = ['https://huggingface.co/'+file for file in data_files]
+        if len(existing_files) > 0:
             if self.dataset is None:
                 # split = split_with_filter
-                self.dataset = load_dataset(self.dataset_name, data_files=files, split=self.split)
+                self.dataset = load_dataset(self.dataset_name, data_files=existing_files, split=self.split)
             else:
                 self.dataset = load_dataset(self.dataset_name, split=self.split)
         print("The size of the data after filtering is: ", len(self.dataset))
