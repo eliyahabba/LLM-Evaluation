@@ -7,17 +7,47 @@ from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
 from pathlib import Path
 
-from huggingface_hub import HfApi, create_repo
+from huggingface_hub import HfApi, create_repo, HfFileSystem
 from tqdm import tqdm
 
 from config.get_config import Config
-from src.analysis.create_plots.check_data import get_parquet_files_from_hf
 
 config = Config()
 TOKEN = config.config_values.get("hf_access_token", "")
 repo_name = "eliyahabba/llm-evaluation-analysis-split"
 config = Config()
 TOKEN = config.config_values.get("hf_access_token", "")
+
+
+def get_parquet_files_from_hf(repo_id: str, token: str = None) -> List[Tuple[str, str]]:
+    """
+    Lists all parquet files in a Hugging Face repository
+
+    Args:
+        repo_id: Repository ID (e.g., 'username/repo-name')
+        token: HF API token for private repos (optional)
+
+    Returns:
+        list: List of tuples (download_url, filename)
+    """
+    api = HfApi(token=token)
+    try:
+        # List all files in the repository
+        fs = HfFileSystem()
+        existing_files = fs.ls(f"datasets/{repo_id}", detail=False)
+        main_path = 'https://huggingface.co/datasets'
+        # Filter parquet files and create download URLs
+        parquet_files = []
+        for file in existing_files:
+            if file.endswith('.parquet'):
+                name = file.split("/")[-1]
+                url = f"{main_path}/{repo_id}/resolve/main/{name}"
+                parquet_files.append((url, file))
+
+        return parquet_files
+    except Exception as e:
+        print(f"Error listing repository files: {str(e)}")
+        return []
 
 def setup_logging():
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
