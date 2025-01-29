@@ -178,23 +178,12 @@ class ParallelDatasetSplitter:
                     if not parquet_files:
                         self.logger.warning(f"No parquet files found in directory {temp_file}")
                         continue
-
+                    for parquet_file in parquet_files:
                     # קורא את הדאטה כדי לחלץ את השלישייה
-                    df = pd.read_parquet(parquet_files[0])
-                    if len(df) == 0:
-                        self.logger.warning(f"Empty dataframe in {temp_file}")
-                        continue
-
-                    # מחלץ את הערכים של השלישייה מהשורה הראשונה
-                    model = df.iloc[0]['model'].split("/")[-1]
-                    shots = df.iloc[0]['shots']
-                    dataset = df.iloc[0]['dataset']
-
-                    triplet_key = f"{model}_shots{shots}_{dataset}"
-
-                    if triplet_key not in triplet_files_map:
-                        triplet_files_map[triplet_key] = []
-                    triplet_files_map[triplet_key].append(temp_file)
+                        triplet_key = parquet_file.stem
+                        if triplet_key not in triplet_files_map:
+                            triplet_files_map[triplet_key] = []
+                        triplet_files_map[triplet_key].append(parquet_file)
 
             except Exception as e:
                 self.logger.error(f"Error processing temp file/dir {temp_file}: {str(e)}")
@@ -215,19 +204,13 @@ class ParallelDatasetSplitter:
 
                     # קורא את כל הקבצים של השלישייה הזו
                     dfs = []
-                    for temp_dir in temp_dirs:
+                    for temp_file in temp_dirs:
                         try:
-                            parquet_files = list(temp_dir.glob("*.parquet"))
-                            self.logger.info(f"Looking for parquet files in {temp_dir} with {triplet_key}")
-                            parquet_fileswith_triplet_key = list(temp_dir.glob(f"*{triplet_key}.parquet"))
-                            if parquet_fileswith_triplet_key:
-                                for parquet_file in parquet_fileswith_triplet_key:
-                                    df = pd.read_parquet(parquet_file)
-                                    dfs.append(df)
-                                    parquet_file.unlink()
-                                self.logger.info(f"Successfully read {temp_dir} with {len(df)} rows")
+                            df = pd.read_parquet(temp_file)
+                            dfs.append(df)
+                            # temp_file.unlink()
                         except Exception as e:
-                            self.logger.error(f"Error reading from directory {temp_dir}: {str(e)}")
+                            self.logger.error(f"Error reading from directory {triplet_key}: {str(e)}")
 
                     if not dfs:
                         self.logger.error(f"No valid data found for triplet {triplet_key}")
@@ -272,7 +255,7 @@ class ParallelDatasetSplitter:
 
         # ניקוי
         try:
-            self.temp_dir.rmdir()
+            # self.temp_dir.rmdir()
             self.logger.info("Temporary directory cleaned up")
         except Exception as e:
             self.logger.warning(f"Could not remove temp directory: {str(e)}")
@@ -289,4 +272,9 @@ if __name__ == "__main__":
         output_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split",
         num_workers=24
     )
+    # splitter = ParallelDatasetSplitter(
+    #     input_dir="./ibm_results_data_full_processed",
+    #     output_dir="./ibm_results_data_full_processed_split",
+    #     num_workers=4
+    # )
     splitter.process_all_files()
