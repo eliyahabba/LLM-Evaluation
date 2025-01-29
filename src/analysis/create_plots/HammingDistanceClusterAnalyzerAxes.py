@@ -146,6 +146,9 @@ class HammingDistanceClusterAnalyzerAxes:
         data_output_path = os.path.join(dataset_dir, "hamming_distance_matrix.parquet")
         dist_df = pd.DataFrame(distance_matrix, index=config_ids, columns=config_ids)
         dist_df.to_parquet(data_output_path)
+        # save also the config_ids dict
+        config_ids_df = pd.DataFrame(config_ids, columns=["config_id"])
+        config_ids_df.to_parquet(os.path.join(dataset_dir, "config_ids.parquet"))
         print(f"Saved distance matrix to: {data_output_path}")
 
     # -------------------------------------------------------------------------
