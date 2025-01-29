@@ -6,6 +6,8 @@ from tqdm import tqdm
 
 from src.analysis.create_plots.DataLoader import DataLoader
 from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxes import HammingDistanceClusterAnalyzerAxes
+from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxesDatasets import \
+    HammingDistanceClusterAnalyzerAxesDatasets
 from src.analysis.create_plots.ModelPerformanceAnalyzer import ModelPerformanceAnalyzer
 from src.analysis.create_plots.PromptConfigurationAnalyzerAxes import PromptConfigurationAnalyzerAxes
 from src.analysis.create_plots.PromptQuestionAnalyzer import PromptQuestionAnalyzer
@@ -15,17 +17,22 @@ def process_configuration(params):
     """
     Process a single configuration of model and shots count
     """
-    data_loader, model_name, shots_selected, interesting_datasets = params
+    model_name, shots_selected, interesting_datasets = params
     # for Debugging:
     # model_name = "mistralai/Mistral-7B-Instruct-v0.3"
     print(f"Processing model: {model_name} with {shots_selected} shots")
 
     analyzer = PromptConfigurationAnalyzerAxes()
     hamming = HammingDistanceClusterAnalyzerAxes()
+    hamming_datasets = HammingDistanceClusterAnalyzerAxesDatasets()
     prompt_question_analyzer = PromptQuestionAnalyzer()
     performance_analyzer = ModelPerformanceAnalyzer()
     # Load data for current configuration
-    df_partial = data_loader.load_and_process_data(model_name, shots_selected)
+    data_loader = DataLoader()
+    df_partial = data_loader.load_and_process_data(model_name=model_name,
+                                                   shots=shots_selected,
+                                                   datasets=interesting_datasets,
+                                                   max_samples=None)
     # if shots_selected == 5:
     #     df_partial = df_partial[~df_partial.choices_order.isin(["correct_first", "correct_last"])]
     # base_results_dir = "../app/results_local"
@@ -59,6 +66,13 @@ def process_configuration(params):
         base_results_dir=base_results_dir
     )
 
+    hamming_datasets.perform_clustering_for_model(
+        df=df_partial,
+        model_name=model_name,
+        shots_selected=shots_selected,
+        interesting_datasets=interesting_datasets,
+        base_results_dir=base_results_dir
+    )
     prompt_question_analyzer.process_and_visualize_questions(
         df=df_partial,
         model_name=model_name,
@@ -87,17 +101,16 @@ def run_configuration_analysis(num_processes=1) -> None:
         "ai2_arc.arc_easy",
         "hellaswag",
         "openbook_qa",
-        "social_iqa"
+        "social_iqa",
+        "mmlu",
     ]
 
     # Setup results directory
 
     # Create parameter combinations for parallel processing
-    data_loader = DataLoader()
-    data_loader.load_data(max_samples=None)
 
     params_list = [
-        (data_loader, model_name, shots_selected, interesting_datasets)
+        (model_name, shots_selected, interesting_datasets)
         for shots_selected in shots_to_evaluate
         for model_name in models_to_evaluate
     ]
@@ -132,6 +145,7 @@ def process_configuration_with_immediate_error(params):
     except Exception as e:
         immediate_error_callback(e, params)
         return {'status': 'error', 'params': params, 'error': str(e)}
+
 
 if __name__ == "__main__":
     run_configuration_analysis(num_processes=1)
