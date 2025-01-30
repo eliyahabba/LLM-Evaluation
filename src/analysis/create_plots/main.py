@@ -6,8 +6,6 @@ from tqdm import tqdm
 
 from src.analysis.create_plots.DataLoader import DataLoader
 from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxes import HammingDistanceClusterAnalyzerAxes
-from src.analysis.create_plots.HammingDistanceClusterAnalyzerAxesDatasets import \
-    HammingDistanceClusterAnalyzerAxesDatasets
 from src.analysis.create_plots.ModelPerformanceAnalyzer import ModelPerformanceAnalyzer
 from src.analysis.create_plots.PromptConfigurationAnalyzerAxes import PromptConfigurationAnalyzerAxes
 from src.analysis.create_plots.PromptQuestionAnalyzer import PromptQuestionAnalyzer
@@ -24,7 +22,6 @@ def process_configuration(params):
 
     analyzer = PromptConfigurationAnalyzerAxes()
     hamming = HammingDistanceClusterAnalyzerAxes()
-    hamming_datasets = HammingDistanceClusterAnalyzerAxesDatasets()
     prompt_question_analyzer = PromptQuestionAnalyzer()
     performance_analyzer = ModelPerformanceAnalyzer()
     # Load data for current configuration
