@@ -96,7 +96,7 @@ def download_huggingface_files_parllel(process_output_dir):
     TOKEN = config.config_values.get("hf_access_token", "")
     ex_files = get_parquet_files_from_hf(repo_name, TOKEN)
     ex_files = [file[1].split("/")[-1] for file in ex_files]
-    files = [file for file in files if Path(file).stem not in ex_files]
+    files = [file for file in files if Path(file).name not in ex_files]
     with Manager() as manager:
         process_func = partial(process_file_safe, logger=logger)
 
