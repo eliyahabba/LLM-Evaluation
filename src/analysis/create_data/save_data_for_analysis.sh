@@ -6,7 +6,7 @@
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=gringolet-01,gringolet-02,gringolet-03,gringolet-04,gringolet-05,gringolet-06
-
+#SBATCH --killable
 
 load_config_path="load_config.sh"
 config_bash=$(readlink -f $load_config_path)
