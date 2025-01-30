@@ -64,13 +64,6 @@ def process_configuration(params):
         base_results_dir=base_results_dir
     )
 
-    hamming_datasets.perform_clustering_for_model(
-        df=df_partial,
-        model_name=model_name,
-        shots_selected=shots_selected,
-        interesting_datasets=interesting_datasets,
-        base_results_dir=base_results_dir
-    )
     prompt_question_analyzer.process_and_visualize_questions(
         df=df_partial,
         model_name=model_name,
@@ -149,4 +142,4 @@ def process_configuration_with_immediate_error(params):
 
 
 if __name__ == "__main__":
-    run_configuration_analysis(num_processes=1)
+    run_configuration_analysis(num_processes=4)
