@@ -217,14 +217,30 @@ class IncrementalDatasetSplitter:
 
                     # Check if output file already exists
                     # Parse the triplet key to get model, shots, and dataset
+                    # Format is: UUID_model_shotsN_dataset
+                    # First, find the 'shots' part index
                     key_parts = triplet_key.split('_')
+                    shots_index = -1
+                    for i, part in enumerate(key_parts):
+                        if part.startswith('shots'):
+                            shots_index = i
+                            break
 
-                    # Extract model, shots, and dataset from the key
-                    # The format is: UUID_model_shotsN_dataset
-                    uuid_end = key_parts.index([p for p in key_parts if p.startswith('shots')][0]) - 1
-                    model = '_'.join(key_parts[1:uuid_end])  # Handle models with underscore in name
-                    shots = int(key_parts[uuid_end + 1][5:])  # Remove 'shots' prefix
-                    dataset = '_'.join(key_parts[uuid_end + 2:])  # Handle datasets with underscore in name
+                    if shots_index == -1:
+                        raise ValueError(f"Could not find 'shots' in key: {triplet_key}")
+
+                    # The first part is the UUID, so we skip it
+                    # Everything between UUID and 'shots' is the model name
+                    model = '_'.join(key_parts[1:shots_index])
+
+                    # Extract shots number
+                    shots = int(key_parts[shots_index][5:])  # Remove 'shots' prefix
+
+                    # Everything after shots is the dataset name
+                    dataset = '_'.join(key_parts[shots_index + 1:])
+
+                    self.logger.info(
+                        f"Parsed key '{triplet_key}' into: model='{model}', shots={shots}, dataset='{dataset}')")
 
                     # Create hierarchical path
                     output_path = self.get_hierarchical_path(model, shots, dataset)
