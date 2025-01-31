@@ -27,8 +27,8 @@ if __name__ == "__main__":
     existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
     existing_files = [Path(file).stem.split("_test")[0] for file in existing_files if file.endswith('.parquet')]
     args.file_names = [file for file in os.listdir(args.input_dir) if Path(file).stem not in existing_files][::2]
-
-    # random.shuffle(args.file_names)
+    print(f"Downloading {len(args.file_names)} files")
+    random.shuffle(args.file_names)
     download_huggingface_files_parllel(input_dir=Path(args.input_dir), file_names=args.file_names,
                                        repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
