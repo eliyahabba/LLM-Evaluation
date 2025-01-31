@@ -1,9 +1,9 @@
 import concurrent
-import json
 import logging
 import os
 import shutil
 import uuid
+import json
 from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime
 from pathlib import Path
@@ -184,6 +184,11 @@ class IncrementalDatasetSplitter:
 
         return failed_files
 
+    def get_hierarchical_path(self, model: str, shots: int, dataset: str) -> Path:
+        """Create hierarchical path structure for output files."""
+        language = "english"  # Fixed to English as requested
+        return self.output_dir / model / f"shots_{shots}" / language / dataset
+
     def merge_temp_files(self):
         """Merge temporary files, now considers existing output files."""
         self.logger.info("Starting to merge temporary files")
@@ -211,7 +216,19 @@ class IncrementalDatasetSplitter:
                     dfs = []
 
                     # Check if output file already exists
-                    output_file = self.output_dir / f"{triplet_key}.parquet"
+                    # Parse the triplet key to get model, shots, and dataset
+                    key_parts = triplet_key.split('_')
+
+                    # Extract model, shots, and dataset from the key
+                    # The format is: UUID_model_shotsN_dataset
+                    uuid_end = key_parts.index([p for p in key_parts if p.startswith('shots')][0]) - 1
+                    model = '_'.join(key_parts[1:uuid_end])  # Handle models with underscore in name
+                    shots = int(key_parts[uuid_end + 1][5:])  # Remove 'shots' prefix
+                    dataset = '_'.join(key_parts[uuid_end + 2:])  # Handle datasets with underscore in name
+
+                    # Create hierarchical path
+                    output_path = self.get_hierarchical_path(model, shots, dataset)
+                    output_file = output_path / "data.parquet"  # Use a fixed filename in the leaf directory
                     if output_file.exists():
                         try:
                             existing_df = pd.read_parquet(output_file)
@@ -230,7 +247,7 @@ class IncrementalDatasetSplitter:
 
                     if dfs:
                         combined_df = pd.concat(dfs, ignore_index=True)
-                        os.makedirs(output_file.parent, exist_ok=True)
+                        output_file.parent.mkdir(parents=True, exist_ok=True)
                         combined_df.to_parquet(output_file, index=False)
                         self.logger.info(f"Successfully created/updated {output_file} with {len(combined_df)} rows")
 
