@@ -58,9 +58,6 @@ class IncrementalDatasetSplitter:
         """Get list of new files that haven't been processed yet."""
         all_files = set(str(f) for f in self.input_dir.glob("*.parquet"))
         new_files = all_files - self.processed_files
-        self.logger.info(f"Found {len(new_files)} new files to process")
-        # take only 10 files for testing
-        new_files = list(new_files)[:10]
         return [Path(f) for f in new_files]
 
     def setup_logger(self):
@@ -124,6 +121,75 @@ class IncrementalDatasetSplitter:
 
         return list(temp_files)
 
+    def check_single_file_duplicates(self, file_path: Path) -> tuple[bool, str]:
+        """Check and clean duplicates in a single file.
+
+        Returns:
+            tuple: (success (bool), status message (str))
+        """
+        try:
+            # Read the parquet file
+            df = pd.read_parquet(file_path)
+
+            # Check if evaluation_id exists in the dataframe
+            if 'evaluation_id' not in df.columns:
+                return True, f"File {file_path} does not contain evaluation_id column"
+
+            # Check for duplicates
+            duplicate_count = df.evaluation_id.duplicated().sum()
+            if duplicate_count > 0:
+                # Remove duplicates and keep the first occurrence
+                df_cleaned = df.drop_duplicates(subset=['evaluation_id'], keep='first')
+
+                # Calculate how many rows were removed
+                removed_count = len(df) - len(df_cleaned)
+
+                # Save the cleaned dataframe back to the file
+                df_cleaned.to_parquet(file_path, index=False)
+
+                return True, f"Cleaned {file_path}: removed {removed_count} duplicate rows"
+            else:
+                return True, f"No duplicates found in {file_path}"
+
+        except Exception as e:
+            return False, f"Error processing file {file_path}: {str(e)}"
+
+    def check_and_clean_duplicates(self):
+        """Check all output files for duplicate evaluation_ids and clean them in parallel."""
+        self.logger.info("Starting parallel duplicate check and cleanup process...")
+
+        # Collect all parquet files
+        parquet_files = []
+        for root, dirs, files in os.walk(self.output_dir):
+            for file in files:
+                if file.endswith('.parquet'):
+                    parquet_files.append(Path(root) / file)
+
+        self.logger.info(f"Found {len(parquet_files)} parquet files to check")
+
+        # Process files in parallel
+        with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
+            futures = []
+            for file_path in parquet_files:
+                futures.append(executor.submit(self.check_single_file_duplicates, file_path))
+
+            # Monitor progress with tqdm
+            success_count = 0
+            with tqdm(total=len(futures), desc="Checking for duplicates") as pbar:
+                for future in concurrent.futures.as_completed(futures):
+                    success, message = future.result()
+                    if success:
+                        success_count += 1
+                        if "removed" in message:  # If duplicates were found and removed
+                            self.logger.warning(message)
+                        else:
+                            self.logger.info(message)
+                    else:
+                        self.logger.error(message)
+                    pbar.update(1)
+
+        self.logger.info(f"Completed duplicate check on {success_count} out of {len(parquet_files)} files")
+
     def process_all_files(self):
         """Process only new files that haven't been processed before."""
         self.logger.info("Starting processing new files")
@@ -167,6 +233,11 @@ class IncrementalDatasetSplitter:
         if processed_files:
             try:
                 self.merge_temp_files()
+
+                # After merging, check and clean duplicates
+                self.logger.info("Starting duplicate check after merging...")
+                self.check_and_clean_duplicates()
+
             except Exception as e:
                 self.logger.error(f"Error during merge phase: {str(e)}", exc_info=True)
                 raise
