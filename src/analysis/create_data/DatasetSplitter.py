@@ -58,6 +58,9 @@ class IncrementalDatasetSplitter:
         """Get list of new files that haven't been processed yet."""
         all_files = set(str(f) for f in self.input_dir.glob("*.parquet"))
         new_files = all_files - self.processed_files
+        self.logger.info(f"Found {len(new_files)} new files to process")
+        # take only 10 files for testing
+        new_files = list(new_files)[:10]
         return [Path(f) for f in new_files]
 
     def setup_logger(self):
@@ -187,7 +190,10 @@ class IncrementalDatasetSplitter:
     def get_hierarchical_path(self, model: str, shots: int, dataset: str) -> Path:
         """Create hierarchical path structure for output files."""
         language = "english"  # Fixed to English as requested
-        return self.output_dir / model / f"shots_{shots}" / language / dataset
+        # Create the path with dataset name as the file
+        full_path = self.output_dir / str(model) / f"shots_{shots}" / language / f"{dataset}.parquet"
+        self.logger.info(f"Created hierarchical path: {full_path}")
+        return full_path
 
     def merge_temp_files(self):
         """Merge temporary files, now considers existing output files."""
@@ -218,8 +224,9 @@ class IncrementalDatasetSplitter:
                     # Check if output file already exists
                     # Parse the triplet key to get model, shots, and dataset
                     # Format is: UUID_model_shotsN_dataset
-                    # First, find the 'shots' part index
                     key_parts = triplet_key.split('_')
+
+                    # Find the shots part
                     shots_index = -1
                     for i, part in enumerate(key_parts):
                         if part.startswith('shots'):
@@ -229,18 +236,25 @@ class IncrementalDatasetSplitter:
                     if shots_index == -1:
                         raise ValueError(f"Could not find 'shots' in key: {triplet_key}")
 
-                    # The first part is the UUID, so we skip it
-                    # Everything between UUID and 'shots' is the model name
-                    model = '_'.join(key_parts[1:shots_index])
+                    # Extract parts
+                    uuid = key_parts[0]  # First part is UUID
+                    model = '_'.join(key_parts[1:shots_index])  # Everything between UUID and shots is model
+                    shots = int(key_parts[shots_index][5:])  # Get number after 'shots'
+                    dataset = '_'.join(key_parts[shots_index + 1:])  # Rest is dataset
 
-                    # Extract shots number
-                    shots = int(key_parts[shots_index][5:])  # Remove 'shots' prefix
+                    self.logger.info(f"Parsing key: {triplet_key}")
+                    self.logger.info(f"UUID: {uuid}")
+                    self.logger.info(f"Model: {model}")
+                    self.logger.info(f"Shots: {shots}")
+                    self.logger.info(f"Dataset: {dataset}")
 
-                    # Everything after shots is the dataset name
-                    dataset = '_'.join(key_parts[shots_index + 1:])
+                    # Create hierarchical path and ensure parent directory exists
+                    output_file = self.get_hierarchical_path(model, shots, dataset)
+                    self.logger.info(f"Full output path: {output_file}")
 
-                    self.logger.info(
-                        f"Parsed key '{triplet_key}' into: model='{model}', shots={shots}, dataset='{dataset}')")
+                    # Ensure all directories exist
+                    output_file.parent.mkdir(parents=True, exist_ok=True)
+                    self.logger.info(f"Final output file path: {output_file}")
 
                     # Create hierarchical path
                     output_path = self.get_hierarchical_path(model, shots, dataset)
