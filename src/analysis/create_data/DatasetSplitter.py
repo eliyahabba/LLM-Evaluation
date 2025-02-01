@@ -57,7 +57,6 @@ class IncrementalDatasetSplitter:
         new_files = all_files - self.processed_files
         self.logger.info(f"Found {len(new_files)} new files to process")
         # take only the 10 files for testing
-        new_files = list(new_files)[:10]
         return [Path(f) for f in new_files]
 
     def setup_logger(self):
