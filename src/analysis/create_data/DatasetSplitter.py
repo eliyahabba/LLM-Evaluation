@@ -58,6 +58,9 @@ class IncrementalDatasetSplitter:
         """Get list of new files that haven't been processed yet."""
         all_files = set(str(f) for f in self.input_dir.glob("*.parquet"))
         new_files = all_files - self.processed_files
+        self.logger.info(f"Found {len(new_files)} new files to process")
+        # take only the 10 files for testing
+        new_files = list(new_files)[:10]
         return [Path(f) for f in new_files]
 
     def setup_logger(self):
@@ -258,11 +261,17 @@ class IncrementalDatasetSplitter:
 
         return failed_files
 
+    def sanitize_model_name(self, model_name: str) -> str:
+        """Sanitize model name by replacing slashes with underscores."""
+        return model_name.split('/')[-1]
+
     def get_hierarchical_path(self, model: str, shots: int, dataset: str) -> Path:
         """Create hierarchical path structure for output files."""
         language = "english"  # Fixed to English as requested
+        # Sanitize the model name before creating the path
+        safe_model = self.sanitize_model_name(model)
         # Create the path with dataset name as the file
-        full_path = self.output_dir / str(model) / f"shots_{shots}" / language / f"{dataset}.parquet"
+        full_path = self.output_dir / str(safe_model) / f"shots_{shots}" / language / f"{dataset}.parquet"
         self.logger.info(f"Created hierarchical path: {full_path}")
         return full_path
 
