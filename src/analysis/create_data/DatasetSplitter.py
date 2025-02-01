@@ -36,7 +36,6 @@ class IncrementalDatasetSplitter:
         self.logger.info(f"Found {len(self.processed_files)} previously processed files")
 
     def load_processed_files(self) -> Set[str]:
-        """Load the set of previously processed files."""
         if self.processed_files_path.exists():
             try:
                 with open(self.processed_files_path, 'r') as f:
@@ -47,7 +46,6 @@ class IncrementalDatasetSplitter:
         return set()
 
     def save_processed_files(self):
-        """Save the current set of processed files."""
         try:
             with open(self.processed_files_path, 'w') as f:
                 json.dump(list(self.processed_files), f)
@@ -55,7 +53,6 @@ class IncrementalDatasetSplitter:
             self.logger.error(f"Error saving processed files list: {e}")
 
     def get_new_files(self) -> List[Path]:
-        """Get list of new files that haven't been processed yet."""
         all_files = set(str(f) for f in self.input_dir.glob("*.parquet"))
         new_files = all_files - self.processed_files
         self.logger.info(f"Found {len(new_files)} new files to process")
@@ -80,6 +77,18 @@ class IncrementalDatasetSplitter:
 
         self.logger.addHandler(fh)
         self.logger.addHandler(ch)
+
+    def sanitize_model_name(self, model_name: str) -> str:
+        """Sanitize model name by replacing slashes with underscores."""
+        return model_name.split('/')[-1]
+
+    def get_hierarchical_path(self, model: str, shots: int, dataset: str) -> Path:
+        """Create hierarchical path structure for output files."""
+        # Sanitize the model name before creating the path
+        safe_model = self.sanitize_model_name(model)
+        # Create the path with the full hierarchy
+        full_path = self.output_dir / safe_model / f"shots_{shots}" / "english" / f"{dataset}.parquet"
+        return full_path
 
     def process_single_file(self, input_file: Path) -> List[str]:
         worker_id = uuid.uuid4()
@@ -126,32 +135,92 @@ class IncrementalDatasetSplitter:
 
         return list(temp_files)
 
+    def merge_temp_files(self):
+        """Merge temporary files into the final hierarchical structure."""
+        self.logger.info("Starting to merge temporary files")
+
+        triplet_files_map = {}
+
+        # Collect all temporary files
+        for temp_file in self.temp_dir.glob("*.parquet"):
+            try:
+                triplet_key = temp_file.stem
+                if triplet_key not in triplet_files_map:
+                    triplet_files_map[triplet_key] = []
+                triplet_files_map[triplet_key].append(temp_file)
+            except Exception as e:
+                self.logger.error(f"Error processing temp file {temp_file}: {str(e)}")
+
+        self.logger.info(f"Found {len(triplet_files_map)} unique triplets to merge")
+
+        with tqdm(total=len(triplet_files_map), desc="Merging files by triplet") as pbar:
+            for triplet_key, temp_files in triplet_files_map.items():
+                try:
+                    self.logger.info(f"Processing triplet {triplet_key} with {len(temp_files)} files")
+
+                    # Parse the triplet key to get model, shots, and dataset
+                    # Format is: UUID_model_shotsN_dataset
+                    key_parts = triplet_key.split('_')
+
+                    # Find the shots part
+                    shots_index = -1
+                    for i, part in enumerate(key_parts):
+                        if part.startswith('shots'):
+                            shots_index = i
+                            break
+
+                    if shots_index == -1:
+                        raise ValueError(f"Could not find 'shots' in key: {triplet_key}")
+
+                    # Extract parts
+                    model = '_'.join(key_parts[1:shots_index])  # Everything between UUID and shots is model
+                    shots = int(key_parts[shots_index][5:])  # Get number after 'shots'
+                    dataset = '_'.join(key_parts[shots_index + 1:])  # Rest is dataset
+
+                    # Create hierarchical path and ensure parent directory exists
+                    output_file = self.get_hierarchical_path(model, shots, dataset)
+                    output_file.parent.mkdir(parents=True, exist_ok=True)
+
+                    # Load existing data if any
+                    dfs = []
+                    if output_file.exists():
+                        try:
+                            existing_df = pd.read_parquet(output_file)
+                            dfs.append(existing_df)
+                            self.logger.info(f"Loaded existing file {output_file} with {len(existing_df)} rows")
+                        except Exception as e:
+                            self.logger.error(f"Error reading existing file {output_file}: {str(e)}")
+
+                    # Add new data
+                    for temp_file in temp_files:
+                        try:
+                            df = pd.read_parquet(temp_file)
+                            dfs.append(df)
+                        except Exception as e:
+                            self.logger.error(f"Error reading temp file {temp_file}: {str(e)}")
+
+                    if dfs:
+                        combined_df = pd.concat(dfs, ignore_index=True)
+                        combined_df.to_parquet(output_file, index=False)
+                        self.logger.info(f"Successfully created/updated {output_file} with {len(combined_df)} rows")
+
+                except Exception as e:
+                    self.logger.error(f"Error processing triplet {triplet_key}: {str(e)}", exc_info=True)
+
+                pbar.update(1)
+
     def check_single_file_duplicates(self, file_path: Path) -> tuple[bool, str]:
-        """Check and clean duplicates in a single file.
-
-        Returns:
-            tuple: (success (bool), status message (str))
-        """
+        """Check and clean duplicates in a single file."""
         try:
-            # Read the parquet file
             df = pd.read_parquet(file_path)
-
-            # Check if evaluation_id exists in the dataframe
             if 'evaluation_id' not in df.columns:
                 return True, f"File {file_path} does not contain evaluation_id column"
 
-            # Check for duplicates
             duplicate_count = df.evaluation_id.duplicated().sum()
             if duplicate_count > 0:
-                # Remove duplicates and keep the first occurrence
                 df_cleaned = df.drop_duplicates(subset=['evaluation_id'], keep='first')
-
-                # Calculate how many rows were removed
                 removed_count = len(df) - len(df_cleaned)
-
-                # Save the cleaned dataframe back to the file
                 df_cleaned.to_parquet(file_path, index=False)
-
                 return True, f"Cleaned {file_path}: removed {removed_count} duplicate rows"
             else:
                 return True, f"No duplicates found in {file_path}"
@@ -172,20 +241,18 @@ class IncrementalDatasetSplitter:
 
         self.logger.info(f"Found {len(parquet_files)} parquet files to check")
 
-        # Process files in parallel
         with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
             futures = []
             for file_path in parquet_files:
                 futures.append(executor.submit(self.check_single_file_duplicates, file_path))
 
-            # Monitor progress with tqdm
             success_count = 0
             with tqdm(total=len(futures), desc="Checking for duplicates") as pbar:
                 for future in concurrent.futures.as_completed(futures):
                     success, message = future.result()
                     if success:
                         success_count += 1
-                        if "removed" in message:  # If duplicates were found and removed
+                        if "removed" in message:
                             self.logger.warning(message)
                         else:
                             self.logger.info(message)
@@ -220,7 +287,6 @@ class IncrementalDatasetSplitter:
                         temp_files = future.result()
                         if temp_files:
                             processed_files.append(input_file)
-                            # Add to processed files set
                             self.processed_files.add(str(input_file))
                         else:
                             failed_files.append(input_file)
@@ -238,16 +304,12 @@ class IncrementalDatasetSplitter:
         if processed_files:
             try:
                 self.merge_temp_files()
-
-                # After merging, check and clean duplicates
                 self.logger.info("Starting duplicate check after merging...")
                 self.check_and_clean_duplicates()
-
             except Exception as e:
                 self.logger.error(f"Error during merge phase: {str(e)}", exc_info=True)
                 raise
 
-        # Save the updated processed files list
         self.save_processed_files()
 
         try:
@@ -262,111 +324,6 @@ class IncrementalDatasetSplitter:
         self.logger.info(f"Processing completed! Total duration: {duration}")
 
         return failed_files
-
-    def sanitize_model_name(self, model_name: str) -> str:
-        """Sanitize model name by replacing slashes with underscores."""
-        return model_name.split('/')[-1]
-
-    def get_hierarchical_path(self, model: str, shots: int, dataset: str) -> Path:
-        """Create hierarchical path structure for output files."""
-        language = "english"  # Fixed to English as requested
-        # Sanitize the model name before creating the path
-        safe_model = self.sanitize_model_name(model)
-        # Create the path with dataset name as the file
-        full_path = self.output_dir / str(safe_model) / f"shots_{shots}" / language / f"{dataset}.parquet"
-        self.logger.info(f"Created hierarchical path: {full_path}")
-        return full_path
-
-    def merge_temp_files(self):
-        """Merge temporary files, now considers existing output files."""
-        self.logger.info("Starting to merge temporary files")
-
-        triplet_files_map = {}
-
-        for temp_file in self.temp_dir.glob("*"):
-            try:
-                if temp_file.is_dir():
-                    for parquet_file in temp_file.glob("*.parquet"):
-                        triplet_key = parquet_file.stem
-                        if triplet_key not in triplet_files_map:
-                            triplet_files_map[triplet_key] = []
-                        triplet_files_map[triplet_key].append(parquet_file)
-            except Exception as e:
-                self.logger.error(f"Error processing temp file/dir {temp_file}: {str(e)}")
-
-        self.logger.info(f"Found {len(triplet_files_map)} unique triplets to merge")
-
-        with tqdm(total=len(triplet_files_map), desc="Merging files by triplet") as pbar:
-            for triplet_key, temp_files in triplet_files_map.items():
-                try:
-                    self.logger.info(f"Processing triplet {triplet_key} with {len(temp_files)} files")
-
-                    dfs = []
-
-                    # Check if output file already exists
-                    # Parse the triplet key to get model, shots, and dataset
-                    # Format is: UUID_model_shotsN_dataset
-                    key_parts = triplet_key.split('_')
-
-                    # Find the shots part
-                    shots_index = -1
-                    for i, part in enumerate(key_parts):
-                        if part.startswith('shots'):
-                            shots_index = i
-                            break
-
-                    if shots_index == -1:
-                        raise ValueError(f"Could not find 'shots' in key: {triplet_key}")
-
-                    # Extract parts
-                    uuid = key_parts[0]  # First part is UUID
-                    model = '_'.join(key_parts[1:shots_index])  # Everything between UUID and shots is model
-                    shots = int(key_parts[shots_index][5:])  # Get number after 'shots'
-                    dataset = '_'.join(key_parts[shots_index + 1:])  # Rest is dataset
-
-                    self.logger.info(f"Parsing key: {triplet_key}")
-                    self.logger.info(f"UUID: {uuid}")
-                    self.logger.info(f"Model: {model}")
-                    self.logger.info(f"Shots: {shots}")
-                    self.logger.info(f"Dataset: {dataset}")
-
-                    # Create hierarchical path and ensure parent directory exists
-                    output_file = self.get_hierarchical_path(model, shots, dataset)
-                    self.logger.info(f"Full output path: {output_file}")
-
-                    # Ensure all directories exist
-                    output_file.parent.mkdir(parents=True, exist_ok=True)
-                    self.logger.info(f"Final output file path: {output_file}")
-
-                    # Create hierarchical path
-                    output_path = self.get_hierarchical_path(model, shots, dataset)
-                    output_file = output_path / "data.parquet"  # Use a fixed filename in the leaf directory
-                    if output_file.exists():
-                        try:
-                            existing_df = pd.read_parquet(output_file)
-                            dfs.append(existing_df)
-                            self.logger.info(f"Loaded existing file {output_file} with {len(existing_df)} rows")
-                        except Exception as e:
-                            self.logger.error(f"Error reading existing file {output_file}: {str(e)}")
-
-                    # Add new data
-                    for temp_file in temp_files:
-                        try:
-                            df = pd.read_parquet(temp_file)
-                            dfs.append(df)
-                        except Exception as e:
-                            self.logger.error(f"Error reading temp file {temp_file}: {str(e)}")
-
-                    if dfs:
-                        combined_df = pd.concat(dfs, ignore_index=True)
-                        output_file.parent.mkdir(parents=True, exist_ok=True)
-                        combined_df.to_parquet(output_file, index=False)
-                        self.logger.info(f"Successfully created/updated {output_file} with {len(combined_df)} rows")
-
-                except Exception as e:
-                    self.logger.error(f"Error processing triplet {triplet_key}: {str(e)}", exc_info=True)
-
-                pbar.update(1)
 
 
 if __name__ == "__main__":
