@@ -98,7 +98,9 @@ class IncrementalDatasetSplitter:
                     grouped = df.groupby(['model', 'shots', 'dataset'])
 
                     for (model, shots, dataset), group_df in grouped:
-                        key = f"{worker_id}_{model}_shots{shots}_{dataset}"
+                        safe_model = self.sanitize_model_name(model)
+
+                        key = f"{worker_id}_{safe_model}_shots{shots}_{dataset}"
                         if key in temp_dfs:
                             temp_dfs[key] = pd.concat([temp_dfs[key], group_df], ignore_index=True)
                         else:
