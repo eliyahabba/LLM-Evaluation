@@ -1831,7 +1831,6 @@ SUPPORTED_LANGUAGES = {
     "ar": "Arabic",
     "bn": "Bengali",
     "de": "German",
-    "en": "English",
     "fr": "French",
     "hi": "Hindi",
     "id": "Indonesian",
