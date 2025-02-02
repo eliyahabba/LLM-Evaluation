@@ -1782,7 +1782,10 @@ SAMPLING_SEED = 42  # Fixed seed for reproducibility
 ZERO_DEMOS_ONLY_DATASETS = ["quailty"]
 USE_SEQUENTIAL_SAMPLING_STRATEGY = True
 DATASETS_WITH_SAMPLED_CONFIGURATIONS = {
+    "mmlu",
     "global_mmlu",
+    "global_mmlu_lite_cs",
+    "global_mmlu_lite_ca",
     "quality",
 }
 
@@ -1927,6 +1930,9 @@ class MultiChoiceDatasetsConfig:
             "quailty": [],
         }
 
+        if dataset_name.startswith("global_mmlu_lite_"):
+            return [f"cards.{dataset_name}"]
+
         if dataset_name.startswith("global_mmlu"):
             lang = dataset_name.split(".")[1]
             subset_list = MMLU_PARTIAL_SUBJECTS if USE_PARTIAL_SUBJECTS_FOR_MMLU else MMLU_FULL_SUBJECTS
@@ -1985,10 +1991,14 @@ def get_run_data(dataset_name: str) -> list[tuple[str, list[str], list[int]]]:
         if should_sample:
             if USE_SEQUENTIAL_SAMPLING_STRATEGY:
             # Get topic name from subset (handles both mmlu and global_mmlu cases)
-                if dataset_name.startswith("global_mmlu"):
+                if dataset_name.startswith("global_mmlu") and "global_mmlu_lite_" not in dataset_name:
                     topic = subset.split('.')[-1]
                     topic_idx = topic_to_index[topic]
                     templates = get_configurations_slice(all_configurations, topic_idx)
+                elif dataset_name.startswith("global_mmlu_lite_"):
+                    sensitivity_type = dataset_name.split(".")[0]
+                    dataset_idx = abs(hash(sensitivity_type)) % 100
+                    templates = get_configurations_slice(all_configurations, dataset_idx)
                 else:
                     dataset_idx = abs(hash(dataset_name)) % 100
                     templates = get_configurations_slice(all_configurations, dataset_idx)
@@ -2005,6 +2015,8 @@ configs = [
     "mmlu",
     "mmlu_pro",
     *[f"global_mmlu.{lang}" for lang in SUPPORTED_LANGUAGES.keys()],
+    *[f"global_mmlu_lite_cs.{lang}" for lang in SUPPORTED_LANGUAGES.keys()],
+    *[f"global_mmlu_lite_ca.{lang}" for lang in SUPPORTED_LANGUAGES.keys()],
     "ai2_arc.arc_easy",
     "ai2_arc.arc_challenge",
     "hellaswag",
