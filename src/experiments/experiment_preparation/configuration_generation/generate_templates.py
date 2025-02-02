@@ -1780,7 +1780,7 @@ USE_PARTIAL_SUBJECTS_FOR_MMLU = True  # Whether to use partial or full subject l
 NUM_CONFIGS_PER_SUBJECT = 100  # Number of configurations to sample per subject if enabled
 SAMPLING_SEED = 42  # Fixed seed for reproducibility
 ZERO_DEMOS_ONLY_DATASETS = ["quailty"]
-SAMPLED_DATASETS = {
+DATASETS_WITH_SAMPLED_CONFIGURATIONS = {
     "global_mmlu",
     "quality",
 }
@@ -1990,8 +1990,8 @@ def get_run_data(dataset_name: str) -> list[tuple[str, list[str], list[int]]]:
         else:
             num_demos = [0, 5]
 
-        should_sample = (dataset_name in SAMPLED_DATASETS) or \
-                       (dataset_name.startswith("global_mmlu") and "global_mmlu" in SAMPLED_DATASETS)
+        should_sample = (dataset_name in DATASETS_WITH_SAMPLED_CONFIGURATIONS) or \
+                        (dataset_name.startswith("global_mmlu") and "global_mmlu" in DATASETS_WITH_SAMPLED_CONFIGURATIONS)
 
         # For MMLU and its variants, use sliced configurations if enabled
         if should_sample:
