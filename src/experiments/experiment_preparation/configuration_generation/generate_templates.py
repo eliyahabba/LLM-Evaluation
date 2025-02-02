@@ -2051,16 +2051,16 @@ get_single_runs_args_list = get_basic_benchmark_function(
     system_prompts_and_formatters_mapper=None,
 )
 
-models_to_evaluate = [
-        'meta-llama/Llama-3.2-1B-Instruct',
-        'allenai/OLMoE-1B-7B-0924-Instruct',
-        'meta-llama/Meta-Llama-3-8B-Instruct',
-        'meta-llama/Llama-3.2-3B-Instruct',
-        'mistralai/Mistral-7B-Instruct-v0.3',
-    ]
-new_models_to_evaluate = ['meta-llama/Llama-3.2-70B-Instruct',
-'nvidia/Mistral-NeMo-12B-Instruct'
-'Qwen/Qwen2.5-1.5B-Instruct'
-'Qwen/Qwen2.5-7B-Instruct'
-
-]
+# models_to_evaluate = [
+#         'meta-llama/Llama-3.2-1B-Instruct',
+#         'allenai/OLMoE-1B-7B-0924-Instruct',
+#         'meta-llama/Meta-Llama-3-8B-Instruct',
+#         'meta-llama/Llama-3.2-3B-Instruct',
+#         'mistralai/Mistral-7B-Instruct-v0.3',
+#     ]
+# new_models_to_evaluate = ['meta-llama/Llama-3.2-70B-Instruct',
+# 'nvidia/Mistral-NeMo-12B-Instruct'
+# 'Qwen/Qwen2.5-1.5B-Instruct'
+# 'Qwen/Qwen2.5-7B-Instruct'
+#
+# ]
