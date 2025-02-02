@@ -199,6 +199,46 @@ class IncrementalDatasetSplitter:
 
         return list(temp_files)
 
+    def merge_triplet_files(self, triplet_data):
+        """
+        Helper function to merge files for a single triplet.
+        To be used by ProcessPoolExecutor.
+        """
+        triplet_key, temp_files, output_file = triplet_data
+
+        try:
+            dfs = []
+
+            # Load existing data if any
+            if output_file.exists():
+                try:
+                    existing_df = pd.read_parquet(output_file)
+                    dfs.append(existing_df)
+                except Exception as e:
+                    logging.error(f"Error reading existing file {output_file}: {str(e)}")
+
+            # Add new data
+            for temp_file in temp_files:
+                try:
+                    df = pd.read_parquet(temp_file)
+                    dfs.append(df)
+                except Exception as e:
+                    logging.error(f"Error reading temp file {temp_file}: {str(e)}")
+
+            if dfs:
+                combined_df = pd.concat(dfs, ignore_index=True)
+
+                # Ensure parent directory exists
+                output_file.parent.mkdir(parents=True, exist_ok=True)
+
+                # Save merged data
+                combined_df.to_parquet(output_file, index=False)
+                return True, f"Successfully merged {output_file} with {len(combined_df)} rows"
+
+            return False, f"No data to merge for {triplet_key}"
+
+        except Exception as e:
+            return False, f"Error processing triplet {triplet_key}: {str(e)}"
     def merge_files(self, temp_files: List[str] = None):
         """Second phase: Merge temporary files into final structure."""
         self.logger.info("Starting merging phase")
