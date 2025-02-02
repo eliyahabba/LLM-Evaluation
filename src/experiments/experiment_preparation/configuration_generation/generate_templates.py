@@ -1874,19 +1874,6 @@ class _DefaultGenerationArgs(GenerationArgs):
 
 
 
-def sample_configurations(templates: list[str], seed: int = SAMPLING_SEED) -> list[str]:
-    """Sample templates in a deterministic way using a fixed seed."""
-    import random
-    rng = random.Random(seed)
-
-    # Create copy of templates list and shuffle
-    templates_copy = templates.copy()
-    rng.shuffle(templates_copy)
-
-    # Take first NUM_CONFIGS_PER_SUBJECT templates
-    return templates_copy[:NUM_CONFIGS_PER_SUBJECT]
-
-
 def get_all_possible_configurations(dataset_catalog_name: str, prompt_paraphrases: list[str],
                                     template_names: list[str]) -> list[str]:
     """Generate all possible template configurations."""
@@ -2047,3 +2034,17 @@ get_single_runs_args_list = get_basic_benchmark_function(
     get_train_args_func=None,
     system_prompts_and_formatters_mapper=None,
 )
+
+models_to_evaluate = [
+        'meta-llama/Llama-3.2-1B-Instruct',
+        'allenai/OLMoE-1B-7B-0924-Instruct',
+        'meta-llama/Meta-Llama-3-8B-Instruct',
+        'meta-llama/Llama-3.2-3B-Instruct',
+        'mistralai/Mistral-7B-Instruct-v0.3',
+    ]
+new_models_to_evaluate = ['meta-llama/Llama-3.2-70B-Instruct',
+'nvidia/Mistral-NeMo-12B-Instruct'
+'Qwen/Qwen2.5-1.5B-Instruct'
+'Qwen/Qwen2.5-7B-Instruct'
+
+]
