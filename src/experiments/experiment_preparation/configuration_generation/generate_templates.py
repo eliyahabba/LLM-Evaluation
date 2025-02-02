@@ -1780,6 +1780,7 @@ USE_PARTIAL_SUBJECTS_FOR_MMLU = True  # Whether to use partial or full subject l
 NUM_CONFIGS_PER_SUBJECT = 100  # Number of configurations to sample per subject if enabled
 SAMPLING_SEED = 42  # Fixed seed for reproducibility
 ZERO_DEMOS_ONLY_DATASETS = ["quailty"]
+USE_SEQUENTIAL_SAMPLING_STRATEGY = True
 DATASETS_WITH_SAMPLED_CONFIGURATIONS = {
     "global_mmlu",
     "quality",
@@ -1982,14 +1983,17 @@ def get_run_data(dataset_name: str) -> list[tuple[str, list[str], list[int]]]:
 
         # For MMLU and its variants, use sliced configurations if enabled
         if should_sample:
+            if USE_SEQUENTIAL_SAMPLING_STRATEGY:
             # Get topic name from subset (handles both mmlu and global_mmlu cases)
-            if dataset_name.startswith("global_mmlu"):
-                topic = subset.split('.')[-1]
-                topic_idx = topic_to_index[topic]
-                templates = get_configurations_slice(all_configurations, topic_idx)
+                if dataset_name.startswith("global_mmlu"):
+                    topic = subset.split('.')[-1]
+                    topic_idx = topic_to_index[topic]
+                    templates = get_configurations_slice(all_configurations, topic_idx)
+                else:
+                    dataset_idx = abs(hash(dataset_name)) % 100
+                    templates = get_configurations_slice(all_configurations, dataset_idx)
             else:
-                dataset_idx = abs(hash(dataset_name)) % 100
-                templates = get_configurations_slice(all_configurations, dataset_idx)
+                raise NotImplementedError("Random sampling strategy is not implemented yet.")
         else:
             templates = all_configurations
 
