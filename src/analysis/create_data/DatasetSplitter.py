@@ -34,7 +34,29 @@ class IncrementalDatasetSplitter:
         self.logger.info(f"Input directory: {input_dir}")
         self.logger.info(f"Output directory: {output_dir}")
         self.logger.info(f"Found {len(self.processed_files)} previously processed files")
+        self.split_tracking_path = self.output_dir / "split_progress.json"
+        self.merge_tracking_path = self.output_dir / "merge_progress.json"
 
+    def load_split_progress(self) -> dict:
+        """Load the progress of file splitting."""
+        if self.split_tracking_path.exists():
+            try:
+                with open(self.split_tracking_path, 'r') as f:
+                    return json.load(f)
+            except Exception as e:
+                self.logger.error(f"Error loading split progress: {e}")
+        return {'completed_files': [], 'temp_files': []}
+
+    def save_split_progress(self, completed_files: List[str], temp_files: List[str]):
+        """Save the progress of file splitting."""
+        try:
+            with open(self.split_tracking_path, 'w') as f:
+                json.dump({
+                    'completed_files': completed_files,
+                    'temp_files': temp_files
+                }, f)
+        except Exception as e:
+            self.logger.error(f"Error saving split progress: {e}")
     def load_processed_files(self) -> Set[str]:
         if self.processed_files_path.exists():
             try:
@@ -134,49 +156,96 @@ class IncrementalDatasetSplitter:
 
         return list(temp_files)
 
-    def merge_temp_files(self):
-        """Merge temporary files into the final hierarchical structure with resume capability."""
-        self.logger.info("Starting to merge temporary files in parallel")
+    def process_files(self):
+        """First phase: Split files into temporary files."""
+        self.logger.info("Starting splitting phase")
 
-        # Path for tracking merged files
-        merged_tracking_file = self.output_dir / "merged_triplets.json"
+        # Load existing progress
+        progress = self.load_split_progress()
+        completed_files = set(progress['completed_files'])
+        existing_temp_files = set(progress['temp_files'])
+
+        # Get new files to process
+        all_files = set(str(f) for f in self.input_dir.glob("*.parquet"))
+        new_files = [Path(f) for f in all_files - completed_files]
+
+        self.logger.info(f"Found {len(new_files)} new files to process")
+        if not new_files:
+            self.logger.info("No new files to split")
+            return existing_temp_files
+
+        temp_files = set(existing_temp_files)
+        newly_completed = set()
+
+        with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
+            future_to_file = {executor.submit(self.process_single_file, f): f for f in new_files}
+
+            with tqdm(total=len(new_files), desc="Splitting files", unit="file") as pbar:
+                for future in concurrent.futures.as_completed(future_to_file):
+                    input_file = future_to_file[future]
+                    try:
+                        new_temp_files = future.result()
+                        if new_temp_files:
+                            temp_files.update(new_temp_files)
+                            newly_completed.add(str(input_file))
+                            # Save progress after each file
+                            self.save_split_progress(
+                                list(completed_files | newly_completed),
+                                list(temp_files)
+                            )
+                    except Exception as e:
+                        self.logger.error(f"Error processing {input_file}: {str(e)}")
+                    pbar.update(1)
+
+        return list(temp_files)
+
+    def merge_files(self, temp_files: List[str] = None):
+        """Second phase: Merge temporary files into final structure."""
+        self.logger.info("Starting merging phase")
+
+        if temp_files is None:
+            # If no temp_files provided, try to load from progress
+            progress = self.load_split_progress()
+            temp_files = progress['temp_files']
+
+        # Load merge progress
         merged_triplets = set()
-
-        # Load previously merged triplets if file exists
-        if merged_tracking_file.exists():
+        if self.merge_tracking_path.exists():
             try:
-                with open(merged_tracking_file, 'r') as f:
+                with open(self.merge_tracking_path, 'r') as f:
                     merged_triplets = set(json.load(f))
                 self.logger.info(f"Loaded {len(merged_triplets)} previously merged triplets")
             except Exception as e:
-                self.logger.error(f"Error loading merged triplets list: {e}")
+                self.logger.error(f"Error loading merge progress: {e}")
 
+        # Group temp files by triplet
         triplet_files_map = {}
-
-        # Collect all temporary files
-        for temp_file in self.temp_dir.glob("*.parquet"):
+        for temp_file in temp_files:
             try:
-                triplet_key = temp_file.stem
-                if triplet_key not in triplet_files_map:
-                    triplet_files_map[triplet_key] = []
-                triplet_files_map[triplet_key].append(temp_file)
+                temp_path = Path(temp_file)
+                if temp_path.exists():
+                    triplet_key = temp_path.stem
+                    if triplet_key not in triplet_files_map:
+                        triplet_files_map[triplet_key] = []
+                    triplet_files_map[triplet_key].append(temp_path)
             except Exception as e:
                 self.logger.error(f"Error processing temp file {temp_file}: {str(e)}")
 
         # Filter out already merged triplets
-        remaining_triplets = {k: v for k, v in triplet_files_map.items() if k not in merged_triplets}
-        self.logger.info(f"Found {len(remaining_triplets)} unmerged triplets out of {len(triplet_files_map)} total")
+        remaining_triplets = {k: v for k, v in triplet_files_map.items()
+                              if k not in merged_triplets}
 
+        self.logger.info(f"Found {len(remaining_triplets)} unmerged triplets")
         if not remaining_triplets:
             self.logger.info("No new triplets to merge")
             return
 
-        # Prepare data for parallel processing
         merge_tasks = []
         for triplet_key, temp_files in remaining_triplets.items():
             try:
                 key_parts = triplet_key.split('_')
-                shots_index = next(i for i, part in enumerate(key_parts) if part.startswith('shots'))
+                shots_index = next(i for i, part in enumerate(key_parts)
+                                   if part.startswith('shots'))
 
                 model = '_'.join(key_parts[1:shots_index])
                 shots = int(key_parts[shots_index][5:])
@@ -184,37 +253,43 @@ class IncrementalDatasetSplitter:
 
                 output_file = self.get_hierarchical_path(model, shots, dataset)
                 merge_tasks.append((triplet_key, temp_files, output_file))
-
             except Exception as e:
                 self.logger.error(f"Error preparing merge task for {triplet_key}: {str(e)}")
 
-        # Process merges in parallel
         with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
             futures = []
             for task in merge_tasks:
                 futures.append(executor.submit(self.merge_triplet_files, task))
 
-            success_count = 0
             with tqdm(total=len(futures), desc="Merging files") as pbar:
                 for future in concurrent.futures.as_completed(futures):
-                    triplet_key = merge_tasks[len(merged_triplets) + success_count][0]
+                    triplet_key = merge_tasks[len(merged_triplets)][0]
                     success, message = future.result()
                     if success:
-                        success_count += 1
                         merged_triplets.add(triplet_key)
                         # Save progress after each successful merge
                         try:
-                            with open(merged_tracking_file, 'w') as f:
+                            with open(self.merge_tracking_path, 'w') as f:
                                 json.dump(list(merged_triplets), f)
                         except Exception as e:
-                            self.logger.error(f"Error saving merged triplets: {e}")
+                            self.logger.error(f"Error saving merge progress: {e}")
                         self.logger.info(message)
                     else:
                         self.logger.error(message)
                     pbar.update(1)
 
-        self.logger.info(f"Completed parallel merge: {success_count} successful merges out of {len(merge_tasks)} total")
+        self.logger.info(f"Completed merging {len(merged_triplets)} triplets")
 
+    def cleanup(self):
+        """Optional cleanup after successful completion."""
+        try:
+            if self.temp_dir.exists():
+                shutil.rmtree(self.temp_dir)
+            self.split_tracking_path.unlink(missing_ok=True)
+            self.merge_tracking_path.unlink(missing_ok=True)
+            self.logger.info("Cleanup completed successfully")
+        except Exception as e:
+            self.logger.error(f"Error during cleanup: {e}")
 
     def merge_triplet_files1(self, triplet_data):
         """
@@ -438,3 +513,14 @@ if __name__ == "__main__":
         num_workers=24
     )
     splitter.process_all_files()
+    # Phase 1: Split files
+    try:
+        temp_files = splitter.process_files()
+    except Exception as e:
+        print(f"Error during splitting phase: {e}")
+
+    # Phase 2: Merge files
+    try:
+        splitter.merge_files(temp_files)
+    except Exception as e:
+        print(f"Error during merging phase: {e}")
