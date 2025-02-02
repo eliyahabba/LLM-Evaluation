@@ -1777,10 +1777,13 @@ datasets_configs = {
 
 # Configuration Constants
 USE_PARTIAL_SUBJECTS_FOR_MMLU = True  # Whether to use partial or full subject list
-USE_SAMPLED_CONFIGS = True  # Whether to use sampling or all configurations
 NUM_CONFIGS_PER_SUBJECT = 100  # Number of configurations to sample per subject if enabled
 SAMPLING_SEED = 42  # Fixed seed for reproducibility
 ZERO_DEMOS_ONLY_DATASETS = ["quailty"]
+SAMPLED_DATASETS = {
+    "global_mmlu",
+    "quality",
+}
 
 # MMLU Subject Lists
 MMLU_FULL_SUBJECTS = [
@@ -1987,15 +1990,19 @@ def get_run_data(dataset_name: str) -> list[tuple[str, list[str], list[int]]]:
         else:
             num_demos = [0, 5]
 
+        should_sample = (dataset_name in SAMPLED_DATASETS) or \
+                       (dataset_name.startswith("global_mmlu") and "global_mmlu" in SAMPLED_DATASETS)
+
         # For MMLU and its variants, use sliced configurations if enabled
-        if (dataset_name == "mmlu" or dataset_name.startswith("global_mmlu")) and USE_SAMPLED_CONFIGS:
+        if should_sample:
             # Get topic name from subset (handles both mmlu and global_mmlu cases)
-            topic = subset.split('.')[-1]
-            topic_idx = topic_to_index[topic]
-            templates = get_configurations_slice(all_configurations, topic_idx)
-        elif dataset_name == "quality" and USE_SAMPLED_CONFIGS:
-            # For quality dataset, just use index 0 since there are no topics
-            templates = get_configurations_slice(all_configurations, 0)
+            if dataset_name.startswith("global_mmlu"):
+                topic = subset.split('.')[-1]
+                topic_idx = topic_to_index[topic]
+                templates = get_configurations_slice(all_configurations, topic_idx)
+            else:
+                dataset_idx = abs(hash(dataset_name)) % 100
+                templates = get_configurations_slice(all_configurations, dataset_idx)
         else:
             templates = all_configurations
 
