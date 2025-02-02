@@ -134,9 +134,50 @@ class IncrementalDatasetSplitter:
 
         return list(temp_files)
 
+    def merge_triplet_files(self, triplet_data):
+        """
+        Helper function to merge files for a single triplet.
+        To be used by ProcessPoolExecutor.
+        """
+        triplet_key, temp_files, output_file = triplet_data
+
+        try:
+            dfs = []
+
+            # Load existing data if any
+            if output_file.exists():
+                try:
+                    existing_df = pd.read_parquet(output_file)
+                    dfs.append(existing_df)
+                except Exception as e:
+                    logging.error(f"Error reading existing file {output_file}: {str(e)}")
+
+            # Add new data
+            for temp_file in temp_files:
+                try:
+                    df = pd.read_parquet(temp_file)
+                    dfs.append(df)
+                except Exception as e:
+                    logging.error(f"Error reading temp file {temp_file}: {str(e)}")
+
+            if dfs:
+                combined_df = pd.concat(dfs, ignore_index=True)
+
+                # Ensure parent directory exists
+                output_file.parent.mkdir(parents=True, exist_ok=True)
+
+                # Save merged data
+                combined_df.to_parquet(output_file, index=False)
+                return True, f"Successfully merged {output_file} with {len(combined_df)} rows"
+
+            return False, f"No data to merge for {triplet_key}"
+
+        except Exception as e:
+            return False, f"Error processing triplet {triplet_key}: {str(e)}"
+
     def merge_temp_files(self):
-        """Merge temporary files into the final hierarchical structure."""
-        self.logger.info("Starting to merge temporary files")
+        """Merge temporary files into the final hierarchical structure using parallel processing."""
+        self.logger.info("Starting to merge temporary files in parallel")
 
         triplet_files_map = {}
 
@@ -152,61 +193,44 @@ class IncrementalDatasetSplitter:
 
         self.logger.info(f"Found {len(triplet_files_map)} unique triplets to merge")
 
-        with tqdm(total=len(triplet_files_map), desc="Merging files by triplet") as pbar:
-            for triplet_key, temp_files in triplet_files_map.items():
-                try:
-                    self.logger.info(f"Processing triplet {triplet_key} with {len(temp_files)} files")
+        # Prepare data for parallel processing
+        merge_tasks = []
+        for triplet_key, temp_files in triplet_files_map.items():
+            try:
+                # Parse the triplet key
+                key_parts = triplet_key.split('_')
+                shots_index = next(i for i, part in enumerate(key_parts) if part.startswith('shots'))
 
-                    # Parse the triplet key to get model, shots, and dataset
-                    # Format is: UUID_model_shotsN_dataset
-                    key_parts = triplet_key.split('_')
+                model = '_'.join(key_parts[1:shots_index])
+                shots = int(key_parts[shots_index][5:])
+                dataset = '_'.join(key_parts[shots_index + 1:])
 
-                    # Find the shots part
-                    shots_index = -1
-                    for i, part in enumerate(key_parts):
-                        if part.startswith('shots'):
-                            shots_index = i
-                            break
+                output_file = self.get_hierarchical_path(model, shots, dataset)
+                merge_tasks.append((triplet_key, temp_files, output_file))
 
-                    if shots_index == -1:
-                        raise ValueError(f"Could not find 'shots' in key: {triplet_key}")
+            except Exception as e:
+                self.logger.error(f"Error preparing merge task for {triplet_key}: {str(e)}")
 
-                    # Extract parts
-                    model = '_'.join(key_parts[1:shots_index])  # Everything between UUID and shots is model
-                    shots = int(key_parts[shots_index][5:])  # Get number after 'shots'
-                    dataset = '_'.join(key_parts[shots_index + 1:])  # Rest is dataset
+        # Process merges in parallel
+        with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
+            futures = []
+            for task in merge_tasks:
+                futures.append(executor.submit(self.merge_triplet_files, task))
 
-                    # Create hierarchical path and ensure parent directory exists
-                    output_file = self.get_hierarchical_path(model, shots, dataset)
-                    output_file.parent.mkdir(parents=True, exist_ok=True)
+            success_count = 0
+            with tqdm(total=len(futures), desc="Merging files") as pbar:
+                for future in concurrent.futures.as_completed(futures):
+                    success, message = future.result()
+                    if success:
+                        success_count += 1
+                        self.logger.info(message)
+                    else:
+                        self.logger.error(message)
+                    pbar.update(1)
 
-                    # Load existing data if any
-                    dfs = []
-                    if output_file.exists():
-                        try:
-                            existing_df = pd.read_parquet(output_file)
-                            dfs.append(existing_df)
-                            self.logger.info(f"Loaded existing file {output_file} with {len(existing_df)} rows")
-                        except Exception as e:
-                            self.logger.error(f"Error reading existing file {output_file}: {str(e)}")
+        self.logger.info(f"Completed parallel merge: {success_count} successful merges out of {len(merge_tasks)} total")
 
-                    # Add new data
-                    for temp_file in temp_files:
-                        try:
-                            df = pd.read_parquet(temp_file)
-                            dfs.append(df)
-                        except Exception as e:
-                            self.logger.error(f"Error reading temp file {temp_file}: {str(e)}")
 
-                    if dfs:
-                        combined_df = pd.concat(dfs, ignore_index=True)
-                        combined_df.to_parquet(output_file, index=False)
-                        self.logger.info(f"Successfully created/updated {output_file} with {len(combined_df)} rows")
-
-                except Exception as e:
-                    self.logger.error(f"Error processing triplet {triplet_key}: {str(e)}", exc_info=True)
-
-                pbar.update(1)
 
     def check_single_file_duplicates(self, file_path: Path) -> tuple[bool, str]:
         """Check and clean duplicates in a single file."""
