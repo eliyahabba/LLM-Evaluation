@@ -134,7 +134,89 @@ class IncrementalDatasetSplitter:
 
         return list(temp_files)
 
-    def merge_triplet_files(self, triplet_data):
+    def merge_temp_files(self):
+        """Merge temporary files into the final hierarchical structure with resume capability."""
+        self.logger.info("Starting to merge temporary files in parallel")
+
+        # Path for tracking merged files
+        merged_tracking_file = self.output_dir / "merged_triplets.json"
+        merged_triplets = set()
+
+        # Load previously merged triplets if file exists
+        if merged_tracking_file.exists():
+            try:
+                with open(merged_tracking_file, 'r') as f:
+                    merged_triplets = set(json.load(f))
+                self.logger.info(f"Loaded {len(merged_triplets)} previously merged triplets")
+            except Exception as e:
+                self.logger.error(f"Error loading merged triplets list: {e}")
+
+        triplet_files_map = {}
+
+        # Collect all temporary files
+        for temp_file in self.temp_dir.glob("*.parquet"):
+            try:
+                triplet_key = temp_file.stem
+                if triplet_key not in triplet_files_map:
+                    triplet_files_map[triplet_key] = []
+                triplet_files_map[triplet_key].append(temp_file)
+            except Exception as e:
+                self.logger.error(f"Error processing temp file {temp_file}: {str(e)}")
+
+        # Filter out already merged triplets
+        remaining_triplets = {k: v for k, v in triplet_files_map.items() if k not in merged_triplets}
+        self.logger.info(f"Found {len(remaining_triplets)} unmerged triplets out of {len(triplet_files_map)} total")
+
+        if not remaining_triplets:
+            self.logger.info("No new triplets to merge")
+            return
+
+        # Prepare data for parallel processing
+        merge_tasks = []
+        for triplet_key, temp_files in remaining_triplets.items():
+            try:
+                key_parts = triplet_key.split('_')
+                shots_index = next(i for i, part in enumerate(key_parts) if part.startswith('shots'))
+
+                model = '_'.join(key_parts[1:shots_index])
+                shots = int(key_parts[shots_index][5:])
+                dataset = '_'.join(key_parts[shots_index + 1:])
+
+                output_file = self.get_hierarchical_path(model, shots, dataset)
+                merge_tasks.append((triplet_key, temp_files, output_file))
+
+            except Exception as e:
+                self.logger.error(f"Error preparing merge task for {triplet_key}: {str(e)}")
+
+        # Process merges in parallel
+        with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
+            futures = []
+            for task in merge_tasks:
+                futures.append(executor.submit(self.merge_triplet_files, task))
+
+            success_count = 0
+            with tqdm(total=len(futures), desc="Merging files") as pbar:
+                for future in concurrent.futures.as_completed(futures):
+                    triplet_key = merge_tasks[len(merged_triplets) + success_count][0]
+                    success, message = future.result()
+                    if success:
+                        success_count += 1
+                        merged_triplets.add(triplet_key)
+                        # Save progress after each successful merge
+                        try:
+                            with open(merged_tracking_file, 'w') as f:
+                                json.dump(list(merged_triplets), f)
+                        except Exception as e:
+                            self.logger.error(f"Error saving merged triplets: {e}")
+                        self.logger.info(message)
+                    else:
+                        self.logger.error(message)
+                    pbar.update(1)
+
+        self.logger.info(f"Completed parallel merge: {success_count} successful merges out of {len(merge_tasks)} total")
+
+
+    def merge_triplet_files1(self, triplet_data):
         """
         Helper function to merge files for a single triplet.
         To be used by ProcessPoolExecutor.
