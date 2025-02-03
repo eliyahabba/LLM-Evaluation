@@ -1859,8 +1859,9 @@ class _DefaultUnitxtRecipeArgs(UnitxtRecipeArgs):
     format: List[str] = field(default_factory=lambda: ["formats.chat_api"])
     augmentor: List[str] = field(default_factory=lambda: [])
     max_test_instances: int = 100
-    max_train_instances = 100
-    max_validation_instances = 100
+    max_train_instances: int = 100
+    max_validation_instances: int = 100
+    num_demos: List[int] = field(default_factory=lambda: [0, 5])
 
 
 @dataclass
