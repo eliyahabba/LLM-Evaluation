@@ -136,7 +136,11 @@ if __name__ == "__main__":
     # Configuration
     LOCAL_DIR = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split"
     REPO_NAME = "eliyahabba/llm-evaluation-analysis-split2"
-    TOKEN = "your_token_here"  # Replace with your token
+
+    from config.get_config import Config
+
+    config = Config()
+    TOKEN = config.config_values.get("hf_access_token", "")
     MAX_WORKERS = 4  # Adjust based on your needs and HF rate limits
 
     # Initialize and run uploader
