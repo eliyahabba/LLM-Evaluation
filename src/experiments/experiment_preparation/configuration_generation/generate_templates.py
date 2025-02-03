@@ -10,6 +10,7 @@ from fm_eval.benchmarks.basic.benchmarks_definitions.utils.benchmark_function im
     get_basic_benchmark_function,
 )
 
+
 datasets_configs = {
     "mmlu": {
         "dataset_catalog_name": "MMLU",
@@ -26,7 +27,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -238,8 +239,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "mmlu_pro": {
         "dataset_catalog_name": "MMLU_PRO",
@@ -256,7 +257,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -468,8 +469,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_orLower_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "global_mmlu": {
         "dataset_catalog_name": "MMLU",
@@ -486,7 +487,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -613,8 +614,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "ai2_arc.arc_easy": {
         "dataset_catalog_name": "AI2_ARC",
@@ -631,7 +632,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -758,8 +759,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "ai2_arc.arc_challenge": {
         "dataset_catalog_name": "AI2_ARC",
@@ -776,7 +777,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -903,8 +904,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "hellaswag": {
         "dataset_catalog_name": "HellaSwag",
@@ -920,7 +921,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsState5",
             "MultipleChoiceTemplatesInstructionsState6",
             "MultipleChoiceTemplatesInstructionsState7",
-            "MultipleChoiceTemplatesInstructionsState8"
+            "MultipleChoiceTemplatesInstructionsState8",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -1047,8 +1048,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "openbook_qa": {
         "dataset_catalog_name": "OpenBookQA",
@@ -1065,7 +1066,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -1192,8 +1193,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "social_iqa": {
         "dataset_catalog_name": "Social_IQa",
@@ -1210,7 +1211,7 @@ datasets_configs = {
             "MultipleChoiceTemplatesInstructionsProSACould",
             "MultipleChoiceTemplatesInstructionsStateHere",
             "MultipleChoiceTemplatesInstructionsStateBelow",
-            "MultipleChoiceTemplatesInstructionsStateBelowPlease"
+            "MultipleChoiceTemplatesInstructionsStateBelowPlease",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -1337,8 +1338,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "race_high": {
         "dataset_catalog_name": "Race",
@@ -1354,7 +1355,7 @@ datasets_configs = {
             "MultipleChoiceContextTemplateStateOptions",
             "MultipleChoiceContextTemplateStateSelect",
             "MultipleChoiceContextTemplateStateRead",
-            "MultipleChoiceContextTemplateStateMultipleChoice"
+            "MultipleChoiceContextTemplateStateMultipleChoice",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -1481,8 +1482,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "race_middle": {
         "dataset_catalog_name": "Race",
@@ -1498,7 +1499,7 @@ datasets_configs = {
             "MultipleChoiceContextTemplateStateOptions",
             "MultipleChoiceContextTemplateStateSelect",
             "MultipleChoiceContextTemplateStateRead",
-            "MultipleChoiceContextTemplateStateMultipleChoice"
+            "MultipleChoiceContextTemplateStateMultipleChoice",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -1625,8 +1626,8 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse"
-        ]
+            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse",
+        ],
     },
     "quailty": {
         "dataset_catalog_name": "QuALITY",
@@ -1642,7 +1643,7 @@ datasets_configs = {
             "MultipleChoiceContextTemplateStateOptions",
             "MultipleChoiceContextTemplateStateSelect",
             "MultipleChoiceContextTemplateStateRead",
-            "MultipleChoiceContextTemplateStateMultipleChoice"
+            "MultipleChoiceContextTemplateStateMultipleChoice",
         ],
         "template_names": [
             "enumerator_capitals_choicesSeparator_space_shuffleChoices_False",
@@ -1769,15 +1770,17 @@ datasets_configs = {
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSort",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_lengthSortReverse",
             "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSort",
-            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse"
-        ]
-    }
+            "enumerator_greek_choicesSeparator_OrCapital_shuffleChoices_alphabeticalSortReverse",
+        ],
+    },
 }
 
 
 # Configuration Constants
 USE_PARTIAL_SUBJECTS_FOR_MMLU = True  # Whether to use partial or full subject list
-NUM_CONFIGS_PER_SUBJECT = 100  # Number of configurations to sample per subject if enabled
+NUM_CONFIGS_PER_SUBJECT = (
+    100  # Number of configurations to sample per subject if enabled
+)
 SAMPLING_SEED = 42  # Fixed seed for reproducibility
 ZERO_DEMOS_ONLY_DATASETS = ["quailty"]
 USE_SEQUENTIAL_SAMPLING_STRATEGY = True
@@ -1791,26 +1794,63 @@ DATASETS_WITH_SAMPLED_CONFIGURATIONS = {
 
 # MMLU Subject Lists
 MMLU_FULL_SUBJECTS = [
-    "abstract_algebra", "anatomy", "astronomy", "business_ethics",
-    "clinical_knowledge", "college_biology", "college_chemistry",
-    "college_computer_science", "college_mathematics", "college_medicine",
-    "college_physics", "computer_security", "conceptual_physics",
-    "econometrics", "electrical_engineering", "elementary_mathematics",
-    "formal_logic", "global_facts", "high_school_biology",
-    "high_school_chemistry", "high_school_computer_science",
-    "high_school_european_history", "high_school_geography",
-    "high_school_government_and_politics", "high_school_macroeconomics",
-    "high_school_mathematics", "high_school_microeconomics",
-    "high_school_physics", "high_school_psychology",
-    "high_school_statistics", "high_school_us_history",
-    "high_school_world_history", "human_aging", "human_sexuality",
-    "international_law", "jurisprudence", "logical_fallacies",
-    "machine_learning", "management", "marketing", "medical_genetics",
-    "miscellaneous", "moral_disputes", "moral_scenarios", "nutrition",
-    "philosophy", "prehistory", "professional_accounting",
-    "professional_law", "professional_medicine", "professional_psychology",
-    "public_relations", "security_studies", "sociology",
-    "us_foreign_policy", "virology", "world_religions"
+    "abstract_algebra",
+    "anatomy",
+    "astronomy",
+    "business_ethics",
+    "clinical_knowledge",
+    "college_biology",
+    "college_chemistry",
+    "college_computer_science",
+    "college_mathematics",
+    "college_medicine",
+    "college_physics",
+    "computer_security",
+    "conceptual_physics",
+    "econometrics",
+    "electrical_engineering",
+    "elementary_mathematics",
+    "formal_logic",
+    "global_facts",
+    "high_school_biology",
+    "high_school_chemistry",
+    "high_school_computer_science",
+    "high_school_european_history",
+    "high_school_geography",
+    "high_school_government_and_politics",
+    "high_school_macroeconomics",
+    "high_school_mathematics",
+    "high_school_microeconomics",
+    "high_school_physics",
+    "high_school_psychology",
+    "high_school_statistics",
+    "high_school_us_history",
+    "high_school_world_history",
+    "human_aging",
+    "human_sexuality",
+    "international_law",
+    "jurisprudence",
+    "logical_fallacies",
+    "machine_learning",
+    "management",
+    "marketing",
+    "medical_genetics",
+    "miscellaneous",
+    "moral_disputes",
+    "moral_scenarios",
+    "nutrition",
+    "philosophy",
+    "prehistory",
+    "professional_accounting",
+    "professional_law",
+    "professional_medicine",
+    "professional_psychology",
+    "public_relations",
+    "security_studies",
+    "sociology",
+    "us_foreign_policy",
+    "virology",
+    "world_religions",
 ]
 
 MMLU_PARTIAL_SUBJECTS = [
@@ -1830,7 +1870,7 @@ MMLU_PARTIAL_SUBJECTS = [
     "econometrics",
     "high_school_geography",
     "public_relations",
-    "professional_psychology"
+    "professional_psychology",
 ]
 
 # Language Support
@@ -1848,7 +1888,7 @@ SUPPORTED_LANGUAGES = {
     "es": "Spanish",
     "sw": "Swahili",
     "yo": "Yorùbá",
-    "zh": "Chinese"
+    "zh": "Chinese",
 }
 
 
@@ -1859,8 +1899,9 @@ class _DefaultUnitxtRecipeArgs(UnitxtRecipeArgs):
     format: List[str] = field(default_factory=lambda: ["formats.chat_api"])
     augmentor: List[str] = field(default_factory=lambda: [])
     max_test_instances: int = 100
-    max_train_instances = 100
-    max_validation_instances = 100
+    max_train_instances: int = 100
+    max_validation_instances: int = 100
+    num_demos: List[int] = field(default_factory=lambda: [0, 5])
 
 
 @dataclass
@@ -1877,9 +1918,9 @@ class _DefaultGenerationArgs(GenerationArgs):
     max_predict_samples: int = 100
 
 
-
-def get_all_possible_configurations(dataset_catalog_name: str, prompt_paraphrases: list[str],
-                                    template_names: list[str]) -> list[str]:
+def get_all_possible_configurations(
+    dataset_catalog_name: str, prompt_paraphrases: list[str], template_names: list[str]
+) -> list[str]:
     """Generate all possible template configurations."""
     import random
 
@@ -1896,14 +1937,17 @@ def get_all_possible_configurations(dataset_catalog_name: str, prompt_paraphrase
     return templates_copy
 
 
-
 class MultiChoiceDatasetsConfig:
     """Dataset subset configurations"""
 
     @staticmethod
     def get_card_list(dataset_name: str) -> List[str]:
         dataset_subset_dict = {
-            "mmlu": MMLU_PARTIAL_SUBJECTS if USE_PARTIAL_SUBJECTS_FOR_MMLU else MMLU_FULL_SUBJECTS,
+            "mmlu": (
+                MMLU_PARTIAL_SUBJECTS
+                if USE_PARTIAL_SUBJECTS_FOR_MMLU
+                else MMLU_FULL_SUBJECTS
+            ),
             "mmlu_pro": [
                 "history",
                 "law",
@@ -1935,7 +1979,11 @@ class MultiChoiceDatasetsConfig:
 
         if dataset_name.startswith("global_mmlu"):
             lang = dataset_name.split(".")[1]
-            subset_list = MMLU_PARTIAL_SUBJECTS if USE_PARTIAL_SUBJECTS_FOR_MMLU else MMLU_FULL_SUBJECTS
+            subset_list = (
+                MMLU_PARTIAL_SUBJECTS
+                if USE_PARTIAL_SUBJECTS_FOR_MMLU
+                else MMLU_FULL_SUBJECTS
+            )
             return [f"cards.global_mmlu.{lang}.{subset}" for subset in subset_list]
 
         subset_list = dataset_subset_dict.get(dataset_name, [])
@@ -1961,49 +2009,73 @@ def get_configurations_slice(all_configs: list[str], topic_index: int) -> list[s
         return first_part + second_part
 
     # If we don't need to wrap around
-    return all_configs[start_position:start_position + NUM_CONFIGS_PER_SUBJECT]
+    return all_configs[start_position : start_position + NUM_CONFIGS_PER_SUBJECT]
+
 
 def get_run_data(dataset_name: str) -> list[tuple[str, list[str], list[int]]]:
-    dataset_config = datasets_configs[dataset_name if not dataset_name.startswith("global_mmlu") else "global_mmlu"]
+    dataset_config = datasets_configs[
+        dataset_name if not dataset_name.startswith("global_mmlu") else "global_mmlu"
+    ]
     results = []
     dataset_catalog_name = dataset_config["dataset_catalog_name"]
     prompt_paraphrases = dataset_config["prompt_paraphrases"]
     template_names = dataset_config["template_names"]
 
     # Generate and shuffle all possible configurations once
-    all_configurations = get_all_possible_configurations(dataset_catalog_name, prompt_paraphrases, template_names)
+    all_configurations = get_all_possible_configurations(
+        dataset_catalog_name, prompt_paraphrases, template_names
+    )
 
     # Get all topics to maintain consistent indexing across languages
-    all_topics = MMLU_PARTIAL_SUBJECTS if USE_PARTIAL_SUBJECTS_FOR_MMLU else MMLU_FULL_SUBJECTS
+    all_topics = (
+        MMLU_PARTIAL_SUBJECTS if USE_PARTIAL_SUBJECTS_FOR_MMLU else MMLU_FULL_SUBJECTS
+    )
     topic_to_index = {topic: idx for idx, topic in enumerate(all_topics)}
     for subset in MultiChoiceDatasetsConfig.get_card_list(dataset_name):
         card_name = f"{subset}"
 
-        if any("placeCorrectChoiceFirst" in t or "placeCorrectChoiceFourth" in t for t in all_configurations) or dataset_name in ZERO_DEMOS_ONLY_DATASETS:
+        if (
+            any(
+                "placeCorrectChoiceFirst" in t or "placeCorrectChoiceFourth" in t
+                for t in all_configurations
+            )
+            or dataset_name in ZERO_DEMOS_ONLY_DATASETS
+        ):
             num_demos = [0]
         else:
             num_demos = [0, 5]
 
-        should_sample = (dataset_name in DATASETS_WITH_SAMPLED_CONFIGURATIONS) or \
-                        (dataset_name.startswith("global_mmlu") and "global_mmlu" in DATASETS_WITH_SAMPLED_CONFIGURATIONS)
+        should_sample = (dataset_name in DATASETS_WITH_SAMPLED_CONFIGURATIONS) or (
+            dataset_name.startswith("global_mmlu")
+            and "global_mmlu" in DATASETS_WITH_SAMPLED_CONFIGURATIONS
+        )
 
         # For MMLU and its variants, use sliced configurations if enabled
         if should_sample:
             if USE_SEQUENTIAL_SAMPLING_STRATEGY:
-            # Get topic name from subset (handles both mmlu and global_mmlu cases)
-                if dataset_name.startswith("global_mmlu") and "global_mmlu_lite_" not in dataset_name:
-                    topic = subset.split('.')[-1]
+                # Get topic name from subset (handles both mmlu and global_mmlu cases)
+                if (
+                    dataset_name.startswith("global_mmlu")
+                    and "global_mmlu_lite_" not in dataset_name
+                ):
+                    topic = subset.split(".")[-1]
                     topic_idx = topic_to_index[topic]
                     templates = get_configurations_slice(all_configurations, topic_idx)
                 elif dataset_name.startswith("global_mmlu_lite_"):
                     sensitivity_type = dataset_name.split(".")[0]
                     dataset_idx = abs(hash(sensitivity_type)) % 100
-                    templates = get_configurations_slice(all_configurations, dataset_idx)
+                    templates = get_configurations_slice(
+                        all_configurations, dataset_idx
+                    )
                 else:
                     dataset_idx = abs(hash(dataset_name)) % 100
-                    templates = get_configurations_slice(all_configurations, dataset_idx)
+                    templates = get_configurations_slice(
+                        all_configurations, dataset_idx
+                    )
             else:
-                raise NotImplementedError("Random sampling strategy is not implemented yet.")
+                raise NotImplementedError(
+                    "Random sampling strategy is not implemented yet."
+                )
         else:
             templates = all_configurations
 
@@ -2024,7 +2096,7 @@ configs = [
     "social_iqa",
     "race_high",
     "race_middle",
-    'quailty',
+    "quailty",
 ]
 
 unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
@@ -2032,7 +2104,7 @@ unitxt_recipe_args_by_groupings: Dict[str, List[UnitxtRecipeArgs]] = {
         _DefaultUnitxtRecipeArgs(
             card=f"{card_name}",
             template=[f"templates.huji_workshop.{template}" for template in templates],
-            num_demos=num_demos
+            num_demos=num_demos,
         )
         for card_name, templates, num_demos in get_run_data(config)
     ]
@@ -2050,17 +2122,3 @@ get_single_runs_args_list = get_basic_benchmark_function(
     get_train_args_func=None,
     system_prompts_and_formatters_mapper=None,
 )
-
-# models_to_evaluate = [
-#         'meta-llama/Llama-3.2-1B-Instruct',
-#         'allenai/OLMoE-1B-7B-0924-Instruct',
-#         'meta-llama/Meta-Llama-3-8B-Instruct',
-#         'meta-llama/Llama-3.2-3B-Instruct',
-#         'mistralai/Mistral-7B-Instruct-v0.3',
-#     ]
-# new_models_to_evaluate = ['meta-llama/Llama-3.2-70B-Instruct',
-# 'nvidia/Mistral-NeMo-12B-Instruct'
-# 'Qwen/Qwen2.5-1.5B-Instruct'
-# 'Qwen/Qwen2.5-7B-Instruct'
-#
-# ]
