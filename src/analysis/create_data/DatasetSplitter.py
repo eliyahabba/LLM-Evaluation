@@ -552,7 +552,7 @@ if __name__ == "__main__":
         output_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split",
         num_workers=24
     )
-    splitter.process_all_files()
+    # splitter.process_all_files()
     # Phase 1: Split files
     try:
         temp_files = splitter.process_files()
