@@ -91,7 +91,7 @@ class HFDirectoryUploader:
 
 if __name__ == "__main__":
     # Configuration
-    LOCAL_DIR = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split_to_folders"
+    LOCAL_DIR = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split_to_folders_all_cols_deduped"
     REPO_NAME = "eliyahabba/llm-evaluation-analysis-split-folders"
     from config.get_config import Config
 

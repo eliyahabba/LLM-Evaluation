@@ -127,7 +127,7 @@ def process_file_safe(file, logger):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
-    process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split"
+    process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split_all_cols_deduped"
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
     os.makedirs(process_output_dir, exist_ok=True)
