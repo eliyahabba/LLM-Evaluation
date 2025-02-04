@@ -132,5 +132,5 @@ def process_parquet_files_parallel(input_dir: str, max_workers: int = 4):
 
 
 if __name__ == "__main__":
-    input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split"
+    input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
     process_parquet_files_parallel(input_dir, max_workers=8)
