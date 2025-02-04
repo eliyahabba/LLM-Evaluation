@@ -132,7 +132,7 @@ def main():
     TOKEN = config.config_values.get("hf_access_token", "")
     repo_name = "eliyahabba/llm-evaluation-analysis"
 
-    process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
+    process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_all_cols_deduped"
     os.makedirs(process_output_dir, exist_ok=True)
 
     upload_files_in_chunks(
