@@ -73,7 +73,7 @@ def upload_chunk_files(args):
         logger.error(f"Error uploading chunk #{chunk_index}: {e}")
 
 
-def upload_in_chunks_parallel(process_output_dir, repo_name, token, chunk_size=100):
+def upload_in_chunks_parallel(process_output_dir, repo_name, token, chunk_size=10):
     """
     פונקציה שלוקחת את כל הקבצים בתיקייה process_output_dir,
     מחלקת אותם ל-Chunks בגודל chunk_size, ואז מריצה העלאה של כל Chunk במקביל.
