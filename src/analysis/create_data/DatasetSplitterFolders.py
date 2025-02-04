@@ -37,7 +37,7 @@ def reorganize_files(input_dir, output_dir):
 
         # Move (or copy) the file to the new location
         print(f"Moving {file_path.name} to {new_path}")
-        shutil.move(str(file_path), str(new_path))  # Use shutil.copy if copying is preferred
+        shutil.copy(str(file_path), str(new_path))  # Use shutil.copy if copying is preferred
 
     print("File reorganization complete!")
 
