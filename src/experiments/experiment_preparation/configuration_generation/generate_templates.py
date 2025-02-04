@@ -1812,7 +1812,7 @@ MMLU_FULL_SUBJECTS = [
     "public_relations", "security_studies", "sociology",
     "us_foreign_policy", "virology", "world_religions"
 ]
-
+# college_mathematics, econometrics,formal_logic,global_facts,high_school_physics
 MMLU_PARTIAL_SUBJECTS = [
     "high_school_biology",
     "high_school_chemistry",
@@ -1851,6 +1851,8 @@ SUPPORTED_LANGUAGES = {
     "zh": "Chinese"
 }
 
+SUPPORTED_LANGUAGES_INCLUDE_EN = SUPPORTED_LANGUAGES.copy()
+SUPPORTED_LANGUAGES_INCLUDE_EN["en"] = "English"
 
 @dataclass
 class _DefaultUnitxtRecipeArgs(UnitxtRecipeArgs):
@@ -2016,8 +2018,8 @@ configs = [
     "mmlu",
     "mmlu_pro",
     *[f"global_mmlu.{lang}" for lang in SUPPORTED_LANGUAGES.keys()],
-    *[f"global_mmlu_lite_cs.{lang}" for lang in SUPPORTED_LANGUAGES.keys()],
-    *[f"global_mmlu_lite_ca.{lang}" for lang in SUPPORTED_LANGUAGES.keys()],
+    *[f"global_mmlu_lite_cs.{lang}" for lang in SUPPORTED_LANGUAGES_INCLUDE_EN.keys()],
+    *[f"global_mmlu_lite_ca.{lang}" for lang in SUPPORTED_LANGUAGES_INCLUDE_EN.keys()],
     "ai2_arc.arc_easy",
     "ai2_arc.arc_challenge",
     "hellaswag",
