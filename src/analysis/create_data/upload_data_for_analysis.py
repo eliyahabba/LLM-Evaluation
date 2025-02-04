@@ -3,22 +3,24 @@ import logging
 import os
 import time
 from datetime import datetime
-from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
 from pathlib import Path
+from functools import partial
 
-from huggingface_hub import HfApi, create_repo
+from huggingface_hub import (
+    HfApi,
+    create_repo,
+    CommitOperationAdd,
+    create_commit
+)
 from tqdm import tqdm
 
 from config.get_config import Config
 
-config = Config()
-TOKEN = config.config_values.get("hf_access_token", "")
-repo_name = "eliyahabba/llm-evaluation-analysis"
-config = Config()
-TOKEN = config.config_values.get("hf_access_token", "")
-
 def setup_logging():
+    """
+    הגדרת לוגים בסיסית עם תאריך ושעה, כתיבה לקובץ + הדפסה למסך
+    """
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     logging.basicConfig(
         level=logging.INFO,
@@ -31,77 +33,115 @@ def setup_logging():
     return logging.getLogger(__name__)
 
 
-def process_file(process_file_path, logger):
-    """Main function to demonstrate usage."""
-    logger.info(f"Processing file: {process_file_path}")
+def chunkify(lst, chunk_size):
+    """
+    מחלקת רשימה (lst) לצ'אנקים בגודל chunk_size (גנרטור).
+    """
+    for i in range(0, len(lst), chunk_size):
+        yield lst[i:i+chunk_size]
+
+
+def upload_chunk_files(args):
+    """
+    פונקציית העלאה המתבצעת עבור צ'אנק אחד.
+    פרמטרים (args) מגיעים כטאפ"ל:
+    (chunk_index, chunk_files, repo_name, token, logger)
+    """
+    chunk_index, chunk_files, repo_name, token, logger = args
+    logger.info(f"Uploading chunk #{chunk_index} with {len(chunk_files)} files...")
+
+    try:
+        operations = []
+        for local_file in chunk_files:
+            operations.append(
+                CommitOperationAdd(
+                    path_in_repo=os.path.basename(local_file),  # שם הקובץ ב-HF
+                    path_or_fileobj=local_file
+                )
+            )
+
+        # יוצרים commit יחיד עם כל הקבצים שבצ'אנק
+        create_commit(
+            repo_id=repo_name,
+            repo_type="dataset",
+            operations=operations,
+            commit_message=f"Upload chunk {chunk_index}",
+            token=token
+        )
+
+        logger.info(f"Successfully uploaded chunk #{chunk_index}")
+    except Exception as e:
+        logger.error(f"Error uploading chunk #{chunk_index}: {e}")
+
+
+def upload_files_in_chunks(process_output_dir, repo_name, token, chunk_size=5):
+    """
+    - אוספת את רשימת הקבצים בתיקייה process_output_dir.
+    - מחלקת לצ'אנקים (קבוצות של chunk_size).
+    - מריצה העלאה מקבילית לכל צ'אנק.
+    """
+    logger = setup_logging()
+    logger.info("Starting chunked upload...")
+
+    # 1. יוצרים Repo אם לא קיים
     api = HfApi()
     try:
-        api.upload_file(
-            path_or_fileobj=process_file_path,
-            path_in_repo=Path(process_file_path).name,
-            repo_id=repo_name,
-            token=TOKEN,
-            repo_type="dataset"
-        )
-        logger.info(f"Successfully uploaded {Path(process_file_path).name}")
+        create_repo(repo_id=repo_name, token=token, private=True, repo_type="dataset")
+        logger.info(f"Repository '{repo_name}' created successfully.")
     except Exception as e:
-        logger.info(f"Error uploading {Path(process_file_path).name}: {e}")
+        logger.info(f"Repository '{repo_name}' might already exist or error occurred: {e}")
 
+    # 2. אוספים את כל הקבצים בתיקייה
+    all_files = []
+    for fname in os.listdir(process_output_dir):
+        fpath = os.path.join(process_output_dir, fname)
+        if os.path.isfile(fpath):
+            all_files.append(fpath)
 
-def download_huggingface_files_parllel(process_output_dir):
-    """
-    Downloads parquet files from Hugging Face to a specified directory
+    logger.info(f"Total files found: {len(all_files)}")
 
-    """
+    # 3. מחלקים לצ'אנקים
+    chunked = list(chunkify(all_files, chunk_size))
+    logger.info(f"Splitting files into {len(chunked)} chunks (chunk_size={chunk_size})")
+
+    # 4. מקביליות - הגדרת כמות התהליכים
     num_processes = min(24, cpu_count() - 1)
-    logger = setup_logging()
-    logger.info("Starting processing...")
-    logger.info(f"Starting parallel processing with {num_processes} processes...")
-    files = os.listdir(process_output_dir)
-    files = [os.path.join(process_output_dir, file) for file in files]
-    print(f"Processing {len(files)} files")
-    with Manager() as manager:
-        process_func = partial(process_file_safe, logger=logger)
+    logger.info(f"Starting parallel upload with {num_processes} processes...")
 
-        with Pool(processes=num_processes) as pool:
-            list(tqdm(
-                pool.imap_unordered(process_func, files),
-                total=len(files),
-                desc="Processing files"
-            ))
+    # יוצרים רשימת משימות
+    tasks = []
+    for idx, chunk_files in enumerate(chunked):
+        tasks.append((idx, chunk_files, repo_name, token, logger))
+
+    # 5. העלאה במקביל באמצעות Pool
+    with Pool(processes=num_processes) as pool:
+        for _ in tqdm(pool.imap_unordered(upload_chunk_files, tasks),
+                      total=len(tasks),
+                      desc="Uploading chunks"):
+            pass
+
+    logger.info("All chunks finished uploading.")
 
 
-def process_file_safe(file, logger):
-    pid = os.getpid()
-    start_time = time.time()
-    try:
-        logger.info(f"Process {pid} starting to process file {file}")
-        process_file(file,
-                     logger=logger)
-    except Exception as e:
-        logger.error(f"Process {pid} encountered error processing file {file}: {e}")
-        return None
-    finally:
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        logger.info(f"Process {pid} finished processing {file}. Processing time: {elapsed_time:.2f} seconds")
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--chunk_size", type=int, default=5, help="Number of files per chunk")
+    args = parser.parse_args()
+
+    config = Config()
+    TOKEN = config.config_values.get("hf_access_token", "")
+    repo_name = "eliyahabba/llm-evaluation-analysis"
+
+    process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
+    os.makedirs(process_output_dir, exist_ok=True)
+
+    upload_files_in_chunks(
+        process_output_dir=process_output_dir,
+        repo_name=repo_name,
+        token=TOKEN,
+        chunk_size=args.chunk_size
+    )
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    args = parser.parse_args()
-    process_output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
-    # parquet_path = Path("~/Downloads/data_sample.parquet")
-    # convert_to_scheme_format(parquet_path, batch_size=100)
-    os.makedirs(process_output_dir, exist_ok=True)
-    try:
-        create_repo(
-            repo_id=repo_name,
-            token=TOKEN,
-            private=True,
-            repo_type="dataset"
-        )
-    except Exception as e:
-        print(f"Repository already exists or error occurred: {e}")
-
-    download_huggingface_files_parllel(process_output_dir=process_output_dir)
+    main()
