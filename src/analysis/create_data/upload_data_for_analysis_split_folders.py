@@ -12,6 +12,7 @@ class HFDirectoryUploader:
         self.token = token
         self.api = HfApi(token=token)
         self.setup_logger()
+        self.logger.info(f"Initialized HFDirectoryUploader with local_dir: {local_dir}, repo_name: {repo_name} with token: {token}")
 
     def setup_logger(self):
         """Setup logging configuration"""
@@ -96,7 +97,6 @@ if __name__ == "__main__":
 
     config = Config()
     TOKEN = config.config_values.get("hf_access_token", "")
-
     # Initialize and run uploader
     uploader = HFDirectoryUploader(
         local_dir=LOCAL_DIR,
