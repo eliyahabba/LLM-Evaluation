@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --mem=100g
-#SBATCH -c4
+#SBATCH -c24
 #SBATCH --time=1-0
 
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
@@ -19,4 +19,4 @@ cd $dir
 
 echo ${SLURM_ARRAY_TASK_ID}
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
-CUDA_LAUNCH_BLOCKING=1 python DatasetSplitter2.py
+CUDA_LAUNCH_BLOCKING=1 python DatasetSplitter.py
