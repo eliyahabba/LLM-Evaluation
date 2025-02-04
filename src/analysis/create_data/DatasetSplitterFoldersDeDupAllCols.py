@@ -1,4 +1,5 @@
 import logging
+import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -132,5 +133,10 @@ def process_parquet_files_parallel(input_dir: str, max_workers: int = 4):
 
 
 if __name__ == "__main__":
-    input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed"
+    input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split"
+    # first if there is tmp folder, remove it
+    tmp_dir = Path(input_dir) / "temp"
+    if tmp_dir.exists():
+        shutil.rmtree(tmp_dir)
+
     process_parquet_files_parallel(input_dir, max_workers=24)
