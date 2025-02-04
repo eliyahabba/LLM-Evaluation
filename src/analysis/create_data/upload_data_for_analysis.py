@@ -105,7 +105,7 @@ def upload_files_in_chunks(process_output_dir, repo_name, token, chunk_size=5):
     logger.info(f"Splitting files into {len(chunked)} chunks (chunk_size={chunk_size})")
 
     # 4. מקביליות - הגדרת כמות התהליכים
-    num_processes = min(24, cpu_count() - 1)
+    num_processes = min(2, cpu_count() - 1)
     logger.info(f"Starting parallel upload with {num_processes} processes...")
 
     # יוצרים רשימת משימות
