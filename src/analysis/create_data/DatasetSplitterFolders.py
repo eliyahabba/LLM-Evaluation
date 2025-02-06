@@ -22,27 +22,19 @@ def reorganize_files(input_dir, output_dir):
     parquet_files = list(input_dir.glob("*.parquet"))
     # Set up progress bar for total files
     results = []
-    from tqdm.contrib.concurrent import thread_map
-    results = thread_map(process_single_file,
-                         parquet_files,
-                         max_workers=12,
-                         desc="Processing files")
+        # Set up thread pool
+    with ThreadPoolExecutor(max_workers=12) as executor:
+        # Submit all tasks
+        futures = [
+            executor.submit(process_single_file, pf, output_dir)
+            for pf in parquet_files
+        ]
 
-    return list(results)
+        # Process completed tasks and update progress bar
+        for future in as_completed(futures):
+            result = future.result()
+            results.append(result)
 
-    with tqdm(total=len(parquet_files), desc="Processing files") as pbar:
-        with ThreadPoolExecutor(max_workers=12) as executor:
-            # Submit all tasks
-            futures = [
-                executor.submit(process_single_file, pf, output_dir)
-                for pf in parquet_files
-            ]
-
-            # Process completed tasks and update progress bar
-            for future in as_completed(futures):
-                result = future.result()
-                results.append(result)
-            pbar.update(1)
 
     print("File reorganization complete!")
 
