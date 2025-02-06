@@ -37,9 +37,9 @@ def process_parquet_file(parquet_file: Path, input_path: Path, all_cols_dedup_di
         logger.info(f"  Read {df.shape[0]} rows and {df.shape[1]} columns from {parquet_file}")
 
         # 1) Deduplicate based on 'evaluation_id'
-        df_eval_id_dedup = df.unique(subset=["evaluation_id"])
-        logger.info(
-            f"  Deduplication by 'evaluation_id': {df_eval_id_dedup.shape[0]} rows remaining (out of {df.shape[0]})")
+        # df_eval_id_dedup = df.unique(subset=["evaluation_id"])
+        # logger.info(
+        #     f"  Deduplication by 'evaluation_id': {df_eval_id_dedup.shape[0]} rows remaining (out of {df.shape[0]})")
 
         # 2) Deduplicate based on all columns (excluding 'index' if present)
         exclude_cols = ["index"] if "index" in df.columns else []
