@@ -309,6 +309,9 @@ class Converter:
         map_file_name = recipe['card'].split('.')[1]
         if map_file_name == "ai2_arc":
             map_file_name = recipe['card'].split('.')[1]
+        if map_file_name.startswith("global_mmlu"):
+            # add also the language in the second part of the string
+            map_file_name = f"{map_file_name}.{recipe['card'].split('.')[2]}"
         current_dir = Path(__file__).parents[2]
         map_file_path = current_dir / "experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
         if map_file_name in self._index_map_cache:
@@ -317,6 +320,8 @@ class Converter:
             with open(map_file_path, 'r') as file:
                 index_map = json.load(file)
             self._index_map_cache[map_file_name] = index_map
+        if row['question'] not in index_map:
+            return -1
         return index_map[row['question']]['index']
 
     def get_closest_answer(self, answer, options):
