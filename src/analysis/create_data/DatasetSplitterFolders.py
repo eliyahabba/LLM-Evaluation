@@ -2,6 +2,8 @@ import re
 import shutil
 from pathlib import Path
 
+from tqdm import tqdm
+
 
 def reorganize_files(input_dir, output_dir):
     """
@@ -15,8 +17,9 @@ def reorganize_files(input_dir, output_dir):
     # Ensure the output directory exists
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    parquet_files = list(input_dir.glob("*.parquet"))
     # Iterate over all .parquet files in the input directory (without subdirectories)
-    for file_path in input_dir.glob("*.parquet"):
+    for file_path in tqdm(parquet_files, desc="Reorganizing files"):
         # Try to extract different parts from the filename
         match = re.match(r'(?P<model>.+)_shots(?P<shots>\d+)_(?P<dataset>.+)\.parquet', file_path.name)
         if not match:
