@@ -133,7 +133,7 @@ def process_parquet_files_parallel(input_dir: str, max_workers: int = 4):
 
 
 if __name__ == "__main__":
-    input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split"
+    input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split_to_folders"
     # first if there is tmp folder, remove it
     tmp_dir = Path(input_dir) / "temp"
     if tmp_dir.exists():
