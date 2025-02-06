@@ -29,7 +29,15 @@ def reorganize_files(input_dir, output_dir):
         dataset = match.group('dataset')  # Dataset name (everything after "shotsX_" until the extension)
 
         # Define the target directory structure
-        target_dir = output_dir / safe_model / f"shots_{shots}" / "english"
+        lang_match = re.match(r'(global_mmlu|global_mmlu_lite_cs|global_mmlu_lite_ca)\.(\w+)$', dataset)
+
+        if lang_match:
+            language = lang_match.group(2).lower()
+        else:
+            language = "english"
+
+
+        target_dir = output_dir / safe_model / f"shots_{shots}" / language
         target_dir.mkdir(parents=True, exist_ok=True)
 
         # Define the new file path
