@@ -427,7 +427,16 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
             writer = pq.ParquetWriter(
                 output_path,
                 schema=table.schema,
+                compression='snappy',  # או 'gzip'
+                use_dictionary=True,
+                write_statistics=True,
+                coerce_timestamps='ms',
+                allow_truncated_timestamps=False
             )
+            # writer = pq.ParquetWriter(
+            #     output_path,
+            #     schema=table.schema,
+            # )
 
         # Write batch
         writer.write_table(table)
