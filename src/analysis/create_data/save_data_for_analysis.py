@@ -302,6 +302,8 @@ class Converter:
             return DatasetConfigFactory.get_instruct_prompts("Social_IQa")
         elif "race" in dataset:
             return DatasetConfigFactory.get_instruct_prompts("Race")
+        elif "quality" in dataset:
+            return DatasetConfigFactory.get_instruct_prompts("QuALITY")
         else:
             raise ValueError(f"Dataset {dataset} not found in DatasetConfigFactory")
 
