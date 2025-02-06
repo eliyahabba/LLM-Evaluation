@@ -149,7 +149,7 @@ if __name__ == "__main__":
     existing_files = fs.ls(f"datasets/OfirArviv/HujiCollabOutput", detail=False)
     existing_files = [file.split("/")[-1] for file in existing_files if file.endswith('.parquet')]
     existing_files = [file for file in existing_files if not os.path.exists(f"{args.output_dir}/{file}")
-                      and not os.path.exists(f"{args.old_output_dir}/{file}")
+
                       ]
     # filter the file that not already exist in the output directory
     args.urls = [f"{main_path}{file}" for file in existing_files]
