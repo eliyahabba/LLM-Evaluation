@@ -1,0 +1,802 @@
+{
+    "¿Qué pesaría más en la luna?": {
+        "source": "test",
+        "index": 0
+    },
+    " ¿Cuáles son, según Schnackenberg y Tomlinson (2014), los tres criterios que pueden utilizarse para evaluar la calidad de la transparencia corporativa?": {
+        "source": "test",
+        "index": 1
+    },
+    "¿Como se conoce el estado de incapacidad para tomar una decisión informada y razonada sobre la compra de un producto?": {
+        "source": "test",
+        "index": 2
+    },
+    "Reemplazar las cadenas de suministro con _______ aumenta la importancia del producto _______, así como un rediseño fundamental de cada actividad que realiza una empresa y que produce _______.": {
+        "source": "test",
+        "index": 3
+    },
+    "Hay dos problemas principales asociados con el tamaño _____. _______ es una cuestión clave ya que, debido a la política de información de la corporación, se puede argumentar que los empleados tienen derecho a saber si están siendo despedidos. _______ es un segundo tema, particularmente el paquete ________ que reciben los empleados cuando son despedidos.": {
+        "source": "test",
+        "index": 4
+    },
+    "______ el lugar de trabajo implica empoderar a los empleados a través de, por ejemplo, el 'enriquecimiento del trabajo' donde los empleados tienen un mayor margen para decidir cómo organizar su trabajo o la 'ampliación del trabajo' donde los empleados reciben una gama más amplia de tareas para realizar.": {
+        "source": "test",
+        "index": 5
+    },
+    "El aumento de la regulación privada impulsada por las empresas puede atribuirse a: el fomento de un enfoque _______ por parte de la industria, _________ y ​​_______ logro de objetivos.": {
+        "source": "test",
+        "index": 6
+    },
+    " La perspectiva ________ sobre la sostenibilidad fue el resultado de modelos de crecimiento que analizaron la capacidad de carga del planeta, concluyendo en general que la capacidad finita de la Tierra y _______, ________ y ​​_______ de las generaciones actuales y pasadas podrían reducir la calidad de vida de las generaciones futuras. Esto contrasta con la perspectiva medioambiental que se centra en la necesidad de mantener y preservar el entorno natural.": {
+        "source": "test",
+        "index": 7
+    },
+    "Los ________ son una herramienta de gestión de la ética empresarial que ha crecido en las últimas décadas. Las áreas que normalmente cubren son el cumplimiento, la corrupción y las cuestiones ambientales. Sin embargo, están en constante evolución; por ejemplo, la responsabilidad de __________ ha aumentado en los últimos años.": {
+        "source": "test",
+        "index": 8
+    },
+    "Las células cancerosas cultivadas en cultivo son similares a las células normales cultivadas en cultivo en que": {
+        "source": "test",
+        "index": 9
+    },
+    "¿Cuál de los siguientes es un semiconductor tipo n?": {
+        "source": "test",
+        "index": 10
+    },
+    "¿Cuáles de los siguientes son intervalos de convergencia válidos para una serie de potencias?\n(I) [-1, 3)\n(II) (−∞, 0]\n(III) [2, 2] ∪ [3, 3]\n(IV) (−∞,∞)": {
+        "source": "test",
+        "index": 11
+    },
+    "El método más rápido para resintetizar ATP durante el ejercicio es mediante:": {
+        "source": "test",
+        "index": 12
+    },
+    "La disipación de potencia en un inductor ideal es": {
+        "source": "test",
+        "index": 13
+    },
+    "Los materiales utilizados en el disipador deben tener": {
+        "source": "test",
+        "index": 14
+    },
+    "Encuentra la diferencia de 142,76 – 16,5.": {
+        "source": "test",
+        "index": 15
+    },
+    "¿Cuál es la estimación más razonable de la longitud de la piscina de una ciudad?": {
+        "source": "test",
+        "index": 16
+    },
+    "Encuentra la respuesta exacta: 942/3": {
+        "source": "test",
+        "index": 17
+    },
+    "Uno de los eventos en el circo fue Gabriella, la bala de cañón humana. El sábado hizo cuatro shows. Sus distancias midieron 7,04 metros, 18,81 metros, 18,39 metros y 19,94 metros. ¿Cuál fue la distancia total que voló Gabriella ese día?": {
+        "source": "test",
+        "index": 18
+    },
+    "Desde 2019, ¿qué porcentaje aproximado de la población mundial vive en pobreza extrema (menos de 1,90 dólares al día)?": {
+        "source": "test",
+        "index": 19
+    },
+    "¿Cuál de los siguientes no es un elemento del enfoque de política de redistribución con crecimiento?": {
+        "source": "test",
+        "index": 20
+    },
+    "¿Aproximadamente qué porcentaje de la población mundial estaba alfabetizada en 1950?": {
+        "source": "test",
+        "index": 21
+    },
+    "¿Cuál de las siguientes afirmaciones es cierta a partir de 2020?": {
+        "source": "test",
+        "index": 22
+    },
+    "¿Cuántos niños de entre 5 y 14 años trabajaban en todo el mundo en 2012?": {
+        "source": "test",
+        "index": 23
+    },
+    "Desde 2017, la proporción de muertes por suicidio en el mundo es de aproximadamente": {
+        "source": "test",
+        "index": 24
+    },
+    "Muchos países que se independizaron después de la Segunda Guerra Mundial descubrieron que el legado del colonialismo obstaculizaba su desarrollo económico. La lista de obstáculos incluye.": {
+        "source": "test",
+        "index": 25
+    },
+    "¿Cuál de las siguientes afirmaciones es cierta para todas las bases?": {
+        "source": "test",
+        "index": 26
+    },
+    "El siguiente algoritmo se utiliza para simular los resultados de lanzar una moneda al aire 4 veces. Considere el objetivo de determinar si la simulación resultó en el mismo número de caras y cruces.\n\n   Paso l: Inicialice las variables heads_counter y f1ip_counter a 0.\n   Paso 2: A una variable coin_f1ip se le asigna aleatoriamente un valor de 0 o l.\n   Si coin_f1ip tiene el valor 0, el resultado del lanzamiento de moneda es cara, entonces\n  heads_counter se incrementa en 1.\n   Paso 3: Incrementa el valor de f1ip_counter en l.\n   Paso 4: repita los pasos 2 y 3 hasta que f1ip_counter sea igual a 4.\n\n Después de la ejecución del algoritmo, ¿cuál de las siguientes expresiones indica que la simulación resultó en un número igual de caras y cruces?": {
+        "source": "test",
+        "index": 27
+    },
+    "Esta pregunta se refiere a la siguiente información.\nFlorencia es más bella y quinientos cuarenta años más antigua que tu Venecia. … Tenemos a nuestro alrededor treinta mil propiedades, propiedad de nobles y comerciantes, ciudadanos y artesanos, que nos producen anualmente pan y carne, vino y aceite, legumbres y queso, heno y madera, por valor de nueve mil ducados en efectivo. … Tenemos dos oficios mayores que cuatro de los suyos en Venecia juntos: los oficios de lana y seda. … Nuestra hermosa Florencia contiene dentro de la ciudad… doscientas setenta tiendas pertenecientes al gremio de comerciantes de lana, desde donde se envían sus productos a Roma y las Marcas, Nápoles y Sicilia, Constantinopla… y toda Turquía. Contiene también ochenta y tres ricos y espléndidos almacenes del gremio de comerciantes de seda.\nBenedetto Dei, \"Carta a un veneciano\", 1472\n¿El pasaje puede usarse como evidencia de la existencia de cuál de las siguientes características culturales del Renacimiento?": {
+        "source": "test",
+        "index": 28
+    },
+    "Esta pregunta se refiere a la siguiente información.\nAlrededor del año 1645, mientras vivía en Londres… tuve la oportunidad de conocer a diversas personas valiosas, inquisitivas de la filosofía natural y otras partes del conocimiento humano; y particularmente de lo que se ha llamado la \"Nueva Filosofía\" o \"Filosofía Experimental\". Lo hicimos mediante acuerdos... reunirnos semanalmente en Londres en un día determinado, para tratar y discutir tales asuntos. … Nuestro negocio era (excluyendo asuntos de teología y asuntos estatales), discutir y considerar investigaciones filosóficas y todo lo relacionado con ellas: física, anatomía, geometría, astronomía, navegación, estática, magnética, química, mecánica y experimentos naturales. ; con el estado de estos estudios, tal como se cultivaban entonces en el país y en el extranjero. Luego hablamos de la circulación de la sangre, de las válvulas de las venas, de las venas lactatas, de los vasos linfáticos, de la hipótesis copernicana, de la naturaleza de los cometas y de las nuevas estrellas, de los satélites de Júpiter, de la forma ovalada (como aparecía entonces). de Saturno, las manchas del sol y su giro sobre su propio eje, las desigualdades y selenografía de la luna, las diversas fases de Venus y Mercurio, el perfeccionamiento de los telescopios y el pulido de cristales para tal fin, el peso del aire , la posibilidad o imposibilidad de las vacuidades y el aborrecimiento de la naturaleza por ellas, el experimento de Torricelli con el mercurio, el descenso de cuerpos pesados ​​y los grados de aceleración en el mismo; y otras cosas diversas de la misma naturaleza. Algunos de los cuales entonces no eran más que nuevos descubrimientos, y otros no eran tan conocidos y aceptados como ahora. …\nProhibimos todos los discursos sobre la divinidad, los asuntos de Estado y las noticias, excepto los que se referían a nuestro negocio de Filosofía. Poco después nos trasladamos a estas reuniones a Bull Head en Cheapside, y durante el semestre a Gresham College, donde nos reuníamos semanalmente en la conferencia del Sr. Foster (entonces profesor de Astronomía allí) y, una vez terminada la conferencia, nos reuníamos, a veces con el Sr. .\nDr. John Wallis, Relato de algunos pasajes de su vida, 1700\nEl pasaje puede usarse como evidencia para el desarrollo de": {
+        "source": "test",
+        "index": 29
+    },
+    "Esta pregunta se refiere a la siguiente información.\nEl par de extractos a continuación están escritos por el explorador Cristóbal Colón y el obispo dominicano de Chiapas, México, Bartolomé de las Casas.\nFuente 1\nLos indios darían lo que el vendedor requiriera. . . . Así, trocaban, como idiotas, algodón y oro por fragmentos de arcos, vasos, botellas y tinajas; lo cual prohibí por injusto, y yo mismo les di muchos objetos hermosos y aceptables que había traído conmigo, sin recibir nada a cambio; Hice esto para poder conciliarlos más fácilmente, para que se convirtieran en cristianos y se inclinaran a tener en consideración al Rey y a la Reina, a nuestros Príncipes y a todos los españoles, y para inducirlos a tomar un interés en buscar, recolectar y entregarnos las cosas que poseían en abundancia, pero que nosotros necesitábamos mucho.\n—Cristóbal Colón: carta a Rafael Sánchez, 1493\nFuente 2\nFue sobre estos gentiles corderos. . . que desde el primer día que les pusieron los ojos los españoles cayeron como lobos rapaces sobre el redil, o como tigres y leones salvajes que no han comido carne en días. El patrón establecido al principio ha permanecido inalterado hasta el día de hoy, y los españoles todavía no hacen nada más que despedazar a los nativos, asesinarlos e infligirles miseria, sufrimiento y angustia indecibles, atormentándolos, acosándolos y persiguiéndolos sin piedad. A su debido tiempo describiremos algunos de los muchos métodos ingeniosos de tortura que han inventado y perfeccionado para este propósito, pero uno puede hacerse una idea de la eficacia de sus métodos sólo con las cifras. Cuando los españoles viajaron allí por primera vez, la población indígena de la isla Hispaniola ascendía a unos tres millones; hoy sólo sobreviven doscientos. Su razón para matar y destruir un número tan infinito de almas es que los cristianos tienen un objetivo último, que es adquirir oro y engrosarse de riquezas en un tiempo muy breve y así ascender a un estado elevado desproporcionado a sus méritos.\n—Bartolomé de las Casas: Breve relato de la destrucción de las Indias, 1542\n¿Cuál de los siguientes motivos de exploración parece criticar De las Casas en la Fuente 2?": {
+        "source": "test",
+        "index": 30
+    },
+    "Esta pregunta se refiere a la siguiente información.\nLa perestroika [reestructuración] es una necesidad urgente que surge de los profundos procesos de desarrollo de nuestra sociedad socialista. Esta sociedad está madura para el cambio. Lo ha estado anhelando durante mucho tiempo. Cualquier retraso en el inicio de la perestroika podría haber llevado a una situación interna exacerbada en el futuro cercano que, para decirlo sin rodeos, habría estado plagada de graves crisis sociales, económicas y políticas.\nMikhail Gorbachev, Perestroika: un nuevo pensamiento para nuestro país y el mundo, 1987\nDel pasaje se puede inferir que Gorbachov argumentó que": {
+        "source": "test",
+        "index": 31
+    },
+    "Esta pregunta se refiere a la siguiente información.\nAlrededor del año 1645, mientras vivía en Londres… tuve la oportunidad de conocer a diversas personas valiosas, inquisitivas de la filosofía natural y otras partes del saber humano; y particularmente de lo que se ha llamado la \"Nueva Filosofía\" o \"Filosofía Experimental\". Lo hicimos mediante acuerdos... reunirnos semanalmente en Londres en un día determinado, para tratar y discutir tales asuntos. … Nuestro negocio era (excluyendo asuntos de teología y asuntos estatales), discutir y considerar investigaciones filosóficas y todo lo relacionado con ellas: física, anatomía, geometría, astronomía, navegación, estática, magnética, química, mecánica y experimentos naturales. ; con el estado de estos estudios, tal como se cultivaban entonces en el país y en el extranjero. Luego hablamos de la circulación de la sangre, de las válvulas de las venas, de las venas lactatas, de los vasos linfáticos, de la hipótesis copernicana, de la naturaleza de los cometas y de las nuevas estrellas, de los satélites de Júpiter, de la forma ovalada (como aparecía entonces). de Saturno, las manchas del sol y su giro sobre su propio eje, las desigualdades y selenografía de la luna, las diversas fases de Venus y Mercurio, el perfeccionamiento de los telescopios y el pulido de cristales para tal fin, el peso del aire , la posibilidad o imposibilidad de las vacuidades y el aborrecimiento de la naturaleza por ellas, el experimento de Torricelli con el mercurio, el descenso de cuerpos pesados ​​y los grados de aceleración en el mismo; y otras cosas diversas de la misma naturaleza. Algunos de los cuales no eran entonces más que nuevos descubrimientos, y otros no eran tan conocidos y aceptados como ahora. …\nProhibimos todos los discursos sobre la divinidad, los asuntos de Estado y las noticias, excepto los que se referían a nuestro negocio de Filosofía. Poco después nos trasladamos a estas reuniones a Bull Head en Cheapside, y durante el semestre a Gresham College, donde nos reuníamos semanalmente en la conferencia del Sr. Foster (entonces profesor de Astronomía allí) y, una vez terminada la conferencia, nos reuníamos, a veces con el Sr. .\nDr. John Wallis, Relato de algunos pasajes de su vida, 1700\nDel pasaje se puede inferir que el principal interés del grupo de Wallis era": {
+        "source": "test",
+        "index": 32
+    },
+    "Una pirámide de población, o estructura de edad y sexo, muestra toda la siguiente información sobre la población de un país, EXCEPTO": {
+        "source": "test",
+        "index": 33
+    },
+    "¿Qué concepto refleja las nuevas tiendas que se abren alrededor de un gran centro comercial?": {
+        "source": "test",
+        "index": 34
+    },
+    "El rechazo o la indiferencia hacia la religión en un país se llama": {
+        "source": "test",
+        "index": 35
+    },
+    "Cuando hablamos de difusión de un rasgo cultural, ¿qué entendemos por \"hogar\"?": {
+        "source": "test",
+        "index": 36
+    },
+    "¿Qué descripción describe mejor el modelo de jerarquía urbana en el que la población de una ciudad es inversamente proporcional a su rango en la jerarquía?": {
+        "source": "test",
+        "index": 37
+    },
+    "Cuando un nuevo diseño de moda se presenta a nivel mundial, la información inicialmente viaja a través de un proceso conocido como": {
+        "source": "test",
+        "index": 38
+    },
+    "Una victoria presidencial por pluralidad ocurre cuando": {
+        "source": "test",
+        "index": 39
+    },
+    "¿Cuál de los siguientes es un ejemplo de devolución?": {
+        "source": "test",
+        "index": 40
+    },
+    "Supongamos que los consumidores esperan que el precio del maíz sea más bajo en el futuro cercano mientras que el precio de las semillas de maíz y los fertilizantes bajan. ¿Qué pasará con el precio de equilibrio y la cantidad de equilibrio?": {
+        "source": "test",
+        "index": 41
+    },
+    "Un aumento en la demanda de dinero en la economía podría resultar de": {
+        "source": "test",
+        "index": 42
+    },
+    "¿Cuál de las siguientes afirmaciones es correcta con respecto al déficit presupuestario federal y la deuda federal?": {
+        "source": "test",
+        "index": 43
+    },
+    "Si el PIB real per cápita fue de 10.000 dólares en 1990 y de 15.000 dólares en 2000, entonces la cantidad de crecimiento económico es": {
+        "source": "test",
+        "index": 44
+    },
+    "La curva de demanda agregada es": {
+        "source": "test",
+        "index": 45
+    },
+    "El área delimitada por la parábola y = x^2 y las rectas y = 1 e y = 9 es igual a": {
+        "source": "test",
+        "index": 46
+    },
+    "El impuesto sobre las ventas que se paga en el supermercado suele denominarse como": {
+        "source": "test",
+        "index": 47
+    },
+    "Dos recipientes idénticos están llenos de gases diferentes. El recipiente 1 se llena con hidrógeno y el recipiente 2 se llena con nitrógeno. Cada contenedor se coloca sobre una mesa de laboratorio y se le permite alcanzar el equilibrio térmico con la habitación. ¿Cuál de las siguientes compara correctamente las propiedades de los dos gases?": {
+        "source": "test",
+        "index": 48
+    },
+    "Cuando se vierte agua caliente en un vaso que contiene alcohol frío, la temperatura de la mezcla eventualmente alcanzará la misma temperatura. Considerando la escala del tamaño de las moléculas de los fluidos, ¿cuál de las siguientes es la razón principal de este fenómeno?": {
+        "source": "test",
+        "index": 49
+    },
+    "Un protón entra en un solenoide. Al entrar, el protón se mueve en línea recta a lo largo del eje del solenoide. ¿Cuál de las siguientes es una descripción correcta del movimiento del protón dentro del solenoide?": {
+        "source": "test",
+        "index": 50
+    },
+    "¿Cuál de los siguientes aumentaría la capacitancia de un condensador de placas paralelas?": {
+        "source": "test",
+        "index": 51
+    },
+    "Una bola de masa está atada a una cuerda conectada al techo, formando un péndulo. Cuando la cuerda se eleva a un ángulo de 50 grados por debajo de la horizontal (el techo) y se suelta, la pelota oscila hacia adelante y hacia atrás con un período de 0,4 s. ¿Cuál de los siguientes cambios en el péndulo disminuiría el período del péndulo?": {
+        "source": "test",
+        "index": 52
+    },
+    "Se agrega calor a una varilla cilíndrica de aluminio de radio Q y longitud ℓ. La diferencia de temperatura entre los dos extremos de la varilla varía de 10°C a 20°C. ¿Qué factores geométricos influirán en la velocidad de transferencia de calor a lo largo de la varilla?": {
+        "source": "test",
+        "index": 53
+    },
+    "¿Cuál de los siguientes enfoques enfatiza la importancia de los sentimientos de las personas y considera que la naturaleza humana es naturalmente positiva y busca el crecimiento?": {
+        "source": "test",
+        "index": 54
+    },
+    "¿En cuál de las siguientes controversias está más interesado un psicólogo que se centra en si el desarrollo se produce en etapas?": {
+        "source": "test",
+        "index": 55
+    },
+    "¿Cuál de los siguientes tipos de escáneres cerebrales sería más útil para refutar la afirmación: \"La mayoría de las personas sólo utilizan el 10 por ciento de su cerebro\"?": {
+        "source": "test",
+        "index": 56
+    },
+    "En un estudio sobre el desarrollo del cerebro, se criaron dos grupos de ratas en un laboratorio. En el Grupo I, cada rata fue criada de forma aislada sin juguetes, mientras que en el Grupo II, las ratas se dividieron en pequeños grupos y se les dieron juguetes para jugar. ¿Cuál de las siguientes afirmaciones refleja con mayor precisión los probables hallazgos de este estudio?": {
+        "source": "test",
+        "index": 57
+    },
+    "En el camino hacia el cerebro, la información de las retinas de los dos ojos se cruza en el": {
+        "source": "test",
+        "index": 58
+    },
+    "Si todas las demás variables permanecen constantes, ¿cuál de las siguientes aumentará el poder de una prueba de hipótesis? I.Aumentar el tamaño de la muestra. II.Aumentar el nivel de significancia. III.Aumentar la probabilidad de cometer un error de Tipo II.": {
+        "source": "test",
+        "index": 59
+    },
+    "Una prueba de dirofilariosis en perros muestra un resultado positivo en el 96% de los perros que realmente tienen dirofilariosis y muestra un resultado negativo en el 98% de los perros sin dirofilariasis. Si el gusano del corazón en realidad ocurre en el 10% de los perros, ¿cuál es la probabilidad de que un perro seleccionado al azar que dio positivo al dirofilariosis en realidad tenga dirofilariosis?": {
+        "source": "test",
+        "index": 60
+    },
+    "En una región metropolitana, los redactores técnicos tienen un salario anual que se distribuye aproximadamente normalmente con una media de 55.800 dólares. El primer cuartil de salarios es de $48 815. ¿Cuál es la desviación estándar?": {
+        "source": "test",
+        "index": 61
+    },
+    "Si todos los valores de un conjunto de datos son iguales, ¿todos los siguientes deben ser iguales a cero, excepto cuál?": {
+        "source": "test",
+        "index": 62
+    },
+    "Esta pregunta se refiere a la siguiente información.\n\"Si cualquier persona o personas, desde y después de la aprobación de esta ley, por fuerza y ​​​​violencia, toman y se llevan, o hacen que sean tomados o llevados, y, mediante fraude o falsa pretensión, seducen o hacen que sea seducido, o intentará llevarse, llevarse o seducir a cualquier negro o mulato, de cualquier parte o partes de esta república, a cualquier otro lugar o lugares, fuera de esta república, con el propósito e intención de vender y disponer de, o hacer que se venda, o mantener y detener, o hacer que se mantenga y se detenga, a dicho negro o mulato, como esclavo o sirviente de por vida, o por cualquier término, a cada persona o personas, sus ayudantes o cómplices, al ser condenados, en cualquier tribunal de este estado que tenga jurisdicción competente, serán considerados culpables de un delito grave\".\n—Extracto de la ley de Pensilvania de 1826\nLa aprobación e implementación de esta ley de Pensilvania reflejó un conflicto continuo entre": {
+        "source": "test",
+        "index": 63
+    },
+    "Esta pregunta se refiere a la siguiente información.\nEsta noche, la hija de una mujer cuyo principal objetivo era un futuro para sus hijos habla con el partido político más antiguo de nuestra nación sobre un futuro para todos nosotros. Esta noche, la hija de trabajadores estadounidenses les dice a todos los estadounidenses que el futuro está a nuestro alcance, si estamos dispuestos a alcanzarlo. Esta noche, la hija de un inmigrante de Italia ha sido elegida para postularse para (vice)presidente en la nueva tierra que mi padre llegó a amar... Los estadounidenses quieren vivir según el mismo conjunto de reglas. Pero bajo esta administración, las reglas están manipuladas en contra de muchos de nuestro pueblo. No está bien que cada año la proporción de los impuestos pagados por los ciudadanos individuales aumente, mientras que la proporción que pagan las grandes corporaciones sea cada vez menor... No está bien que las parejas jóvenes se pregunten si deben traer hijos a un mundo. de 50.000 ojivas nucleares. Ésa no es la visión por la que los estadounidenses han luchado durante más de dos siglos... Esta noche, reclamamos nuestro sueño. Vamos a hacer que las reglas de la vida estadounidense vuelvan a funcionar para todos los estadounidenses... La cuestión no es qué puede hacer Estados Unidos por las mujeres, sino qué pueden hacer las mujeres por Estados Unidos.\n—Geraldine Ferraro, discurso de aceptación de la nominación a la vicepresidencia, 19 de julio de 1984\n¿Cuáles de las siguientes ideas habrían fortalecido más directamente las ideas expresadas en el pasaje anterior durante la década de 1980?": {
+        "source": "test",
+        "index": 64
+    },
+    "Esta pregunta se refiere a la siguiente información.\n\"La Oposición nos dice que no debemos gobernar a un pueblo sin su consentimiento. Respondo, la regla de la libertad de que todo gobierno justo deriva su autoridad del consentimiento de los gobernados, se aplica sólo a aquellos que son capaces de autogobernarse. Gobernamos a los indios sin su consentimiento, gobernamos nuestros territorios sin su consentimiento, gobernamos a nuestros hijos sin su consentimiento. ¿Cómo saben que nuestro gobierno sería sin su consentimiento? ¿No preferiría el pueblo de Filipinas el gobierno justo, humano y civilizador de esta República al régimen salvaje y sangriento de saqueo y extorsión del que los hemos rescatado y, a pesar de esta fórmula de palabras hecha sólo para pueblos ilustrados y autónomos, ¿no tenemos ningún deber para con el mundo? ¿Devolvemos a estos pueblos a las manos malolientes de las que los hemos arrebatado? ¿Los abandonaremos, mientras Alemania, Inglaterra y Japón los anhelan? ¿Los salvaremos de esas naciones para darles un autogobierno trágico? …Entonces, como hombres y no como niños, sigamos con nuestras tareas, nuestra misión y nuestro destino”.\nAlbert J. Beveridge, \"La marcha de la bandera\", 1898\n¿Cuál de los siguientes argumentos emplea Beveridge en su argumento?": {
+        "source": "test",
+        "index": 65
+    },
+    "Esta pregunta se refiere a la siguiente información.\nEsta noche, la hija de una mujer cuyo principal objetivo era un futuro para sus hijos habla con el partido político más antiguo de nuestra nación sobre un futuro para todos nosotros. Esta noche, la hija de trabajadores estadounidenses les dice a todos los estadounidenses que el futuro está a nuestro alcance, si estamos dispuestos a alcanzarlo. Esta noche, la hija de un inmigrante de Italia ha sido elegida para postularse para (vice)presidente en la nueva tierra que mi padre llegó a amar... Los estadounidenses quieren vivir según el mismo conjunto de reglas. Pero bajo esta administración, las reglas están manipuladas en contra de muchos de nuestro pueblo. No está bien que cada año la proporción de los impuestos pagados por los ciudadanos individuales aumente, mientras que la proporción que pagan las grandes corporaciones sea cada vez menor... No está bien que las parejas jóvenes se pregunten si deben traer hijos a un mundo. de 50.000 ojivas nucleares. Ésa no es la visión por la que los estadounidenses han luchado durante más de dos siglos... Esta noche, reclamamos nuestro sueño. Vamos a hacer que las reglas de la vida estadounidense vuelvan a funcionar para todos los estadounidenses... La cuestión no es qué puede hacer Estados Unidos por las mujeres, sino qué pueden hacer las mujeres por Estados Unidos.\n—Geraldine Ferraro, discurso de aceptación de la nominación a la vicepresidencia, 19 de julio de 1984\n¿La nominación de Geraldine Ferraro a la vicepresidencia fue la continuación más directa de cuál de los siguientes?": {
+        "source": "test",
+        "index": 66
+    },
+    "Esta pregunta se refiere a la siguiente información.\n\"El próximo 4 de marzo, este partido [el Partido Republicano] tomará posesión del gobierno. Ha anunciado que el Sur será excluido del territorio común, que el tribunal judicial será seccional y que será necesario declarar la guerra. lucha contra la esclavitud hasta que cese en todo Estados Unidos. Las garantías de la Constitución ya no existirán; la igualdad de derechos de los estados se perderá. Los estados esclavistas ya no tendrán el poder de autogobierno o de autoprotección. , y el gobierno federal se habrá convertido en su enemigo.\n\"Nosotros, por lo tanto, el pueblo de Carolina del Sur, mediante nuestros delegados reunidos en convención, hemos declarado solemnemente que la Unión hasta ahora existente entre este estado y los demás estados de América del Norte está disuelta; y que el estado de Carolina del Sur ha retomado su posición. entre las naciones del mundo, como [un] estado separado e independiente, con pleno poder para hacer la guerra, concertar la paz, contraer alianzas, establecer el comercio y realizar todos los demás actos y cosas que los estados independientes pueden realizar por derecho \".\nCarolina del Sur define las causas de la secesión, 1860\nEn el extracto anterior, la referencia a \"las sanciones de una creencia religiosa más errónea\" probablemente se refiere a": {
+        "source": "test",
+        "index": 67
+    },
+    "Esta pregunta se refiere a la siguiente información.\n¿Bajo qué principio de razón deberían entonces estos extranjeros enviar a cambio una droga venenosa? Sin querer decir que los extranjeros albergan intenciones tan destructivas en sus corazones, afirmamos positivamente que debido a su excesiva sed de ganancias, ¡son perfectamente descuidados con respecto a los daños que nos infligen! Y siendo así, quisiéramos preguntar ¿qué ha sido de esa conciencia que el cielo ha implantado en el pecho de todos los hombres? Hemos oído que en su propio país el opio está prohibido con el mayor rigor y severidad. Esta es una prueba contundente de que sabes muy bien lo perjudicial que es para la humanidad. Puesto que no permitís que dañe a vuestro propio país, no debéis transferir esta droga nociva a otro país y, sobre todo, ¡cuánto menos al Interior! De los productos que China exporta a sus países extranjeros, no hay ninguno que no sea beneficioso para la humanidad de una forma u otra.\nLin Zexu, comisionado de comercio chino, carta a la reina Victoria, 1839\n¿En cuál de los siguientes argumentos basa principalmente el autor del pasaje su apelación?": {
+        "source": "test",
+        "index": 68
+    },
+    "Esta pregunta se refiere a la siguiente información.\nAgarrándome, me llevó a la Casa de las Tinieblas...\nA la casa donde los que entran no salen,\nPor el camino sin retorno,\nA la casa donde los que habitan, pasan sin luz,\nDonde la tierra es su bebida, su alimento es el barro...\nDonde no se puede ver la luz. Habitan en la oscuridad,\nY sobre la puerta y el cerrojo hay polvo.\nde la Tabla VII, La Epopeya de Gilgamesh, Sumeria, ca. 2100 a.E.C.\nLa verdad es buena y su valor es duradero.\nNo ha sido perturbado desde los días de su creador,\nMientras que el que transgrede sus ordenanzas es castigado.\nSe encuentra como un camino delante incluso de aquel que no sabe nada.\nLas malas acciones nunca han llevado su empresa a puerto...\nAquellos a quienes los dioses guían no pueden perderse.\nAquellos a quienes prohíben el paso no podrán cruzar el río de la vida.\nDe Las Máximas de Ptahhotep, Egipto, ca. 2400 a.E.C.\n¿Cuál de las siguientes conclusiones respalda mejor los dos textos?": {
+        "source": "test",
+        "index": 69
+    },
+    "Esta pregunta se refiere a la siguiente información.\nEn la cima de su poder, los dominios de los khans o gobernantes mongoles formaban un vasto reino en el que pueblos alguna vez hostiles vivían juntos en paz y prácticamente todas las religiones eran toleradas. . . . El código legal promulgado por primera vez por Chinggis Khan ordenaba la interacción humana. El resultado fue una nueva etapa importante en el contacto internacional. Desde el este de Europa hasta el sur de China, los comerciantes y viajeros podían moverse a través de los bien vigilados dominios mongoles sin temor por sus vidas o propiedades. La gran franja de territorio mongol que cubría o conectaba la mayor parte de Europa, Asia y Oriente Medio sirvió de puente entre las civilizaciones del hemisferio oriental. Las caravanas y embajadas que atravesaron las tierras mongolas transmitieron nuevos alimentos, inventos e ideas de un grupo civilizado a otros y de grupos civilizados a los pueblos nómadas que sirvieron de intermediarios. Rutas comerciales seguras crearon comerciantes prósperos y ciudades ricas y cosmopolitas. También facilitaron la difusión de alimentos [e] inventos. . . una fuerza importante para el desarrollo económico y social y la mejora de la vida civilizada.\n—Robert Guisepi, 1992\n¿Qué afirmación compara con mayor precisión el imperio mongol (posclásico) con el imperio persa (clásico)?": {
+        "source": "test",
+        "index": 70
+    },
+    "Esta pregunta se refiere a la siguiente información.\n\"Cuando los portugueses van de Macao en China al Japón, llevan mucha seda blanca, oro, almizcle y porcelana: y del Japón no traen nada más que plata. Tienen una gran carraca que va allí todos los años y trae de allí cada al año unas seiscientas monedas; y toda esta plata del Japón, y doscientas mil monedas más de plata que traen anualmente de la India, la emplean con gran provecho en China; y traen de allí oro, almizcle, seda, cobre. , porcelanas y muchas otras cosas muy costosas y doradas.\nCuando los portugueses vienen a Cantón de China a traficar, deben permanecer allí sólo ciertos días; y cuando entran por la puerta de la ciudad, deben anotar sus nombres en un libro, y cuando salen de noche deben anotar sus nombres. No podrán permanecer en la ciudad toda la noche, sino que deberán permanecer en sus barcas fuera de la ciudad. Y transcurrido su tiempo, si alguno permanece allí, será encarcelado.\"\nRalph Fitch, relato de sus viajes al Lejano Oriente, 1599 E.C.\n¿Cuál de los siguientes acontecimientos del período 1750-1900 E.C. deshizo más directamente los patrones comerciales mencionados en el primer párrafo?": {
+        "source": "test",
+        "index": 71
+    },
+    "Esta pregunta se refiere a la siguiente información.\nAhora bien, si el divorcio es su deseo, no puedo culparlo. Porque la espera ha sido larga. Y no sé si el Creador me concederá alivio inmediatamente para que pueda volver a casa, o si las cosas llevarán tiempo, porque no puedo volver a casa sin nada. Ahora el asunto está en tus manos. Si desea poner fin a nuestro matrimonio, acepte esta carta de repudio y será libre. Que Dios te inspire con la decisión correcta.\nCarta de un comerciante judío en la India a su esposa en El Cairo, ca. 1200\n¿Cuál de las siguientes es la causa más probable de la tensión matrimonial evidente en el pasaje anterior?": {
+        "source": "test",
+        "index": 72
+    },
+    "La investigación ha ofrecido cierto apoyo longitudinal y transversal a la teoría presentada por": {
+        "source": "test",
+        "index": 73
+    },
+    "Cuando tu hermana Patricia se sentía deprimida, la consolabas y le recordabas momentos más felices. ¿Qué tipo de apoyo social proporcionó?": {
+        "source": "test",
+        "index": 74
+    },
+    "¿En qué rasgo se diría que una persona que no está muy bien organizada, que rara vez establece metas y con frecuencia pospone las cosas para el último minuto tiene un nivel bajo?": {
+        "source": "test",
+        "index": 75
+    },
+    "El diseño ambiental que lleva mascotas y plantas a residencias de ancianos y a jóvenes y niños como visitantes habituales se denomina": {
+        "source": "test",
+        "index": 76
+    },
+    "¿Cuál de los siguientes es siempre el más largo?": {
+        "source": "test",
+        "index": 77
+    },
+    "Las creencias negativas de los adultos mayores sobre sus propios recuerdos parecen estar más influenciadas por _____ que por su desempeño real en las pruebas de memoria.": {
+        "source": "test",
+        "index": 78
+    },
+    "Omega 3 parece reducir el riesgo de": {
+        "source": "test",
+        "index": 79
+    },
+    "En este capítulo de Senior View, Tolly Kleckley nos dijo que la personalidad": {
+        "source": "test",
+        "index": 80
+    },
+    "¿Cuál parece ser el caso cuando se considera el dicho popular \"los opuestos se atraen\" (es decir, actitudes diferentes tienden a causar agrado) cuando se considera a la luz de las investigaciones actuales?": {
+        "source": "test",
+        "index": 81
+    },
+    "Son las 3:00 a.m. Eres masculino. Te despiertas para orinar. De pie junto al inodoro estás en una agonía extrema. Tu pene se siente como si estuviera en llamas. Notas una secreción amarillenta que sale de tu pene después de terminar de orinar. Tus gemidos han despertado a tu pareja. Ella entra corriendo al baño y te pregunta qué te pasa. Le dices que probablemente tienes:": {
+        "source": "test",
+        "index": 82
+    },
+    "¿Cuál de los siguientes eventos INICIA la pubertad?": {
+        "source": "test",
+        "index": 83
+    },
+    "¿Qué es cierto con respecto a los voyeurs?": {
+        "source": "test",
+        "index": 84
+    },
+    "La señorita Jones ha estado preocupada por su salud últimamente. Ha notado algo de picazón e irritación de la piel alrededor de sus genitales. Dado su historial sexual promiscuo, sospecha que ha contraído:": {
+        "source": "test",
+        "index": 85
+    },
+    "¿Qué es una \"roca\" según la Convención de las Naciones Unidas sobre el Derecho del Mar (CNUDM)?": {
+        "source": "test",
+        "index": 86
+    },
+    "¿Cómo se puede relacionar el derecho consuetudinario con las disposiciones de los tratados?": {
+        "source": "test",
+        "index": 87
+    },
+    "¿Cuál es el problema de la \"fragmentación\" del derecho internacional?": {
+        "source": "test",
+        "index": 88
+    },
+    "¿Cuál es la diferencia entre medios políticos y legales de solución de disputas?": {
+        "source": "test",
+        "index": 89
+    },
+    "¿Cuándo un acto ilegal de violencia en alta mar no puede considerarse piratería?": {
+        "source": "test",
+        "index": 90
+    },
+    "¿Cuál de las siguientes proposiciones es la refutación más poderosa del cálculo felicífico de Bentham?": {
+        "source": "test",
+        "index": 91
+    },
+    "La Escuela ________ de jurisprudencia sostiene que la ley está moldeada por la lógica.": {
+        "source": "test",
+        "index": 92
+    },
+    "¿Cuál de las siguientes escuelas apoya la opinión de que una costumbre se convierte en ley cuando recibe el sello de reconocimiento judicial por parte de los tribunales?": {
+        "source": "test",
+        "index": 93
+    },
+    "Tom y Jerry firmaron un contrato por el cual Tom acordó venderle a Jerry heroína por valor de 1.000 dólares, una sustancia ilegal. Éste es un ejemplo de un:": {
+        "source": "test",
+        "index": 94
+    },
+    "¿Por qué el enfoque de la justicia basado en las “capacidades” rechaza la teoría de Rawls?": {
+        "source": "test",
+        "index": 95
+    },
+    "La falacia de la composición es": {
+        "source": "test",
+        "index": 96
+    },
+    "La falacia de la personalidad reprensible es un tipo específico de": {
+        "source": "test",
+        "index": 97
+    },
+    "En un silogismo condicional, cuando la premisa menor niega el antecedente": {
+        "source": "test",
+        "index": 98
+    },
+    "Si cree que el argumento de alguien es sólido en función de su uso convincente del lenguaje y su expresión segura, ¿probablemente haya cometido qué falacia?": {
+        "source": "test",
+        "index": 99
+    },
+    "¿Cuál de los siguientes es otro nombre para la falacia de la anfibolia?": {
+        "source": "test",
+        "index": 100
+    },
+    "¿De qué es un tipo de diagrama de Gantt?": {
+        "source": "test",
+        "index": 101
+    },
+    "¿Cómo se puede describir el pensamiento y la perspectiva de los líderes transformacionales?": {
+        "source": "test",
+        "index": 102
+    },
+    "¿Qué no es una ventaja de una estructura jerárquica?": {
+        "source": "test",
+        "index": 103
+    },
+    "¿Cuál de los siguientes no es un tipo de plan reconocido?": {
+        "source": "test",
+        "index": 104
+    },
+    "¿Cuál es el alcance óptimo de control?": {
+        "source": "test",
+        "index": 105
+    },
+    "¿Cuál es el término para las decisiones limitadas por la capacidad humana de absorber y analizar información?": {
+        "source": "test",
+        "index": 106
+    },
+    "¿En qué se basa la toma de decisiones intuitiva?": {
+        "source": "test",
+        "index": 107
+    },
+    "¿Cuál es el término para una entidad comercial autónoma dentro de una empresa corporativa general que se distingue de otras áreas del negocio?": {
+        "source": "test",
+        "index": 108
+    },
+    " ____________ describe las propiedades extrínsecas del producto (el color, el embalaje, la consistencia del producto, las asociaciones) y el nivel en el que satisfacen las necesidades psicológicas o sociales de los clientes.": {
+        "source": "test",
+        "index": 109
+    },
+    "AIDA significa conciencia, ________, deseo y _________.": {
+        "source": "test",
+        "index": 110
+    },
+    " Los boletines, catálogos e invitaciones a eventos patrocinados por organizaciones están más estrechamente asociados con la actividad de mezcla de mercadotecnia de:": {
+        "source": "test",
+        "index": 111
+    },
+    "Los vendedores que ven una situación como la ve un cliente están exhibiendo": {
+        "source": "test",
+        "index": 112
+    },
+    " Estos almacenan bienes por períodos de moderados a largos:": {
+        "source": "test",
+        "index": 113
+    },
+    "La computadora Apple iMac está disponible en todos los siguientes colores, ¿excepto el cuál?": {
+        "source": "test",
+        "index": 114
+    },
+    "¿Qué tipo de animal es un peregrino?": {
+        "source": "test",
+        "index": 115
+    },
+    "El condicionamiento operante sería más útil para": {
+        "source": "test",
+        "index": 116
+    },
+    "La fuerza laboral está compuesta principalmente por todos": {
+        "source": "test",
+        "index": 117
+    },
+    "¿Cuál es el animal más grande que jamás haya existido en la Tierra?": {
+        "source": "test",
+        "index": 118
+    },
+    "Se dice que las personas que creen que sus opiniones políticas son importantes, que el gobierno las respetará y que sus opiniones pueden influir en los asuntos políticos tienen un fuerte sentido de pertenencia.": {
+        "source": "test",
+        "index": 119
+    },
+    "Una maestra de jardín de infantes hace que los estudiantes determinen lo siguiente. ‚Ä¢ Cuántos estudiantes están ausentes ese día ‚Ä¢ Si hay suficientes vasos de merienda para que cada estudiante tome uno durante la hora de la merienda ‚Ä¢ Cuántas pelotas se sacan afuera durante el recreo y cuántas se devuelven adentro después del recreo. ¿Cuál de los siguientes conceptos está más estrechamente alineado con las determinaciones que el maestro hace que los estudiantes tomen?": {
+        "source": "test",
+        "index": 120
+    },
+    "¿Cuál de las siguientes es la acción más razonable a tomar para un artista cuyo trabajo requiere el uso de un producto peligroso específico?": {
+        "source": "test",
+        "index": 121
+    },
+    "Si una de las partes de un contrato se ve obligada a firmar, el contrato se define como": {
+        "source": "test",
+        "index": 122
+    },
+    "¿Cómo se llama el hermano de Mario en los videojuegos 'Super Mario'?": {
+        "source": "test",
+        "index": 123
+    },
+    "Ciencia ficción: los lectores afirman amarla o detestarla; O lo evitan como si fuera veneno o devoran sus obras y autores favoritos como adictos al chocolate que tragan trufas dulces. El autor del pasaje compara a ciertos lectores con \"adictos al chocolate\" principalmente para": {
+        "source": "test",
+        "index": 124
+    },
+    "Carmen gasta todo su ingreso semanal en dos bienes: X e Y. En su nivel de consumo actual de los dos bienes, la utilidad marginal del último dólar gastado en el bien X es 5 y la utilidad marginal del último dólar que gastó en el bien Y es 10. Para maximizar su utilidad, Carmen debería": {
+        "source": "test",
+        "index": 125
+    },
+    "¿La capacidad de hacer cuál de las siguientes es una característica de todos los organismos vivos?": {
+        "source": "test",
+        "index": 126
+    },
+    "Los astrónomos han propuesto que el sistema solar se formó a partir de una vasta nube giratoria de gas y polvo. ¿Esta explicación se conoce como cuál de las siguientes?": {
+        "source": "test",
+        "index": 127
+    },
+    "¿Cuál de las siguientes cosas debería hacer un usuario de computadora para prevenir la fatiga visual inducida por la pantalla?": {
+        "source": "test",
+        "index": 128
+    },
+    "¿El día de San Valentín de 2000, la nave espacial NEAR de la NASA inició una órbita de un año de duración sobre qué asteroide?": {
+        "source": "test",
+        "index": 129
+    },
+    "¿Qué tiene de especial una llave maestra?": {
+        "source": "test",
+        "index": 130
+    },
+    "¿Cuál de estos se usa comúnmente para tratar las alergias?": {
+        "source": "test",
+        "index": 131
+    },
+    "¿Qué significa el acrónimo 'REM'?": {
+        "source": "test",
+        "index": 132
+    },
+    "Desde el principio, escribí para explicarme mi propia vida e invité a todos los lectores que decidieran hacer el viaje conmigo a que me acompañaran en la cuerda floja. Trabajaría sin red y sin que el ruido de la multitud me molestara. La vista desde lo alto es vertiginosa, instructiva. No registro el mundo exactamente como me llega, sino que lo transformo haciéndolo pasar a través de un prisma de historias fabulosas que he recopilado en el camino. Recopilo historias de la misma manera que un lepidopterista atesora sus especímenes cloroformados de polillas raras o escarabajos costarricenses. Las historias son como recipientes que utilizo para interpretarme el mundo. ----------Pat Conroy ¿Cuál de las siguientes opciones describe mejor la organización del pasaje?": {
+        "source": "test",
+        "index": 133
+    },
+    "¿Qué aparato de ejercicio se utiliza durante una clase de 'Spinning'?": {
+        "source": "test",
+        "index": 134
+    },
+    " La idea básica de las teorías morales del contrato social es que las reglas o principios morales correctos o justificados son los que resultan de": {
+        "source": "test",
+        "index": 135
+    },
+    " ¿Cuál de los siguientes se define típicamente, según la introducción del capítulo 8, como el acto o práctica de matar o permitir que alguien muera?": {
+        "source": "test",
+        "index": 136
+    },
+    " ¿Cuál de los siguientes no es un requisito en la definición de \"castigo legal\"?": {
+        "source": "test",
+        "index": 137
+    },
+    " Decir que una acción es intrínsecamente permisible (una característica mencionada en la doctrina del doble efecto) es decir que": {
+        "source": "test",
+        "index": 138
+    },
+    " Shapiro afirma que los humanos son animales sociales o culturales, lo cual es importante para su punto de vista porque implica que": {
+        "source": "test",
+        "index": 139
+    },
+    "¿Qué afirmación sobre la digestión y absorción de grasas es correcta?\n": {
+        "source": "test",
+        "index": 140
+    },
+    "¿Con qué se asocia el consumo excesivo de alcohol?\n": {
+        "source": "test",
+        "index": 141
+    },
+    "La suplementación con ácidos grasos de cadena larga EPA y DHA durante el embarazo y la infancia probablemente beneficiará a lo siguiente:\n": {
+        "source": "test",
+        "index": 142
+    },
+    "Desde la Cumbre Mundial sobre la Alimentación de 1996, ¿cómo ha cambiado el número de personas que padecen inseguridad alimentaria en el mundo?\n": {
+        "source": "test",
+        "index": 143
+    },
+    "Aristóteles dice que lo que hace que las cosas sean lo que son (su esencia) no existe aparte de los individuos que existen en el mundo.  Entonces si todos los miembros de una especie fueron destruidos, entonces su esencia o forma:": {
+        "source": "test",
+        "index": 144
+    },
+    "Ante la queja de que el utilitarismo es una doctrina digna de cerdos, Mill responde que los placeres difieren en:": {
+        "source": "test",
+        "index": 145
+    },
+    "Al utilizar métodos visuales en un proyecto de investigación, ¿qué se debe tener en cuenta junto con las pautas legales?": {
+        "source": "test",
+        "index": 146
+    },
+    "El conductismo lógico está en desacuerdo con nuestra intuición de sentido común de que los estados mentales _____.": {
+        "source": "test",
+        "index": 147
+    },
+    "¿Cuáles son algunas de las frustraciones frecuentes al escribir o leer sobre ética de la investigación?": {
+        "source": "test",
+        "index": 148
+    },
+    "Los valores estéticos tienen que ver con _______": {
+        "source": "test",
+        "index": 149
+    },
+    "¿Cuál de los siguientes es un dispositivo de detección remota utilizado en sitios arqueológicos?": {
+        "source": "test",
+        "index": 150
+    },
+    "Los arqueólogos suelen considerar la construcción de elementos a gran escala, como montículos y concheros, como evidencia de:": {
+        "source": "test",
+        "index": 151
+    },
+    "¿Qué se concluyó en un estudio reciente que comparó los genomas de la gente moderna con restos esqueléticos antiguos en América del Norte y del Sur?": {
+        "source": "test",
+        "index": 152
+    },
+    "¿Cuál de las siguientes es evidencia del mestizaje entre humanos anatómicamente modernos y neandertales?": {
+        "source": "test",
+        "index": 153
+    },
+    "La idea de que las culturas cambian a través del tiempo en relación con sus entornos, a lo largo de muchos caminos diferentes, se conoce como:": {
+        "source": "test",
+        "index": 154
+    },
+    "¿Cuál de los siguientes procedimientos probablemente realizaría un auditor antes del balance? ¿y de fecha?": {
+        "source": "test",
+        "index": 155
+    },
+    "Mast Co. convirtió del método FIFO para valoración de inventarios al método LIFO para fines fiscales y de estados financieros. Durante un período de inflación, ¿el inventario final de Mast y el impuesto sobre la renta pagadero utilizando LIFO serían mayores o menores que FIFO? Inventario final Impuesto sobre la renta por pagar": {
+        "source": "test",
+        "index": 156
+    },
+    "¿Cuál de los siguientes es el tratamiento adecuado del costo de los equipos utilizados en actividades de investigación y desarrollo que tendrán usos alternativos en el futuro?": {
+        "source": "test",
+        "index": 157
+    },
+    "¿Cuál de las siguientes declaraciones aparecería más probablemente en la carta compromiso de un auditor?": {
+        "source": "test",
+        "index": 158
+    },
+    "¿Cuál es el valor presente de $10 recibidos dentro de dos años si la tasa de descuento es del 9%?": {
+        "source": "test",
+        "index": 159
+    },
+    "Se establece un margen de contribución objetivo del 20% para Duct, que es un producto nuevo con los siguientes costos unitarios: Costos de fabricación Variable $12 Fijo 8 Venta y administración. Costos Variable $3 Fijo 5 ¿Cuál es el precio de venta objetivo de Duct?": {
+        "source": "test",
+        "index": 160
+    },
+    "¿Cuál de los siguientes procedimientos debería incluir un auditor usuario en el plan de auditoría para crear la auditoría más eficiente cuando un cliente de auditoría utiliza una organización de servicios para varios procesos?": {
+        "source": "test",
+        "index": 161
+    },
+    "¿Cuál de los siguientes asuntos suele incluir un auditor en la carta compromiso?": {
+        "source": "test",
+        "index": 162
+    },
+    "Un hombre contrató a un camarógrafo para filmar la boda de su hija. El contrato escrito firmado incluía una \"cláusula de pago\", que disponía que el camarógrafo recibiría \"10.000 dólares por la filmación y edición de un vídeo de 60 minutos de la boda y la recepción\". El hombre incluía en el contrato una estipulación de que el vídeo se filmaría utilizando equipos de alta definición. El contrato no hacía ninguna otra referencia a la compensación. A continuación, el camarógrafo filmó y editó el vídeo de 60 minutos utilizando equipos de alta definición y se lo presentó al hombre. Luego, el camarógrafo le presentó al hombre un extracto de factura por un monto de 15.000 dólares. Además de la cifra del contrato de $10.000, la factura incluía un cargo de $5.000 por el uso del equipo de alta definición. Negando cualquier responsabilidad adicional, el hombre envió al camarógrafo un cheque por 10.000 dólares. Luego, el camarógrafo entabló una demanda contra el hombre para recuperar los $5.000 adicionales. ¿Cuál de los siguientes argumentos sería más persuasivo para respaldar la afirmación del camarógrafo de que cuando se ejecutó el contrato escrito, el hombre acordó pagarle $5.000 por el uso del equipo de alta definición, además de la tarifa de $10.000?": {
+        "source": "test",
+        "index": 163
+    },
+    "¿En cuál de las siguientes situaciones es más probable que la conducta del acusado lo haga penalmente responsable de la muerte de la víctima?": {
+        "source": "test",
+        "index": 164
+    },
+    "Una demandada fue arrestada y acusada de falsificación por firmar ilegalmente la firma de su exmarido en su cheque de pago. Antes del juicio, el acusado entabló negociaciones con la fiscalía para llegar a un acuerdo de culpabilidad. Durante el transcurso de estas negociaciones, la acusada envió una carta al fiscal en la que afirmaba: \"No quiero ir a la cárcel, así que si recomiendan una sentencia suspendida, me declararé culpable y admitiré que falsifiqué la firma de mi exmarido en el cheque \". Posteriormente, las negociaciones para el acuerdo de culpabilidad fracasaron. Poco después, la acusada fue arrestada y acusada de falsificar la firma de su exmarido en su siguiente cheque de pago. Ella ha negado su culpabilidad con respecto al segundo cargo de falsificación. En el juicio por la supuesta segunda falsificación, la fiscalía busca presentar la carta que el acusado envió a la fiscalía durante sus negociaciones anteriores para llegar a un acuerdo de culpabilidad. El abogado del demandado se opone a la admisibilidad del escrito. El juez del tribunal de primera instancia debe dictaminar que la carta es": {
+        "source": "test",
+        "index": 165
+    },
+    "Un vendedor y un comprador firmaron un contrato de compraventa de un inmueble mejorado. El contrato contenía una contingencia de financiación por un determinado porcentaje del precio de compra. El comprador obtuvo la financiación necesaria de un banco. Al cierre, el comprador otorgó una nota al vendedor por una parte del precio de compra, nota que no estaba garantizada por una hipoteca. Luego, el comprador ejecutó un segundo pagaré, garantizado por una hipoteca, al banco, aplicando los ingresos del préstamo bancario al precio de compra de la propiedad. El banco tenía conocimiento real de la nota anterior al vendedor. El banco registró rápidamente su hipoteca. El comprador ahora está en mora con ambos pagarés. No existe un estatuto aplicable. ¿Qué partido tiene prioridad?": {
+        "source": "test",
+        "index": 166
+    },
+    "Un estudiante de derecho de primer año trabajaba como asistente legal a tiempo parcial en una prestigiosa firma de abogados. Se le permitió tomar prestados libros y tratados jurídicos para llevárselos a casa para su uso personal. Una tarde, el estudiante de derecho estaba preparando un informe en la biblioteca jurídica de la firma cuando notó un libro sobre la mesa de conferencias. Asegurándose de que nadie lo estuviera mirando, tomó el libro y lo colocó en su maletín. Planeaba llevarse el libro a casa esa noche con la intención de no devolverlo. Si posteriormente el estudiante de derecho es acusado de hurto del libro, ¿cuál de las siguientes afirmaciones, de ser cierta, le ayudaría MENOS en su defensa?": {
+        "source": "test",
+        "index": 167
+    },
+    "Una mujer de 68 años tiene antecedentes de cáncer de mama que ha recurrido dos veces en los últimos 5 años. Se ha sometido a radiación y quimioterapia por un carcinoma metastásico en el hueso. Se presenta hoy en la consulta para pedir ayuda para tratar el dolor de espalda medio torácico a fin de que pueda utilizar menos agentes analgésicos. La técnica de manipulación osteopática más adecuada para tratar la columna de este paciente es": {
+        "source": "test",
+        "index": 168
+    },
+    "Las investigaciones sugieren que la adaptación exitosa de los niños al divorcio de sus padres está más relacionada con:": {
+        "source": "test",
+        "index": 169
+    },
+    "Cuando la dispersión de puntuaciones aumenta, la varianza": {
+        "source": "test",
+        "index": 170
+    },
+    "Llevas varios meses viendo a Leticia López en terapia. Leticia tiene 24 años y vive con su madre viuda, quien paga la terapia de Leticia. Un día, la madre de Leticia llama y dice que está muy preocupada por Leticia y quiere saber qué puede hacer para ayudar a Leticia a sentirse mejor consigo misma. La señora López le pide que no le diga a Leticia que ha llamado. Su mejor curso de acción en esta situación sería:": {
+        "source": "test",
+        "index": 171
+    },
+    "Cuando la validación cruzada de un conjunto de predictores da como resultado una gran reducción de unos coeficientes de correlación múltiples inicialmente alentadores, lo más probable es que": {
+        "source": "test",
+        "index": 172
+    },
+    "Según el modelo de liderazgo de contingencia de Fiedler, los altos líderes de LPC:": {
+        "source": "test",
+        "index": 173
+    },
+    "¿Cuál de los siguientes resultados posibles de un experimento es menos informativo?": {
+        "source": "test",
+        "index": 174
+    },
+    "Las primeras teorías de la comunicación de masas sugerían que las audiencias eran receptoras pasivas de los mensajes de los medios y, por tanto, vulnerables a la manipulación. ¿Cuál de las siguientes opciones describe mejor el pensamiento actual?": {
+        "source": "test",
+        "index": 175
+    },
+    "¿Qué afirmación es verdadera acerca de la investigación con grupos de enfoque?": {
+        "source": "test",
+        "index": 176
+    },
+    "Usted es director de comunicaciones de una organización local sin fines de lucro que está afiliada a una gran organización nacional sin fines de lucro. Con frecuencia se le solicita que obtenga cobertura mediática utilizando boletines informativos proporcionados por la sede nacional ubicada en otro estado. ¿Qué acción mejoraría más sus posibilidades de éxito con estos materiales?": {
+        "source": "test",
+        "index": 177
+    },
+    "Una encuesta de 2008 mostró que ¿qué porcentaje de las empresas más grandes del mundo informan sobre su responsabilidad corporativa?": {
+        "source": "test",
+        "index": 178
+    },
+    "¿Dentro de qué área de las relaciones públicas se relacionan las tácticas con la promoción de la organización en general?": {
+        "source": "test",
+        "index": 179
+    },
+    "¿Qué es los estudios críticos de seguridad?": {
+        "source": "test",
+        "index": 180
+    },
+    "¿Cuales son los tipos de terrorismo? ¿Todos los grupos son iguales?": {
+        "source": "test",
+        "index": 181
+    },
+    "¿Cuáles son los efectos de las armas nucleares?": {
+        "source": "test",
+        "index": 182
+    },
+    "¿De qué manera, si es que hay alguna, se puede considerar el medio ambiente como un problema de seguridad?": {
+        "source": "test",
+        "index": 183
+    },
+    "¿Qué opciones de política de seguridad interna están disponibles para las elites?": {
+        "source": "test",
+        "index": 184
+    },
+    "Ocurre un grave accidente automovilístico. Un hombre detiene su auto y comienza a ayudar a la gente. Después de verlo detenerse, otros también se detienen y comienzan a ayudar. ¿Cuál de las siguientes teorías explica mejor el escenario?": {
+        "source": "test",
+        "index": 185
+    },
+    "Un sociólogo está realizando una investigación sobre las relaciones de poder institucional en un hospital local. El sociólogo forma parte del personal del hospital durante varias semanas, registrando datos como notas de campo. Este método de investigación se llama": {
+        "source": "test",
+        "index": 186
+    },
+    "¿Cuál de las siguientes no es una característica de la globalización?": {
+        "source": "test",
+        "index": 187
+    },
+    "¿Cuál de las siguientes no se identifica como una nueva forma de comunidad?": {
+        "source": "test",
+        "index": 188
+    },
+    "¿Cuál de estos no era uno de los indicadores de privación relativa de Townsend (1979)?": {
+        "source": "test",
+        "index": 189
+    },
+    "¿Cuál de los siguientes es un documento personal con acceso cerrado?": {
+        "source": "test",
+        "index": 190
+    },
+    "¿Cuáles tienden a ser los efectos del comercio de petróleo y otros recursos naturales en los estados en desarrollo?": {
+        "source": "test",
+        "index": 191
+    },
+    "¿Las organizaciones intergubernamentales raramente hacen cuál de las siguientes?": {
+        "source": "test",
+        "index": 192
+    },
+    "Según los realistas, ¿cuál es la diferencia fundamental entre el sistema internacional y el sistema interno?": {
+        "source": "test",
+        "index": 193
+    },
+    "La política burocrática sugiere que deberíamos preocuparnos ¿cuál de las siguientes opciones con respecto a las armas nucleares?": {
+        "source": "test",
+        "index": 194
+    },
+    "¿Cuáles fueron las principales instituciones del orden económico internacional liberal?\nI. GATT\nII. FMI\nIII. Banco Mundial\nIV. OTAN": {
+        "source": "test",
+        "index": 195
+    },
+    "¿Cuál es una característica importante de la familia de los bunyavirales?": {
+        "source": "test",
+        "index": 196
+    },
+    "¿Cuál de los siguientes es el más importante para controlar la enfermedad causada por norovirus?": {
+        "source": "test",
+        "index": 197
+    },
+    "El propósito de un estudio doble ciego o doble enmascarado es:": {
+        "source": "test",
+        "index": 198
+    },
+    "¿La aleatorización de los sujetos de un estudio en un ensayo clínico es más útil para controlar cuál de los siguientes?": {
+        "source": "test",
+        "index": 199
+    }
+}
