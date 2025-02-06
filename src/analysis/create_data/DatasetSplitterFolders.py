@@ -22,6 +22,14 @@ def reorganize_files(input_dir, output_dir):
     parquet_files = list(input_dir.glob("*.parquet"))
     # Set up progress bar for total files
     results = []
+    from tqdm.contrib.concurrent import thread_map
+    results = thread_map(process_single_file,
+                         parquet_files,
+                         max_workers=12,
+                         desc="Processing files")
+
+    return list(results)
+
     with tqdm(total=len(parquet_files), desc="Processing files") as pbar:
         with ThreadPoolExecutor(max_workers=12) as executor:
             # Submit all tasks
