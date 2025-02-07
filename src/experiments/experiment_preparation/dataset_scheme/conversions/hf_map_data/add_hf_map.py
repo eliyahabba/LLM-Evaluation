@@ -1,5 +1,7 @@
 import json
 
+from tqdm import tqdm
+
 
 # To save to a file:
 def save_to_json(data, filename):
@@ -13,7 +15,7 @@ def save_to_json(data, filename):
     path = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/"
     filename = path + filename
     with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
+        json.dump(data, f, indent=4, ensure_ascii=False)
 
 
 def create_question_metadata(questions, source):
@@ -87,6 +89,42 @@ def get_mmlu_pro():
     test = create_question_metadata(question, 'test')
     return test
 
+def get_global_mmlu(lang):
+    ds = load_dataset("CohereForAI/Global-MMLU", lang, split='test')
+    questions = ds['question']
+    test = create_question_metadata(questions, 'test')
+    return test
+
+
+def get_global_mmlu_ca(lang):
+    ds = load_dataset("CohereForAI/Global-MMLU-Lite", lang, split='test')
+    # filet by cultural_sensitivity_label ==CA
+    ds = ds.filter(lambda x: x['cultural_sensitivity_label'] == 'CA')
+    questions = ds['question']
+    test = create_question_metadata(questions, 'test')
+    return test
+
+
+def get_global_mmlu_cs(lang):
+    ds = load_dataset("CohereForAI/Global-MMLU-Lite", lang, split='test')
+    # filet by cultural_sensitivity_label ==CA
+    ds = ds.filter(lambda x: x['cultural_sensitivity_label'] == 'CS')
+    questions = ds['question']
+    test = create_question_metadata(questions, 'test')
+    return test
+
+
+def get_race_middle():
+    ds = load_dataset("ehovy/race", "middle", split='test')
+    questions = ds['question']
+    test = create_question_metadata(questions, 'test')
+    return test
+
+def get_race_high():
+    ds = load_dataset("ehovy/race", "high", split='test')
+    questions = ds['question']
+    test = create_question_metadata(questions, 'test')
+    return test
 
 if __name__ == '__main__':
     from datasets import load_dataset
@@ -103,8 +141,41 @@ if __name__ == '__main__':
     # questions = get_hell()
     # save_to_json(questions, 'hellaswag_samples.json')
 
-    questions = get_mmlu()
-    save_to_json(questions, 'mmlu_samples.json')
+    # questions = get_mmlu()
+    # save_to_json(questions, 'mmlu_samples.json')
+    #
+    # questions = get_mmlu_pro()
+    # save_to_json(questions, 'mmlu_pro_samples.json')
 
-    questions = get_mmlu_pro()
-    save_to_json(questions, 'mmlu_pro_samples.json')
+    questions = get_race_middle()
+    save_to_json(questions, 'race_middle_samples.json')
+
+    questions = get_race_high()
+    save_to_json(questions, 'race_high_samples.json')
+
+    SUPPORTED_LANGUAGES = {
+        "ar": "Arabic",
+        "bn": "Bengali",
+        "de": "German",
+        "fr": "French",
+        "hi": "Hindi",
+        "id": "Indonesian",
+        "it": "Italian",
+        "ja": "Japanese",
+        "ko": "Korean",
+        "pt": "Portuguese",
+        "es": "Spanish",
+        "sw": "Swahili",
+        "yo": "Yorùbá",
+        "zh": "Chinese"
+    }
+    # for lang in tqdm(SUPPORTED_LANGUAGES.keys()):
+    #     questions = get_global_mmlu(lang)
+    #     save_to_json(questions, f'global_mmlu.{lang}_samples.json')
+        #
+        # questions = get_global_mmlu_ca(lang)
+        # save_to_json(questions, f'global_mmlu_lite_ca.{lang}_samples.json')
+        # # #
+        # #
+        # questions = get_global_mmlu_cs(lang)
+        # save_to_json(questions, f'global_mmlu_lite_cs.{lang}_samples.json')
