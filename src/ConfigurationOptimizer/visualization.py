@@ -1,7 +1,8 @@
 # visualization.py
-import matplotlib.pyplot as plt
-from typing import Dict, Optional
 import os
+from typing import Dict, Optional
+
+import matplotlib.pyplot as plt
 
 
 class Visualizer:
