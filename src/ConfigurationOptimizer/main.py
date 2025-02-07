@@ -1,19 +1,21 @@
 # main.py
 import logging
-from typing import Optional
-
-from configuration_evaluator import ConfigurationEvaluator
-from constants import MODELS, get_file_paths
+import os
+from typing import List, Optional
 from data_processor import DataProcessor
+from configuration_evaluator import ConfigurationEvaluator
+from selection_methods import MajoritySelection, AxiswiseSelection, RegressionBasedSelection, RandomSelection
 from experiment_runner import ExperimentRunner
-from selection_methods import MajoritySelection, AxiswiseSelection
-from utils import setup_logging
 from visualization import Visualizer
+from utils import setup_logging
+from constants import get_file_paths, ExperimentConfig, DEFAULT_CONFIG, ZERO_SHOT_CONFIG, MODELS
+from constants import EXPERIMENT_ARGS_CONFIG
 
 
 def process_model(
         model_name: str,
-        force_recompute: bool = False,
+        experiment_config: ExperimentConfig,
+        force_recompute: bool = True,
         logger: Optional[logging.Logger] = None
 ) -> None:
     """Process a single model's data."""
@@ -24,34 +26,58 @@ def process_model(
     logger.info(f"Starting processing for model: {model_name}")
     logger.info(f"{'=' * 50}")
 
-    # Get file paths for this model
-    paths = get_file_paths(model_name)
+    # Get file paths for this model and experiment configuration
+    paths = get_file_paths(model_name, experiment_config)
 
     # Initialize components
-    data_processor = DataProcessor(paths['input'])
+    data_processor = DataProcessor(paths['input'], experiment_config)
     data = data_processor.load_and_clean_data()
+
+    # Apply experiment-specific filters
+    filtered_data = experiment_config.apply_filters(data)
+    logger.info(
+        f"Applied filters: {experiment_config.filters}. "
+        f"Remaining samples: {len(filtered_data)}"
+    )
     logger.info(f"Model {model_name}: Loaded data with shape: {data.shape}")
 
-    evaluator = ConfigurationEvaluator(data, paths['rankings'])
+    evaluator = ConfigurationEvaluator(data, experiment_config, paths['rankings'])
     rankings = evaluator.compute_rankings(force_recompute)
     logger.info(f"Model {model_name}: Computed rankings for {len(rankings)} configurations")
 
     # Setup selection methods
     selection_methods = [
-        MajoritySelection(),
-        AxiswiseSelection()
+        MajoritySelection(experiment_config,rankings),
+        AxiswiseSelection(experiment_config,rankings),
+        RandomSelection(experiment_config,rankings),
+        RegressionBasedSelection(experiment_config,rankings)
     ]
 
     # Run experiments
     runner = ExperimentRunner(data, rankings, selection_methods, paths['results'])
-    results = runner.run_experiments()
+    # Experiment configuration
+    experiment_args_config =  EXPERIMENT_ARGS_CONFIG
+    max_samples = len(data)
+    adjusted_sizes = [size for size in experiment_args_config['SAMPLE_SIZES'] if size <= max_samples]
+    # add the max_samples to the list of adjusted sizes if it is not already there
+    if max_samples not in adjusted_sizes:
+        adjusted_sizes.append(max_samples)
+    if len(adjusted_sizes) < len(experiment_args_config['SAMPLE_SIZES']):
+        logger.warning(
+            f"Adjusted sample sizes due to data size ({max_samples} samples). "
+            f"Using sizes: {adjusted_sizes}"
+        )
+    # update the experiment_args_config with the adjusted sizes
+    experiment_args_config['SAMPLE_SIZES'] = adjusted_sizes
+
+    results = runner.run_experiments(experiment_args_config['SAMPLE_SIZES'], experiment_args_config['N_ITERATIONS'], experiment_args_config['RANDOM_SEED'])
     logger.info(f"Model {model_name}: Completed experiments")
 
     # Visualize results
     visualizer = Visualizer()
     visualizer.plot_performance_gaps(
         results,
-        paths['plot'],
+        paths['plot'].replace('.png', f'{experiment_config.experiment_suffix}.png'),
         model_name
     )
     logger.info(f"Model {model_name}: Generated visualization")
@@ -62,14 +88,36 @@ def main():
     setup_logging()
     logger = logging.getLogger(__name__)
 
-    # Process each model
+    # Define experiment configurations
+    experiments = [
+        DEFAULT_CONFIG,
+        ZERO_SHOT_CONFIG
+    ]
+
+    # Process each model with each experiment configuration
     for model_name in MODELS:
-        try:
-            process_model(model_name, logger=logger)
-            logger.info(f"Successfully processed model: {model_name}")
-        except Exception as e:
-            logger.error(f"Error processing model {model_name}: {str(e)}")
-            continue
+        for experiment_config in experiments:
+            try:
+                logger.info(
+                    f"Starting experiment with config: "
+                    f"{experiment_config.experiment_suffix or 'default'}"
+                )
+                process_model(
+                    model_name=model_name,
+                    experiment_config=experiment_config,
+                    logger=logger
+                )
+                logger.info(
+                    f"Successfully processed model {model_name} "
+                    f"with config {experiment_config.experiment_suffix or 'default'}"
+                )
+            except Exception as e:
+                logger.error(
+                    f"Error processing model {model_name} "
+                    f"with config {experiment_config.experiment_suffix or 'default'}: "
+                    f"{str(e)}"
+                )
+                continue
 
 
 if __name__ == "__main__":
