@@ -15,6 +15,7 @@ absolute_path=$(readlink -f $dir)
 # print the full (not relative) path of the dir variable
 echo "current dir is set to: $absolute_path"
 cd $dir
+HF_HOME="/cs/snapless/gabis/gabis/shared"
 
 echo ${SLURM_ARRAY_TASK_ID}
 CUDA_LAUNCH_BLOCKING=1 python create_data.py;
