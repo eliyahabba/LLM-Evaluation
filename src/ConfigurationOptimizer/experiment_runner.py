@@ -7,7 +7,7 @@ import numpy as np
 import json
 from typing import List, Dict
 from selection_methods import SelectionMethod
-from constants import EXPERIMENT_CONFIG
+from constants import EXPERIMENT_ARGS_CONFIG
 
 
 class ExperimentRunner:
@@ -28,24 +28,14 @@ class ExperimentRunner:
 
     def run_experiments(
             self,
-            sample_sizes: List[int] = EXPERIMENT_CONFIG['SAMPLE_SIZES'],
-            n_iterations: int = EXPERIMENT_CONFIG['N_ITERATIONS'],
-            base_seed: int = EXPERIMENT_CONFIG['RANDOM_SEED']
+            sample_sizes: List[int] = EXPERIMENT_ARGS_CONFIG['SAMPLE_SIZES'],
+            n_iterations: int = EXPERIMENT_ARGS_CONFIG['N_ITERATIONS'],
+            base_seed: int = EXPERIMENT_ARGS_CONFIG['RANDOM_SEED']
     ) -> Dict:
         """Run experiments for different sample sizes and methods."""
         logger = logging.getLogger(__name__)
 
         # Adjust sample sizes based on available data
-        max_samples = len(self.data)
-        adjusted_sizes = [size for size in sample_sizes if size <= max_samples]
-        # add the max_samples to the list of adjusted sizes if it is not already there
-        if max_samples not in adjusted_sizes:
-            adjusted_sizes.append(max_samples)
-        if len(adjusted_sizes) < len(sample_sizes):
-            logger.warning(
-                f"Adjusted sample sizes due to data size ({max_samples} samples). "
-                f"Using sizes: {adjusted_sizes}"
-            )
         for method in self.selection_methods:
             method_name = method.__class__.__name__
             self.results[method_name] = {
@@ -54,7 +44,7 @@ class ExperimentRunner:
             }
 
             logger = logging.getLogger(__name__)
-            for size in adjusted_sizes:
+            for size in sample_sizes:
                 logger.info(f"Processing sample size: {size}")
                 gaps = []
 
