@@ -211,4 +211,4 @@ if __name__ == "__main__":
 
     for model in models_to_evaluate:
         output_filepath = os.path.join(base_folder_name, f"results_{model.split('/')[1]}.parquet")
-        run_configuration_analysis(model, output_filepath=output_filepath)
+        run_configuration_analysis(model, output_filepath=output_filepath, num_processes=24)
