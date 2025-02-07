@@ -109,13 +109,11 @@ def main():
 
     # Define experiment configurations
     experiments = [
-        # DEFAULT_CONFIG,
+        DEFAULT_CONFIG,
         ZERO_SHOT_CONFIG
     ]
     # Model configurations
-    MODELS = [
-        'meta-llama/Llama-3.2-1B-Instruct',
-    ]
+
     # Process each model with each experiment configuration
     for model_name in MODELS:
         for experiment_config in experiments:
