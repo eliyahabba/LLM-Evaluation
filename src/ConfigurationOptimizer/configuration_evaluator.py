@@ -1,18 +1,18 @@
 # configuration_evaluator.py
-import logging
-
 import pandas as pd
 import os
-from typing import Dict, Optional
 
-from constants import DATA_CONFIG
+from typing import Dict, Optional
+from constants import ExperimentConfig
+import logging
 
 
 class ConfigurationEvaluator:
     """Handles computation and storage of configuration rankings."""
 
-    def __init__(self, data: pd.DataFrame, output_file: str):
+    def __init__(self, data: pd.DataFrame, experiment_config: ExperimentConfig, output_file: str):
         self.data = data
+        self.experiment_config = experiment_config
         self.output_file = output_file
         self.rankings = None
 
@@ -30,7 +30,7 @@ class ConfigurationEvaluator:
         # Group by configuration axes and compute average score
         self.rankings = (
             self.data
-            .groupby(DATA_CONFIG['CONFIG_AXES'])['score']
+            .groupby(self.experiment_config.config_axes)['score']
             .agg(['mean', 'count'])
             .reset_index()
             .sort_values('mean', ascending=False)
