@@ -428,7 +428,7 @@ def main():
     figs.append(fig)
     with tabs[1]:
         for fig in figs:
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=False)
 
     with tabs[2]:
         # Add dataset count selector

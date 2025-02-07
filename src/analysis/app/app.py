@@ -194,7 +194,7 @@ def plot_scatter_distribution(config_data: pd.DataFrame):
         config_data,
         x="quad",
         y="accuracy",
-        text="count",
+        # text="count",
         labels={
             "quad": "Configuration Type",
             "accuracy": "Accuracy Score (0-1)"
@@ -650,35 +650,46 @@ def main():
         return
 
     # Shots selection
+    if "selected_shots" not in st.session_state:
+        st.session_state.selected_shots = sorted(shots_models_data.keys())[0]
     selected_shots = st.sidebar.selectbox(
         "Select Number of Shots",
-        options=sorted(shots_models_data.keys())
+        options=sorted(shots_models_data.keys()),
+        key="selected_shots"
     )
     if not selected_shots:
         return
 
     # Model selection
-    models = sorted(shots_models_data[selected_shots].keys())
+    models = sorted(shots_models_data[st.session_state.selected_shots].keys())
+    if "selected_model" not in st.session_state:
+        st.session_state.selected_model = models[0]
     selected_model = st.sidebar.selectbox(
         "Select Model",
-        options=models
+        options=models,
+        key="selected_model"
     )
     if not selected_model:
         return
 
     # Dataset selection
-    datasets = sorted(shots_models_data[selected_shots][selected_model])
+    datasets = sorted(shots_models_data[st.session_state.selected_shots][st.session_state.selected_model])
+    if "selected_dataset" not in st.session_state:
+        st.session_state.selected_dataset = datasets[0]
     selected_dataset = st.sidebar.selectbox(
         "Select Dataset",
-        options=datasets
+        options=datasets,
+        index=datasets.index(st.session_state.selected_dataset),
+        key="selected_dataset"
     )
     if not selected_dataset:
         return
-
-    # Load the "quad"-level data
+    # if st.session_state.selected_dataset != selected_dataset:
+    #     st.session_state.selected_dataset = selected_dataset
+    # # Load the "quad"-level data
     config_data, distance_matrix, samples_data, answer_distribution_matrix, position_distribution = load_data(
-        results_dir, selected_shots, selected_model,
-        selected_dataset)
+        results_dir, st.session_state.selected_shots, st.session_state.selected_model,
+        st.session_state.selected_dataset)
 
     # Create tabs: "All Data" + 4 dimension tabs
     columns_to_analyze = ["template", "separator", "enumerator", "choices_order"]
