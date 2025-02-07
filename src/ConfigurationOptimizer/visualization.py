@@ -42,3 +42,10 @@ class Visualizer:
             plt.close()
         else:
             plt.show()
+
+        # save the data to same folder as csv file
+        results_file = output_file.replace('.png', '.csv')
+        with open(results_file, 'w') as f:
+            for method_name, method_results in results.items():
+                f.write(f"{method_name}, {method_results['sample_sizes']}, {method_results['gaps']}\n")
+            f.close()
