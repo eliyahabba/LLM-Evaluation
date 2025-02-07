@@ -2,6 +2,9 @@
 import logging
 import os
 from typing import List, Optional
+
+import numpy as np
+
 from data_processor import DataProcessor
 from configuration_evaluator import ConfigurationEvaluator
 from selection_methods import MajoritySelection, AxiswiseSelection, RegressionBasedSelection, RandomSelection
@@ -43,6 +46,22 @@ def process_model(
 
     evaluator = ConfigurationEvaluator(filtered_data, experiment_config, paths['rankings'])
     rankings = evaluator.compute_rankings(force_recompute)
+    if experiment_config.filters is not None and 0 in experiment_config.filters.values():
+        rankings = rankings[rankings['count'] > 400]
+    else:
+        rankings = rankings[rankings['count'] > 1000]
+
+    # Convert to numpy arrays for faster operations
+    valid_arr = rankings[['shots', 'template', 'separator', 'enumerator', 'choices_order']].values
+    filter_arr = filtered_data[['shots', 'template', 'separator', 'enumerator', 'choices_order']].values
+
+    # Create a fast lookup using structured arrays
+    valid_combinations = set(map(tuple, valid_arr))
+
+    # Use boolean indexing with numpy
+    mask = np.array([tuple(row) in valid_combinations for row in filter_arr])
+    filtered_data = filtered_data[mask]
+
     logger.info(f"Model {model_name}: Computed rankings for {len(rankings)} configurations")
 
     # Setup selection methods
@@ -90,10 +109,13 @@ def main():
 
     # Define experiment configurations
     experiments = [
-        DEFAULT_CONFIG,
+        # DEFAULT_CONFIG,
         ZERO_SHOT_CONFIG
     ]
-
+    # Model configurations
+    MODELS = [
+        'meta-llama/Llama-3.2-1B-Instruct',
+    ]
     # Process each model with each experiment configuration
     for model_name in MODELS:
         for experiment_config in experiments:
