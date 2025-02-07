@@ -47,11 +47,30 @@ class RegressionBasedSelection(SelectionMethod):
     """Implements regression-based selection method."""
 
     def select_configuration(self, data: pd.DataFrame) -> Dict:
-        """Select configuration using linear regression predictions."""
+        """
+        Select configuration using linear regression predictions.
+
+        Process:
+        1. Prepare training data from the sample:
+           - Group by configuration to get mean scores
+           - Create feature matrix using one-hot encoding
+
+        2. Train regression model:
+           - Use configurations from sample as features
+           - Use mean scores from sample as target
+
+        3. Generate predictions:
+           - Use ALL configurations from full rankings table
+           - Predict scores for all possible configurations
+
+        4. Select best configuration:
+           - Choose configuration with highest predicted score
+        """
         logger = logging.getLogger(__name__)
         config_axes = self.experiment_config.get_config_axes()
 
-        # Group by configuration and calculate mean scores
+        # Step 1: Prepare training data from sample
+        logger.info("Preparing training data from sample")
         grouped_data = (
             data
             .groupby(config_axes)['score']
@@ -64,30 +83,33 @@ class RegressionBasedSelection(SelectionMethod):
         X_train = encoder.fit_transform(grouped_data[config_axes])
         y_train = grouped_data['mean'].values
 
-        # Train regression model
+        # Step 2: Train regression model
         logger.info("Training regression model")
         model = LinearRegression()
         model.fit(X_train, y_train)
 
-        # Get all unique configurations
-        unique_configs = (
-            data[config_axes]
+        # Step 3: Generate predictions for ALL possible configurations
+        logger.info("Generating predictions for all configurations")
+
+        # Get all unique configurations from the full rankings
+        all_configs = (
+            self.full_rankings[config_axes]
             .drop_duplicates()
             .reset_index(drop=True)
         )
 
-        # Transform configurations to feature matrix
-        X_all = encoder.transform(unique_configs[config_axes])
+        # Transform all configurations to feature matrix
+        X_all = encoder.transform(all_configs[config_axes])
 
         # Make predictions
         predictions = model.predict(X_all)
 
-        # Select best configuration
+        # Step 4: Select best configuration
         best_idx = np.argmax(predictions)
-        selected_config = unique_configs.iloc[best_idx]
+        selected_config = all_configs.iloc[best_idx]
 
+        logger.info("Selected configuration based on regression predictions")
         return selected_config.to_dict()
-
 
 class AxiswiseSelection(SelectionMethod):
     """Implements axis-wise selection method."""
