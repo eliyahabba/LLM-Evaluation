@@ -1,12 +1,14 @@
 # experiment_runner.py
-import os
-
-import pandas as pd
-import numpy as np
 import json
+import logging
+import os
 from typing import List, Dict
-from selection_methods import SelectionMethod
+
+import numpy as np
+import pandas as pd
+
 from constants import EXPERIMENT_CONFIG
+from selection_methods import SelectionMethod
 
 
 class ExperimentRunner:
@@ -41,7 +43,9 @@ class ExperimentRunner:
                 'gaps': []
             }
 
+            logger = logging.getLogger(__name__)
             for size in sample_sizes:
+                logger.info(f"Processing sample size: {size}")
                 gaps = []
                 for iteration in range(n_iterations):
                     # Select random sample
