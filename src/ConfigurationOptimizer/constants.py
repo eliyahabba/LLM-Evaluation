@@ -27,7 +27,7 @@ class ExperimentConfig:
 
     def apply_filters(self, data: pd.DataFrame) -> pd.DataFrame:
         """Apply configured filters to the dataset."""
-        filtered_data = data.copy()
+        filtered_data = data
         for column, value in self.filters.items():
             filtered_data = filtered_data[filtered_data[column] == value]
         return filtered_data
