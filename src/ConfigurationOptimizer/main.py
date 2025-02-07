@@ -1,14 +1,14 @@
 # main.py
 import logging
-import os
-from typing import List, Optional
-from data_processor import DataProcessor
+from typing import Optional
+
 from configuration_evaluator import ConfigurationEvaluator
-from selection_methods import MajoritySelection, AxiswiseSelection
-from experiment_runner import ExperimentRunner
-from visualization import Visualizer
-from utils import setup_logging
 from constants import MODELS, get_file_paths
+from data_processor import DataProcessor
+from experiment_runner import ExperimentRunner
+from selection_methods import MajoritySelection, AxiswiseSelection
+from utils import setup_logging
+from visualization import Visualizer
 
 
 def process_model(
@@ -19,6 +19,10 @@ def process_model(
     """Process a single model's data."""
     if logger is None:
         logger = logging.getLogger(__name__)
+
+    logger.info(f"\n{'=' * 50}")
+    logger.info(f"Starting processing for model: {model_name}")
+    logger.info(f"{'=' * 50}")
 
     # Get file paths for this model
     paths = get_file_paths(model_name)
