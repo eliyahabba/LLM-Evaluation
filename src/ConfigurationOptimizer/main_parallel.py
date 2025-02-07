@@ -38,9 +38,9 @@ def process_model(
             f"Applied filters: {experiment_config.filters}. "
             f"Remaining samples: {len(filtered_data)}"
         )
-        logger.info(f"Model {model_name}: Loaded data with shape: {data.shape}")
+        logger.info(f"Model {model_name}: Loaded data with shape: {filtered_data.shape}")
 
-        evaluator = ConfigurationEvaluator(data, experiment_config, paths['rankings'])
+        evaluator = ConfigurationEvaluator(filtered_data, experiment_config, paths['rankings'])
         rankings = evaluator.compute_rankings(force_recompute)
         logger.info(f"Model {model_name}: Computed rankings for {len(rankings)} configurations")
 
@@ -53,10 +53,10 @@ def process_model(
         ]
 
         # Run experiments
-        runner = ExperimentRunner(data, rankings, selection_methods, paths['results'])
+        runner = ExperimentRunner(filtered_data, rankings, selection_methods, paths['results'])
         experiment_args_config = EXPERIMENT_ARGS_CONFIG
 
-        max_samples = len(data)
+        max_samples = len(filtered_data)
         adjusted_sizes = [size for size in experiment_args_config['SAMPLE_SIZES'] if size <= max_samples]
         if max_samples not in adjusted_sizes:
             adjusted_sizes.append(max_samples)
