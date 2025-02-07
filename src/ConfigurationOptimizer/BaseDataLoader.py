@@ -6,10 +6,7 @@ from typing import Optional
 import pandas as pd
 import pyarrow.compute as pc
 from datasets import load_dataset
-from huggingface_hub import HfFileSystem, HfApi
-
-from config.get_config import Config
-from src.analysis.create_plots.check_data import get_parquet_files_from_hf
+from huggingface_hub import HfApi
 
 repo_name = "eliyahabba/llm-evaluation-analysis-split"
 
@@ -43,7 +40,7 @@ class BaseDataLoader:
                                          enumerator=enumerator,
                                          choices_order=choices_order)
         # clean_df = self.remove_duplicates(full_results)
-        clean_df =  full_results.drop(['quantization','closest_answer'], axis=1)
+        clean_df = full_results.drop(['quantization', 'closest_answer'], axis=1)
         load_time = time.time()
         print(f"The size of the data after removing duplicates is: {len(clean_df)}")
         print(f"Data loading completed in {load_time - start_time:.2f} seconds")
@@ -79,7 +76,7 @@ class BaseDataLoader:
             repo_id="eliyahabba/llm-evaluation-analysis-split",
             repo_type="dataset",
         )
-        existing_files = [file for file in all_files if                          file.endswith('.parquet')]
+        existing_files = [file for file in all_files if file.endswith('.parquet')]
         # split only the file name that contains the model name and shots and dataset
         if model_name is not None:
             model_name = model_name.split("/")[-1]
