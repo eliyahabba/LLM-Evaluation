@@ -1,14 +1,12 @@
 # experiment_runner.py
+import pandas as pd
+import numpy as np
 import json
 import logging
 import os
 from typing import List, Dict
-
-import numpy as np
-import pandas as pd
-
-from constants import EXPERIMENT_CONFIG
 from selection_methods import SelectionMethod
+from constants import EXPERIMENT_CONFIG
 
 
 class ExperimentRunner:
@@ -79,7 +77,8 @@ class ExperimentRunner:
         mask = pd.Series(True, index=self.rankings.index)
         for col, value in config.items():
             mask &= (self.rankings[col] == value)
-
+        if self.rankings[mask]['mean'].empty:
+            return 1.0
         selected_score = self.rankings[mask]['mean'].iloc[0]
         optimal_score = self.rankings['mean'].max()
 
