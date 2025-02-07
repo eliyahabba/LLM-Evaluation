@@ -1,8 +1,7 @@
 # visualization.py
-import os
-from typing import Dict, Optional
-
 import matplotlib.pyplot as plt
+from typing import Dict, Optional
+import os
 
 
 class Visualizer:
@@ -25,8 +24,10 @@ class Visualizer:
                 label=method_name
             )
 
-        plt.xlabel('Sample Size')
+        plt.xlabel('Num of Samples')
         plt.ylabel('Performance Gap')
+        plt.ticklabel_format(style='plain', axis='x')
+        plt.xscale('log')
         title = 'Performance Gap vs Sample Size'
         if model_name:
             title += f'\n{model_name}'
