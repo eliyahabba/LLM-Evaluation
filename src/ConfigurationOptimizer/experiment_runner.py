@@ -1,9 +1,10 @@
 # experiment_runner.py
+import logging
+import os
+
 import pandas as pd
 import numpy as np
 import json
-import logging
-import os
 from typing import List, Dict
 from selection_methods import SelectionMethod
 from constants import EXPERIMENT_CONFIG
@@ -29,11 +30,22 @@ class ExperimentRunner:
             self,
             sample_sizes: List[int] = EXPERIMENT_CONFIG['SAMPLE_SIZES'],
             n_iterations: int = EXPERIMENT_CONFIG['N_ITERATIONS'],
-            random_seed: int = EXPERIMENT_CONFIG['RANDOM_SEED']
+            base_seed: int = EXPERIMENT_CONFIG['RANDOM_SEED']
     ) -> Dict:
         """Run experiments for different sample sizes and methods."""
-        np.random.seed(random_seed)
+        logger = logging.getLogger(__name__)
 
+        # Adjust sample sizes based on available data
+        max_samples = len(self.data)
+        adjusted_sizes = [size for size in sample_sizes if size <= max_samples]
+        # add the max_samples to the list of adjusted sizes if it is not already there
+        if max_samples not in adjusted_sizes:
+            adjusted_sizes.append(max_samples)
+        if len(adjusted_sizes) < len(sample_sizes):
+            logger.warning(
+                f"Adjusted sample sizes due to data size ({max_samples} samples). "
+                f"Using sizes: {adjusted_sizes}"
+            )
         for method in self.selection_methods:
             method_name = method.__class__.__name__
             self.results[method_name] = {
@@ -42,15 +54,22 @@ class ExperimentRunner:
             }
 
             logger = logging.getLogger(__name__)
-            for size in sample_sizes:
+            for size in adjusted_sizes:
                 logger.info(f"Processing sample size: {size}")
                 gaps = []
-                for iteration in range(n_iterations):
+
+                # Generate different seeds for each iteration
+                iteration_seeds = [base_seed + i for i in range(n_iterations)]
+
+                for iteration, seed in enumerate(iteration_seeds):
+                    logger.info(f"Running iteration {iteration + 1} with seed {seed}")
+                    np.random.seed(seed)
+
                     # Select random sample
                     sample_indices = np.random.choice(
                         len(self.data),
                         size=size,
-                        replace=True
+                        replace=True  # Allow replacements for consistency across sample sizes
                     )
                     sample_data = self.data.iloc[sample_indices]
 
