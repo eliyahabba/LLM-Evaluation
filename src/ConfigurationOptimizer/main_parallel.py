@@ -32,6 +32,7 @@ def process_model(
         # Initialize components
         data_processor = DataProcessor(paths['input'], experiment_config)
         data = data_processor.load_and_clean_data()
+        data = data[~data.choices_order.isin(["correct_first", "correct_last"])]
 
         # Apply experiment-specific filters
         filtered_data = experiment_config.apply_filters(data)
