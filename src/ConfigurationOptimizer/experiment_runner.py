@@ -1,13 +1,14 @@
 # experiment_runner.py
+import json
 import logging
 import os
-
-import pandas as pd
-import numpy as np
-import json
 from typing import List, Dict
-from selection_methods import SelectionMethod
+
+import numpy as np
+import pandas as pd
+
 from constants import EXPERIMENT_ARGS_CONFIG
+from selection_methods import SelectionMethod
 
 
 class ExperimentRunner:
@@ -37,10 +38,12 @@ class ExperimentRunner:
 
         # Initialize results dictionary for all methods
         for method in self.selection_methods:
-            method_name = method.__class__.__name__
+            method_name = method.get_display_name()  # Use new display name method
             self.results[method_name] = {
                 'sample_sizes': sample_sizes,
-                'gaps': []
+                'gaps': [],
+                'gap_stds': [],  # Add standard deviation tracking
+                'raw_gaps': []  # Store all gaps for each sample size
             }
 
         # Generate different seeds for each iteration
@@ -51,7 +54,7 @@ class ExperimentRunner:
             logger.info(f"Processing sample size: {size}")
 
             # Store gaps for each method at this sample size
-            method_gaps = {method.__class__.__name__: [] for method in self.selection_methods}
+            method_gaps = {method.get_display_name(): [] for method in self.selection_methods}
 
             # For each iteration
             for iteration, seed in enumerate(iteration_seeds):
@@ -64,7 +67,7 @@ class ExperimentRunner:
 
                 # Use the same sample for all methods
                 for method in self.selection_methods:
-                    method_name = method.__class__.__name__
+                    method_name = method.get_display_name()
 
                     # Get selected configuration for this method
                     selected_config = method.select_configuration(sample_data)
@@ -73,9 +76,12 @@ class ExperimentRunner:
                     gap = self._calculate_gap(selected_config)
                     method_gaps[method_name].append(gap)
 
-            # After all iterations, calculate and store average gaps for each method
+            # After all iterations, calculate and store average gaps and std for each method
             for method_name in method_gaps:
-                self.results[method_name]['gaps'].append(np.mean(method_gaps[method_name]))
+                gaps_array = np.array(method_gaps[method_name])
+                self.results[method_name]['gaps'].append(np.mean(gaps_array))
+                self.results[method_name]['gap_stds'].append(np.std(gaps_array))
+                self.results[method_name]['raw_gaps'].append(gaps_array.tolist())
 
         # Save results
         os.makedirs(os.path.dirname(self.results_file), exist_ok=True)
