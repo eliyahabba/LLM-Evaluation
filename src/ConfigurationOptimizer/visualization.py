@@ -1,11 +1,3 @@
-import os
-from typing import Dict, Optional
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import savgol_filter
-from matplotlib.ticker import FuncFormatter
-
-
 def get_distinct_colors(n):
     """Return a list of n visually distinct, high-contrast colors."""
     color_palette = [
@@ -18,9 +10,17 @@ def get_distinct_colors(n):
         "#e377c2",  # Pink
         "#7f7f7f",  # Gray
         "#bcbd22",  # Olive
-        "#17becf"   # Cyan
+        "#17becf"  # Cyan
     ]
     return color_palette[:n] if n <= len(color_palette) else plt.cm.tab10(np.linspace(0, 1, n))
+
+
+import os
+from typing import Dict, Optional
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.signal import savgol_filter
 
 
 class Visualizer:
@@ -37,17 +37,16 @@ class Visualizer:
         plt.figure(figsize=(12, 7))
 
         colors = get_distinct_colors(len(results))
-        linestyles = ['-', '--', '-.', ':']  # Different line styles to differentiate methods
-        all_x_values = set()  # Collect all unique x-axis values
+        linestyles = ['-', '--', '-.', ':']
+        all_x_values = set()
 
         for i, ((method_name, method_results), color) in enumerate(zip(results.items(), colors)):
             x = np.array(method_results['sample_sizes'])
             y = np.array(method_results['gaps'])
             yerr = np.array(method_results['gap_stds'])
 
-            all_x_values.update(x)  # Collect x-values for labeling
-
-            x_offset = x * (1 + (i - len(results) / 2) * 0.02)  # Small shift for each method
+            all_x_values.update(x)
+            x_offset = x * (1 + (i - len(results) / 2) * 0.02)
 
             if smooth:
                 window_length = min(len(y) - (len(y) + 1) % 2, 5)
@@ -65,24 +64,30 @@ class Visualizer:
 
             y_lower_bound = np.maximum(y - yerr, 0)
             y_upper_bound = y + yerr
-
             plt.fill_between(x_offset, y_lower_bound, y_upper_bound, color=color, alpha=0.2)
 
-        # Convert x-values to sorted list
+        # Convert x-values to sorted list (only actual data points)
         all_x_values = sorted(all_x_values)
 
-        # Set log scale for x-axis before dealing with ticks
+        # Set log scale for x-axis
         plt.xscale('log')
 
-        ax = plt.gca()  # Get current axis
-        ax.set_xticks(all_x_values, minor=False)  # Set major ticks
+        ax = plt.gca()
+
+        # Only use actual data points as x-ticks
+        ax.set_xticks(all_x_values)
 
         # Create labels, replacing the last one with "Data Size"
         xtick_labels = [f"{int(x):,}" for x in all_x_values[:-1]]
-        xtick_labels.append("Data Size")  # Replace last tick with text
+        xtick_labels.append("Data Size")  # Last tick is labeled as "Data Size"
 
-        # Force Matplotlib to display the last label as "Data Size"
         ax.set_xticklabels(xtick_labels, rotation=0, ha='center')
+
+        # Rotate labels dynamically if needed
+        if len(all_x_values) > 8:
+            plt.xticks(rotation=45, ha='right')
+        else:
+            plt.xticks(rotation=0, ha='center')
 
         # Prevent Y from going below 0
         plt.ylim(bottom=0)
