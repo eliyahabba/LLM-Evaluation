@@ -123,8 +123,7 @@ def main():
     tasks = [(model_name, experiment_config) for model_name in MODELS for experiment_config in experiments]
 
     logger.info(f"Starting parallel execution for {len(tasks)} tasks...")
-
-    with ProcessPoolExecutor() as executor:
+    with ProcessPoolExecutor(max_workers=10) as executor:
         future_to_task = {
             executor.submit(process_model, model, config, True): (model, config)
             for model, config in tasks
