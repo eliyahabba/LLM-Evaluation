@@ -3,6 +3,7 @@ from typing import Dict, Optional
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
+from matplotlib.ticker import FuncFormatter
 
 
 def get_distinct_colors(n):
@@ -37,38 +38,57 @@ class Visualizer:
 
         colors = get_distinct_colors(len(results))
         linestyles = ['-', '--', '-.', ':']  # Different line styles to differentiate methods
+        all_x_values = set()  # Collect all unique x-axis values
 
         for i, ((method_name, method_results), color) in enumerate(zip(results.items(), colors)):
             x = np.array(method_results['sample_sizes'])
             y = np.array(method_results['gaps'])
             yerr = np.array(method_results['gap_stds'])
 
-            # Offset X slightly to avoid overlap in error bars
+            all_x_values.update(x)  # Collect x-values for labeling
+
             x_offset = x * (1 + (i - len(results) / 2) * 0.02)  # Small shift for each method
 
             if smooth:
-                # Apply Savitzky-Golay filter for smoothing
-                window_length = min(len(y) - (len(y) + 1) % 2, 5)  # Must be odd and less than data length
+                window_length = min(len(y) - (len(y) + 1) % 2, 5)
                 if window_length >= 3:
                     y_smooth = savgol_filter(y, window_length, 2)
                     plt.plot(x_offset, y_smooth, linestyle=linestyles[i % len(linestyles)],
-                             color=color, label=f"{method_name} (Smoothed)")
+                             color=color, label=f"{method_name} (Smoothed)", alpha=0.7)
+                    plt.scatter(x_offset, y, marker='o', color=color, s=30, label=f"{method_name} (Actual)", zorder=5)
                 else:
-                    plt.plot(x_offset, y, linestyle=linestyles[i % len(linestyles)],
-                             color=color, label=method_name)
+                    plt.plot(x_offset, y, linestyle=linestyles[i % len(linestyles)], color=color, label=method_name)
+                    plt.scatter(x_offset, y, marker='o', color=color, s=30, zorder=5)
+            else:
+                plt.plot(x_offset, y, linestyle=linestyles[i % len(linestyles)], color=color, label=method_name)
+                plt.scatter(x_offset, y, marker='o', color=color, s=30, zorder=5)
 
-            # Use `fill_between` for better visibility of error margins
-            plt.fill_between(x_offset, y - yerr, y + yerr, color=color, alpha=0.2)
+            y_lower_bound = np.maximum(y - yerr, 0)
+            y_upper_bound = y + yerr
 
-            # Add label "Data Size" at the last data point
-            last_x = x_offset[-1]
-            last_y = y[-1]
-            plt.text(last_x, last_y, "Data Size", fontsize=12, ha='right', va='bottom', color=color)
+            plt.fill_between(x_offset, y_lower_bound, y_upper_bound, color=color, alpha=0.2)
+
+        # Convert x-values to sorted list
+        all_x_values = sorted(all_x_values)
+
+        # Set log scale for x-axis before dealing with ticks
+        plt.xscale('log')
+
+        ax = plt.gca()  # Get current axis
+        ax.set_xticks(all_x_values, minor=False)  # Set major ticks
+
+        # Create labels, replacing the last one with "Data Size"
+        xtick_labels = [f"{int(x):,}" for x in all_x_values[:-1]]
+        xtick_labels.append("Data Size")  # Replace last tick with text
+
+        # Force Matplotlib to display the last label as "Data Size"
+        ax.set_xticklabels(xtick_labels, rotation=0, ha='center')
+
+        # Prevent Y from going below 0
+        plt.ylim(bottom=0)
 
         plt.xlabel('Number of Samples')
         plt.ylabel('Score Gap from Optimal Configuration')
-        plt.ticklabel_format(style='plain', axis='x')
-        plt.xscale('log')
         plt.grid(True, which="both", ls="-", alpha=0.2)
 
         title = 'Performance Gap vs Sample Size'
@@ -76,18 +96,16 @@ class Visualizer:
             title += f'\n{model_name}'
         plt.title(title)
 
-        plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+        plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
         plt.tight_layout()
 
         if output_file:
-            # Save both smoothed and original versions
             base_name, ext = os.path.splitext(output_file)
             output_path = f"{base_name}_{'smoothed' if smooth else 'original'}{ext}"
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             plt.savefig(output_path, bbox_inches='tight', dpi=300)
             plt.close()
 
-            # Save the raw data
             results_file = f"{base_name}_{'smoothed' if smooth else 'original'}.csv"
             with open(results_file, 'w') as f:
                 f.write("method,sample_size,gap,gap_std\n")
