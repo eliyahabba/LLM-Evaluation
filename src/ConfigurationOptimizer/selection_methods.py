@@ -23,6 +23,11 @@ class SelectionMethod(ABC):
         """Select optimal configuration based on sample data."""
         pass
 
+    @abstractmethod
+    def get_display_name(self) -> str:
+        """Return a user-friendly display name for the method."""
+        pass
+
 
 class RandomSelection(SelectionMethod):
     """Implements random selection method."""
@@ -41,6 +46,9 @@ class RandomSelection(SelectionMethod):
         selected_config = unique_configs.iloc[random_idx]
 
         return selected_config.to_dict()
+
+    def get_display_name(self) -> str:
+        return "Random Baseline"
 
 
 class RegressionBasedSelection(SelectionMethod):
@@ -111,6 +119,10 @@ class RegressionBasedSelection(SelectionMethod):
         logger.info("Selected configuration based on regression predictions")
         return selected_config.to_dict()
 
+    def get_display_name(self) -> str:
+        return "Regression Predictor"
+
+
 class AxiswiseSelection(SelectionMethod):
     """Implements axis-wise selection method."""
 
@@ -137,6 +149,9 @@ class AxiswiseSelection(SelectionMethod):
 
         return optimal_config
 
+    def get_display_name(self) -> str:
+        return "Axis-wise Optimization"
+
 
 class MajoritySelection(SelectionMethod):
     """Implements majority selection method."""
@@ -158,3 +173,6 @@ class MajoritySelection(SelectionMethod):
         ]
 
         return best_config.to_dict()
+
+    def get_display_name(self) -> str:
+        return "Best Global Configuration"
