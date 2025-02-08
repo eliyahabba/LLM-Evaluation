@@ -32,37 +32,37 @@ class Visualizer:
             model_name: Optional[str] = None,
             smooth: bool = True
     ):
-        """Plot gap from optimum as function of sample size with error bars."""
+        """Plot gap from optimum as function of sample size with improved error visualization."""
         plt.figure(figsize=(12, 7))
 
         colors = get_distinct_colors(len(results))
+        linestyles = ['-', '--', '-.', ':']  # Different line styles to differentiate methods
 
-        for (method_name, method_results), color in zip(results.items(), colors):
+        for i, ((method_name, method_results), color) in enumerate(zip(results.items(), colors)):
             x = np.array(method_results['sample_sizes'])
             y = np.array(method_results['gaps'])
             yerr = np.array(method_results['gap_stds'])
+
+            # Offset X slightly to avoid overlap in error bars
+            x_offset = x * (1 + (i - len(results) / 2) * 0.02)  # Small shift for each method
 
             if smooth:
                 # Apply Savitzky-Golay filter for smoothing
                 window_length = min(len(y) - (len(y) + 1) % 2, 5)  # Must be odd and less than data length
                 if window_length >= 3:
                     y_smooth = savgol_filter(y, window_length, 2)
-                    plt.plot(x, y_smooth, '-', color=color, label=f"{method_name} (Smoothed)")
-                    # Plot original points with error bars
-                    plt.errorbar(x, y, yerr=yerr, fmt='o', color=color, alpha=0.3,
-                                 markersize=4, capsize=3)
+                    plt.plot(x_offset, y_smooth, linestyle=linestyles[i % len(linestyles)],
+                             color=color, label=f"{method_name} (Smoothed)")
                 else:
-                    # If we can't smooth, just plot the original with error bars
-                    plt.errorbar(x, y, yerr=yerr, fmt='o-', color=color,
-                                 label=method_name, capsize=3)
-            else:
-                # Plot original data with error bars
-                plt.errorbar(x, y, yerr=yerr, fmt='o-', color=color,
-                             label=method_name, capsize=3)
+                    plt.plot(x_offset, y, linestyle=linestyles[i % len(linestyles)],
+                             color=color, label=method_name)
 
-            # Add "Data Size" label at the last data point
-            last_x = x[-1]  # Last x-axis value
-            last_y = y[-1]  # Corresponding y-axis value
+            # Use `fill_between` for better visibility of error margins
+            plt.fill_between(x_offset, y - yerr, y + yerr, color=color, alpha=0.2)
+
+            # Add label "Data Size" at the last data point
+            last_x = x_offset[-1]
+            last_y = y[-1]
             plt.text(last_x, last_y, "Data Size", fontsize=12, ha='right', va='bottom', color=color)
 
         plt.xlabel('Number of Samples')
@@ -90,9 +90,7 @@ class Visualizer:
             # Save the raw data
             results_file = f"{base_name}_{'smoothed' if smooth else 'original'}.csv"
             with open(results_file, 'w') as f:
-                # Write header
                 f.write("method,sample_size,gap,gap_std\n")
-                # Write data for each method
                 for method_name, method_results in results.items():
                     for size, gap, std in zip(
                             method_results['sample_sizes'],
