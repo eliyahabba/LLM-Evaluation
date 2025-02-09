@@ -2,15 +2,14 @@ def get_distinct_colors(n):
     """Return a list of n visually distinct, high-contrast colors."""
     color_palette = [
         "#1f77b4",  # Blue
-        "#ff7f0e",  # Orange
         "#2ca02c",  # Green
+        "#ff7f0e",  # Orange
         "#d62728",  # Red
         "#9467bd",  # Purple
         "#8c564b",  # Brown
         "#e377c2",  # Pink
         "#7f7f7f",  # Gray
         "#bcbd22",  # Olive
-        "#17becf"  # Cyan
     ]
     return color_palette[:n] if n <= len(color_palette) else plt.cm.tab10(np.linspace(0, 1, n))
 
@@ -20,19 +19,26 @@ from typing import Dict, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.signal import savgol_filter
-
-import os
-from typing import Dict, Optional
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import savgol_filter
 from matplotlib.ticker import FuncFormatter
-
+from scipy import integrate
+from scipy.signal import savgol_filter
 
 
 class Visualizer:
     """Handles plotting and results presentation."""
+
+    def compute_auc(self, x: np.ndarray, y: np.ndarray) -> float:
+        """
+        Compute area under the curve (AUC) using trapezoidal rule.
+        Lower AUC indicates better performance.
+        """
+        # Convert to log space for x axis
+        log_x = np.log10(x)
+        # Normalize x to [0,1] range for comparable AUC across different x ranges
+        norm_x = (log_x - log_x.min()) / (log_x.max() - log_x.min())
+        # Normalize y to [0,1] range
+        norm_y = y / 100  # Since y is in percentages
+        return integrate.trapz(norm_y, norm_x)
 
     def plot_performance_gaps(
             self,
@@ -46,14 +52,18 @@ class Visualizer:
 
         colors = get_distinct_colors(len(results))
         linestyles = ['-', '--', '-.', ':']
-        all_x_values = set()
+
+        # Calculate AUC for each method
+        auc_scores = {}
 
         for i, ((method_name, method_results), color) in enumerate(zip(results.items(), colors)):
             x = np.array(method_results['sample_sizes'])
-            y = np.array(method_results['gaps'])*100
-            yerr = np.array(method_results['gap_stds'])*100
+            y = np.array(method_results['gaps']) * 100
+            yerr = np.array(method_results['gap_stds']) * 100
 
-            all_x_values.update(x)
+            # Calculate AUC
+            auc_scores[method_name] = self.compute_auc(x, y)
+
             x_offset = x * (1 + (i - len(results) / 2) * 0.02)
 
             if smooth:
@@ -74,36 +84,30 @@ class Visualizer:
             y_upper_bound = y + yerr
             plt.fill_between(x_offset, y_lower_bound, y_upper_bound, color=color, alpha=0.2)
 
-        # Convert x-values to sorted list (only actual data points)
-        all_x_values = sorted(all_x_values)
-
         # Set log scale for x-axis
         plt.xscale('log')
 
         ax = plt.gca()
 
-        # Only use actual data points as x-ticks
-        ax.set_xticks(all_x_values)
+        # Format x-axis with scientific notation
+        def scientific_formatter(x, pos):
+            if x == 0:
+                return "0"
+            exp = int(np.log10(x))
+            return f"$10^{exp}$"
 
-        # Create labels, removing the second-to-last and replacing the last one with "Data Size"
-        xtick_labels = [f"{int(x):,}" for x in all_x_values]
+        ax.xaxis.set_major_formatter(FuncFormatter(scientific_formatter))
 
-        if len(xtick_labels) > 1:
-            xtick_labels[-2] = ""  # Remove second-to-last label
-        xtick_labels[-1] = "Data Size"  # Set last label
+        # Reduce number of ticks
+        ax.xaxis.set_major_locator(plt.LogLocator(base=10.0, numticks=5))
 
-        ax.set_xticklabels(xtick_labels, rotation=0, ha='center')
-
-        # Rotate labels dynamically if needed
-        if len(all_x_values) > 8:
-            plt.xticks(rotation=45, ha='right')
-        else:
-            plt.xticks(rotation=0, ha='center')
+        # Fix percentage symbol in y-axis
+        ax.yaxis.set_major_formatter(FuncFormatter(lambda x, p: f"{int(x)}%"))
 
         # Prevent Y from going below 0
         plt.ylim(bottom=0)
 
-        plt.xlabel('Number of Samples')
+        plt.xlabel('Number of Samples (Log Scale)')
         plt.ylabel('Accuracy Drop Compared to Best Configuration')
 
         plt.grid(True, which="both", ls="-", alpha=0.2)
@@ -115,6 +119,7 @@ class Visualizer:
 
         plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
         plt.tight_layout()
+
         if output_file:
             base_name, ext = os.path.splitext(output_file)
             output_path = f"{base_name}_{'smoothed' if smooth else 'original'}{ext}"
@@ -122,15 +127,16 @@ class Visualizer:
             plt.savefig(output_path, bbox_inches='tight', dpi=300)
             plt.close()
 
+            # Save results including AUC scores
             results_file = f"{base_name}_{'smoothed' if smooth else 'original'}.csv"
             with open(results_file, 'w') as f:
-                f.write("method,sample_size,gap,gap_std\n")
+                f.write("method,sample_size,gap,gap_std,auc\n")
                 for method_name, method_results in results.items():
                     for size, gap, std in zip(
                             method_results['sample_sizes'],
                             method_results['gaps'],
                             method_results['gap_stds']
                     ):
-                        f.write(f"{method_name},{size},{gap},{std}\n")
+                        f.write(f"{method_name},{size},{gap},{std},{auc_scores[method_name]}\n")
         else:
             plt.show()
