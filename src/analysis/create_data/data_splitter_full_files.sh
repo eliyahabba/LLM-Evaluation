@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --mem-per-cpu=30g
-#SBATCH -c8
+#SBATCH -c16
 #SBATCH --time=1-0
 
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il

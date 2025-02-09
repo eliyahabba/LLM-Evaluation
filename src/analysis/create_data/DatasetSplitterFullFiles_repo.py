@@ -1,7 +1,6 @@
 import concurrent
 import json
 import logging
-import os
 import shutil
 import uuid
 from pathlib import Path
@@ -9,8 +8,8 @@ from typing import List, Set, Optional
 
 import pandas as pd
 import pyarrow.parquet as pq
+from huggingface_hub import HfApi, hf_hub_download
 from tqdm import tqdm
-from huggingface_hub import HfApi, hf_hub_download, list_repo_files
 
 
 class HFDatasetSplitter:
@@ -125,7 +124,7 @@ class HFDatasetSplitter:
             temp_dfs = {}
 
             with tqdm(total=total_rows, desc=f"Processing {local_file.name}", unit="rows") as pbar:
-                for batch in parquet_file.iter_batches(batch_size=1000):
+                for batch in parquet_file.iter_batches(batch_size=100000):
                     df = batch.to_pandas()
                     df['model_name'] = [x['model_info']['name'] for x in df['model']]
                     df['shots'] = [x['format']['shots'] for x in df['prompt_config']]
@@ -169,7 +168,7 @@ class HFDatasetSplitter:
         self.logger.info("Starting processing new files")
         start_time = datetime.now()
 
-        new_files = self.get_new_files()[:10]
+        new_files = self.get_new_files()
         self.logger.info(f"Found {len(new_files)} new parquet files to process")
 
         if not new_files:
@@ -281,6 +280,7 @@ class HFDatasetSplitter:
                     self.logger.error(f"Error processing triplet {triplet_key}: {str(e)}", exc_info=True)
 
                 pbar.update(1)
+
 
 if __name__ == "__main__":
     import os
