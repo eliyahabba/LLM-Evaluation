@@ -22,6 +22,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import savgol_filter
 
+import os
+from typing import Dict, Optional
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import savgol_filter
+from matplotlib.ticker import FuncFormatter
+
 
 class Visualizer:
     """Handles plotting and results presentation."""
@@ -42,8 +49,8 @@ class Visualizer:
 
         for i, ((method_name, method_results), color) in enumerate(zip(results.items(), colors)):
             x = np.array(method_results['sample_sizes'])
-            y = np.array(method_results['gaps'])
-            yerr = np.array(method_results['gap_stds'])
+            y = np.array(method_results['gaps'])*100
+            yerr = np.array(method_results['gap_stds'])*100
 
             all_x_values.update(x)
             x_offset = x * (1 + (i - len(results) / 2) * 0.02)
@@ -77,9 +84,12 @@ class Visualizer:
         # Only use actual data points as x-ticks
         ax.set_xticks(all_x_values)
 
-        # Create labels, replacing the last one with "Data Size"
-        xtick_labels = [f"{int(x):,}" for x in all_x_values[:-1]]
-        xtick_labels.append("Data Size")  # Last tick is labeled as "Data Size"
+        # Create labels, removing the second-to-last and replacing the last one with "Data Size"
+        xtick_labels = [f"{int(x):,}" for x in all_x_values]
+
+        if len(xtick_labels) > 1:
+            xtick_labels[-2] = ""  # Remove second-to-last label
+        xtick_labels[-1] = "Data Size"  # Set last label
 
         ax.set_xticklabels(xtick_labels, rotation=0, ha='center')
 
@@ -103,7 +113,6 @@ class Visualizer:
 
         plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
         plt.tight_layout()
-
         if output_file:
             base_name, ext = os.path.splitext(output_file)
             output_path = f"{base_name}_{'smoothed' if smooth else 'original'}{ext}"
