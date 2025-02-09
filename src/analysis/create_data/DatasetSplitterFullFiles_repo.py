@@ -81,7 +81,6 @@ class HFDatasetSplitter:
                 repo_type="dataset",
                 filename=file_path,
                 local_dir=self.temp_dir,
-                local_dir_use_symlinks=False
             )
             return local_path
         except Exception as e:
