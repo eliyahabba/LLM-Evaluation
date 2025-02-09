@@ -87,7 +87,7 @@ def plot_auc_comparison(auc_data: dict, output_file: str, fontsize: int = 12) ->
                rotation=45, ha='right')
     plt.ylabel('AUC (lower is better)')
     plt.title('AUC Comparison Across Models')
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+    # plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
     plt.grid(True, axis='y', linestyle='--', alpha=0.3)
 
     plt.tight_layout(pad=2.0)
