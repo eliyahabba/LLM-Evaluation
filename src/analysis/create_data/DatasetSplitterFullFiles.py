@@ -132,7 +132,7 @@ class IncrementalDatasetSplitter:
 
         new_files = self.get_new_files()
         self.logger.info(f"Found {len(new_files)} new parquet files to process")
-        new_files  = [    Path("/Users/ehabba/Downloads/data_2025-01-2.parquet")]
+        # new_files  = [    Path("/Users/ehabba/Downloads/data_2025-01-2.parquet")]
         if not new_files:
             self.logger.info("No new files to process")
             return []
