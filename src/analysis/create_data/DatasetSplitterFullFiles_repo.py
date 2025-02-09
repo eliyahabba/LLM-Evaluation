@@ -25,7 +25,8 @@ class HFDatasetSplitter:
         self.hf_api = HfApi()
 
         # Create a temporary directory that will be automatically cleaned up
-        self.temp_dir = Path(tempfile.mkdtemp())
+        self.temp_dir = Path("/cs/snapless/gabis/eliyahabba/temp")
+        self.temp_dir.mkdir(parents=True, exist_ok=True)
 
         self.setup_logger()
         self.output_dir.mkdir(parents=True, exist_ok=True)
