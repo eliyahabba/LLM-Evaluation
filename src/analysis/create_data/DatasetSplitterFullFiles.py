@@ -245,14 +245,14 @@ class IncrementalDatasetSplitter:
 
 
 if __name__ == "__main__":
-    # splitter = IncrementalDatasetSplitter(
-    #     input_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full",
-    #     output_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split",
-    #     num_workers=8
-    # )
     splitter = IncrementalDatasetSplitter(
-        input_dir="/Users/ehabba/Downloads",
-        output_dir="/Users/ehabba/Downloads",
+        input_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full",
+        output_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split",
         num_workers=8
     )
+    # splitter = IncrementalDatasetSplitter(
+    #     input_dir="/Users/ehabba/Downloads",
+    #     output_dir="/Users/ehabba/Downloads",
+    #     num_workers=8
+    # )
     splitter.process_all_files()
