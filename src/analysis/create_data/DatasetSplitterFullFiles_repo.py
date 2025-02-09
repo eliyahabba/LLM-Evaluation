@@ -283,7 +283,7 @@ class HFDatasetSplitter:
 
 if __name__ == "__main__":
     import os
-    output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split"
+    output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split"
     os.makedirs(output_dir, exist_ok=True)
     splitter = HFDatasetSplitter(
         repo_id="eliyahabba/llm-evaluation",  # Replace with your HF repo ID
