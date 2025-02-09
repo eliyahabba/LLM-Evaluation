@@ -4,9 +4,6 @@ import logging
 import os
 import shutil
 import uuid
-import tempfile
-from concurrent.futures import ProcessPoolExecutor
-from datetime import datetime
 from pathlib import Path
 from typing import List, Set, Optional
 
@@ -26,6 +23,10 @@ class HFDatasetSplitter:
 
         # Create a temporary directory that will be automatically cleaned up
         self.temp_dir = Path("/cs/snapless/gabis/eliyahabba/temp")
+        self.temp_dir.mkdir(parents=True, exist_ok=True)
+
+        # Create a unique subdirectory for this instance
+        self.temp_dir = self.temp_dir / str(uuid.uuid4())
         self.temp_dir.mkdir(parents=True, exist_ok=True)
 
         self.setup_logger()
@@ -284,6 +285,9 @@ class HFDatasetSplitter:
 
 if __name__ == "__main__":
     import os
+    from datetime import datetime
+    from concurrent.futures import ProcessPoolExecutor
+
     output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split"
     os.makedirs(output_dir, exist_ok=True)
     splitter = HFDatasetSplitter(
