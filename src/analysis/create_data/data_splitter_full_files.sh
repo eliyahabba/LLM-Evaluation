@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --mem-per-cpu=50g
+#SBATCH --mem-per-cpu=30g
 #SBATCH -c8
 #SBATCH --time=1-0
 
@@ -19,5 +19,5 @@ cd $dir
 
 echo ${SLURM_ARRAY_TASK_ID}
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
-CUDA_LAUNCH_BLOCKING=1 python DatasetSplitterFullFiles.py;
+CUDA_LAUNCH_BLOCKING=1 python DatasetSplitterFullFiles_repo.py;
 
