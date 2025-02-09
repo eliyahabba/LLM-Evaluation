@@ -1,3 +1,4 @@
+# visualization_combined.py
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -5,6 +6,7 @@ import numpy as np
 from scipy.signal import savgol_filter
 from matplotlib.ticker import FuncFormatter
 from typing import List
+from scipy import integrate
 
 
 def get_distinct_colors(n: int) -> List:
@@ -32,26 +34,78 @@ def scientific_formatter(x: float, pos: int) -> str:
     return f"$10^{exp}$"
 
 
+def compute_auc(x: np.ndarray, y: np.ndarray) -> float:
+    """
+    Compute area under the curve (AUC) using trapezoidal rule.
+    Lower AUC indicates better performance.
+    """
+    log_x = np.log10(x)
+    norm_x = (log_x - log_x.min()) / (log_x.max() - log_x.min())
+    norm_y = y / 100  # Since y is in percentages
+    return integrate.trapz(norm_y, norm_x)
+
+
+def plot_auc_comparison(auc_data: dict, output_file: str, fontsize: int = 12) -> None:
+    """Create a bar plot comparing AUC scores across models and methods."""
+    # Define the custom order for methods
+    method_order = [
+        'Random Baseline',  # RandomSelection
+        'Best Global Configuration',  # MajoritySelection
+        'Axis-wise Optimization',  # AxiswiseSelection
+        'Regression Predictor'  # RegressionBasedSelection
+    ]
+    plt.figure(figsize=(5 * len(auc_data), 5))  # Match the width scaling of main plots
+
+    # Configure plot style
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['mathtext.fontset'] = 'dejavuserif'
+    plt.rcParams['font.size'] = fontsize
+    plt.rcParams['axes.labelsize'] = fontsize + 2
+    plt.rcParams['axes.titlesize'] = fontsize + 2
+    plt.rcParams['legend.fontsize'] = fontsize
+
+    # Get all available methods
+    available_methods = set().union(*[d.keys() for d in auc_data.values()])
+
+    # Filter and order methods according to the defined order
+    methods = [m for m in method_order if m in available_methods]
+    models = list(auc_data.keys())
+    colors = get_distinct_colors(len(methods))
+
+    # Set bar positions
+    bar_width = 0.8 / len(methods)
+
+    # Plot bars for each method
+    for i, (method, color) in enumerate(zip(methods, colors)):
+        positions = np.arange(len(models)) + i * bar_width - (len(methods) - 1) * bar_width / 2
+        values = [auc_data[model].get(method, 0) for model in models]
+        plt.bar(positions, values, bar_width, label=method, color=color, alpha=0.7)
+
+    # Customize plot
+    plt.xticks(np.arange(len(models)),
+               [name.split('-Instruct')[0] for name in models],
+               rotation=45, ha='right')
+    plt.ylabel('AUC (lower is better)')
+    plt.title('AUC Comparison Across Models')
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+    plt.grid(True, axis='y', linestyle='--', alpha=0.3)
+
+    plt.tight_layout(pad=2.0)
+    plt.savefig(output_file, bbox_inches='tight', dpi=300)
+    plt.close()
+
+
 def plot_combined_performance_gaps(
         model_names: List[str],
         input_dir: str = "output/plots",
         output_file: str = "combined_plots.png",
         smooth: bool = True,
         experiment_suffix: str = "_zero_shot",
-        fontsize: int = 12,  # גודל פונט מוגדל
-        show_legend: bool = True,  # פרמטר חדש לשליטה במקרא
+        fontsize: int = 12,
+        show_legend: bool = True,
 ) -> None:
     """
     Create a combined figure with performance gap plots for multiple models.
-
-    Args:
-        model_names: List of model names to plot
-        input_dir: Directory containing the CSV files
-        output_file: Output file path for the combined plot
-        smooth: Whether to apply smoothing to the curves
-        experiment_suffix: Suffix for experiment files
-        fontsize: Base font size for the plot
-        show_legend: Whether to show the legend
     """
     n_models = len(model_names)
 
@@ -64,17 +118,17 @@ def plot_combined_performance_gaps(
     plt.rcParams['legend.fontsize'] = fontsize
 
     # Create subplot layout with reduced width
-    fig, axes = plt.subplots(1, n_models, figsize=(5 * n_models, 5))  # הקטנת הרוחב מ-6 ל-5
+    fig, axes = plt.subplots(1, n_models, figsize=(5 * n_models, 5))
 
     # Make axes iterable if only one model
     if n_models == 1:
         axes = [axes]
 
     linestyles = ['-', '--', '-.', ':']
+    all_auc_data = {}  # Store AUC data for each model and method
 
     # Process each model
     for idx, (model_name, ax) in enumerate(zip(model_names, axes)):
-        # Read the CSV file
         base_name = model_name.split('/')[-1]
         csv_path = os.path.join(input_dir, f"{base_name}{experiment_suffix}_smoothed.csv")
 
@@ -87,6 +141,7 @@ def plot_combined_performance_gaps(
         # Get unique methods and assign colors
         methods = df['method'].unique()
         colors = get_distinct_colors(len(methods))
+        all_auc_data[base_name] = {}
 
         # Plot each method
         for i, (method, color) in enumerate(zip(methods, colors)):
@@ -94,6 +149,10 @@ def plot_combined_performance_gaps(
             x = np.array(method_data['sample_size'])
             y = np.array(method_data['gap']) * 100
             yerr = np.array(method_data['gap_std']) * 100
+
+            # Calculate AUC
+            auc = compute_auc(x, y)
+            all_auc_data[base_name][method] = auc
 
             x_offset = x * (1 + (i - len(methods) / 2) * 0.02)
 
@@ -149,8 +208,15 @@ def plot_combined_performance_gaps(
     # Add padding to prevent y-label from being cut off
     plt.tight_layout(pad=2.0, w_pad=1.0)
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+    # Save main plot
     plt.savefig(output_file, bbox_inches='tight', dpi=300)
     plt.close()
+
+    # Create and save AUC comparison plot if showing legend
+    if show_legend:
+        base_name, ext = os.path.splitext(output_file)
+        plot_auc_comparison(all_auc_data, f"{base_name}_auc{ext}", fontsize)
 
 
 if __name__ == "__main__":
@@ -160,8 +226,16 @@ if __name__ == "__main__":
         'allenai/OLMoE-1B-7B-0924-Instruct',
         'meta-llama/Meta-Llama-3-8B-Instruct'
     ]
+    # Model configurations
+    models_to_plot = [
+        'meta-llama/Llama-3.2-1B-Instruct',
+        'allenai/OLMoE-1B-7B-0924-Instruct',
+        'meta-llama/Meta-Llama-3-8B-Instruct',
+        'meta-llama/Llama-3.2-3B-Instruct',
+        'mistralai/Mistral-7B-Instruct-v0.3',
+    ]
 
-    # Create version with legend
+    # Create version with legend and AUC plot
     plot_combined_performance_gaps(
         model_names=models_to_plot,
         input_dir="output/plots",
@@ -171,7 +245,7 @@ if __name__ == "__main__":
         show_legend=True
     )
 
-    # Create version without legend
+    # Create version without legend or AUC plot
     plot_combined_performance_gaps(
         model_names=models_to_plot,
         input_dir="output/plots",
