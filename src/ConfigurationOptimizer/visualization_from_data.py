@@ -1,12 +1,20 @@
 # visualization_combined.py
 import os
-import pandas as pd
+from typing import List
+
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.signal import savgol_filter
+import pandas as pd
 from matplotlib.ticker import FuncFormatter
-from typing import List
 from scipy import integrate
+from scipy.signal import savgol_filter
+
+method_order = {
+    'Random Baseline':  "#d62728",
+    'Best Global Configuration': '#2ca02c',
+    'Axis-wise Optimization': '#1f77b4',
+    'Regression Predictor': '#ff7f0e'
+}
 
 
 def get_distinct_colors(n: int) -> List:
@@ -48,13 +56,7 @@ def compute_auc(x: np.ndarray, y: np.ndarray) -> float:
 def plot_auc_comparison(auc_data: dict, output_file: str, fontsize: int = 12) -> None:
     """Create a bar plot comparing AUC scores across models and methods."""
     # Define the custom order for methods
-    method_order = [
-        'Random Baseline',  # RandomSelection
-        'Best Global Configuration',  # MajoritySelection
-        'Axis-wise Optimization',  # AxiswiseSelection
-        'Regression Predictor'  # RegressionBasedSelection
-    ]
-    plt.figure(figsize=(5 * len(auc_data), 5))  # Match the width scaling of main plots
+    plt.figure(figsize=(5, 5))  # Reduced size to fit one column
 
     # Configure plot style
     plt.rcParams['font.family'] = 'serif'
@@ -68,15 +70,14 @@ def plot_auc_comparison(auc_data: dict, output_file: str, fontsize: int = 12) ->
     available_methods = set().union(*[d.keys() for d in auc_data.values()])
 
     # Filter and order methods according to the defined order
-    methods = [m for m in method_order if m in available_methods]
+    methods = [m for m in available_methods]
     models = list(auc_data.keys())
-    colors = get_distinct_colors(len(methods))
-
-    # Set bar positions
-    bar_width = 0.8 / len(methods)
+    # sort the tuples by the method order
+    # Set bar positions with thinner bars
+    bar_width = 0.15  # Fixed smaller width for bars
 
     # Plot bars for each method
-    for i, (method, color) in enumerate(zip(methods, colors)):
+    for i, (method, color) in enumerate(method_order.items()):
         positions = np.arange(len(models)) + i * bar_width - (len(methods) - 1) * bar_width / 2
         values = [auc_data[model].get(method, 0) for model in models]
         plt.bar(positions, values, bar_width, label=method, color=color, alpha=0.7)
@@ -90,7 +91,7 @@ def plot_auc_comparison(auc_data: dict, output_file: str, fontsize: int = 12) ->
     # plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
     plt.grid(True, axis='y', linestyle='--', alpha=0.3)
 
-    plt.tight_layout(pad=2.0)
+    plt.tight_layout(pad=0.5)
     plt.savefig(output_file, bbox_inches='tight', dpi=300)
     plt.close()
 
@@ -213,10 +214,9 @@ def plot_combined_performance_gaps(
     plt.savefig(output_file, bbox_inches='tight', dpi=300)
     plt.close()
 
-    # Create and save AUC comparison plot if showing legend
-    if show_legend:
-        base_name, ext = os.path.splitext(output_file)
-        plot_auc_comparison(all_auc_data, f"{base_name}_auc{ext}", fontsize)
+    # Create and save AUC comparison plot
+    base_name, ext = os.path.splitext(output_file)
+    plot_auc_comparison(all_auc_data, f"{base_name}_auc{ext}", fontsize)
 
 
 if __name__ == "__main__":
