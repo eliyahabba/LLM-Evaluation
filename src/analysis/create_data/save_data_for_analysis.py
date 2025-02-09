@@ -415,19 +415,10 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
 
         # Convert the batch
         data = converter.convert_dataframe(processed_batch)
-
+        continue
         # Skip empty batches
         if len(data) == 0:
             continue
-
-        def clean_text(text):
-            """Ensure all text is properly encoded in UTF-8."""
-            if isinstance(text, str):
-                return text.encode('utf-8', 'surrogatepass').decode('utf-8')
-            return text
-
-        # ניקוי כל הטקסטים ב-DataFrame
-        data = data.applymap(clean_text)
 
         table = pa.Table.from_pandas(data)
 
