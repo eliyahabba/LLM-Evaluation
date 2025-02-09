@@ -139,9 +139,12 @@ def plot_combined_performance_gaps(
             print(f"Warning: Could not find data for {model_name} at {csv_path}")
             continue
 
+        # Get unique methods but sort them according to method_order
+        methods = [method for method in method_order.keys() if method in df['method'].unique()]
+        colors = [method_order[method] for method in methods]
         # Get unique methods and assign colors
-        methods = df['method'].unique()
-        colors = get_distinct_colors(len(methods))
+        # methods = df['method'].unique()
+        # colors = get_distinct_colors(len(methods))
         all_auc_data[base_name] = {}
 
         # Plot each method
