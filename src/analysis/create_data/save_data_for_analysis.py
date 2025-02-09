@@ -415,10 +415,18 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
 
         # Convert the batch
         data = converter.convert_dataframe(processed_batch)
-        continue
         # Skip empty batches
         if len(data) == 0:
             continue
+
+        def clean_text(text):
+            if isinstance(text, str):
+                return text.encode('utf-8', 'ignore').decode('utf-8')
+            return text
+
+        # נקה את כל העמודות מסוג טקסט
+        for column in data.select_dtypes(include=['object']):
+            data[column] = data[column].apply(clean_text)
 
         table = pa.Table.from_pandas(data)
 
