@@ -30,6 +30,7 @@ from scipy.signal import savgol_filter
 from matplotlib.ticker import FuncFormatter
 
 
+
 class Visualizer:
     """Handles plotting and results presentation."""
 
@@ -103,7 +104,8 @@ class Visualizer:
         plt.ylim(bottom=0)
 
         plt.xlabel('Number of Samples')
-        plt.ylabel('Score Gap from Optimal Configuration')
+        plt.ylabel('Accuracy Drop Compared to Best Configuration')
+
         plt.grid(True, which="both", ls="-", alpha=0.2)
 
         title = 'Performance Gap vs Sample Size'
