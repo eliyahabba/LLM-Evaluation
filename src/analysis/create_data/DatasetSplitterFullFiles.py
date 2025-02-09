@@ -90,10 +90,14 @@ class IncrementalDatasetSplitter:
             temp_dfs = {}
 
             with tqdm(total=total_rows, desc=f"Processing {input_file.name}", unit="rows") as pbar:
-                for batch in parquet_file.iter_batches(batch_size=10000):
+                for batch in parquet_file.iter_batches(batch_size=100000):
                     df = batch.to_pandas()
-                    grouped = df.groupby(['model', 'shots', 'dataset'])
+                    df['model_name'] = [x['model_info']['name'] for x in df['model']]
+                    df['shots'] = [x['format']['shots'] for x in df['prompt_config']]
+                    df['dataset_name'] = [x['sample_identifier']['dataset_name'] for x in df['instance']]
 
+                    # Group by extracted fields
+                    grouped = df.groupby(['model_name', 'shots', 'dataset_name'])
                     for (model, shots, dataset), group_df in grouped:
                         key = f"{worker_id}_{model}_shots{shots}_{dataset}"
                         if key in temp_dfs:
@@ -128,7 +132,7 @@ class IncrementalDatasetSplitter:
 
         new_files = self.get_new_files()
         self.logger.info(f"Found {len(new_files)} new parquet files to process")
-
+        new_files  = [    Path("/Users/ehabba/Downloads/data_2025-01-2.parquet")]
         if not new_files:
             self.logger.info("No new files to process")
             return []
@@ -241,9 +245,14 @@ class IncrementalDatasetSplitter:
 
 
 if __name__ == "__main__":
+    # splitter = IncrementalDatasetSplitter(
+    #     input_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full",
+    #     output_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split",
+    #     num_workers=8
+    # )
     splitter = IncrementalDatasetSplitter(
-        input_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full",
-        output_dir="/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split",
+        input_dir="/Users/ehabba/Downloads",
+        output_dir="/Users/ehabba/Downloads",
         num_workers=8
     )
     splitter.process_all_files()

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --mem-per-cpu=20g
+#SBATCH --mem-per-cpu=50g
 #SBATCH -c8
 #SBATCH --time=1-0
 
