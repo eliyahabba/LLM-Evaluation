@@ -72,7 +72,7 @@ def process_single_file(file_path, output_dir):
 
 if __name__ == "__main__":
     # Define input and output directories
-    input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split"
+    input_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split_all_cols_deduped"
     output_dir = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_processed_split_to_folders"
 
     reorganize_files(input_dir, output_dir)
