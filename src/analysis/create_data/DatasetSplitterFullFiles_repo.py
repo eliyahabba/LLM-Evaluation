@@ -125,7 +125,7 @@ class HFDatasetSplitter:
             temp_dfs = {}
 
             with tqdm(total=total_rows, desc=f"Processing {local_file.name}", unit="rows") as pbar:
-                for batch in parquet_file.iter_batches(batch_size=100000):
+                for batch in parquet_file.iter_batches(batch_size=1000):
                     df = batch.to_pandas()
                     df['model_name'] = [x['model_info']['name'] for x in df['model']]
                     df['shots'] = [x['format']['shots'] for x in df['prompt_config']]
@@ -169,7 +169,7 @@ class HFDatasetSplitter:
         self.logger.info("Starting processing new files")
         start_time = datetime.now()
 
-        new_files = self.get_new_files()
+        new_files = self.get_new_files()[:10]
         self.logger.info(f"Found {len(new_files)} new parquet files to process")
 
         if not new_files:
