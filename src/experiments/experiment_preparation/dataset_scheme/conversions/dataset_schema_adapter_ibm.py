@@ -308,14 +308,21 @@ class SchemaConverter:
         map_file_name = recipe['card'].split('.')[1]
         if map_file_name == "ai2_arc":
             map_file_name = recipe['card'].split('.')[1]
-        map_file_path = Path("hf_map_data") / f"{map_file_name}_samples.json"
-        hf_repo = f"cais/{recipe['card'].split('.')[1]}" if map_file_name == "mmlu" else f"Rowan/hellaswag" if map_file_name == "hellaswag" else f"allenai/{map_file_name}"
-        if map_file_name not in self._index_map_cache:
+
+        if map_file_name.startswith("global_mmlu"):
+            # add also the language in the second part of the string
+            map_file_name = f"{map_file_name}.{recipe['card'].split('.')[2]}"
+        current_dir = Path(__file__).parents[2]
+        map_file_path = current_dir / "experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
+        if map_file_name in self._index_map_cache:
+            index_map = self._index_map_cache[map_file_name]
+        else:
             with open(map_file_path, 'r') as file:
                 index_map = json.load(file)
-                self._index_map_cache[map_file_name] = index_map
-        else:
-            index_map = self._index_map_cache[map_file_name]
+            self._index_map_cache[map_file_name] = index_map
+
+        hf_repo = f"cais/{recipe['card'].split('.')[1]}" if map_file_name == "mmlu" else f"Rowan/hellaswag" if map_file_name == "hellaswag" else f"allenai/{map_file_name}"
+
 
         card = map_file_name
         if card == "mmlu":
@@ -333,6 +340,12 @@ class SchemaConverter:
                 hf_repo = "allenai/ai2_arc/ARC-Challenge"
             elif "ARC-Easy" in card:
                 hf_repo = "allenai/ai2_arc/ARC-Easy"
+        elif "quaily" in card:
+            hf_repo = "emozilla/quality"
+        elif "global_mmlu_lite" in card:
+            hf_repo = "CohereForAI/Global-MMLU-Lite"
+        elif "global_mmlu" in card:
+            hf_repo = "CohereForAI/Global-MMLU"
         else:
             hf_repo = None
         question_key = 'question' if 'question' in task_data else 'context'
