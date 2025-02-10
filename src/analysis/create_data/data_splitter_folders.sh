@@ -19,6 +19,8 @@ cd $dir
 
 echo ${SLURM_ARRAY_TASK_ID}
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
+python DatasetSplitter.py;
+python DatasetSplitterDeDupAllCols.py 
 CUDA_LAUNCH_BLOCKING=1 python DatasetSplitterFolders.py;
 python DatasetSplitterFoldersDeDupAllCols.py ;
 python upload_data_for_analysis_split_folders.py;
