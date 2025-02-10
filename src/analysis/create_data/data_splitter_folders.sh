@@ -19,9 +19,9 @@ cd $dir
 
 echo ${SLURM_ARRAY_TASK_ID}
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
-python DatasetSplitter.py;
-python DatasetSplitterDeDupAllCols.py 
-CUDA_LAUNCH_BLOCKING=1 python DatasetSplitterFolders.py;
-python DatasetSplitterFoldersDeDupAllCols.py ;
+python DatasetSplitter.py; # input="ibm_results_data_full_processed", output="ibm_results_data_full_processed_split"
+python DatasetSplitterDeDupAllCols.py # input="ibm_results_data_full_processed_split", output="ibm_results_data_full_processed_split_all_cols_deduped"
+CUDA_LAUNCH_BLOCKING=1 python DatasetSplitterFolders.py; # input="/ibm_results_data_full_processed_split_all_cols_deduped", output="ibm_results_data_full_processed_split_to_folders"
+python DatasetSplitterFoldersDeDupAllCols.py ; # input="/ibm_results_data_full_processed_split_to_folders", output="ibm_results_data_full_processed_split_to_folders_all_cols_deduped"
 python upload_data_for_analysis_split_folders.py;
 python upload_data_for_analysis_split_folders_private.py
