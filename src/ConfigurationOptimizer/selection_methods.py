@@ -150,7 +150,7 @@ class AxiswiseSelection(SelectionMethod):
         return optimal_config
 
     def get_display_name(self) -> str:
-        return "Axis-wise Optimization"
+        return "Axis-wise Selection"
 
 
 class MajoritySelection(SelectionMethod):
