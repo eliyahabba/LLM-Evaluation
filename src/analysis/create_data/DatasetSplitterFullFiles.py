@@ -175,12 +175,12 @@ class IncrementalDatasetSplitter:
         # Save the updated processed files list
         self.save_processed_files()
 
-        try:
-            if self.temp_dir.exists():
-                shutil.rmtree(self.temp_dir)
-                self.logger.info("Temporary directory cleaned up")
-        except Exception as e:
-            self.logger.warning(f"Could not remove temp directory: {str(e)}")
+        # try:
+        #     if self.temp_dir.exists():
+        #         shutil.rmtree(self.temp_dir)
+        #         self.logger.info("Temporary directory cleaned up")
+        # except Exception as e:
+        #     self.logger.warning(f"Could not remove temp directory: {str(e)}")
 
         end_time = datetime.now()
         duration = end_time - start_time
