@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['mathtext.fontset'] = 'dejavuserif'
 
 @dataclass
 class DistributionAnalysisConfig:
@@ -88,11 +90,10 @@ class DistributionAnalyzer:
     def _plot_all_factors(self, df: pd.DataFrame):
         """Create a single figure with subplots for all factors"""
         num_factors = len(self.config.factors)
-        fig, axes = plt.subplots(1, num_factors, figsize=(num_factors * 8, 8))
-
+        fig, axes = plt.subplots(1, num_factors , figsize=((num_factors-1) * 8, 8))
+        # fig, axes = plt.subplots(1, num_factors, figsize=(num_factors * 8, 8*(num_factors-1)))
         for idx, (factor, ax) in enumerate(zip(self.config.factors, axes)):
             if factor == "template":
-                # Filter templates with less than 3000 occurrences
                 factor_df = df[df.groupby('template')['template'].transform('size') > 3000]
             else:
                 factor_df = df
@@ -110,54 +111,60 @@ class DistributionAnalyzer:
             num_values = len(factor_values)
             bar_width = 0.8 / num_values
             x = np.arange(num_models)
+            unique_values = stats[factor].unique()
 
-            for i, value in enumerate(factor_values):
-                value_stats = stats[stats[factor] == value]
-                positions = x + (i - (num_values - 1) / 2) * bar_width
-                factor_n = "Phrasing" if factor == "template" else factor
-                factor_n = "Enumerator" if factor == "enumerator" else factor_n
-                factor_n = "Choice Separator" if factor == "separator" else factor_n
+            # צור מילון שממפה כל ערך לצבע קבוע
+            color_map = {value: self.colors[i % len(self.colors)] for i, value in enumerate(unique_values)}
+
+            # עבור כל מודל, נמיין את הערכים לפי הממוצע מהגבוה לנמוך
+            for model_idx, model in enumerate(models):
+                model_stats = stats[stats['model_name'] == model].sort_values('mean', ascending=False)
+                positions = x[model_idx] + (np.arange(len(model_stats)) - (num_values - 1) / 2) * bar_width
 
                 bars = ax.bar(positions,
-                              value_stats['mean'],
+                              model_stats['mean'],
                               bar_width * 0.9,
-                              label=f'{value}',
-                              color=self.colors[i % len(self.colors)],
+                              label=model_stats[factor].tolist(),
+                              color=[color_map[val] for val in model_stats[factor]],  # שימוש בצבעים הקבועים
                               alpha=0.7)
 
-                # Add value labels with smaller font and vertical orientation
-                for pos, mean in zip(positions, value_stats['mean']):
-                    ax.text(pos, mean + 0.1, f'{mean:.1f}',
-                            ha='center', va='bottom',
-                            rotation=90, fontsize=14)
+                # הצג ערכים מספריים רק עבור הערך הגבוה והנמוך ביותר
+                ax.text(positions[0], model_stats['mean'].iloc[0] + 0.1,
+                        f'{model_stats["mean"].iloc[0]:.1f}',
+                        # make it bold
+                        ha='center', va='bottom', rotation=90, fontsize=15, fontweight='bold')
+
+                ax.text(positions[-1], model_stats['mean'].iloc[-1] + 0.1,
+                        f'{model_stats["mean"].iloc[-1]:.1f}',
+                        ha='center', va='bottom', rotation=90, fontsize=15, fontweight='bold')
 
             # Customize each subplot
-            # Customize each subplot
+            factor_n = {
+                "template": "Phrasing",
+                "enumerator": "Enumerator",
+                "separator": "Choice Separator"
+            }.get(factor, factor)
+
             if idx == 0:
-                ax.set_ylabel('Accuracy (%)')
+                ax.set_ylabel('Accuracy (%)', fontsize=20)
             else:
                 ax.set_ylabel('')
                 ax.yaxis.set_ticklabels([])
-            ax.set_title(f'{factor_n}')
+
+            ax.set_title(f'{factor_n}', fontsize=20)
             ax.set_xticks(x)
-            ax.set_xticklabels(models, rotation=45, ha='center', fontsize=16)
+            ax.set_xticklabels(models, rotation=45, ha='center', fontsize=18)
             ax.set_ylim(30, 60)
+            # increase size of font of y sticks
+            ax.yaxis.set_tick_params(labelsize=16)
             ax.yaxis.grid(True, linestyle='--', alpha=0.3)
             ax.set_axisbelow(True)
 
-            # # Add legend with smaller font
-            # legend = ax.legend(title=f'{factor_n}',
-            #                    bbox_to_anchor=(1.05, 1),
-            #                    loc='upper left',
-            #                    fontsize=6,
-            #                    title_fontsize=8)
-        # limy acis from 30-70
         plt.ylim(30, 60)
         plt.tight_layout()
         output_path = f"{self.config.output_dir}/distribution_all_factors.png"
         plt.savefig(output_path, bbox_inches='tight', dpi=300)
         plt.close()
-
     def analyze_distributions(self, df: pd.DataFrame, metadata_path: Optional[str] = None):
         """Create distribution plots for all factors in a single figure"""
         processed_df = self._preprocess_data(df)
@@ -193,7 +200,7 @@ if __name__ == "__main__":
     models = [
         # 'meta-llama/Llama-3.2-1B-Instruct',
         'allenai/OLMoE-1B-7B-0924-Instruct',
-        'meta-llama/Meta-Llama-3-8B-Instruct',
+        # 'meta-llama/Meta-Llama-3-8B-Instruct',
         # 'meta-llama/Llama-3.2-3B-Instruct',
         'mistralai/Mistral-7B-Instruct-v0.3'
     ]
@@ -203,9 +210,10 @@ if __name__ == "__main__":
         ((df['shots'] != 5) | (~df['choices_order'].isin(["correct_first", "correct_last"])))
     ]
     # Co
+    # Co
     # Configure analysis
     config = DistributionAnalysisConfig(
-        factors=["template","enumerator",  ],
+        factors=["template","enumerator", "separator"],
         output_dir="results",
         aggregation_type="individual",
         figsize=(15, 8)
