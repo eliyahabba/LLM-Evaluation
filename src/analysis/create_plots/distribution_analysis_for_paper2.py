@@ -77,68 +77,6 @@ class DistributionAnalyzer:
             # For other factors, use regular sorting
             return sorted(df[factor].unique())
 
-    def _plot_factor_distribution(self, df: pd.DataFrame, factor: str):
-        """Create a vertical bar plot with adjusted spacing and percentage scale"""
-        fig, ax = plt.subplots(figsize=self.config.figsize)
-
-        # Calculate statistics and convert to percentages
-        stats = df.groupby(['model_name', factor])['accuracy'].agg([
-            'mean', 'std', 'count'
-        ]).reset_index()
-        stats['mean'] = stats['mean'] * 100  # Convert to percentage
-
-        models = sorted(df['model_name'].unique())
-        factor_values = self._get_ordered_values(df, factor)
-
-        # Define spacing parameters
-        num_models = len(models)
-        num_factors = len(factor_values)
-        plot_width = 1.0  # Full width utilization
-        group_spacing = 0.02  # Minimized spacing between groups
-        total_width = (plot_width - (group_spacing * (num_models - 1))) / num_models
-        bar_width = total_width / num_factors
-
-        # Adjust positions to fully utilize the x-axis
-        x = np.linspace(0, plot_width, num_models)  # Spread across full width
-
-        for i, value in enumerate(factor_values):
-            value_stats = stats[stats[factor] == value]
-            positions = x + (i - (num_factors - 1) / 2) * bar_width  # Center the bars within each model group
-            factor_n = "Instruction" if factor == "template" else factor
-
-            bars = ax.bar(positions,
-                          value_stats['mean'],
-                          bar_width * 0.9,
-                          label=f'{factor_n}={value}',
-                          color=self.colors[i % len(self.colors)],
-                          alpha=0.7)
-
-            for pos, mean in zip(positions, value_stats['mean']):
-                ax.text(pos, mean + 0.1, f'{mean:.1f}',
-                        ha='center', va='bottom',
-                        rotation=90, fontsize=8)
-
-        ax.set_ylabel('Accuracy (%)')
-        ax.set_title(f'Average Accuracy by {factor_n} for Each Model')
-
-        # Adjust x-axis ticks and labels
-        ax.set_xticks(x)  # Ensure labels align with models
-        ax.set_xticklabels(models, rotation=0, ha='right')
-        ax.yaxis.grid(True, linestyle='--', alpha=0.3)
-        ax.set_axisbelow(True)
-
-        # Set y-axis limits to show only 20-100%
-        ax.set_ylim(20, 60)
-
-        legend = ax.legend(title=f'{factor_n} Values',
-                           bbox_to_anchor=(1.05, 1),
-                           loc='upper left',
-                           ncol=max(1, num_factors // 8))
-
-        plt.tight_layout()
-        output_path = f"{self.config.output_dir}/distribution_{factor}.png"
-        plt.savefig(output_path, bbox_inches='tight', dpi=300)
-        plt.close()
 
     def _plot_factor_distribution(self, df: pd.DataFrame, factor: str):
         """Create a vertical bar plot with minimal spacing and edge alignment"""
@@ -239,120 +177,6 @@ class DistributionAnalyzer:
         stats = stats.rename(columns={'<lambda_0>': 'q25', '<lambda_1>': 'q75'})
         return stats
 
-
-class DistributionAnalyzer1:
-    """Analyzes and visualizes distributions of scores across different factors"""
-
-    def __init__(self, config: DistributionAnalysisConfig):
-        self.config = config
-        self.colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
-                       '#9467bd', '#8c564b', '#e377c2', '#7f7f7f',
-                       '#bcbd22', '#17becf', '#aec7e8', '#ffbb78', '#98df8a']
-
-    def analyze_distributions(self, df: pd.DataFrame, metadata_path: Optional[str] = None):
-        """Create distribution plots for each factor"""
-        processor = DataProcessor(df, metadata_path)
-
-        if self.config.selected_mmlu_datasets is not None:
-            processor.filter_datasets(self.config.selected_mmlu_datasets)
-
-        if self.config.aggregation_type:
-            processor.aggregate_mmlu_data(self.config.aggregation_type)
-
-        processed_df = processor.df
-        os.makedirs(self.config.output_dir, exist_ok=True)
-
-        stats = {}
-        for factor in self.config.factors:
-            if factor == "template":
-                # remove all the rows that here tamplates less the 2000
-                processed_df = processed_df[processed_df.groupby('template')['template'].transform('size') > 3000]
-            self._plot_factor_distribution(processed_df, factor)
-            stats[factor] = self._compute_factor_statistics(processed_df, factor)
-
-        return stats
-
-    def _plot_factor_distribution(self, df: pd.DataFrame, factor: str):
-        """Create a vertical bar plot with adjusted spacing for many values"""
-        fig, ax = plt.subplots(figsize=self.config.figsize)
-
-        # Calculate statistics
-        stats = df.groupby(['model_name', factor])['accuracy'].agg([
-            'mean', 'std', 'count'
-        ]).reset_index()
-
-        # Set up plot parameters
-        models = sorted(df['model_name'].unique())
-        factor_values = sorted(df[factor].unique())
-
-        # Adjust bar width based on number of values
-        total_width = 0.8  # Total width available for each model group
-        bar_width = total_width / len(factor_values)
-
-        # Create x-positions for models
-        x = np.arange(len(models)) * (1 + total_width)  # Add extra space between model groups
-
-        # Plot bars for each factor value
-        for i, value in enumerate(factor_values):
-            value_stats = stats[stats[factor] == value]
-            positions = x + (i * bar_width)
-            if factor == 'template':
-                factor = "Instruction"
-            bars = ax.bar(positions,
-                          value_stats['mean'],
-                          bar_width * 0.9,  # Slightly narrow bars to create space
-                          label=f'{factor}={value}',
-                          color=self.colors[i % len(self.colors)],
-                          alpha=0.7)
-
-            # Add value labels on top of bars
-            for pos, mean in zip(positions, value_stats['mean']):
-                ax.text(pos, mean + 0.001, f'{mean:.2f}',
-                        ha='center', va='bottom',
-                        rotation=90, fontsize=8)
-
-        # Customize plot
-        ax.set_ylabel('Accuracy')
-        ax.set_title(f'Average Accuracy by {factor} for Each Model')
-
-        # Set x-ticks at center of each model group
-        ax.set_xticks(x + (total_width / 2) * (len(factor_values) - 1) / len(factor_values))
-        ax.set_xticklabels(models, rotation=45, ha='right')
-
-        # Add grid
-        ax.yaxis.grid(True, linestyle='--', alpha=0.3)
-        ax.set_axisbelow(True)
-
-        # Adjust legend
-        legend = ax.legend(title=f'{factor} Values',
-                           bbox_to_anchor=(1.05, 1),
-                           loc='upper left',
-                           ncol=max(1, len(factor_values) // 8))  # Split legend into columns if many values
-
-        # Adjust layout
-        plt.tight_layout()
-
-        # Save plot
-        output_path = f"{self.config.output_dir}/distribution_{factor}.png"
-        plt.savefig(output_path, bbox_inches='tight', dpi=300)
-        plt.close()
-
-    def _compute_factor_statistics(self, df: pd.DataFrame, factor: str):
-        """Compute summary statistics"""
-        stats = df.groupby(['model_name', factor])['accuracy'].agg([
-            'count',
-            'mean',
-            'std',
-            lambda x: x.quantile(0.25),
-            lambda x: x.quantile(0.75)
-        ]).round(2)
-
-        stats = stats.rename(columns={'<lambda_0>': 'q25', '<lambda_1>': 'q75'})
-        return stats
-
-    # Run analysis
-
-
 if __name__ == "__main__":
     # Load data
     df = pd.read_parquet("aggregated_results.parquet")
@@ -402,12 +226,7 @@ if __name__ == "__main__":
         aggregation_type="individual",
         figsize=(15, 8)
     )
-    # config = DistributionAnalysisConfig(
-    #     factors=["template", "separator", "enumerator", "choices_order"],
-    #     output_dir="results",
-    #     aggregation_type="individual",
-    #     figsize=(15, 8)
-    # )
+
     models = [
         # 'meta-llama/Llama-3.2-1B-Instruct',
         'allenai/OLMoE-1B-7B-0924-Instruct',
