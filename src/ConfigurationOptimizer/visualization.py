@@ -1,19 +1,3 @@
-def get_distinct_colors(n):
-    """Return a list of n visually distinct, high-contrast colors."""
-    color_palette = [
-        "#1f77b4",  # Blue
-        "#2ca02c",  # Green
-        "#ff7f0e",  # Orange
-        "#d62728",  # Red
-        "#9467bd",  # Purple
-        "#8c564b",  # Brown
-        "#e377c2",  # Pink
-        "#7f7f7f",  # Gray
-        "#bcbd22",  # Olive
-    ]
-    return color_palette[:n] if n <= len(color_palette) else plt.cm.tab10(np.linspace(0, 1, n))
-
-
 import os
 from typing import Dict, Optional
 
@@ -22,6 +6,24 @@ import numpy as np
 from matplotlib.ticker import FuncFormatter
 from scipy import integrate
 from scipy.signal import savgol_filter
+
+
+def get_distinct_colors(n):
+    """Return a list of n visually distinct, high-contrast colors."""
+    color_palette = [
+        "#2ca02c",  # Green
+        "#1f77b4",  # Blue
+        "#d62728",  # Red
+        "#ff7f0e",  # Orange
+        "#9467bd",  # Purple
+        "#9467bd",  # Purple
+        "#8c564b",  # Brown
+        "#e377c2",  # Pink
+        "#7f7f7f",  # Gray
+        "#bcbd22",  # Olive
+        "#17becf"  # Cyan
+    ]
+    return color_palette[:n] if n <= len(color_palette) else plt.cm.tab10(np.linspace(0, 1, n))
 
 
 class Visualizer:
