@@ -1,0 +1,115 @@
+{
+  "annotations": [
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.professional_law_2",
+      "dataset": "mmlu.professional_law",
+      "category": "2. Wrong Reasoning",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A taxpayer was notified by the government that her individual income tax was underpaid by $1,012. 69. The taxpayer retained an attorney to represent her in contesting the assessment. During the preparation of his client's case, the attorney suggested that it might be a good idea if the taxpayer hired an accountant to organize her records and prepare a financial statement for the year in question. Following the attorney's advice, the taxpayer consulted an accountant, an old family friend, who prepared a financial statement, which the attorney referred to at trial. During the trial, the attorney representing the government called the accountant to testif' about statements that the taxpayer made to him. The accountant's proposed testimony is Choices: A. inadmissible, because it would violate the attorney-client privilege. B. inadmissible, because it would violate the taxpayer's privilege against self-incrimination. C. inadmissible as violative of the work-product rule. D. admissible as an admission. Answer:\n",
+        "ground_truth": "D. admissible as an admission.",
+        "prediction": "\nC. inadmissible as violative of the work-product rule.\n\nExplanation:\n\n"
+      }
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.professional_law_6",
+      "dataset": "mmlu.professional_law",
+      "category": "2. Wrong Reasoning",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A devastating earthquake struck a foreign country. The earthquake destroyed hundreds of homes and buildings. Thousands of residents were killed, injured, and left homeless by the earthquake. The leader of the foreign country sought the assistance of the United States in providing emergency aid. The President initially wanted to send troops from a west coast military base but learned that they were out on training maneuvers. As a result, the President issued an executive order directing members of a federal agency under the supervision of the Immigration and Naturalization Service, to travel to the foreign country to engage in emergency rescue operations. This federal agency's main function is to patrol the borders to prevent illegal aliens from entering the United States. A member of this federal agency refused to comply with the executive order and assist in the relief effort. He claimed that participating in such operations in a foreign country is beyond the scope of his job responsibilities. He brought suit in federal court challenging the validity of the President's executive order. Assuming the member of the federal agency has adequate standing, the court should rule the executive order Choices: A. valid, because as commander-in-chief, the President has unfettered authority to require federal employees to participate in an international relief effort. B. valid, because employees of an executive agency can be required to perform such emergency functions. C. invalid, because the executive order is beyond the scope of presidential power absent congressional authorization. D. invalid, because the director of the INS, not the President, has the power to issue directives to federal agencies under its supervision. Answer:\n",
+        "ground_truth": "B. valid, because employees of an executive agency can be required to perform such emergency functions.",
+        "prediction": "\nC. invalid, because the executive order is beyond the scope of presidential power absent congressional authorization.\n\nEx"
+      }
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.professional_law_9",
+      "dataset": "mmlu.professional_law",
+      "category": "2. Wrong Reasoning",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: A man who was separated but never divorced from his first wife, married another woman and lived with her as husband and wife. The man and his purported second wife bought a home together as tenants by the entirety. They lived there together for a few years, when the man was accused and convicted of killing his purported wife. He was given a life sentence. The decedent's estate brought a quiet title action to declare the property forfeited to the decedent on the basis that a murderer cannot benefit from his crime. The trial court awarded the property to the estate. The man appealed from his prison cell. Under the common law, will the appellate court affirm the trial court's decision and strip the man of all ownership rights in the home? Choices: A. Yes, because a murderer cannot reap the benefits of his ill-doing. B. Yes, because the murderer was also a bigamist who could not take good title to the property in the first place, thus putting full title in the decedent from the date of purchase. C. No, the court will as a policy matter recognize the murderer's pre-slaying right to one-half of the property as a tenant in common. D. No, there is no rule of law that gives the victim or her estate any additional rights in the property that she had before the homicide. Answer:\n",
+        "ground_truth": "C. No, the court will as a policy matter recognize the murderer's pre-slaying right to one-half of the property as a tenant in common.",
+        "prediction": "\nA. Yes, because a murderer cannot reap the benefits of his ill-doing.\n\nExplan"
+      }
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.professional_law_34",
+      "dataset": "mmlu.professional_law",
+      "category": "3. Wrong Annotation",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: The President announced that a newly created military rapid deployment force would be engaging in joint training exercises with the military forces in a foreign country. Following the President's announcement, Congress enacted a statute that unequivocally prohibited \"the U. S. Armed Forces from conducting military exercises with foreign military forces unless Congress has received notice of such intention to take such action at least three months before the joint military exercises become effective. \"This statute is most likely Choices: A. constitutional, because the President, in this instance, has not been called by Congress into actual service as Commander-in-Chief. B. constitutional, because of Congressional power under the War Powers Act. C. unconstitutional, because of the President's authority to execute the laws of the United States. D. unconstitutional, because of the President's authority as Commander-in-Chief of the Armed Forces. Answer:\n",
+        "ground_truth": "A. constitutional, because the President, in this instance, has not been called by Congress into actual service as Commander-in-Chief.",
+        "prediction": "\nD. unconstitutional, because of the President's authority as Commander-in-Chief of the Armed"
+      }
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.elementary_mathematics_5",
+      "dataset": "mmlu.elementary_mathematics",
+      "category": "1. Format Error",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Use the expression below to answer the question. 3 \u00d7 [(2 \u00d7 6 \u2013 5) + (8 \u00f7 4)] \u2013 1 What is the value of the expression? Choices: A. 9 B. 11 C. 26 D. 32 Answer:\n",
+        "ground_truth": "C. 26",
+        "prediction": "\nTo solve the expression, follow the order of operations (PEMDAS/"
+      }
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.elementary_mathematics_9",
+      "dataset": "mmlu.elementary_mathematics",
+      "category": "2. Wrong Reasoning",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Find the quotient of 5.04/0.7 Choices: A. 0.72 B. 0.702 C. 10.0571 D. 7.2 Answer:\n",
+        "ground_truth": "D. 7.2",
+        "prediction": "\nAnswer: C. 10.0571\n\n"
+      }
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.elementary_mathematics_15",
+      "dataset": "mmlu.elementary_mathematics",
+      "category": "1. Format Error",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: Trish\u2019s resting heart rate is 50 beats per minute. For every minute she exercises, her heart rate increases 5 beats per minute. How long will it take her to reach a heart rate of 120 beats per minute? Choices: A. 5 minutes B. 14 minutes C. 34 minutes D. 70 minutes Answer:\n",
+        "ground_truth": "B. 14 minutes",
+        "prediction": "\nTo find out how long it takes Trish to reach a heart rate of"
+      }
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.high_school_mathematics_0",
+      "dataset": "mmlu.high_school_mathematics",
+      "category": "1. Format Error",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: If a pentagon P with vertices at (\u2013 2, \u2013 4), (\u2013 4, 1), (\u20131, 4), (2, 4), and (3, 0) is reflected across the line y = x to get a new pentagon, P\u2019, then one of the vertices of P\u2019 is Choices: A. (0, \u2013 3) B. (4, 1) C. (2, 2) D. (\u2013 4, \u20132) Answer:\n",
+        "ground_truth": "D. (\u2013 4, \u20132)",
+        "prediction": "\nTo find the reflection of a point (x, y) across the line y"
+      }
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.high_school_mathematics_8",
+      "dataset": "mmlu.high_school_mathematics",
+      "category": "1. Format Error",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: We roll a fair 6-sided die 5 times. What is the probability that we get a 6 in at most 2 of the rolls? Choices: A. \\frac{125}{648} B. \\frac{25}{648} C. \\frac{625}{648} D. \\frac{1}{648} Answer:\n",
+        "ground_truth": "C. \\frac{625}{648}",
+        "prediction": "\nThe probability of getting a 6 in a single roll is \\frac{1"
+      }
+    },
+    {
+      "model": "Mistral-7B-Instruct-v0.2",
+      "id": "mmlu.high_school_mathematics_37",
+      "dataset": "mmlu.high_school_mathematics",
+      "category": "1. Format Error",
+      "example_content": {
+        "instance": "Question: [question] Choices: [choices] Answer: [answer]\nQuestion: An 8.5-by-11-inch piece of paper is folded in half repeatedly (never being unfolded), each time shortening what was then the longer side. What is the length of the longest side, in inches, immediately after the second fold? Express your answer as a decimal to the nearest tenth. Choices: A. 4.5 B. 1 C. 5.5 D. 5 Answer:\n",
+        "ground_truth": "C. 5.5",
+        "prediction": "\nLet's reason through this problem:\n\n1. The original size of"
+      }
+    }
+  ],
+  "total_annotations": 10
+}
