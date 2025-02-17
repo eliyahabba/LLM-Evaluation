@@ -108,6 +108,70 @@ class HFDatasetSplitter:
         """Process a single file after downloading it."""
         worker_id = uuid.uuid4()
         temp_files = set()
+        temp_file_handles = {}  # Dictionary to store open file handles
+
+        self.logger.info(f"Starting to process file: {file_path}")
+
+        # Download the file
+        local_file = self.download_file(file_path)
+        if not local_file:
+            self.logger.error(f"Failed to download {file_path}")
+            return []
+
+        try:
+            parquet_file = pq.ParquetFile(local_file)
+            total_rows = parquet_file.metadata.num_rows
+
+            with tqdm(total=total_rows, desc=f"Processing {local_file.name}", unit="rows") as pbar:
+                for batch in parquet_file.iter_batches(batch_size=10000):  # Reduced batch size
+                    df = batch.to_pandas()
+                    df['model_name'] = [x['model_info']['name'] for x in df['model']]
+                    df['shots'] = [x['format']['shots'] for x in df['prompt_config']]
+                    df['dataset_name'] = [x['sample_identifier']['dataset_name'] for x in df['instance']]
+
+                    # Group by extracted fields
+                    grouped = df.groupby(['model_name', 'shots', 'dataset_name'])
+
+                    for (model, shots, dataset), group_df in grouped:
+                        key = f"{worker_id}_{model}_shots{shots}_{dataset}"
+                        temp_file = self.temp_dir / f"{key}.parquet"
+                        temp_files.add(str(temp_file))
+
+                        if key not in temp_file_handles:
+                            # Create directory if it doesn't exist
+                            os.makedirs(temp_file.parent, exist_ok=True)
+                            # Write the first chunk with the schema
+                            group_df.to_parquet(temp_file, index=False)
+                        else:
+                            # Append to existing file without writing schema
+                            group_df.to_parquet(
+                                temp_file,
+                                index=False,
+                                append=True
+                            )
+
+                    pbar.update(len(df))
+                    # Clear memory explicitly
+                    del df
+                    del grouped
+
+            # Clean up the downloaded file
+            local_file.unlink()
+
+        except Exception as e:
+            self.logger.error(f"Fatal error processing file {file_path}: {str(e)}", exc_info=True)
+            for temp_file in temp_files:
+                try:
+                    Path(temp_file).unlink(missing_ok=True)
+                except Exception as cleanup_error:
+                    self.logger.error(f"Error cleaning up temp file {temp_file}: {str(cleanup_error)}")
+            return []
+
+        return list(temp_files)
+    def process_single_file1(self, file_path: str) -> List[str]:
+        """Process a single file after downloading it."""
+        worker_id = uuid.uuid4()
+        temp_files = set()
 
         self.logger.info(f"Starting to process file: {file_path}")
 
