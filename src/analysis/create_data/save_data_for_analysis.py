@@ -22,7 +22,6 @@ from tqdm import tqdm
 from src.experiments.experiment_preparation.dataset_scheme.conversions.dataset_schema_adapter_ibm import \
     QuantizationPrecision
 from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
-from src.run_model import question
 from src.utils.Constants import Constants
 
 
@@ -359,10 +358,7 @@ class Converter:
         # self.convert_quantization(
         #     row['run_quantization_bit_count']
         prompt_sections = recipes.apply(lambda x: pd.Series(self._build_prompt_section(x)))
-        question_sections = df.apply(lambda x: eval(x)['prompt']).apply(lambda x: x[-1]['content']).rename(
-            'instance')
-        df['question'] = df['raw_input'].apply(lambda x: eval(x)['task_data']).apply(
-            lambda x: eval(x)['question'])
+        question = df['question'].rename('question')
         output_sections = df.apply(self._build_output_section, axis=1, result_type='expand') \
             .rename(columns={0: 'generated_text', 1: 'cumulative_logprob'})
 
@@ -380,7 +376,7 @@ class Converter:
             index_map,
             model_sections,
             quantization,
-            question_sections,
+            question,
             prompt_sections,
             output_sections,
             closest_answer,
