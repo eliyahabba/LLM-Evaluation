@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --mem=100g
-#SBATCH -c24
+#SBATCH -c12
 #SBATCH --time=1-0
 
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
