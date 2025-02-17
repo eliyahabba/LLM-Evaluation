@@ -77,6 +77,7 @@ class HFDatasetSplitter:
         """Download a single file from HF to the temporary directory."""
         try:
             local_path = self.temp_dir / Path(file_path).name
+            self.logger.info(f"Downloading file {file_path} to {local_path}")
             hf_hub_download(
                 repo_id=self.repo_id,
                 repo_type="dataset",
