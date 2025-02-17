@@ -313,7 +313,7 @@ class SchemaConverter:
             # add also the language in the second part of the string
             map_file_name = f"{map_file_name}.{recipe['card'].split('.')[2]}"
         current_dir = Path(__file__).parents[2]
-        map_file_path = current_dir / "experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
+        map_file_path = current_dir / "dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
         if map_file_name in self._index_map_cache:
             index_map = self._index_map_cache[map_file_name]
         else:
