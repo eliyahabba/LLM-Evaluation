@@ -372,6 +372,6 @@ if __name__ == "__main__":
     splitter = HFDatasetSplitter(
         repo_id="eliyahabba/llm-evaluation",  # Replace with your HF repo ID
         output_dir=output_dir,
-        num_workers=8
+        num_workers=24
     )
     splitter.process_all_files()
