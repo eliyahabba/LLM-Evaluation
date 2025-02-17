@@ -108,6 +108,14 @@ class HFDatasetSplitter:
 
     def effie_process_single_file(self, file_path: Path) -> List[str]:
         worker_id = uuid.uuid4()
+        self.logger.info(f"Starting to process file: {file_path}")
+
+        # Download the file
+        local_file = self.download_file(str(file_path))
+        if not local_file:
+            self.logger.error(f"Failed to download {file_path}")
+            return []
+
 
         temp_file_handles = {}  # key: group key, value: True if file exists
         temp_files = set()
