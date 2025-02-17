@@ -22,6 +22,7 @@ from tqdm import tqdm
 from src.experiments.experiment_preparation.dataset_scheme.conversions.dataset_schema_adapter_ibm import \
     QuantizationPrecision
 from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
+from src.run_model import question
 from src.utils.Constants import Constants
 
 
@@ -358,7 +359,10 @@ class Converter:
         # self.convert_quantization(
         #     row['run_quantization_bit_count']
         prompt_sections = recipes.apply(lambda x: pd.Series(self._build_prompt_section(x)))
-
+        question_sections = df.apply(lambda x: eval(x)['prompt']).apply(lambda x: x[-1]['content']).rename(
+            'instance')
+        df['question'] = df['raw_input'].apply(lambda x: eval(x)['task_data']).apply(
+            lambda x: eval(x)['question'])
         output_sections = df.apply(self._build_output_section, axis=1, result_type='expand') \
             .rename(columns={0: 'generated_text', 1: 'cumulative_logprob'})
 
@@ -376,6 +380,7 @@ class Converter:
             index_map,
             model_sections,
             quantization,
+            question_sections,
             prompt_sections,
             output_sections,
             closest_answer,
@@ -545,7 +550,7 @@ if __name__ == "__main__":
     existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
     existing_files = [Path(file).stem.split("processed_")[1] for file in existing_files if file.endswith('.parquet')]
     args.file_names = [file for file in os.listdir(args.input_dir) if file.endswith('.parquet')]
-    args.file_names = [file for file in os.listdir(args.input_dir) if (f'processed_{file}' not in os.listdir(process_input_dir))]
+    # args.file_names = [file for file in os.listdir(args.input_dir) if (f'processed_{file}' not in os.listdir(process_input_dir))]
 
     random.shuffle(args.file_names)
     print(args.file_names)
