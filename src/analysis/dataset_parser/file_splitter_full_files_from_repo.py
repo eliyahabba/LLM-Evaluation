@@ -106,12 +106,12 @@ class HFDatasetSplitter:
         self.logger.addHandler(fh)
         self.logger.addHandler(ch)
 
-    def effie_process_single_file(self, file_path: Path) -> List[str]:
+    def effie_process_single_file(self, file_path: str) -> List[str]:
         worker_id = uuid.uuid4()
         self.logger.info(f"Starting to process file: {file_path}")
 
         # Download the file
-        local_file = self.download_file(str(file_path))
+        local_file = self.download_file(file_path)
         if not local_file:
             self.logger.error(f"Failed to download {file_path}")
             return []
@@ -120,7 +120,7 @@ class HFDatasetSplitter:
         temp_file_handles = {}  # key: group key, value: True if file exists
         temp_files = set()
 
-        if not file_path:
+        if not local_file:
             self.logger.error(f"Failed to download {file_path}")
             return []
         try:
@@ -186,7 +186,7 @@ class HFDatasetSplitter:
 
         return list(temp_files)
 
-    def process_single_file(self, file_path: Path) -> List[str]:
+    def process_single_file(self, file_path: str) -> List[str]:
         """Process a single file after downloading it."""
         worker_id = uuid.uuid4()
         temp_files = set()
@@ -195,7 +195,7 @@ class HFDatasetSplitter:
         self.logger.info(f"Starting to process file: {file_path}")
 
         # Download the file
-        local_file = self.download_file(str(file_path))
+        local_file = self.download_file(file_path)
         if not local_file:
             self.logger.error(f"Failed to download {file_path}")
             return []
@@ -267,7 +267,7 @@ class HFDatasetSplitter:
         processed_files = []
 
         with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
-            future_to_file = {executor.submit(self.effie_process_single_file, Path(f)): f for f in new_files}
+            future_to_file = {executor.submit(self.effie_process_single_file, f): f for f in new_files}
 
             with tqdm(total=len(new_files), desc="Processing files", unit="file") as pbar:
                 for future in concurrent.futures.as_completed(future_to_file):
