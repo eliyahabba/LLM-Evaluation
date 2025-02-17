@@ -9,6 +9,7 @@ import pandas as pd
 plt.rcParams['font.family'] = 'serif'
 plt.rcParams['mathtext.fontset'] = 'dejavuserif'
 
+
 @dataclass
 class DistributionAnalysisConfig:
     """Configuration for distribution analysis"""
@@ -47,14 +48,13 @@ class DistributionAnalyzer:
             'MultipleChoiceTemplatesInstructionsStateBelowPlease': 'paraphrase_6',
         }
         self.enumerator_mapping = {
-    "capitals": "A,B,C,D",
-    "lowercase": "a,b,c,d",
-    "numbers": "1,2,3,4",
-    "roman": "I,II,III,IV",
-    "keyboard": "!,@,#,$",
-    "greek": "α,β,γ,δ"
-}
-
+            "capitals": "A,B,C,D",
+            "lowercase": "a,b,c,d",
+            "numbers": "1,2,3,4",
+            "roman": "I,II,III,IV",
+            "keyboard": "!,@,#,$",
+            "greek": "α,β,γ,δ"
+        }
 
     def _preprocess_data(self, df: pd.DataFrame) -> pd.DataFrame:
         # Create a copy to avoid modifying the original
@@ -90,14 +90,18 @@ class DistributionAnalyzer:
     def _plot_all_factors(self, df: pd.DataFrame):
         """Create a single figure with subplots for all factors"""
         num_factors = len(self.config.factors)
-        fig, axes = plt.subplots(1, num_factors , figsize=((num_factors-1) * 8, 8))
+        fig, axes = plt.subplots(1, num_factors, figsize=((num_factors - 1) * 8, 6))
+
         # fig, axes = plt.subplots(1, num_factors, figsize=(num_factors * 8, 8*(num_factors-1)))
         for idx, (factor, ax) in enumerate(zip(self.config.factors, axes)):
             if factor == "template":
                 factor_df = df[df.groupby('template')['template'].transform('size') > 3000]
             else:
                 factor_df = df
-
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['left'].set_visible(False)
+            ax.spines['bottom'].set_visible(False)
             # Calculate statistics
             stats = factor_df.groupby(['model_name', factor])['accuracy'].agg([
                 'mean', 'std', 'count'
@@ -147,24 +151,49 @@ class DistributionAnalyzer:
 
             if idx == 0:
                 ax.set_ylabel('Accuracy (%)', fontsize=20)
+                ax.set_ylabel('')
+                ax.yaxis.set_ticklabels([])
+                # turn of the ticks
+                ax.yaxis.set_ticks([])
             else:
                 ax.set_ylabel('')
                 ax.yaxis.set_ticklabels([])
+                # turn of the ticks
+                ax.yaxis.set_ticks([])
 
             ax.set_title(f'{factor_n}', fontsize=20)
             ax.set_xticks(x)
-            ax.set_xticklabels(models, rotation=45, ha='center', fontsize=18)
-            ax.set_ylim(30, 60)
+            # # 'meta-llama/Llama-3.2-1B-Instruct',
+            # 'allenai/OLMoE-1B-7B-0924-Instruct',
+            # # 'meta-llama/Meta-Llama-3-8B-Instruct',
+            # # 'meta-llama/Llama-3.2-3B-Instruct',
+            # 'mistralai/Mistral-7B-Instruct-v0.3'
+            for i in range(num_models):
+                if models[i] == 'Llama-3.2-1B-Instruct':
+                    models[i] = 'Llama-3.2-1B\nInstruct'
+                elif models[i] == 'Llama-3.2-3B-Instruct':
+                    models[i] = 'Llama-3.2-3B\nInstruct'
+                elif models[i] == 'Llama-3-8B-Instruct':
+                    models[i] = 'Llama-3.8B\nInstruct'
+                elif models[i] == 'OLMoE-1B-7B-0924-Instruct':
+                    models[i] = 'OLMoE-1B-7B\n-0924-Instruct'
+                elif models[i] == 'Mistral-7B-Instruct-v0.3':
+                    models[i] = 'Mistral-7B\nInstruct-v0.3'
+
+            models = [model.replace('Llama-3.2-', '') for model in models]
+            ax.set_xticklabels(models, rotation=0, ha='center', fontsize=18)
+            ax.set_ylim(30, 55)
             # increase size of font of y sticks
-            ax.yaxis.set_tick_params(labelsize=16)
-            ax.yaxis.grid(True, linestyle='--', alpha=0.3)
+            # ax.yaxis.set_tick_params(labelsize=16)
+            # ax.yaxis.grid(True, linestyle='--', alpha=0.3)
             ax.set_axisbelow(True)
 
-        plt.ylim(30, 60)
+        plt.ylim(30, 55)
         plt.tight_layout()
         output_path = f"{self.config.output_dir}/distribution_all_factors.png"
-        plt.savefig(output_path, bbox_inches='tight', dpi=300)
+        plt.savefig(output_path, bbox_inches='tight', dpi=1200)
         plt.close()
+
     def analyze_distributions(self, df: pd.DataFrame, metadata_path: Optional[str] = None):
         """Create distribution plots for all factors in a single figure"""
         processed_df = self._preprocess_data(df)
@@ -177,8 +206,110 @@ class DistributionAnalyzer:
         stats = {}
         for factor in self.config.factors:
             stats[factor] = self._compute_factor_statistics(processed_df, factor)
-
+        summary_df, factor_summar = self.analyze_mean_gaps(stats)
         return stats
+
+    def analyze_gaps(self, stats_dict):
+        """
+        Analyze gaps between models for any MultiIndex DataFrame
+
+        Input:
+        stats_dict: Dictionary where each value is a DataFrame with MultiIndex
+                   First level must be model_name
+        """
+        all_results = {}
+
+        for factor, df in stats_dict.items():
+            # Get unique model names
+            models = df.index.get_level_values('model_name').unique()
+
+            # Get the factor values (second level of MultiIndex)
+            factor_values = df.index.get_level_values(1).unique()
+
+            # Create DataFrame for gaps
+            gaps = pd.DataFrame()
+
+            # For each factor value
+            for value in factor_values:
+                model_values = {model: df.loc[(model, value)] for model in models}
+
+                # Calculate gaps for each metric
+                max_vals = pd.Series({col: max(m[col] for m in model_values.values()) for col in df.columns})
+                min_vals = pd.Series({col: min(m[col] for m in model_values.values()) for col in df.columns})
+
+                abs_gaps = max_vals - min_vals
+                percent_gaps = (abs_gaps / min_vals * 100).round(2)
+
+                # Store gaps for each metric
+                for metric in df.columns:
+                    gaps.loc[value, f'{metric}_gap'] = abs_gaps[metric]
+                    gaps.loc[value, f'{metric}_gap_percent'] = percent_gaps[metric]
+
+                    # Which models had max/min values
+                    max_model = max(model_values.items(), key=lambda x: x[1][metric])[0]
+                    min_model = min(model_values.items(), key=lambda x: x[1][metric])[0]
+                    gaps.loc[value, f'{metric}_max_model'] = max_model
+                    gaps.loc[value, f'{metric}_min_model'] = min_model
+
+            all_results[factor] = gaps
+
+        return all_results
+
+    def analyze_mean_gaps(self, stats_dict):
+        """
+        Create summary table of mean gaps for each factor
+        """
+        summary_data = []
+
+        for factor, df in stats_dict.items():
+            models = df.index.get_level_values('model_name').unique()
+            factor_values = df.index.get_level_values(1).unique()
+
+            for value in factor_values:
+                model_values = {model: df.loc[(model, value)]['mean'] for model in models}
+                max_model, max_val = max(model_values.items(), key=lambda x: x[1])
+                min_model, min_val = min(model_values.items(), key=lambda x: x[1])
+                gap = max_val - min_val
+                gap_percent = (gap / min_val * 100).round(2)
+
+                summary_data.append({
+                    'factor': factor,
+                    'value': value,
+                    'mean_gap': gap,
+                    'mean_gap_percent': gap_percent,
+                    'mean_max_model': max_model,
+                })
+
+        # Create the full summary DataFrame
+        summary_df = pd.DataFrame(summary_data)
+
+        # Find max and min gaps per factor
+        factor_extremes = []
+        for factor in summary_df['factor'].unique():
+            factor_data = summary_df[summary_df['factor'] == factor]
+
+            # Find max gap
+            max_gap_row = factor_data.loc[factor_data['mean_gap'].idxmax()]
+            factor_gaps = factor_data['mean_gap']
+
+            # Find min gap
+            min_gap_row = factor_data.loc[factor_data['mean_gap'].idxmin()]
+
+            factor_extremes.append({
+                'factor': factor,
+                'max_gap_value': max_gap_row['value'],
+                'max_gap': max_gap_row['mean_gap'],
+                'max_gap_percent': max_gap_row['mean_gap_percent'],
+                'min_gap_value': min_gap_row['value'],
+                'min_gap': min_gap_row['mean_gap'],
+                'min_gap_percent': min_gap_row['mean_gap_percent'],
+                'mean_gap_across_values': factor_gaps.mean(),
+                'median_gap_across_values': factor_gaps.median()
+            })
+
+        factor_summary = pd.DataFrame(factor_extremes)
+
+        return summary_df, factor_summary  # Example usage:
 
     def _compute_factor_statistics(self, df: pd.DataFrame, factor: str):
         """Compute summary statistics"""
@@ -188,7 +319,7 @@ class DistributionAnalyzer:
             'std',
             lambda x: x.quantile(0.25),
             lambda x: x.quantile(0.75)
-        ]).round(2)
+        ]).round(3)
 
         stats = stats.rename(columns={'<lambda_0>': 'q25', '<lambda_1>': 'q75'})
         return stats
@@ -209,11 +340,9 @@ if __name__ == "__main__":
     df = df[
         ((df['shots'] != 5) | (~df['choices_order'].isin(["correct_first", "correct_last"])))
     ]
-    # Co
-    # Co
-    # Configure analysis
+
     config = DistributionAnalysisConfig(
-        factors=["template","enumerator", "separator"],
+        factors=["template", "enumerator", "separator"],
         output_dir="results",
         aggregation_type="individual",
         figsize=(15, 8)

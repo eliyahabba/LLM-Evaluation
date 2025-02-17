@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from src.analysis.create_plots.nova_v11 import DataProcessor
+from src.analysis.create_plots.calc_stats.nova_v11 import DataProcessor
 
 
 @dataclass
@@ -78,27 +78,34 @@ class DistributionAnalyzer:
             return sorted(df[factor].unique())
 
     def _plot_factor_distribution(self, df: pd.DataFrame, factor: str):
-        """Create a vertical bar plot with adjusted spacing"""
+        """Create a vertical bar plot with adjusted spacing and percentage scale"""
         fig, ax = plt.subplots(figsize=self.config.figsize)
 
-        # Calculate statistics
+        # Calculate statistics and convert to percentages
         stats = df.groupby(['model_name', factor])['accuracy'].agg([
             'mean', 'std', 'count'
         ]).reset_index()
+        stats['mean'] = stats['mean'] * 100  # Convert to percentage
 
         models = sorted(df['model_name'].unique())
         factor_values = self._get_ordered_values(df, factor)
 
-        # Reduce spacing between model groups
-        total_width = 0.8
-        bar_width = total_width / len(factor_values)
-        x = np.arange(len(models)) * (1.2)  # Reduced spacing between groups from 1.8 to 1.2
+        # Define spacing parameters
+        num_models = len(models)
+        num_factors = len(factor_values)
+        plot_width = 1.0  # Full width utilization
+        group_spacing = 0.02  # Minimized spacing between groups
+        total_width = (plot_width - (group_spacing * (num_models - 1))) / num_models
+        bar_width = total_width / num_factors
+
+        # Adjust positions to fully utilize the x-axis
+        x = np.linspace(0, plot_width, num_models)  # Spread across full width
 
         for i, value in enumerate(factor_values):
             value_stats = stats[stats[factor] == value]
-            positions = x + (i * bar_width)
-            if factor == "template":
-                factor_n = "Instruction"
+            positions = x + (i - (num_factors - 1) / 2) * bar_width  # Center the bars within each model group
+            factor_n = "Instruction" if factor == "template" else factor
+
             bars = ax.bar(positions,
                           value_stats['mean'],
                           bar_width * 0.9,
@@ -107,26 +114,98 @@ class DistributionAnalyzer:
                           alpha=0.7)
 
             for pos, mean in zip(positions, value_stats['mean']):
-                ax.text(pos, mean + 0.001, f'{mean:.2f}',
+                ax.text(pos, mean + 0.1, f'{mean:.1f}',
                         ha='center', va='bottom',
                         rotation=90, fontsize=8)
 
-        ax.set_ylabel('Accuracy')
+        ax.set_ylabel('Accuracy (%)')
         ax.set_title(f'Average Accuracy by {factor_n} for Each Model')
-        ax.set_xticks(x + (total_width / 2) * (len(factor_values) - 1) / len(factor_values))
-        ax.set_xticklabels(models, rotation=45, ha='right')
+
+        # Adjust x-axis ticks and labels
+        ax.set_xticks(x)  # Ensure labels align with models
+        ax.set_xticklabels(models, rotation=0, ha='right')
         ax.yaxis.grid(True, linestyle='--', alpha=0.3)
         ax.set_axisbelow(True)
+
+        # Set y-axis limits to show only 20-100%
+        ax.set_ylim(20, 60)
 
         legend = ax.legend(title=f'{factor_n} Values',
                            bbox_to_anchor=(1.05, 1),
                            loc='upper left',
-                           ncol=max(1, len(factor_values) // 8))
+                           ncol=max(1, num_factors // 8))
 
         plt.tight_layout()
         output_path = f"{self.config.output_dir}/distribution_{factor}.png"
         plt.savefig(output_path, bbox_inches='tight', dpi=300)
         plt.close()
+
+    def _plot_factor_distribution(self, df: pd.DataFrame, factor: str):
+        """Create a vertical bar plot with minimal spacing and edge alignment"""
+        fig, ax = plt.subplots(figsize=self.config.figsize)
+
+        # Calculate statistics and convert to percentages
+        stats = df.groupby(['model_name', factor])['accuracy'].agg([
+            'mean', 'std', 'count'
+        ]).reset_index()
+        stats['mean'] = stats['mean'] * 100  # Convert to percentage
+
+        models = sorted(df['model_name'].unique())
+        factor_values = self._get_ordered_values(df, factor)
+
+        num_models = len(models)
+        num_factors = len(factor_values)
+
+        # הגדרת רוחב כולל
+        plot_width = num_models  # נשתמש במספרים שלמים כדי לשלוט במדויק
+        bar_width = 0.8 / num_factors  # צמצום הרווחים הכלליים
+
+        # נוודא שהמודלים צמודים לשוליים באמצעות np.arange
+        x = np.arange(num_models)  # זה נותן מיקומים שלמים מ-0 עד num_models-1
+
+        for i, value in enumerate(factor_values):
+            value_stats = stats[stats[factor] == value]
+            positions = x + (i - (num_factors - 1) / 2) * bar_width  # מרכז כל בר בתוך הקבוצה
+            factor_n = "Instruction" if factor == "template" else factor
+
+            bars = ax.bar(positions,
+                          value_stats['mean'],
+                          bar_width * 0.9,
+                          label=f'{factor_n}={value}',
+                          color=self.colors[i % len(self.colors)],
+                          alpha=0.7)
+
+            for pos, mean in zip(positions, value_stats['mean']):
+                ax.text(pos, mean + 0.1, f'{mean:.1f}',
+                        ha='center', va='bottom',
+                        rotation=90, fontsize=8)
+
+        ax.set_ylabel('Accuracy (%)')
+        ax.set_title(f'Average Accuracy by {factor_n} for Each Model')
+
+        # התאמת תוויות
+        ax.set_xticks(x)
+        ax.set_xticklabels(models, rotation=45, ha='right')
+
+        # הורדת הרווחים הלבנים ע"י שליטה על הגבולות
+        ax.set_xlim(-0.5, num_models - 0.5)
+
+        ax.yaxis.grid(True, linestyle='--', alpha=0.3)
+        ax.set_axisbelow(True)
+
+        # Set y-axis limits
+        ax.set_ylim(20, 60)
+
+        legend = ax.legend(title=f'{factor_n} Values',
+                           bbox_to_anchor=(1.05, 1),
+                           loc='upper left',
+                           ncol=max(1, num_factors // 8))
+
+        plt.tight_layout()
+        output_path = f"{self.config.output_dir}/distribution_{factor}.png"
+        plt.savefig(output_path, bbox_inches='tight', dpi=300)
+        plt.close()
+
 
     def analyze_distributions(self, df: pd.DataFrame, metadata_path: Optional[str] = None):
         """Create distribution plots for each factor"""
@@ -279,46 +358,31 @@ if __name__ == "__main__":
     df = pd.read_parquet("aggregated_results.parquet")
     # df = df[~df["dataset"].str.startswith("mmlu_pro")]
     # df = df[~df["dataset"].str.startswith("hell")]
-    df = df[df["shots"] == 0]
-    # use_random = False
-    # if use_random:
-    #     mmlu_datasets = [ds for ds in df['dataset'].unique() if ds.startswith('mmlu.')]
-    #     selected_datasets = random.sample(mmlu_datasets, 5)
-    #     # take only dataset that start with mmlu and in the selected_datasets ot not start with mmlu
-    #     df = df[df['dataset'].isin(selected_datasets) | ~df['dataset'].str.startswith('mmlu.')]
-    #
-    # else:
-    #     # Constants
-    #     DEFAULT_DATASETS = [
-    #         "mmlu.astronomy",
-    #         "mmlu.college_biology",
-    #         "mmlu.computer_security",
-    #         "mmlu.high_school_european_history",
-    #         "mmlu.high_school_government_and_politics",
-    #         "ai2_arc.arc_challenge",
-    #         "ai2_arc.arc_easy",
-    #         "hellaswag",
-    #         "openbook_qa",
-    #         "social_iqa"
-    #     ]
-    #     df = df[df['dataset'].isin(DEFAULT_DATASETS)]
+    models = [
+        # 'meta-llama/Llama-3.2-1B-Instruct',
+        'allenai/OLMoE-1B-7B-0924-Instruct',
+        'meta-llama/Meta-Llama-3-8B-Instruct',
+        # 'meta-llama/Llama-3.2-3B-Instruct',
+        'mistralai/Mistral-7B-Instruct-v0.3'
+    ]
+    df = df[df["model_name"].isin(models)]
 
-    # df = df[~df.choices_order.isin(["correct_first", "correct_last"])]
 
     # Configure analysis
     config = DistributionAnalysisConfig(
-        factors=["template" ],
+        factors=["template", "separator", "enumerator"],
         output_dir="results",
         aggregation_type="individual",
         figsize=(15, 8)
     )
-    # config = DistributionAnalysisConfig(
-    #     factors=["template", "separator", "enumerator", "choices_order"],
-    #     output_dir="results",
-    #     aggregation_type="individual",
-    #     figsize=(15, 8)
-    # )
 
+    models = [
+        # 'meta-llama/Llama-3.2-1B-Instruct',
+        'allenai/OLMoE-1B-7B-0924-Instruct',
+        'meta-llama/Meta-Llama-3-8B-Instruct',
+        # 'meta-llama/Llama-3.2-3B-Instruct',
+        'mistralai/Mistral-7B-Instruct-v0.3'
+    ]
     # Run analysis
     analyzer = DistributionAnalyzer(config)
     metadata_path = "/Users/ehabba/PycharmProjects/LLM-Evaluation/Data/mmlu_metadata.csv"
