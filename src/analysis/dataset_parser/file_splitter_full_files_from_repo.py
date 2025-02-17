@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import List, Set, Optional
 
 import pandas as pd
+import pyarrow as pa
+import pyarrow.compute as pc
 import pyarrow.parquet as pq
 from huggingface_hub import HfApi, hf_hub_download
 from tqdm import tqdm
@@ -104,7 +106,79 @@ class HFDatasetSplitter:
         self.logger.addHandler(fh)
         self.logger.addHandler(ch)
 
-    def process_single_file(self, file_path: str) -> List[str]:
+    def effie_process_single_file(self, file_path: Path) -> List[str]:
+        worker_id = uuid.uuid4()
+
+        temp_file_handles = {}  # key: group key, value: True if file exists
+        temp_files = set()
+
+        if not file_path:
+            self.logger.error(f"Failed to download {file_path}")
+            return []
+        try:
+
+            parquet_file = pq.ParquetFile(file_path)
+            total_rows = parquet_file.metadata.num_rows
+            with tqdm(total=total_rows, desc=f"Processing {file_path.name}", unit="rows") as pbar:
+                for batch in parquet_file.iter_batches(batch_size=100000):
+                    # Convert the record batch to a pyarrow Table
+                    table = pa.Table.from_batches([batch])
+
+                    # Extract nested fields using arrow's field extraction.
+                    # These calls assume that 'model', 'prompt_config', and 'instance' are struct columns.
+                    model_name = table.column("model").field("model_info").field("name")
+                    shots = table.column("prompt_config").field("format").field("shots")
+                    dataset_name = table.column("instance").field("sample_identifier").field("dataset_name")
+
+                    # Append the new columns to the table.
+                    table = table.append_column("model_name", model_name)
+                    table = table.append_column("shots", shots)
+                    table = table.append_column("dataset_name", dataset_name)
+
+                    # Create a struct of the three new columns to get unique group combinations.
+                    group_struct = pa.StructArray.from_arrays(
+                        [model_name, shots, dataset_name],
+                        names=["model_name", "shots", "dataset_name"]
+                    )
+                    unique_groups = pc.unique(group_struct)
+
+                    # Process each unique group within the batch.
+                    for group in unique_groups.to_pylist():
+                        m = group["model_name"]
+                        s = group["shots"]
+                        d = group["dataset_name"]
+                        key = f"{worker_id}_{m}_shots{s}_{d}"
+                        temp_file = self.temp_dir / f"{key}.parquet"
+                        temp_files.add(str(temp_file))
+
+                        # Build the filter mask: (model_name == m) & (shots == s) & (dataset_name == d)
+                        mask = pc.and_(
+                            pc.and_(pc.equal(model_name, m), pc.equal(shots, s)),
+                            pc.equal(dataset_name, d)
+                        )
+                        filtered_table = table.filter(mask)
+
+                        # Write the filtered table to the appropriate file.
+                        if key not in temp_file_handles:
+                            os.makedirs(temp_file.parent, exist_ok=True)
+                            pq.write_table(filtered_table, temp_file)
+                            temp_file_handles[key] = True
+                        else:
+                            pq.write_table(filtered_table, temp_file, append=True)
+
+                    pbar.update(table.num_rows)
+        except Exception as e:
+            self.logger.error(f"Fatal error processing file {file_path}: {str(e)}", exc_info=True)
+            for temp_file in temp_files:
+                try:
+                    Path(temp_file).unlink(missing_ok=True)
+                except Exception as cleanup_error:
+                    self.logger.error(f"Error cleaning up temp file {temp_file}: {str(cleanup_error)}")
+            return []
+
+        return list(temp_files)
+
+    def process_single_file(self, file_path: Path) -> List[str]:
         """Process a single file after downloading it."""
         worker_id = uuid.uuid4()
         temp_files = set()
@@ -113,7 +187,7 @@ class HFDatasetSplitter:
         self.logger.info(f"Starting to process file: {file_path}")
 
         # Download the file
-        local_file = self.download_file(file_path)
+        local_file = self.download_file(str(file_path))
         if not local_file:
             self.logger.error(f"Failed to download {file_path}")
             return []
@@ -168,63 +242,6 @@ class HFDatasetSplitter:
             return []
 
         return list(temp_files)
-    def process_single_file1(self, file_path: str) -> List[str]:
-        """Process a single file after downloading it."""
-        worker_id = uuid.uuid4()
-        temp_files = set()
-
-        self.logger.info(f"Starting to process file: {file_path}")
-
-        # Download the file
-        local_file = self.download_file(file_path)
-        if not local_file:
-            self.logger.error(f"Failed to download {file_path}")
-            return []
-
-        try:
-            parquet_file = pq.ParquetFile(local_file)
-            total_rows = parquet_file.metadata.num_rows
-
-            temp_dfs = {}
-
-            with tqdm(total=total_rows, desc=f"Processing {local_file.name}", unit="rows") as pbar:
-                for batch in parquet_file.iter_batches(batch_size=100000):
-                    df = batch.to_pandas()
-                    df['model_name'] = [x['model_info']['name'] for x in df['model']]
-                    df['shots'] = [x['format']['shots'] for x in df['prompt_config']]
-                    df['dataset_name'] = [x['sample_identifier']['dataset_name'] for x in df['instance']]
-
-                    # Group by extracted fields
-                    grouped = df.groupby(['model_name', 'shots', 'dataset_name'])
-                    for (model, shots, dataset), group_df in grouped:
-                        key = f"{worker_id}_{model}_shots{shots}_{dataset}"
-                        if key in temp_dfs:
-                            temp_dfs[key] = pd.concat([temp_dfs[key], group_df], ignore_index=True)
-                        else:
-                            temp_dfs[key] = group_df
-
-                    pbar.update(len(df))
-
-            for key, df in temp_dfs.items():
-                temp_file = self.temp_dir / f"{key}.parquet"
-                os.makedirs(temp_file.parent, exist_ok=True)
-                df.to_parquet(temp_file, index=False)
-                temp_files.add(str(temp_file))
-                self.logger.info(f"Wrote {len(df)} rows to {temp_file}")
-
-            # Clean up the downloaded file
-            local_file.unlink()
-
-        except Exception as e:
-            self.logger.error(f"Fatal error processing file {file_path}: {str(e)}", exc_info=True)
-            for temp_file in temp_files:
-                try:
-                    Path(temp_file).unlink(missing_ok=True)
-                except Exception as cleanup_error:
-                    self.logger.error(f"Error cleaning up temp file {temp_file}: {str(cleanup_error)}")
-            return []
-
-        return list(temp_files)
 
     def process_all_files(self):
         """Process only new files that haven't been processed before."""
@@ -242,7 +259,7 @@ class HFDatasetSplitter:
         processed_files = []
 
         with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
-            future_to_file = {executor.submit(self.process_single_file, f): f for f in new_files}
+            future_to_file = {executor.submit(self.effie_process_single_file, Path(f)): f for f in new_files}
 
             with tqdm(total=len(new_files), desc="Processing files", unit="file") as pbar:
                 for future in concurrent.futures.as_completed(future_to_file):
