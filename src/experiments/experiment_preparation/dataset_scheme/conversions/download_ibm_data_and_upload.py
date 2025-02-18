@@ -21,7 +21,6 @@ if __name__ == "__main__":
                         default="/cs/snapless/gabis/eliyahabba/scheme_files")
 
     args = parser.parse_args()
-    main_path = 'https://huggingface.co/datasets/OfirArviv/HujiCollabOutput/resolve/main/'
 
     fs = HfFileSystem()
     existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
