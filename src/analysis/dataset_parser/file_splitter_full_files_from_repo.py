@@ -173,7 +173,7 @@ class HFDatasetSplitter:
 
                         # Use a file lock to ensure safe concurrent writes.
                         with FileLock(lock_file):
-                            if not temp_file.exists():
+                            if file_key not in temp_writers:
                                 writer = pq.ParquetWriter(str(temp_file), filtered_table.schema)
                                 temp_writers[file_key] = writer
                             else:
