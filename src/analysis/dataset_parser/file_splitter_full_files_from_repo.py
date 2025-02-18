@@ -11,6 +11,7 @@ import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.parquet as pq
 from huggingface_hub import HfApi, hf_hub_download
+from openai import timeout
 from tqdm import tqdm
 
 
@@ -83,6 +84,7 @@ class HFDatasetSplitter:
                 repo_type="dataset",
                 filename=file_path,
                 local_dir=self.temp_dir,
+                timeout=3600
             )
             return local_path
         except Exception as e:
