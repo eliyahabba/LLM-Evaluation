@@ -9,7 +9,8 @@
 
 
 export PYTHONPATH=/cs/labs/gabis/eliyahabba/LLM-Evaluation/
-
+export HF_HOME=/cs/snapless/gabis/gabis/shared/huggingface/
+echo "HF_HOME is set to: $HF_HOME"
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 dir="/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/analysis/dataset_parser/"
 absolute_path=$(readlink -f $dir)
