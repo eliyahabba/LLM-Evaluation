@@ -139,47 +139,50 @@ class HFDatasetSplitter:
                     # model_name = table.column("model").field("model_info").field("name")
                     model_name = table.column("model").combine_chunks().field("model_info").field("name")
                     # shots = table.column("prompt_config").field("format").field("shots")
-                    shots = table.column("prompt_config").combine_chunks().field("format").field("shots")
                     # dataset_name = table.column("instance").field("sample_identifier").field("dataset_name")
                     dataset_name = table.column("instance").combine_chunks().field("sample_identifier").field("dataset_name")
 
                     # Append the new columns to the table.
                     table = table.append_column("model_name", model_name)
-                    table = table.append_column("shots", shots)
                     table = table.append_column("dataset_name", dataset_name)
 
-                    # Create a struct of the three new columns to get unique group combinations.
-                    group_struct = pa.StructArray.from_arrays(
-                        [model_name, shots, dataset_name],
-                        names=["model_name", "shots", "dataset_name"]
+
+                    # Combine the two columns into a single string key.
+                    # Note: Use a separator that does not occur in your data.
+                    combined = pc.binary_join_element_wise(
+                        [model_name, dataset_name],
+                        separator="|"
                     )
-                    unique_groups = pc.unique(group_struct)
+                    unique_keys = pc.unique(combined)
 
                     # Process each unique group within the batch.
-                    for group in unique_groups.to_pylist():
-                        m = group["model_name"]
-                        s = group["shots"]
-                        d = group["dataset_name"]
-                        key = f"{worker_id}_{m}_shots{s}_{d}"
-                        temp_file = self.temp_dir / f"{key}.parquet"
+                    for key in unique_keys.to_pylist():
+                        # Split the combined key to retrieve model_name and dataset_name.
+                        m, d = key.split("|")
+
+                        # Create a unique file key.
+                        file_key = f"{worker_id}_{m}_{d}"
+                        temp_file = self.temp_dir / f"{file_key}.parquet"
                         temp_files.add(str(temp_file))
 
-                        # Build the filter mask: (model_name == m) & (shots == s) & (dataset_name == d)
+                        # Build the filter mask: (model_name == m) & (dataset_name == d)
                         mask = pc.and_(
-                            pc.and_(pc.equal(model_name, m), pc.equal(shots, s)),
+                            pc.equal(model_name, m),
                             pc.equal(dataset_name, d)
                         )
                         filtered_table = table.filter(mask)
 
                         # Write the filtered table to the appropriate file.
-                        if key not in temp_file_handles:
+                        if file_key not in temp_file_handles:
                             os.makedirs(temp_file.parent, exist_ok=True)
                             pq.write_table(filtered_table, temp_file)
-                            temp_file_handles[key] = True
+                            temp_file_handles[file_key] = True
                         else:
                             pq.write_table(filtered_table, temp_file, append=True)
 
                     pbar.update(table.num_rows)
+
+
         except Exception as e:
             self.logger.error(f"Fatal error processing file {file_path}: {str(e)}", exc_info=True)
             for temp_file in temp_files:
