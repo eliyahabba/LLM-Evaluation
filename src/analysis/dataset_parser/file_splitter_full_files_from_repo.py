@@ -145,11 +145,12 @@ class HFDatasetSplitter:
                     # Append the new columns to the table.
                     table = table.append_column("model_name", model_name)
                     table = table.append_column("dataset_name", dataset_name)
-                    model_binary = model_name.cast(pa.binary())
-                    dataset_binary = dataset_name.cast(pa.binary())
-                    combined = pc.binary_join_element_wise([model_binary, dataset_binary], b"|")
-                    # Convert the joined result back to a string array.
-                    combined = combined.cast(pa.string())
+                    # --- Group by unique combinations ---
+                    # Build the combined key via list comprehension.
+                    combined_list = [
+                        f"{m}|{d}" for m, d in zip(model_name.to_pylist(), dataset_name.to_pylist())
+                    ]
+                    combined = pa.array(combined_list)
                     unique_keys = pc.unique(combined)
 
                     # Process each unique group within the batch.
@@ -161,6 +162,8 @@ class HFDatasetSplitter:
                         file_key = f"{worker_id}_{m}_{d}"
                         temp_file = self.temp_dir / f"{file_key}.parquet"
                         temp_files.add(str(temp_file))
+
+
 
                         # Build the filter mask: (model_name == m) & (dataset_name == d)
                         mask = pc.and_(
