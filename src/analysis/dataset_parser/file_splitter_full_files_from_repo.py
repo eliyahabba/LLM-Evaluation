@@ -128,7 +128,7 @@ class HFDatasetSplitter:
 
             parquet_file = pq.ParquetFile(local_file)
             total_rows = parquet_file.metadata.num_rows
-            with tqdm(total=total_rows, desc=f"Processing {file_path.name}", unit="rows") as pbar:
+            with tqdm(total=total_rows, desc=f"Processing {local_file.name}", unit="rows") as pbar:
                 for batch in parquet_file.iter_batches(batch_size=100000):
                     # Convert the record batch to a pyarrow Table
                     table = pa.Table.from_batches([batch])
