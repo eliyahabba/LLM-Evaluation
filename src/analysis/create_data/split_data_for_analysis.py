@@ -1,28 +1,15 @@
 import argparse
-import json
 import logging
 import os
-import shutil
-import tempfile
 import time
 from datetime import datetime
 from functools import partial
 from multiprocessing import Pool, cpu_count, Manager
 from pathlib import Path
-from typing import Dict, Optional, Iterator, Union, Tuple
 
-import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
-import pytz
-import requests
-from datasets import load_dataset
 from tqdm import tqdm
 
 from src.analysis.create_plots.DataLoader import DataLoader
-from src.experiments.experiment_preparation.dataset_scheme.conversions.download_ibm_data import generate_file_names
-from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
-from src.utils.Constants import Constants
 
 
 def setup_logging():
@@ -104,6 +91,7 @@ def process_file(pair, scheme_files_dir, logger):
     # Example: from URL get '2024-12-16' for the filename
     main(pair, scheme_files_dir, logger)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--urls', nargs='+', help='List of urls to download')
@@ -117,7 +105,7 @@ if __name__ == "__main__":
     if not os.path.exists(process_output_dir):
         process_output_dir = "/Users/ehabba/ibm_results_data_full_processed_split"
         os.makedirs(process_output_dir, exist_ok=True)
-    process_output_dir  = Path(process_output_dir)
+    process_output_dir = Path(process_output_dir)
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
     download_huggingface_files_parllel(process_output_dir=process_output_dir)
