@@ -145,11 +145,11 @@ class HFDatasetSplitter:
                     # Append the new columns to the table.
                     table = table.append_column("model_name", model_name)
                     table = table.append_column("dataset_name", dataset_name)
-
-
-                    # Combine the two columns into a single string key.
-                    # Note: Use a separator that does not occur in your data.
-                    combined = pc.binary_join_element_wise([model_name, dataset_name], "|")
+                    model_binary = model_name.cast(pa.binary())
+                    dataset_binary = dataset_name.cast(pa.binary())
+                    combined = pc.binary_join_element_wise([model_binary, dataset_binary], b"|")
+                    # Convert the joined result back to a string array.
+                    combined = combined.cast(pa.string())
                     unique_keys = pc.unique(combined)
 
                     # Process each unique group within the batch.
