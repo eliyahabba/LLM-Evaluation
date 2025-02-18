@@ -83,7 +83,7 @@ class HFDatasetSplitter:
                 repo_type="dataset",
                 filename=file_path,
                 local_dir=self.temp_dir,
-                timeout=3600
+                etag_timeout=3600
             )
             return local_path
         except Exception as e:
