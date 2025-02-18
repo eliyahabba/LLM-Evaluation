@@ -5,6 +5,8 @@ from typing import List, Set
 
 import pandas as pd
 import plotly.express as px
+import seaborn as sns
+from matplotlib import pyplot as plt
 
 
 class PromptConfigurationAnalyzerAxes:
@@ -37,9 +39,9 @@ class PromptConfigurationAnalyzerAxes:
         # 1) Process the 'quad' data (original logic)
         # -------------------------
         grouped_data = self._aggregate_configuration_scores(df)
-        filtered_datasets = self._filter_and_select_datasets(grouped_data, interesting_datasets)
+        # filtered_datasets = self._filter_and_select_datasets(grouped_data, interesting_datasets)
+        filtered_datasets = interesting_datasets
         final_data = self._prepare_visualization_data(grouped_data, filtered_datasets)
-
         # # Generate and save visualizations for the 'quad' analysis
         self._generate_plots(
             final_data,
@@ -48,18 +50,23 @@ class PromptConfigurationAnalyzerAxes:
             filtered_datasets,
             base_results_dir
         )
+
+        choices_order_none_final_data = final_data[final_data['choices_order'] == "none"]
         #
         # -------------------------
         # 2) NEW: Analyze each column individually
         # -------------------------
         self._analyze_each_dimension(
-            final_data,  # or grouped_data, depending on your filtering needs
+            choices_order_none_final_data,  # or grouped_data, depending on your filtering needs
             model_name,
             shots_selected,
             filtered_datasets,
             base_results_dir
         )
-
+        self.save_heatmap2(choices_order_none_final_data, model_name, shots_selected, filtered_datasets,
+                           base_results_dir)
+        self.save_heatmap_agg(final_data, model_name, shots_selected, filtered_datasets, base_results_dir)
+        self.save_heatmap_agg_2(final_data, model_name, shots_selected, filtered_datasets, base_results_dir)
         total_time = time.time() - start_time
         print(f"Total processing time for {model_name}: {total_time:.2f} seconds")
         print("-" * 50)
@@ -176,6 +183,42 @@ class PromptConfigurationAnalyzerAxes:
             subset.to_parquet(output_parquet_file, index=False)
 
         print(f"Plotting completed in {time.time() - plot_start:.2f} seconds")
+
+    def plot_accuracy_distribution_dim(self, config_data: pd.DataFrame, x_column="mean_accuracy"):
+        """Create a bar chart of accuracy values with configuration counts."""
+        grouped_data = config_data.groupby('quad').agg({
+            x_column: 'mean',
+            'combination_count': 'first'
+        }).reset_index()
+
+        fig = px.bar(
+            grouped_data,
+            x='quad',
+            y=x_column,
+            text='combination_count',
+            title="Accuracy by Configuration Type"
+        )
+
+        fig.update_traces(
+            textposition='outside',
+            cliponaxis=False,
+            textfont=dict(size=12, color='black'),
+            texttemplate='Configurations: %{text:,}'
+        )
+
+        fig.update_layout(
+            xaxis_title="Configuration Type",
+            yaxis_title="Average Accuracy Score (0-1)",
+            title={
+                'text': "Accuracy by Configuration Type<br><sup>Each bar shows a configuration's accuracy with the number of variations tested</sup>",
+                'y': 0.95,
+                'x': 0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'
+            },
+            margin=dict(t=50)
+        )
+        return fig
 
     def _create_accuracy_plot(
             self,
@@ -376,3 +419,306 @@ class PromptConfigurationAnalyzerAxes:
         # Save the figure as an HTML file
         # output_fig_file = os.path.join(dimension_dir, f"prompt_configuration_analyzer.html")
         # fig.write_html(output_fig_file)
+
+    def save_heatmap(self, final_data, model_name, shots_selected, filtered_datasets, base_results_dir):
+
+        model_dir = os.path.join(
+            base_results_dir,
+            f"Shots_{shots_selected}",
+            model_name.replace('/', '_')
+        )
+
+        final_data = final_data.drop(columns='choices_order')
+
+        for dataset in filtered_datasets:
+            subset = final_data[final_data["dataset"] == dataset]
+
+            heatmap_dir = os.path.join(model_dir, "2D_Heatmaps", dataset.replace('/', '_'))
+            os.makedirs(heatmap_dir, exist_ok=True)
+
+            for template in subset['template'].unique():
+                template_data = subset[subset['template'] == template]
+
+                pivot_table = pd.pivot_table(
+                    template_data,
+                    values='accuracy',
+                    index='separator',
+                    columns='enumerator',
+                    aggfunc='mean'
+                )
+
+                plt.figure(figsize=(10, 8))
+                sns.heatmap(pivot_table,
+                            annot=True,
+                            fmt='.3f',
+                            cmap='viridis',
+                            cbar_kws={'label': 'Accuracy'})
+
+                plt.title(
+                    f'2D Heatmap for {dataset}\nTemplate: {template}\n(Model: {model_name}, Shots: {shots_selected})')
+                plt.xlabel('Enumerator')
+                plt.ylabel('Separator')
+
+                output_fig_file = os.path.join(heatmap_dir, f"heatmap_template_{template.replace('/', '_')}.png")
+                plt.savefig(output_fig_file, dpi=100, bbox_inches='tight')
+                plt.close()
+
+                if not pivot_table.isna().any().any():
+
+                    col_best_dir = os.path.join(model_dir, "2D_Heatmaps_special", "col_best")
+                    col_worst_dir = os.path.join(model_dir, "2D_Heatmaps_special", "col_worst")
+                    row_best_dir = os.path.join(model_dir, "2D_Heatmaps_special", "row_best")
+                    row_worst_dir = os.path.join(model_dir, "2D_Heatmaps_special", "row_worst")
+
+                    os.makedirs(col_best_dir, exist_ok=True)
+                    os.makedirs(col_worst_dir, exist_ok=True)
+                    os.makedirs(row_best_dir, exist_ok=True)
+                    os.makedirs(row_worst_dir, exist_ok=True)
+
+                    def plot_and_save_special(output_dir, prefix):
+
+                        plt.figure(figsize=(10, 8))
+                        sns.heatmap(
+                            pivot_table,
+                            annot=True,
+                            fmt='.3f',
+                            cmap='viridis',
+                            cbar_kws={'label': 'Accuracy'}
+                        )
+                        plt.title(
+                            f'2D Heatmap for {dataset}\n'
+                            f'Template: {template}\n'
+                            f'(Model: {model_name}, Shots: {shots_selected})'
+                        )
+                        plt.xlabel('Enumerator')
+                        plt.ylabel('Separator')
+
+                        special_filename = (
+                            f"{prefix}_{dataset.replace('/', '_')}_"
+                            f"heatmap_template_{template.replace('/', '_')}.png"
+                        )
+                        output_special_file = os.path.join(output_dir, special_filename)
+                        plt.savefig(output_special_file, dpi=100, bbox_inches='tight')
+                        plt.close()
+
+                    col_max = pivot_table.idxmax(axis=1)
+                    if col_max.nunique() == 1:
+                        best_col = col_max.iloc[0]
+                        plot_and_save_special(col_best_dir, best_col)
+
+                    col_min = pivot_table.idxmin(axis=1)
+                    if col_min.nunique() == 1:
+                        worst_col = col_min.iloc[0]
+                        plot_and_save_special(col_worst_dir, worst_col)
+
+                    row_max = pivot_table.idxmax(axis=0)
+                    if row_max.nunique() == 1:
+                        best_row = row_max.iloc[0]
+                        plot_and_save_special(row_best_dir, best_row)
+
+                    row_min = pivot_table.idxmin(axis=0)
+                    if row_min.nunique() == 1:
+                        worst_row = row_min.iloc[0]
+                        plot_and_save_special(row_worst_dir, worst_row)
+
+    def save_heatmap_agg(self, final_data, model_name, shots_selected, filtered_datasets, base_results_dir):
+
+        final_data = final_data.groupby(['dataset', 'template', 'separator', 'enumerator']).agg(
+            accuracy=pd.NamedAgg(column='accuracy', aggfunc='median')).reset_index()
+
+        model_dir = os.path.join(
+            base_results_dir,
+            f"Shots_{shots_selected}",
+            model_name.replace('/', '_')
+        )
+
+        for dataset in filtered_datasets:
+            subset = final_data[final_data["dataset"] == dataset]
+
+            heatmap_dir = os.path.join(model_dir, "2D_Heatmaps_Agg", dataset.replace('/', '_'))
+            os.makedirs(heatmap_dir, exist_ok=True)
+
+            for template in subset['template'].unique():
+                template_data = subset[subset['template'] == template]
+
+                pivot_table = pd.pivot_table(
+                    template_data,
+                    values='accuracy',
+                    index='separator',
+                    columns='enumerator',
+                    aggfunc='mean'
+                )
+
+                plt.figure(figsize=(10, 8))
+                sns.heatmap(pivot_table,
+                            annot=True,
+                            fmt='.3f',
+                            cmap='viridis',
+                            cbar_kws={'label': 'Accuracy'})
+
+                plt.title(
+                    f'2D Heatmap for {dataset}\nTemplate: {template}\n(Model: {model_name}, Shots: {shots_selected})')
+                plt.xlabel('Enumerator')
+                plt.ylabel('Separator')
+
+                output_fig_file = os.path.join(heatmap_dir, f"heatmap_template_{template.replace('/', '_')}.png")
+                plt.savefig(output_fig_file, dpi=100, bbox_inches='tight')
+                plt.close()
+
+                if not pivot_table.isna().any().any():
+
+                    col_best_dir = os.path.join(model_dir, "2D_Heatmaps_special_Agg", "col_best")
+                    col_worst_dir = os.path.join(model_dir, "2D_Heatmaps_special_Agg", "col_worst")
+                    row_best_dir = os.path.join(model_dir, "2D_Heatmaps_special_Agg", "row_best")
+                    row_worst_dir = os.path.join(model_dir, "2D_Heatmaps_special_Agg", "row_worst")
+
+                    os.makedirs(col_best_dir, exist_ok=True)
+                    os.makedirs(col_worst_dir, exist_ok=True)
+                    os.makedirs(row_best_dir, exist_ok=True)
+                    os.makedirs(row_worst_dir, exist_ok=True)
+
+                    def plot_and_save_special(output_dir, prefix):
+
+                        plt.figure(figsize=(10, 8))
+                        sns.heatmap(
+                            pivot_table,
+                            annot=True,
+                            fmt='.3f',
+                            cmap='viridis',
+                            cbar_kws={'label': 'Accuracy'}
+                        )
+                        plt.title(
+                            f'2D Heatmap for {dataset}\n'
+                            f'Template: {template}\n'
+                            f'(Model: {model_name}, Shots: {shots_selected})'
+                        )
+                        plt.xlabel('Enumerator')
+                        plt.ylabel('Separator')
+
+                        special_filename = (
+                            f"{prefix}_{dataset.replace('/', '_')}_"
+                            f"heatmap_template_{template.replace('/', '_')}.png"
+                        )
+                        output_special_file = os.path.join(output_dir, special_filename)
+                        plt.savefig(output_special_file, dpi=100, bbox_inches='tight')
+                        plt.close()
+
+                    col_max = pivot_table.idxmax(axis=1)
+                    if col_max.nunique() == 1:
+                        best_col = col_max.iloc[0]
+                        plot_and_save_special(col_best_dir, best_col)
+
+                    col_min = pivot_table.idxmin(axis=1)
+                    if col_min.nunique() == 1:
+                        worst_col = col_min.iloc[0]
+                        plot_and_save_special(col_worst_dir, worst_col)
+
+                    row_max = pivot_table.idxmax(axis=0)
+                    if row_max.nunique() == 1:
+                        best_row = row_max.iloc[0]
+                        plot_and_save_special(row_best_dir, best_row)
+
+                    row_min = pivot_table.idxmin(axis=0)
+                    if row_min.nunique() == 1:
+                        worst_row = row_min.iloc[0]
+                        plot_and_save_special(row_worst_dir, worst_row)
+
+    def save_heatmap_agg_2(self, final_data, model_name, shots_selected, filtered_datasets, base_results_dir):
+
+        final_data = final_data.groupby(['dataset', 'separator', 'enumerator']).agg(
+            accuracy=pd.NamedAgg(column='accuracy', aggfunc='median')).reset_index()
+
+        model_dir = os.path.join(
+            base_results_dir,
+            f"Shots_{shots_selected}",
+            model_name.replace('/', '_')
+        )
+
+        for dataset in filtered_datasets:
+            subset = final_data[final_data["dataset"] == dataset]
+
+            heatmap_dir = os.path.join(model_dir, "2D_Heatmaps_Agg_with_temp", dataset.replace('/', '_'))
+            os.makedirs(heatmap_dir, exist_ok=True)
+
+            pivot_table = pd.pivot_table(
+                subset,
+                values='accuracy',
+                index='separator',
+                columns='enumerator',
+                aggfunc='mean'
+            )
+
+            plt.figure(figsize=(10, 8))
+            sns.heatmap(pivot_table,
+                        annot=True,
+                        fmt='.3f',
+                        cmap='viridis',
+                        cbar_kws={'label': 'Accuracy'})
+
+            plt.title(
+                f'2D Heatmap for {dataset}\nAgg Templates \n(Model: {model_name}, Shots: {shots_selected})')
+            plt.xlabel('Enumerator')
+            plt.ylabel('Separator')
+
+            output_fig_file = os.path.join(heatmap_dir, f"heatmap_agg_templates.png")
+            plt.savefig(output_fig_file, dpi=100, bbox_inches='tight')
+            plt.close()
+
+            if not pivot_table.isna().any().any():
+
+                col_best_dir = os.path.join(model_dir, "2D_Heatmaps_special_Agg_with_temp", "col_best")
+                col_worst_dir = os.path.join(model_dir, "2D_Heatmaps_special_Agg_with_temp", "col_worst")
+                row_best_dir = os.path.join(model_dir, "2D_Heatmaps_special_Agg_with_temp", "row_best")
+                row_worst_dir = os.path.join(model_dir, "2D_Heatmaps_special_Agg_with_temp", "row_worst")
+
+                os.makedirs(col_best_dir, exist_ok=True)
+                os.makedirs(col_worst_dir, exist_ok=True)
+                os.makedirs(row_best_dir, exist_ok=True)
+                os.makedirs(row_worst_dir, exist_ok=True)
+
+                def plot_and_save_special(output_dir, prefix):
+                    plt.figure(figsize=(10, 8))
+                    sns.heatmap(
+                        pivot_table,
+                        annot=True,
+                        fmt='.3f',
+                        cmap='viridis',
+                        cbar_kws={'label': 'Accuracy'}
+                    )
+                    plt.title(
+                        f'2D Heatmap for {dataset}\n'
+                        f'Agg Templates\n'
+                        f'(Model: {model_name}, Shots: {shots_selected})'
+                    )
+                    plt.xlabel('Enumerator')
+                    plt.ylabel('Separator')
+
+                    # שם הקובץ: <prefix>_<dataset>_heatmap_template_<template>.png
+                    # לדוגמה: lowercase_mmlu.global_facts_heatmap_template_MyTemplate.png
+                    special_filename = (
+                        f"{prefix}_{dataset.replace('/', '_')}_"
+                        f"heatmap_templates_agg.png"
+                    )
+                    output_special_file = os.path.join(output_dir, special_filename)
+                    plt.savefig(output_special_file, dpi=100, bbox_inches='tight')
+                    plt.close()
+
+                col_max = pivot_table.idxmax(axis=1)
+                if col_max.nunique() == 1:
+                    best_col = col_max.iloc[0]
+                    plot_and_save_special(col_best_dir, best_col)
+
+                col_min = pivot_table.idxmin(axis=1)
+                if col_min.nunique() == 1:
+                    worst_col = col_min.iloc[0]
+                    plot_and_save_special(col_worst_dir, worst_col)
+
+                row_max = pivot_table.idxmax(axis=0)
+                if row_max.nunique() == 1:
+                    best_row = row_max.iloc[0]
+                    plot_and_save_special(row_best_dir, best_row)
+
+                row_min = pivot_table.idxmin(axis=0)
+                if row_min.nunique() == 1:
+                    worst_row = row_min.iloc[0]
+                    plot_and_save_special(row_worst_dir, worst_row)
