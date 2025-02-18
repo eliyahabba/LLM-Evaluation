@@ -11,7 +11,6 @@ import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.parquet as pq
 from huggingface_hub import HfApi, hf_hub_download
-from openai import timeout
 from tqdm import tqdm
 
 
