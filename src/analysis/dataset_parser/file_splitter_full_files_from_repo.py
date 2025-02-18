@@ -149,10 +149,7 @@ class HFDatasetSplitter:
 
                     # Combine the two columns into a single string key.
                     # Note: Use a separator that does not occur in your data.
-                    combined = pc.binary_join_element_wise(
-                        [model_name, dataset_name],
-                        separator="|"
-                    )
+                    combined = pc.binary_join_element_wise([model_name, dataset_name], "|")
                     unique_keys = pc.unique(combined)
 
                     # Process each unique group within the batch.
