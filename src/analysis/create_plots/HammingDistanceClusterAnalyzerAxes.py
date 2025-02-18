@@ -2,16 +2,11 @@ import os
 import time
 from typing import List, Dict
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from scipy.spatial.distance import pdist, squareform
 
 from src.analysis.create_plots.ConfigurationClusterer import ConfigurationClusterer
-
-
-# from scipy.cluster.hierarchy import linkage, fcluster
 
 
 class HammingDistanceClusterAnalyzerAxes:
@@ -25,7 +20,7 @@ class HammingDistanceClusterAnalyzerAxes:
             df: pd.DataFrame,
             model_name: str,
             shots_selected: int,
-            interesting_datasets: List[str],
+            dataset: str,
             base_results_dir: str
     ) -> None:
         """
@@ -43,40 +38,39 @@ class HammingDistanceClusterAnalyzerAxes:
         os.makedirs(model_dir, exist_ok=True)
 
         # Iterate over each dataset and run the main process
-        for dataset in interesting_datasets:
-            print(f"Processing dataset: {dataset}")
+        print(f"Processing dataset: {dataset}")
 
-            # Filter data for current dataset
-            dataset_df = df[df["dataset"] == dataset].copy()
-            if dataset_df.empty:
-                print(f"No data for dataset {dataset}. Skipping.")
-                continue
+        # Filter data for current dataset
+        dataset_df = df[df["dataset"] == dataset].copy()
+        if dataset_df.empty:
+            print(f"No data for dataset {dataset}. Skipping.")
+            return
 
-            # Create vectors for full 4-column configurations (the "quad" approach)
-            config_vectors = self._create_configuration_vectors(dataset_df)
-            if len(config_vectors) < 2:
-                print(f"Not enough configurations for dataset {dataset}. Skipping.")
-                continue
+        # Create vectors for full 4-column configurations (the "quad" approach)
+        config_vectors = self._create_configuration_vectors(dataset_df)
+        if len(config_vectors) < 2:
+            print(f"Not enough configurations for dataset {dataset}. Skipping.")
+            return
 
-            # Compute and save the "quad" Hamming distance
-            config_ids, distance_matrix = self._compute_hamming_distance_matrix(config_vectors)
-            dataset_dir = os.path.join(model_dir, f"{dataset.replace('/', '_')}")
-            os.makedirs(dataset_dir, exist_ok=True)
-            self._plot_and_save_heatmap(distance_matrix, config_ids, dataset_dir)
-            clusterer = ConfigurationClusterer()
-            results = clusterer.cluster_configs(config_vectors)
-            clusterer_file = os.path.join(dataset_dir, "clusterer.npz")
-            clusterer.save_compact(results, clusterer_file)
+        # Compute and save the "quad" Hamming distance
+        config_ids, distance_matrix = self._compute_hamming_distance_matrix(config_vectors)
+        dataset_dir = os.path.join(model_dir, f"{dataset.replace('/', '_')}")
+        os.makedirs(dataset_dir, exist_ok=True)
+        self._plot_and_save_heatmap(distance_matrix, config_ids, dataset_dir)
+        clusterer = ConfigurationClusterer()
+        results = clusterer.cluster_configs(config_vectors)
+        clusterer_file = os.path.join(dataset_dir, "clusterer.npz")
+        clusterer.save_compact(results, clusterer_file)
 
-            # Optionally, you can do hierarchical clustering here:
-            # cluster_assignments = self._hierarchical_clustering(distance_matrix)
-            # sampled_configurations = self._sample_configurations_from_clusters(cluster_assignments, config_ids)
-            # self._save_clustering_results(...)
+        # Optionally, you can do hierarchical clustering here:
+        # cluster_assignments = self._hierarchical_clustering(distance_matrix)
+        # sampled_configurations = self._sample_configurations_from_clusters(cluster_assignments, config_ids)
+        # self._save_clustering_results(...)
 
-            # -----------------------------
-            # New step: Analyze each dimension individually
-            # -----------------------------
-            # self._analyze_each_dimension(dataset_df, dataset_dir)
+        # -----------------------------
+        # New step: Analyze each dimension individually
+        # -----------------------------
+        # self._analyze_each_dimension(dataset_df, dataset_dir)
 
         total_time = time.time() - start_time
         print(f"Total Hamming Clustering processing time for {model_name}: {total_time:.2f} seconds")
