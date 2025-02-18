@@ -119,8 +119,8 @@ class HFDatasetSplitter:
             return []
 
 
-        temp_file_handles = {}  # key: group key, value: True if file exists
         temp_files = set()
+        temp_writers = {}
 
         if not local_file:
             self.logger.error(f"Failed to download {file_path}")
@@ -171,18 +171,22 @@ class HFDatasetSplitter:
                             pc.equal(dataset_name, d)
                         )
                         filtered_table = table.filter(mask)
-
-                        # Write the filtered table to the appropriate file.
-                        if file_key not in temp_file_handles:
+                        # Write filtered_table using a ParquetWriter (open one per file group)
+                        if file_key not in temp_writers:
                             os.makedirs(temp_file.parent, exist_ok=True)
-                            pq.write_table(filtered_table, temp_file)
-                            temp_file_handles[file_key] = True
+                            # Create a new ParquetWriter with the filtered table's schema.
+                            writer = pq.ParquetWriter(str(temp_file), filtered_table.schema)
+                            temp_writers[file_key] = writer
                         else:
-                            pq.write_table(filtered_table, temp_file, append=True)
+                            writer = temp_writers[file_key]
+
+                        writer.write_table(filtered_table)
 
                     pbar.update(table.num_rows)
 
-
+            # Close all open writers once processing is complete.
+            for writer in temp_writers.values():
+                writer.close()
         except Exception as e:
             self.logger.error(f"Fatal error processing file {file_path}: {str(e)}", exc_info=True)
             for temp_file in temp_files:
