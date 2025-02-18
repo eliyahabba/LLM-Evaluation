@@ -13,3 +13,5 @@
 /results/
 **/results_local/**/*.png
 **/results_local/**/*.html
+/src/analysis/create_plots/results/
+/src/analysis/create_plots/old_paper/
