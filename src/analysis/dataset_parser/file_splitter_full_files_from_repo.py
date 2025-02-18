@@ -10,6 +10,7 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.parquet as pq
+from filelock import FileLock
 from huggingface_hub import HfApi, hf_hub_download
 from tqdm import tqdm
 
@@ -155,15 +156,13 @@ class HFDatasetSplitter:
 
                     # Process each unique group within the batch.
                     for key in unique_keys.to_pylist():
-                        # Split the combined key to retrieve model_name and dataset_name.
+                        # Split the key to get model_name and dataset_name.
                         m, d = key.split("|")
-
-                        # Create a unique file key.
-                        file_key = f"{worker_id}_{m}_{d}"
+                        # Shared file key: no worker_id here.
+                        file_key = f"{m}_{d}"
                         temp_file = self.temp_dir / f"{file_key}.parquet"
                         temp_files.add(str(temp_file))
-
-
+                        lock_file = str(temp_file) + ".lock"
 
                         # Build the filter mask: (model_name == m) & (dataset_name == d)
                         mask = pc.and_(
@@ -171,16 +170,13 @@ class HFDatasetSplitter:
                             pc.equal(dataset_name, d)
                         )
                         filtered_table = table.filter(mask)
-                        # Write filtered_table using a ParquetWriter (open one per file group)
-                        if file_key not in temp_writers:
-                            os.makedirs(temp_file.parent, exist_ok=True)
-                            # Create a new ParquetWriter with the filtered table's schema.
-                            writer = pq.ParquetWriter(str(temp_file), filtered_table.schema)
-                            temp_writers[file_key] = writer
-                        else:
-                            writer = temp_writers[file_key]
 
-                        writer.write_table(filtered_table)
+                        # Use a file lock to ensure safe concurrent writes.
+                        with FileLock(lock_file):
+                            if not temp_file.exists():
+                                pq.write_table(filtered_table, temp_file)
+                            else:
+                                pq.write_table(filtered_table, temp_file, append=True)
 
                     pbar.update(table.num_rows)
 
