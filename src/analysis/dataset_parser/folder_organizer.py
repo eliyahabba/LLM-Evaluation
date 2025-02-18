@@ -27,7 +27,7 @@ def process_single_file(file_path, output_dir):
 
     # Handle language-specific datasets
     lang_match = re.match(r'(global_mmlu|global_mmlu_lite_cs|global_mmlu_lite_ca)\.(\w+)$', dataset)
-    language = lang_match.group(2).lower() if lang_match else "english"
+    language = lang_match.group(2).lower() if lang_match else "en"
 
     # Create target directory structure
     target_dir = output_dir / safe_model / f"shots_{shots}" / language
