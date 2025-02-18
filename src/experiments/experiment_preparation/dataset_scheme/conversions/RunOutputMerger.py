@@ -78,7 +78,7 @@ class RunOutputMerger:
 
 def main():
     """Main function to demonstrate usage."""
-    f = "data_2025-01.parquet"
+    f = "data_2025-02-10.parquet"
     parquet_path = Path(f"~/Downloads/{f}")
     processor = RunOutputMerger(parquet_path)
     num_of_batches = 0
