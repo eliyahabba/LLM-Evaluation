@@ -136,9 +136,12 @@ class HFDatasetSplitter:
 
                     # Extract nested fields using arrow's field extraction.
                     # These calls assume that 'model', 'prompt_config', and 'instance' are struct columns.
-                    model_name = table.column("model").field("model_info").field("name")
-                    shots = table.column("prompt_config").field("format").field("shots")
-                    dataset_name = table.column("instance").field("sample_identifier").field("dataset_name")
+                    # model_name = table.column("model").field("model_info").field("name")
+                    model_name = table.column("model").combine_chunks().field("model_info").field("name")
+                    # shots = table.column("prompt_config").field("format").field("shots")
+                    shots = table.column("prompt_config").combine_chunks().field("format").field("shots")
+                    # dataset_name = table.column("instance").field("sample_identifier").field("dataset_name")
+                    dataset_name = table.column("instance").combine_chunks().field("sample_identifier").field("dataset_name")
 
                     # Append the new columns to the table.
                     table = table.append_column("model_name", model_name)
