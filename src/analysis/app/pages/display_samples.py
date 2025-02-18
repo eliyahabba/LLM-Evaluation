@@ -14,7 +14,7 @@ from src.analysis.create_plots.DataLoader import DataLoader
 # A placeholder for your DataLoader class if needed;
 # you can remove this if you actually import from data_loader.
 
-def load_data(model_name=None, shots=None, max_samples=None):
+def load_data(model_name=None, shots=None, dataset=None, max_samples=None):
     """
     Loads the dataset from Hugging Face, filtering by model_name and shots if provided.
     Leaves 'generated_text' and 'ground_truth' intact (not dropping them).
@@ -27,6 +27,7 @@ def load_data(model_name=None, shots=None, max_samples=None):
 
     data_loader = DataLoader()
     df_partial = data_loader.load_and_process_data(model_name, shots=shots,
+                                                   datasets=dataset,
                                                    max_samples=max_samples, drop=False)
 
     return df_partial
@@ -34,12 +35,12 @@ def load_data(model_name=None, shots=None, max_samples=None):
 
 # -------------- CACHED LOADING --------------
 @st.cache_data(show_spinner=True)
-def load_entire_dataset(model_name=None, shots=None, max_samples=None):
+def load_entire_dataset(model_name=None, shots=None, dataset=None, max_samples=None):
     """
     Loads the dataset from Hugging Face (or local), possibly filtered by model/shots,
     and returns a DataFrame. Caches the result to avoid re-loading repeatedly.
     """
-    df = load_data(model_name=model_name, shots=shots, max_samples=max_samples)
+    df = load_data(model_name=model_name, shots=shots, dataset=dataset,max_samples=max_samples)
     return df
 
 
@@ -72,10 +73,24 @@ def main():
         'meta-llama/Llama-3.2-3B-Instruct',
         'mistralai/Mistral-7B-Instruct-v0.3',
     ]
+
+    datasets = [
+        "ai2_arc.arc_challenge",
+        "ai2_arc.arc_easy",
+        "hellaswag",
+        "openbook_qa",
+        "social_iqa",
+        "mmlu.global_facts",
+        "mmlu.sociology",
+        "mmlu.econometrics",
+        "mmlu.high_school_geography",
+    ]
+
     st.sidebar.markdown('Recommended to load a specific model and shots initially to reduce data size.')
     selected_model_for_loading = st.sidebar.selectbox("Model to load initially (optional)", models_to_evaluate, index=1)
     selected_shots_for_loading = st.sidebar.selectbox("Shots to load initially (optional)",
                                                       [s for s in shots_to_evaluate], index=1)
+    selected_dataset = st.sidebar.selectbox("Dataset to load initially (optional)", datasets, index=0)
 
     st.sidebar.markdown("---")
     st.sidebar.header("Filter on the DataFrame Columns")
@@ -85,8 +100,9 @@ def main():
     # We do a button to confirm load, or automatically load. Let's do automatic load:
     with st.spinner("Loading data..."):
         df = load_entire_dataset(
-            model_name=selected_model_for_loading if selected_model_for_loading else None,
-            shots=selected_shots_for_loading if selected_shots_for_loading else None,
+            model_name=selected_model_for_loading,
+            shots=selected_shots_for_loading,
+            dataset=selected_dataset,
             max_samples=max_samples
         )
 
