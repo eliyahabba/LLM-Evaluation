@@ -158,8 +158,11 @@ class HFDatasetSplitter:
                     for key in unique_keys.to_pylist():
                         # Split the key to get model_name and dataset_name.
                         m, d = key.split("|")
+
+                        model_split_name = m.split("/")[1]
                         # Shared file key: no worker_id here.
-                        file_key = f"{m}_{d}"
+                        file_key = f"{model_split_name}_{d}"
+
                         temp_file = self.temp_dir / f"{file_key}.parquet"
                         temp_files.add(str(temp_file))
                         lock_file = str(temp_file) + ".lock"
