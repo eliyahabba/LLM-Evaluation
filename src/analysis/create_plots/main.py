@@ -58,22 +58,22 @@ def process_configuration(params):
     )
 
     interesting_datasets = list(filtered_datasets)
-    #
-    # hamming.perform_clustering_for_model(
-    #     df=df_partial,
-    #     model_name=model_name,
-    #     shots_selected=shots_selected,
-    #     interesting_datasets=interesting_datasets,
-    #     base_results_dir=base_results_dir
-    # )
-    #
-    # prompt_question_analyzer.process_and_visualize_questions(
-    #     df=df_partial,
-    #     model_name=model_name,
-    #     shots_selected=shots_selected,
-    #     interesting_datasets=interesting_datasets,
-    #     base_results_dir=base_results_dir
-    # )
+
+    hamming.perform_clustering_for_model(
+        df=df_partial,
+        model_name=model_name,
+        shots_selected=shots_selected,
+        dataset=dataset,
+        base_results_dir=base_results_dir
+    )
+
+    prompt_question_analyzer.process_and_visualize_questions(
+        df=df_partial,
+        model_name=model_name,
+        shots_selected=shots_selected,
+        dataset=dataset,
+        base_results_dir=base_results_dir
+    )
 
 
 def run_configuration_analysis(num_processes=1) -> None:
@@ -174,7 +174,7 @@ def run_configuration_analysis(num_processes=1) -> None:
         "engineering",
     ]
     interesting_datasets.extend(["mmlu."+ name for name in subtasks])
-    interesting_datasets = ["mmlu_pro." + name for name in pro_subtuask]
+    interesting_datasets.extend(["mmlu_pro." + name for name in pro_subtuask])
 
     # Setup results directory
 
