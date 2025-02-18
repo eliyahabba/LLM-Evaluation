@@ -1,6 +1,5 @@
 import os
 import time
-from typing import List
 
 import pandas as pd
 import plotly.express as px
@@ -12,7 +11,7 @@ class PromptQuestionAnalyzer:
             df: pd.DataFrame,
             model_name: str,
             shots_selected: int,
-            interesting_datasets: List[str],
+            dataset: str,
             base_results_dir: str,
     ) -> None:
         """
@@ -40,8 +39,7 @@ class PromptQuestionAnalyzer:
         print(f"Starting question-level analysis for model: {model_name}, shots={shots_selected}")
 
         # 1) Filter by the specified interesting datasets
-        df_filtered = df[df["dataset"].isin(interesting_datasets)].copy()
-        if df_filtered.empty:
+        if df.empty:
             print("No data after filtering with interesting_datasets. Exiting.")
             return
 
@@ -52,19 +50,15 @@ class PromptQuestionAnalyzer:
             model_name.replace('/', '_'),
         )
         os.makedirs(model_dir, exist_ok=True)
-        for dataset in interesting_datasets:
-            dataset_df = df[df["dataset"] == dataset].copy()
-            if dataset_df.empty:
-                print(f"No data for dataset {dataset}. Skipping.")
-                continue
-            self._process_accuracy_stats(dataset_df, model_dir, df_filtered)
-            # Process and save enumerator analysis
-            self._process_enumerator_analysis(
-                dataset_df,
-                model_name,
-                dataset,
-                model_dir
-            )
+
+        self._process_accuracy_stats(df, model_dir)
+        # Process and save enumerator analysis
+        self._process_enumerator_analysis(
+            df,
+            model_name,
+            dataset,
+            model_dir
+        )
 
         total_time = time.time() - start_time
         print(f"Total question-level processing time for {model_name}: {total_time:.2f} seconds")
@@ -321,7 +315,6 @@ class PromptQuestionAnalyzer:
             self,
             dataset_df: pd.DataFrame,
             model_dir: str,
-            df_filtered: pd.DataFrame
     ) -> None:
         """Process accuracy statistics for a dataset."""
         overall_question_stats = self._aggregate_samples_accuracy(dataset_df)
@@ -330,7 +323,7 @@ class PromptQuestionAnalyzer:
         dimensions = ["template", "separator", "enumerator", "choices_order"]
         for dim in dimensions:
             print(f"Computing question accuracy grouped by '{dim}'...")
-            question_stats = self._aggregate_samples_accuracy_by_axis(df_filtered, dim)
+            question_stats = self._aggregate_samples_accuracy_by_axis(dataset_df, dim)
             self._save_samples_accuracy_tables(question_stats, model_dir, dim, suffix=f"by_{dim}")
 
     def _prepare_output_directory(
