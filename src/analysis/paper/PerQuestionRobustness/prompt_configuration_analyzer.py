@@ -7,8 +7,8 @@ from typing import List, Tuple, Dict, Any, Optional
 
 from tqdm import tqdm
 
-from src.PerQuestionRobustness.PromptQuestionAnalyzer import PromptQuestionAnalyzer
 from src.analysis.create_plots.DataLoader import DataLoader
+from src.analysis.paper.PerQuestionRobustness.PromptQuestionAnalyzer import PromptQuestionAnalyzer
 
 # Configuration constants
 MODELS = [
