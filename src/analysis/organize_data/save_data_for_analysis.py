@@ -571,7 +571,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--file_names', nargs='+', help='List of file_names to download')
     parser.add_argument('--input_dir', help='Output directory')
-    parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=10)
+    parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=100000)
     parser.add_argument('--repo_name', help='Repository name for the schema files',
                         default="eliyahabba/llm-evaluation-analysis")
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
@@ -590,17 +590,17 @@ if __name__ == "__main__":
     # parquet_path = Path("~/Downloads/data_sample.parquet")
     # convert_to_scheme_format(parquet_path, batch_size=100)
     # List of URLs to download
+    #
+    # args.input_dir = "/Users/ehabba/Downloads/"
+    # args.file_names = ["/Users/ehabba/Downloads/data_2025-01-13.parquet"]
+    # process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
+    # os.makedirs(process_input_dir, exist_ok=True)
 
-    args.input_dir = "/Users/ehabba/Downloads/"
-    args.file_names = ["/Users/ehabba/Downloads/data_2025-01-13.parquet"]
-    process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
-    os.makedirs(process_input_dir, exist_ok=True)
-
-    # fs = HfFileSystem()
-    # existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
-    # existing_files = [Path(file).stem.split("processed_")[1] for file in existing_files if file.endswith('.parquet')]
-    # args.file_names = [file for file in os.listdir(args.input_dir) if file.endswith('.parquet')]
-    # # args.file_names = [file for file in os.listdir(args.input_dir) if (f'processed_{file}' not in os.listdir(process_input_dir))]
+    fs = HfFileSystem()
+    existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
+    existing_files = [Path(file).stem.split("processed_")[1] for file in existing_files if file.endswith('.parquet')]
+    args.file_names = [file for file in os.listdir(args.input_dir) if file.endswith('.parquet')]
+    # args.file_names = [file for file in os.listdir(args.input_dir) if (f'processed_{file}' not in os.listdir(process_input_dir))]
 
     random.shuffle(args.file_names)
     print(args.file_names)
