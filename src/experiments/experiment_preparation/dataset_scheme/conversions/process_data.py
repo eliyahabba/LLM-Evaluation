@@ -402,24 +402,27 @@ def random_string(length=10):
     return ''.join(random.choices(chars, k=length))
 
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--file_names', nargs='+', help='List of file_names to download')
-    parser.add_argument('--input_dir', help='Output directory')
-    parser.add_argument('--probs', type=bool, help='Whether to include probs in the schema')
+    parser.add_argument('--file_names', nargs='+', help='List of file_names to download', default=[])
+    parser.add_argument('--input_dir', help='Output directory', default=
+    "/cs/snapless/gabis/eliyahabba/ibm_results_data_full")
+    parser.add_argument('--probs', type=bool, help='Whether to include probs in the schema', default=True)
     parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=1000)
-    parser.add_argument('--repo_name', help='Repository name for the schema files')
-    parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
-    args = parser.parse_args()
-    # Set start date
-    # REPO_NAME = "eliyahabba/llm-evaluation-without-probs"  # Replace with your desired repo name
-    # scheme_files_dir = "/cs/snapless/gabis/eliyahabba/scheme_files_without_probs"
-    # input_directory = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"
-    # parquet_path = Path("~/Downloads/data_sample.parquet")
-    # convert_to_scheme_format(parquet_path, batch_size=100)
+    parser.add_argument('--repo_name', help='Repository name for the schema files',
+                        default="eliyahabba/llm-evaluation")
+    parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files',
+                        default="/cs/snapless/gabis/eliyahabba/scheme_files")
 
-    # List of URLs to download
-    file_names = [
-    ]
-    download_huggingface_files_parllel(input_dir=Path(args.input_dir), file_names=args.file_names, repo_name=args.repo_name,
+    args = parser.parse_args()
+
+    fs = HfFileSystem()
+    existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
+    existing_files = [Path(file).stem.split("_test")[0] for file in existing_files if file.endswith('.parquet')]
+    args.file_names = [file for file in os.listdir(args.input_dir) if Path(file).stem not in existing_files][::2]
+    print(f"Downloading {len(args.file_names)} files")
+    # random.shuffle(args.file_names)
+    download_huggingface_files_parllel(input_dir=Path(args.input_dir), file_names=args.file_names,
+                                       repo_name=args.repo_name,
                                        scheme_files_dir=args.scheme_files_dir, probs=args.probs)
