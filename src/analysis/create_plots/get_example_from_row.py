@@ -99,7 +99,7 @@ class InstanceLoader:
 
 
         df.drop(rows_to_drop, inplace=True)
-
+        df['closest_answer_index'] = closest_answers
         assert len(closest_answers) == len(df)
         return closest_answers
 
@@ -111,8 +111,6 @@ if __name__ == "__main__":
     #    evaluation_id    dataset              sample_index
     # 0  1b5dc69c933e396... ai2_arc.arc_challenge      3
 
-    # row = df.iloc[0]
-    # example = get_example_from_row(row)
-    # print(example)
+    # filter_df_with_closest_answer_ind = InstanceLoader.get_example_from_index("ai2_arc.arc_challenge", df)
 
     pass
