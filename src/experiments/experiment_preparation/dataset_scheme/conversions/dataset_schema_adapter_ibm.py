@@ -1,6 +1,5 @@
 import hashlib
 import json
-import time
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -296,7 +295,7 @@ class SchemaConverter:
         if probs:
             prompt_logprobs = row['prompt_logprobs']
 
-            prompt_tokens_logprobs= [
+            prompt_tokens_logprobs = [
                 self.add_token_index_to_tokens(logprob_dict['log_probs'])
                 for logprob_dict in prompt_logprobs
             ]
@@ -313,16 +312,14 @@ class SchemaConverter:
             # add also the language in the second part of the string
             map_file_name = f"{map_file_name}.{recipe['card'].split('.')[2]}"
         current_dir = Path(__file__).parents[2]
-        map_file_path = current_dir / "dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
+        map_file_path = current_dir / "experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.parquet"
         if map_file_name in self._index_map_cache:
             index_map = self._index_map_cache[map_file_name]
         else:
-            with open(map_file_path, 'r') as file:
-                index_map = json.load(file)
+            index_map = pd.read_parquet(map_file_path)
             self._index_map_cache[map_file_name] = index_map
 
         hf_repo = f"cais/{recipe['card'].split('.')[1]}" if map_file_name == "mmlu" else f"Rowan/hellaswag" if map_file_name == "hellaswag" else f"allenai/{map_file_name}"
-
 
         card = map_file_name
         if card == "mmlu":
@@ -349,6 +346,9 @@ class SchemaConverter:
         else:
             hf_repo = None
         question_key = 'question' if 'question' in task_data else 'context'
+
+        hf_index, hf_split = self._get_guestion_index(index_map, task_data)
+
         return {
             "task_type": "classification",
             "raw_input": row['prompt'],
@@ -356,8 +356,8 @@ class SchemaConverter:
             "sample_identifier": {
                 "dataset_name": recipe['card'].split("cards.")[1],
                 "hf_repo": hf_repo,
-                "hf_index": index_map[task_data[question_key]]['index'],
-                "hf_split": index_map[task_data[question_key]]['source']
+                "hf_index": hf_index,
+                "hf_split": hf_split
             },
             "perplexity": perplexity,
             "classification_fields": {
@@ -370,6 +370,18 @@ class SchemaConverter:
             },
             "prompt_logprobs": prompt_tokens_logprobs
         }
+
+    def _get_guestion_index(self, df_map, row):
+        row_choices = [answer.split(". ")[1] for answer in row['options']]
+        question_mask = df_map['question'] == row['question']
+        row_choices_str = str(sorted(row_choices))
+        choices_mask = df_map['choices'].apply(
+            lambda x: str(sorted(x if isinstance(x, list) else x)) == row_choices_str)
+        matches = df_map[question_mask & choices_mask]
+
+        if len(matches) == 0:
+            return -1
+        return matches.iloc[0]['index'], matches.iloc[0]['source']
 
     def _build_output_section(self, row: pd.Series, probs: bool) -> Dict:
         """Build output section of schema."""

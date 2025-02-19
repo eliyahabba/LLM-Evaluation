@@ -307,24 +307,77 @@ class Converter:
         else:
             raise ValueError(f"Dataset {dataset} not found in DatasetConfigFactory")
 
+    # def build_instance_section(self, row: pd.Series, recipe) -> Dict:
+    #     map_file_name = recipe['card'].split('.')[1]
+    #     if map_file_name == "ai2_arc":
+    #         map_file_name = recipe['card'].split('.')[1]
+    #     if map_file_name.startswith("global_mmlu"):
+    #         # add also the language in the second part of the string
+    #         map_file_name = f"{map_file_name}.{recipe['card'].split('.')[2]}"
+    #     current_dir = Path(__file__).parents[2]
+    #     map_file_path = current_dir / "experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
+    #     if map_file_name in self._index_map_cache:
+    #         index_map = self._index_map_cache[map_file_name]
+    #     else:
+    #         with open(map_file_path, 'r') as file:
+    #             index_map = json.load(file)
+    #         self._index_map_cache[map_file_name] = index_map
+    #     if row['question'] not in index_map:
+    #         return -1
+    #     return index_map[row['question']]['index']
+
     def build_instance_section(self, row: pd.Series, recipe) -> Dict:
+        """
+        Builds an instance section using Parquet files for data mapping.
+
+        Args:
+            row (pd.Series): The input row containing question and choices
+            recipe (Dict): Recipe configuration with card information
+
+        Returns:
+            int: The index from the mapping, or -1 if not found
+        """
+        # Get the map file name from the recipe
         map_file_name = recipe['card'].split('.')[1]
         if map_file_name == "ai2_arc":
             map_file_name = recipe['card'].split('.')[1]
         if map_file_name.startswith("global_mmlu"):
-            # add also the language in the second part of the string
+            # Add the language for global_mmlu files
             map_file_name = f"{map_file_name}.{recipe['card'].split('.')[2]}"
+
+        # Construct the file path
         current_dir = Path(__file__).parents[2]
-        map_file_path = current_dir / "experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
+        map_file_path = current_dir / "experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.parquet"
+
+        # Use cached DataFrame if available
         if map_file_name in self._index_map_cache:
-            index_map = self._index_map_cache[map_file_name]
+            df_map = self._index_map_cache[map_file_name]
         else:
-            with open(map_file_path, 'r') as file:
-                index_map = json.load(file)
-            self._index_map_cache[map_file_name] = index_map
-        if row['question'] not in index_map:
+            # Load the Parquet file
+            df_map = pd.read_parquet(map_file_path)
+            self._index_map_cache[map_file_name] = df_map
+
+        # Search for matching question and choices
+        # First normalize the input row's choices
+        row_choices = self._normalize_choices(row)
+        question_mask = df_map['question'] == row['question']
+        row_choices_str = str(sorted(row_choices))
+        choices_mask = df_map['choices'].apply(lambda x: str(sorted(x if isinstance(x, list) else x))  == row_choices_str)
+        matches = df_map[question_mask & choices_mask]
+
+        if len(matches) == 0:
             return -1
-        return index_map[row['question']]['index']
+
+        return matches.iloc[0]['index']
+
+    def _normalize_choices(self, row: pd.Series) -> list:
+        """
+        Normalizes choices from different possible formats into a standard list.
+        Implement based on your data structure.
+        """
+        return [answer.split(". ")[1] for answer in row['options']]
+
+
 
     def get_closest_answer(self, answer, options):
         ai_answer = answer.strip().split("\n")
@@ -388,12 +441,12 @@ class Converter:
 
 
 def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
-         process_input_dir: Path = Path(f"~/Downloads/data_2025-01.parquet"),
+         process_input_dir: Path = Path(f"~/Downloads/data_2025-01.parquet"),batch_size=10000,
          logger=None):
     """Main function to demonstrate usage."""
     parquet_path = file_path
     logger.info(f"Processing file: {parquet_path}")
-    processor = RunOutputMerger(parquet_path)
+    processor = RunOutputMerger(parquet_path, batch_size=batch_size)
     models_metadata_path = Path(Constants.ExperimentConstants.MODELS_METADATA_PATH)
     converter = Converter(models_metadata_path)
 
@@ -459,7 +512,7 @@ def main(file_path: Path = Path(f"~/Downloads/data_2025-01.parquet"),
         logger.warning("No data was written - all batches were empty")
 
 
-def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_names, scheme_files_dir):
+def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_names, scheme_files_dir, batch_size):
     """
     Downloads parquet files from Hugging Face to a specified directory
 /Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/analsyis/save_data_for_analysis.py
@@ -468,14 +521,15 @@ def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_
     os.makedirs(input_dir, exist_ok=True)
 
     num_processes = min(24, cpu_count() - 1)
-    num_processes = 12
+    num_processes = 1
     logger = setup_logging()
     logger.info("Starting processing...")
     logger.info(f"Starting parallel processing with {num_processes} processes...")
 
     with Manager() as manager:
         process_func = partial(process_file_safe, input_dir=input_dir, process_input_dir=process_input_dir,
-                               scheme_files_dir=scheme_files_dir, logger=logger)
+                               scheme_files_dir=scheme_files_dir,batch_size=batch_size,
+                               logger=logger)
 
         with Pool(processes=num_processes) as pool:
             list(tqdm(
@@ -485,13 +539,13 @@ def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_
             ))
 
 
-def process_file_safe(url, input_dir: Path, process_input_dir, scheme_files_dir, logger):
+def process_file_safe(url, input_dir: Path, process_input_dir, scheme_files_dir, batch_size, logger):
     pid = os.getpid()
     start_time = time.time()
     try:
         logger.info(f"Process {pid} starting to process file {url}")
         process_file(url, input_dir=input_dir, process_input_dir=process_input_dir,
-                     scheme_files_dir=scheme_files_dir,
+                     scheme_files_dir=scheme_files_dir,batch_size=batch_size,
                      logger=logger)
     except Exception as e:
         logger.error(f"Process {pid} encountered error processing file {url}: {e}")
@@ -502,7 +556,7 @@ def process_file_safe(url, input_dir: Path, process_input_dir, scheme_files_dir,
         logger.info(f"Process {pid} finished processing {url}. Processing time: {elapsed_time:.2f} seconds")
 
 
-def process_file(url, input_dir: Path, process_input_dir: Path, scheme_files_dir, logger):
+def process_file(url, input_dir: Path, process_input_dir: Path, scheme_files_dir, batch_size,logger):
     # Extract date from URL for the output filename
     # Example: from URL get '2024-12-16' for the filename
     original_filename = url.split('/')[-1]
@@ -510,14 +564,14 @@ def process_file(url, input_dir: Path, process_input_dir: Path, scheme_files_dir
     if not output_path.exists():
         logger.info(f"File already not exists: {output_path}")
         return
-    main(output_path, process_input_dir, logger)
+    main(output_path, process_input_dir, batch_size, logger)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--file_names', nargs='+', help='List of file_names to download')
     parser.add_argument('--input_dir', help='Output directory')
-    parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=1000)
+    parser.add_argument('--batch_size', type=int, help='Batch size for processing parquet files', default=10)
     parser.add_argument('--repo_name', help='Repository name for the schema files',
                         default="eliyahabba/llm-evaluation-analysis")
     parser.add_argument('--scheme_files_dir', help='Directory to store the scheme files')
@@ -537,16 +591,16 @@ if __name__ == "__main__":
     # convert_to_scheme_format(parquet_path, batch_size=100)
     # List of URLs to download
 
-    # args.input_dir = "/Users/ehabba/Downloads/"
-    # args.file_names = ["/Users/ehabba/Downloads/data_2025-01.parquet"]
-    # process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
-    # os.makedirs(process_input_dir, exist_ok=True)
+    args.input_dir = "/Users/ehabba/Downloads/"
+    args.file_names = ["/Users/ehabba/Downloads/data_2025-01-13.parquet"]
+    process_input_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/process_input_dir"
+    os.makedirs(process_input_dir, exist_ok=True)
 
-    fs = HfFileSystem()
-    existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
-    existing_files = [Path(file).stem.split("processed_")[1] for file in existing_files if file.endswith('.parquet')]
-    args.file_names = [file for file in os.listdir(args.input_dir) if file.endswith('.parquet')]
-    # args.file_names = [file for file in os.listdir(args.input_dir) if (f'processed_{file}' not in os.listdir(process_input_dir))]
+    # fs = HfFileSystem()
+    # existing_files = fs.ls(f"datasets/{args.repo_name}", detail=False)
+    # existing_files = [Path(file).stem.split("processed_")[1] for file in existing_files if file.endswith('.parquet')]
+    # args.file_names = [file for file in os.listdir(args.input_dir) if file.endswith('.parquet')]
+    # # args.file_names = [file for file in os.listdir(args.input_dir) if (f'processed_{file}' not in os.listdir(process_input_dir))]
 
     random.shuffle(args.file_names)
     print(args.file_names)
@@ -559,4 +613,4 @@ if __name__ == "__main__":
 
     download_huggingface_files_parllel(input_dir=Path(args.input_dir), process_input_dir=process_input_dir,
                                        file_names=args.file_names,
-                                       scheme_files_dir=args.scheme_files_dir)
+                                       scheme_files_dir=args.scheme_files_dir, batch_size=args.batch_size)
