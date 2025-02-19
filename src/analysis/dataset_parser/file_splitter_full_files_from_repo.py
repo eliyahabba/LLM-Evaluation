@@ -321,22 +321,22 @@ class HFDatasetSplitter:
             for failed_file in failed_files:
                 self.logger.warning(f"  - {failed_file}")
 
-        if processed_files:
-            try:
-                self.merge_temp_files()
-            except Exception as e:
-                self.logger.error(f"Error during merge phase: {str(e)}", exc_info=True)
-                raise
+        # if processed_files:
+        #     try:
+        #         self.merge_temp_files()
+        #     except Exception as e:
+        #         self.logger.error(f"Error during merge phase: {str(e)}", exc_info=True)
+        #         raise
 
         # Save the updated processed files list
         self.save_processed_files()
 
-        # Clean up temporary directory
-        try:
-            shutil.rmtree(self.temp_dir)
-            self.logger.info("Temporary directory cleaned up")
-        except Exception as e:
-            self.logger.warning(f"Could not remove temp directory: {str(e)}")
+        # # Clean up temporary directory
+        # try:
+        #     shutil.rmtree(self.temp_dir)
+        #     self.logger.info("Temporary directory cleaned up")
+        # except Exception as e:
+        #     self.logger.warning(f"Could not remove temp directory: {str(e)}")
 
         end_time = datetime.now()
         duration = end_time - start_time
