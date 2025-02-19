@@ -538,6 +538,7 @@ def download_huggingface_files_parllel(input_dir: Path, process_input_dir, file_
                 desc="Processing files"
             ))
 
+import traceback
 
 def process_file_safe(url, input_dir: Path, process_input_dir, scheme_files_dir, batch_size, logger):
     pid = os.getpid()
@@ -548,7 +549,8 @@ def process_file_safe(url, input_dir: Path, process_input_dir, scheme_files_dir,
                      scheme_files_dir=scheme_files_dir,batch_size=batch_size,
                      logger=logger)
     except Exception as e:
-        logger.error(f"Process {pid} encountered error processing file {url}: {e}")
+        logger.error(f"Process {pid} encountered error processing file {url}: {str(e)}")
+        logger.error(f"Traceback: {traceback.format_exc()}")
         return None
     finally:
         end_time = time.time()
