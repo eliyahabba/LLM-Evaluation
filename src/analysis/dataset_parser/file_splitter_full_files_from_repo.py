@@ -4,15 +4,18 @@ import logging
 import shutil
 import uuid
 from pathlib import Path
-from typing import List, Set, Optional
+from typing import List, Set
 
 import pandas as pd
 import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.parquet as pq
 from filelock import FileLock
-from huggingface_hub import HfApi, hf_hub_download
+from huggingface_hub import HfApi
+from huggingface_hub import hf_hub_download, file_info
 from tqdm import tqdm
+from pathlib import Path
+from typing import Optional
 
 
 class HFDatasetSplitter:
@@ -28,8 +31,6 @@ class HFDatasetSplitter:
         self.temp_dir.mkdir(parents=True, exist_ok=True)
 
         # Create a unique subdirectory for this instance
-        self.temp_dir = self.temp_dir / str(uuid.uuid4())
-        self.temp_dir.mkdir(parents=True, exist_ok=True)
 
         self.setup_logger()
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -75,9 +76,31 @@ class HFDatasetSplitter:
             return []
 
     def download_file(self, file_path: str) -> Optional[Path]:
-        """Download a single file from HF to the temporary directory."""
+        """Download a single file from HF to the temporary directory, verifying its integrity."""
         try:
             local_path = self.temp_dir / Path(file_path).name
+
+            if local_path.exists():
+                try:
+                    hf_file_info = file_info(
+                        repo_id=self.repo_id,
+                        repo_type="dataset",
+                        filename=file_path
+                    )
+                    expected_size = hf_file_info.size
+
+                    actual_size = os.path.getsize(local_path)
+
+                    if actual_size == expected_size:
+                        self.logger.info(f"File {file_path} already exists and is complete at {local_path}")
+                        return local_path
+                    else:
+                        self.logger.warning(f"File {file_path} exists but seems incomplete. Redownloading...")
+                        os.remove(local_path)
+                except Exception as e:
+                    self.logger.warning(f"Could not verify file integrity, redownloading: {e}")
+                    os.remove(local_path)
+
             self.logger.info(f"Downloading file {file_path} to {local_path}")
             hf_hub_download(
                 repo_id=self.repo_id,
@@ -119,7 +142,6 @@ class HFDatasetSplitter:
             self.logger.error(f"Failed to download {file_path}")
             return []
 
-
         temp_files = set()
         temp_writers = {}
 
@@ -141,7 +163,8 @@ class HFDatasetSplitter:
                     model_name = table.column("model").combine_chunks().field("model_info").field("name")
                     # shots = table.column("prompt_config").field("format").field("shots")
                     # dataset_name = table.column("instance").field("sample_identifier").field("dataset_name")
-                    dataset_name = table.column("instance").combine_chunks().field("sample_identifier").field("dataset_name")
+                    dataset_name = table.column("instance").combine_chunks().field("sample_identifier").field(
+                        "dataset_name")
 
                     # Append the new columns to the table.
                     table = table.append_column("model_name", model_name)
