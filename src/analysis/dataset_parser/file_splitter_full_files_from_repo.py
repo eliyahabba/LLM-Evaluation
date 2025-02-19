@@ -5,17 +5,15 @@ import shutil
 import uuid
 from pathlib import Path
 from typing import List, Set
+from typing import Optional
 
 import pandas as pd
 import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.parquet as pq
 from filelock import FileLock
-from huggingface_hub import HfApi
-from huggingface_hub import hf_hub_download, file_info
+from huggingface_hub import hf_hub_download, HfApi
 from tqdm import tqdm
-from pathlib import Path
-from typing import Optional
 
 
 class HFDatasetSplitter:
@@ -75,33 +73,27 @@ class HFDatasetSplitter:
             self.logger.error(f"Error fetching files from Hugging Face: {e}")
             return []
 
-    def download_file(self, file_path: str) -> Optional[Path]:
-        """Download a single file from HF to the temporary directory, verifying its integrity."""
+    def is_parquet_file_valid(self, file_path: Path) -> bool:
         try:
-            local_path = self.temp_dir / Path(file_path).name
+            _ = pq.read_metadata(file_path)
+            return True
+        except Exception as e:
+            return False
 
-            if local_path.exists():
-                try:
-                    hf_file_info = file_info(
-                        repo_id=self.repo_id,
-                        repo_type="dataset",
-                        filename=file_path
-                    )
-                    expected_size = hf_file_info.size
+    def download_file(self, file_path: str) -> Optional[Path]:
+        final_path = self.temp_dir / Path(file_path).name
 
-                    actual_size = os.path.getsize(local_path)
+        # אם הקובץ קיים, ננסה לבדוק את תקינותו בעזרת קריאת המטא-דאטה בלבד
+        if final_path.exists():
+            if self.is_parquet_file_valid(final_path):
+                self.logger.info(f"File {file_path} exists and appears valid at {final_path}")
+                return final_path
+            else:
+                self.logger.warning(f"Local file {final_path} appears corrupted. Removing and re-downloading.")
+                os.remove(final_path)
 
-                    if actual_size == expected_size:
-                        self.logger.info(f"File {file_path} already exists and is complete at {local_path}")
-                        return local_path
-                    else:
-                        self.logger.warning(f"File {file_path} exists but seems incomplete. Redownloading...")
-                        os.remove(local_path)
-                except Exception as e:
-                    self.logger.warning(f"Could not verify file integrity, redownloading: {e}")
-                    os.remove(local_path)
-
-            self.logger.info(f"Downloading file {file_path} to {local_path}")
+        self.logger.info(f"Downloading file {file_path} to {final_path}")
+        try:
             hf_hub_download(
                 repo_id=self.repo_id,
                 repo_type="dataset",
@@ -109,7 +101,12 @@ class HFDatasetSplitter:
                 local_dir=self.temp_dir,
                 etag_timeout=3600
             )
-            return local_path
+            if self.is_parquet_file_valid(final_path):
+                return final_path
+            else:
+                self.logger.error("Downloaded file appears corrupted.")
+                os.remove(final_path)
+                return None
         except Exception as e:
             self.logger.error(f"Error downloading file {file_path}: {e}")
             return None
