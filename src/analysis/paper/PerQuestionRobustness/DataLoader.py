@@ -23,15 +23,15 @@ class DataLoader:
         self.split = split
         self.batch_size = batch_size
 
-    def load_and_process_data(self, model_name, shots,
+    def load_and_process_data(self, model_name, shots=None,
                               datasets=None, drop=True):
         start_time = time.time()
         self.load_data_with_filter(drop, model_name, shots, datasets)
         if len(self.dataset) == 0:
             print(f"No data found for model {model_name} and shots {shots}")
             return pd.DataFrame()
+        self.dataset = self.dataset.to_pandas()
         clean_df = self.remove_duplicates()
-        clean_df = clean_df.drop(['quantization', 'closest_answer'], axis=1)
         load_time = time.time()
         print(f"The size of the data after removing duplicates is: {len(clean_df)}")
         print(f"Data loading completed in {load_time - start_time:.2f} seconds")
@@ -71,7 +71,7 @@ class DataLoader:
                 self.dataset = load_dataset(self.dataset_name, split=self.split)
         print("The size of the data after filtering is: ", len(self.dataset))
         if drop:
-            self.dataset = self.dataset.remove_columns(['cumulative_logprob', 'generated_text', 'ground_truth'])
+            self.dataset = self.dataset.remove_columns(['cumulative_logprob', 'generated_text', 'ground_truth', 'quantization', 'closest_answer'])
         return self.dataset
 
     def remove_duplicates(self):
