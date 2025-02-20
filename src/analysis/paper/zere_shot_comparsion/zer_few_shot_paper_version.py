@@ -6,7 +6,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-USE_SAMPLED_DATA = True
+USE_SAMPLED_DATA = False
 
 
 class DataProcessor:
@@ -231,9 +231,9 @@ class Visualizer:
             if idx > 0:
                 ax.tick_params(axis='y', length=0, labelleft=False)
         # Add legend only to the first subplot
-        if idx == 0:
-            ax.legend(fontsize=22, loc='upper right', bbox_to_anchor=(1.0, 1.25),
-                      ncol=2, frameon=True, edgecolor='black', markerscale=3.0)
+            if idx == 1:
+                ax.legend(fontsize=22, loc='upper center', bbox_to_anchor=(0.5, 1.35),
+                          ncol=2, frameon=True, edgecolor='black', markerscale=3.0)
             # Adjust subplot spacing
         plt.subplots_adjust(left=0.1)  # Increase left margin
 
