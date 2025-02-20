@@ -475,12 +475,31 @@ class SchemaConverter:
         conversion_map = {'prompt': json.loads, 'references': eval, 'scores': eval,
                           'run_generation_args': json.loads, 'run_model_args': json.loads}
         try:
+            if logger:
+                logger.debug(f"Starting DataFrame conversion with columns: {df.columns}")
+            
             # Apply conversions in a vectorized manner
             for col, func in conversion_map.items():
-                df[col] = df[col].apply(func)
+                if col not in df.columns:
+                    if logger:
+                        logger.error(f"Missing required column: {col}")
+                    raise KeyError(f"Missing required column: {col}")
+                try:
+                    df[col] = df[col].apply(func)
+                except Exception as e:
+                    if logger:
+                        logger.error(f"Error converting column {col}: {str(e)}")
+                        logger.error(f"Sample value: {df[col].iloc[0]}")
+                    raise
 
             # Handle nested task_data conversion
-            df['task_data'] = df['raw_input'].apply(lambda x: json.loads(json.loads(x)['task_data']))
+            try:
+                df['task_data'] = df['raw_input'].apply(lambda x: json.loads(json.loads(x)['task_data']))
+            except Exception as e:
+                if logger:
+                    logger.error(f"Error converting task_data: {str(e)}")
+                    logger.error(f"Sample raw_input: {df['raw_input'].iloc[0]}")
+                raise
 
             # Drop raw_input column after extraction
             df = df.drop(columns=['raw_input'])
@@ -491,6 +510,8 @@ class SchemaConverter:
         except Exception as e:
             if logger:
                 logger.error(f"Error converting DataFrame: {str(e)}")
+                import traceback
+                logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
 

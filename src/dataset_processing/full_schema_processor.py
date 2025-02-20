@@ -30,6 +30,9 @@ class FullSchemaProcessor(BaseProcessor):
     def process_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
         """Process DataFrame using the schema converter more efficiently."""
         try:
+            self.logger.info(f"Starting conversion of DataFrame with shape: {df.shape}")
+            self.logger.debug(f"DataFrame columns: {df.columns}")
+            
             # Convert batch at once instead of row by row
             converted_data = self.converter.convert_dataframe(df, probs=True, logger=self.logger)
             if not converted_data:
@@ -39,7 +42,10 @@ class FullSchemaProcessor(BaseProcessor):
             # Create DataFrame once
             return pd.DataFrame(converted_data)
         except Exception as e:
-            self.logger.error(f"Error processing DataFrame: {e}")
+            self.logger.error(f"Error processing DataFrame: {str(e)}")
+            self.logger.error(f"DataFrame sample: {df.head(1).to_dict()}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
             return pd.DataFrame()
 
     def process_file(self, file_path: Path) -> List[str]:

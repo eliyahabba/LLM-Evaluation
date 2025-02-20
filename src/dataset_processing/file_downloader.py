@@ -39,11 +39,11 @@ class HFFileDownloader(BaseProcessor):
             return set(self.processed_files_path.read_text().splitlines())
         return set()
 
-    def _mark_as_processed(self, file_path: str):
+    def _mark_as_processed(self, file_path: Path):
         """Mark a file as processed."""
-        self.processed_files.add(file_path)
+        self.processed_files.add(str(file_path))
         with open(self.processed_files_path, 'a') as f:
-            f.write(f"{file_path}\n")
+            f.write(f"{str(file_path)}\n")
 
     def file_exists(self, filename: str) -> bool:
         """
