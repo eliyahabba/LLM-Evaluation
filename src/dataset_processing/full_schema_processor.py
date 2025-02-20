@@ -90,16 +90,14 @@ class FullSchemaProcessor(BaseProcessor):
                     group_df = group_df.drop(columns=['model_name', 'dataset_name', 'language'])
                     group_df = group_df.reset_index(drop=True)
                     
-                    # Convert DataFrame to PyArrow Table with schema
-                    schema = self._get_schema()
+                    # Convert DataFrame to PyArrow Table
                     table = pa.Table.from_pandas(group_df, preserve_index=False)
-                    table = table.cast(schema)  # Cast to our desired schema
                     
                     with FileLock(lock_file):
                         if str(output_path) not in self.writers:
                             self.writers[str(output_path)] = pq.ParquetWriter(
                                 str(output_path), 
-                                schema,  # Use the same schema here
+                                table.schema,  # Use the schema from the table
                                 version=ParquetConstants.VERSION,
                                 write_statistics=ParquetConstants.WRITE_STATISTICS
                             )
@@ -131,111 +129,14 @@ class FullSchemaProcessor(BaseProcessor):
             return []
 
     def _get_schema(self):
-        """Define the PyArrow schema for the output parquet files."""
-        return pa.schema([
-            ('evaluation_id', pa.string()),
-            ('model', pa.struct({
-                'model_info': pa.struct({
-                    'name': pa.string(),
-                    'family': pa.string()
-                }),
-                'configuration': pa.struct({
-                    'architecture': pa.string(),
-                    'context_window': pa.int64(),
-                    'hf_path': pa.string(),
-                    'is_instruct': pa.bool_(),
-                    'parameters': pa.int64(),
-                    'revision': pa.null()
-                }),
-                'inference_settings': pa.struct({
-                    'generation_args': pa.struct({
-                        'max_tokens': pa.int64(),
-                        'stop_sequences': pa.list_(pa.null()),
-                        'temperature': pa.null(),
-                        'top_k': pa.int64(),
-                        'top_p': pa.null(),
-                        'use_vllm': pa.bool_()
-                    }),
-                    'quantization': pa.struct({
-                        'bit_precision': pa.string(),
-                        'method': pa.string()
-                    })
-                })
-            })),
-            ('prompt_config', pa.struct({
-                'prompt_class': pa.string(),
-                'dimensions': pa.struct({
-                    'instruction_phrasing': pa.struct({
-                        'text': pa.string(),
-                        'name': pa.string()
-                    }),
-                    'separator': pa.string(),
-                    'enumerator': pa.string(),
-                    'choices_order': pa.struct({
-                        'description': pa.string(),
-                        'method': pa.string()
-                    }),
-                    'shots': pa.int64(),
-                    'demonstrations': pa.list_(pa.struct({
-                        'topic': pa.string(),
-                        'question': pa.string(),
-                        'choices': pa.list_(pa.struct({
-                            'id': pa.string(),
-                            'text': pa.string()
-                        })),
-                        'answer': pa.int64()
-                    }))
-                })
-            })),
-            ('instance', pa.struct({
-                'task_type': pa.string(),
-                'raw_input': pa.string(),
-                'language': pa.string(),
-                'sample_identifier': pa.struct({
-                    'dataset_name': pa.string(),
-                    'hf_repo': pa.string(),
-                    'hf_index': pa.int64(),
-                    'hf_split': pa.string()
-                }),
-                'perplexity': pa.float64(),
-                'classification_fields': pa.struct({
-                    'question': pa.string(),
-                    'choices': pa.list_(pa.struct({
-                        'id': pa.string(),
-                        'text': pa.string()
-                    })),
-                    'ground_truth': pa.struct({
-                        'id': pa.string(),
-                        'text': pa.string()
-                    })
-                }),
-                'prompt_logprobs': pa.list_(pa.list_(pa.struct({
-                    'decoded_token': pa.string(),
-                    'logprob': pa.float64(),
-                    'rank': pa.int64(),
-                    'token_id': pa.int64()
-                })))
-            })),
-            ('output', pa.struct({
-                'response': pa.string(),
-                'cumulative_logprob': pa.float64(),
-                'generated_tokens_logprobs': pa.list_(pa.list_(pa.struct({
-                    'decoded_token': pa.string(),
-                    'logprob': pa.float64(),
-                    'rank': pa.int64(),
-                    'token_id': pa.int64()
-                })))
-            })),
-            ('evaluation', pa.struct({
-                'ground_truth': pa.string(),
-                'evaluation_method': pa.struct({
-                    'method_name': pa.string(),
-                    'description': pa.string(),
-                    'closest_answer': pa.string()
-                }),
-                'score': pa.float64()
-            }))
-        ])
+        """Get schema from existing parquet file or first batch of data."""
+        try:
+            # Convert DataFrame to PyArrow Table without schema first
+            table = pa.Table.from_pandas(group_df, preserve_index=False)
+            return table.schema
+        except Exception as e:
+            self.logger.error(f"Error getting schema: {e}")
+            raise
 
     def __del__(self):
         """Cleanup writers on object destruction."""
