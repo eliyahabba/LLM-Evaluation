@@ -49,15 +49,7 @@ class FullSchemaProcessor(BaseProcessor):
             return pd.DataFrame()
 
     def process_file(self, file_path: Path) -> List[str]:
-        """
-        Process a single file and write results to model/dataset specific files.
-
-        Args:
-            file_path: Path to the parquet file
-
-        Returns:
-            List of processed file paths
-        """
+        """Process a single file and write results to model/dataset specific files."""
         self.logger.info(f"Processing file: {file_path}")
         processed_files = set()
 
@@ -96,16 +88,18 @@ class FullSchemaProcessor(BaseProcessor):
                     
                     # Remove grouping columns and reset index
                     group_df = group_df.drop(columns=['model_name', 'dataset_name', 'language'])
-                    group_df = group_df.reset_index(drop=True)  # Drop the index completely
+                    group_df = group_df.reset_index(drop=True)
                     
-                    # Convert DataFrame to PyArrow Table
-                    table = pa.Table.from_pandas(group_df, preserve_index=False)  # Don't preserve index
+                    # Convert DataFrame to PyArrow Table with schema
+                    schema = self._get_schema()
+                    table = pa.Table.from_pandas(group_df, preserve_index=False)
+                    table = table.cast(schema)  # Cast to our desired schema
                     
                     with FileLock(lock_file):
                         if str(output_path) not in self.writers:
                             self.writers[str(output_path)] = pq.ParquetWriter(
                                 str(output_path), 
-                                table.schema,
+                                schema,  # Use the same schema here
                                 version=ParquetConstants.VERSION,
                                 write_statistics=ParquetConstants.WRITE_STATISTICS
                             )
@@ -135,6 +129,66 @@ class FullSchemaProcessor(BaseProcessor):
                     pass
             self.writers.clear()
             return []
+
+    def _get_schema(self):
+        """Define the PyArrow schema for the output parquet files."""
+        return pa.schema([
+            ('evaluation_id', pa.string()),
+            ('model', pa.struct({
+                'model_info': pa.struct({
+                    'name': pa.string(),
+                    'family': pa.string()
+                }),
+                'configuration': pa.struct({
+                    'architecture': pa.string(),
+                    'context_window': pa.int64(),
+                    'hf_path': pa.string(),
+                    'is_instruct': pa.bool_(),
+                    'parameters': pa.int64(),
+                    'revision': pa.null()
+                }),
+                'inference_settings': pa.struct({
+                    'generation_args': pa.struct({
+                        'max_tokens': pa.int64(),
+                        'stop_sequences': pa.list_(pa.null()),
+                        'temperature': pa.null(),
+                        'top_k': pa.int64(),
+                        'top_p': pa.null(),
+                        'use_vllm': pa.bool_()
+                    }),
+                    'quantization': pa.struct({
+                        'bit_precision': pa.string(),
+                        'method': pa.string()
+                    })
+                })
+            })),
+            ('prompt_config', pa.struct({
+                'prompt_class': pa.string(),
+                'dimensions': pa.struct({
+                    'instruction_phrasing': pa.struct({
+                        'text': pa.string(),
+                        'name': pa.string()
+                    }),
+                    'separator': pa.string(),
+                    'enumerator': pa.string(),
+                    'choices_order': pa.struct({
+                        'description': pa.string(),
+                        'method': pa.string()
+                    }),
+                    'shots': pa.int64(),
+                    'demonstrations': pa.list_(pa.struct({
+                        'topic': pa.string(),
+                        'question': pa.string(),
+                        'choices': pa.list_(pa.struct({
+                            'id': pa.string(),
+                            'text': pa.string()
+                        })),
+                        'answer': pa.int64()
+                    }))
+                })
+            })),
+            # ... rest of the schema
+        ])
 
     def __del__(self):
         """Cleanup writers on object destruction."""
