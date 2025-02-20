@@ -14,11 +14,9 @@ class BaseProcessor:
             data_dir: str,
             num_workers: int = ProcessingConstants.DEFAULT_NUM_WORKERS,
             batch_size: int = ProcessingConstants.DEFAULT_BATCH_SIZE,
-            temp_dir: str = None,
             token: str = None
     ):
         """Initialize the base processor."""
-        # Initialize basic attributes first
         self.data_dir = Path(data_dir)
         self.num_workers = num_workers
         self.batch_size = batch_size
@@ -30,17 +28,6 @@ class BaseProcessor:
 
         # Set up logger after data_dir is created
         self.setup_logger()
-        
-        # Set up temporary directory
-        if temp_dir:
-            self.temp_dir = Path(temp_dir)
-        else:
-            self.temp_dir = self.data_dir / ProcessingConstants.TEMP_DIR_NAME
-
-        self.logger.info(f"Creating temporary directory: {self.temp_dir}")
-        self.temp_dir.mkdir(parents=True, exist_ok=True)
-
-        self.logger.info(f"Initialization complete for {self.__class__.__name__}")
 
     def setup_logger(self):
         """Set up logging configuration."""
