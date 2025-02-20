@@ -1,0 +1,2002 @@
+{
+  "Unapotembea kaskazini kutoka Marekani kwenda Canada utaona Nyota ya Kaskazini (kaskazini) inavyoongezeka _______________.|||Chini zaidi angani|||Juukwa zaidi angani|||Kidogo chenyewe|||Mwangaza zaid": {
+    "source": "test",
+    "index": 0,
+    "choices": [
+      "Mwangaza zaid",
+      "Kidogo chenyewe",
+      "Juukwa zaidi angani",
+      "Chini zaidi angani"
+    ]
+  },
+  "Je, ni aina gani tatu ya kutofautiana za nadharia ya mshikadau kulingana na Donaldson na Preston (1995)?|||Kikanuni, Maadili na Muhimu|||Kikanuni, Maelezo na Kiuchumi|||Kikanuni, Maelezo na Muhimu|||Kisiasa, Maelezo na Muhimu": {
+    "source": "test",
+    "index": 1,
+    "choices": [
+      "Kikanuni, Maelezo na Kiuchumi",
+      "Kikanuni, Maadili na Muhimu",
+      "Kisiasa, Maelezo na Muhimu",
+      "Kikanuni, Maelezo na Muhimu"
+    ]
+  },
+  "_______ ni neno linalotumiwa kuelezea uidhinishaji na ukubaliaji unaoendelea wa shughuli za kampuni na jamii, hasa miongoni mwa jumuiya za mitaa na jamii za kiraia.|||Idhini ya jumuiya|||Leseni ya kijamii ya kufanya kazi|||Maslahi ya binafsi ulioelimika|||Wajibu wa mnyororo wa ugavi": {
+    "source": "test",
+    "index": 2,
+    "choices": [
+      "Maslahi ya binafsi ulioelimika",
+      "Leseni ya kijamii ya kufanya kazi",
+      "Idhini ya jumuiya",
+      "Wajibu wa mnyororo wa ugavi"
+    ]
+  },
+  "_________, kama vile _______ na _______ ni michakato ambayo mashirika hutekeleza malengo ya mazingira, sera na majukumu na kuhakikisha ukaguzi wa mara kwa mara na ripoti, ambayo huenda zaidi ya kufuata sheria.|||Mifumo ya usimamizi wa mazingira, ISO14001, EMAS|||Mifumo ya usimamizi wa mazingira, SA8000, EMAS|||Viwango vya uwajibikaji kwa jamii, EMAS, SA8000|||Viwango vya uwajibikaji kwa jamii, ISO14001, SA8000": {
+    "source": "test",
+    "index": 3,
+    "choices": [
+      "Mifumo ya usimamizi wa mazingira, SA8000, EMAS",
+      "Viwango vya uwajibikaji kwa jamii, ISO14001, SA8000",
+      "Mifumo ya usimamizi wa mazingira, ISO14001, EMAS",
+      "Viwango vya uwajibikaji kwa jamii, EMAS, SA8000"
+    ]
+  },
+  "________ ni matumizi ya lugha ya kuficha au kufichua asili ya maadili ya maamuzi, vitendo na tabia.|||Kuweka wazi maadili|||Maadili uliopangwa upya|||Maadili ya kuwekwa tu|||Upangaji upya wa kimaadili": {
+    "source": "test",
+    "index": 4,
+    "choices": [
+      "Upangaji upya wa kimaadili",
+      "Kuweka wazi maadili",
+      "Maadili ya kuwekwa tu",
+      "Maadili uliopangwa upya"
+    ]
+  },
+  "_______ na _______ zote ni mifano ya nadharia egemezi kwa _______ ambazo zimeegemezwa kwenye kanuni za kimsingi za jumla za mema na mabaya.|||Maadili ya wajibu, Maadili ya haki na haki, Kanuni|||Maadili ya wajibu, Utumishi, Mfuata Maadili tegemezi katika matokeo|||Ubinafsi, Maadili za haki na haki, Mfuata Maadili tegemezi katika matokeo|||Utumishi, Ubinafsi, Kanuni": {
+    "source": "test",
+    "index": 5,
+    "choices": [
+      "Maadili ya wajibu, Maadili ya haki na haki, Kanuni",
+      "Utumishi, Ubinafsi, Kanuni",
+      "Maadili ya wajibu, Utumishi, Mfuata Maadili tegemezi katika matokeo",
+      "Ubinafsi, Maadili za haki na haki, Mfuata Maadili tegemezi katika matokeo"
+    ]
+  },
+  "_________ kama vile ________ Marekani ni jambo muhimu katika kuendesha mazoea ya kimaadili ya biashara.|||Sera ya ndani ya kampuni, Sheria ya Sarbanes-Oxley|||Sera ya ndani ya kampuni, Sheria ya mazoea yasiyo ya kimaadili ya kampuni|||Udhibiti wa Kisheria, Sera ya ndani ya kampuni|||Udhibiti wa Kisheria, Sheria ya Sarbanes-Oxley": {
+    "source": "test",
+    "index": 6,
+    "choices": [
+      "Udhibiti wa Kisheria, Sheria ya Sarbanes-Oxley",
+      "Sera ya ndani ya kampuni, Sheria ya mazoea yasiyo ya kimaadili ya kampuni",
+      "Sera ya ndani ya kampuni, Sheria ya Sarbanes-Oxley",
+      "Udhibiti wa Kisheria, Sera ya ndani ya kampuni"
+    ]
+  },
+  "Chini ya maadili ya ________ kanuni za kimaadili zenye lengo zinaweza kuamuliwa kibusara, ilhali maadili chini ya umaadili wa ________ yanategemea muktadha na ya kibinafsi.|||Kikanuni, Kiulinganisho|||Kiulinganisho, Uhakika|||Uhakika, Kikanuni|||Uhakika, Kiulinganisho": {
+    "source": "test",
+    "index": 7,
+    "choices": [
+      "Kikanuni, Kiulinganisho",
+      "Uhakika, Kiulinganisho",
+      "Kiulinganisho, Uhakika",
+      "Uhakika, Kikanuni"
+    ]
+  },
+  "Baadhi ya tofauti kuu kati ya fedha za Kiislamu na fedha za kawaida ni pamoja na - kupiga marufuku kutoza na kulipa _______, kupiga marufuku shughuli ______ na ______ marufuku ya uwekezaji wa dhambi na mahitaji ya bidhaa zote za kifedha kuungwa mkono na __________.|||Riba, Fulani, za Kubahatisha, Mali Zisizoshikika|||Riba, Fulani, za Uhakika, Mali Zinazoshikika|||Riba, Usio na hakika, za Kubahatisha, Mali Zinazoshikika|||Riba, Usio na hakika, za Uhakika, Mali Zisizoshikika": {
+    "source": "test",
+    "index": 8,
+    "choices": [
+      "Riba, Fulani, za Kubahatisha, Mali Zisizoshikika",
+      "Riba, Usio na hakika, za Uhakika, Mali Zisizoshikika",
+      "Riba, Usio na hakika, za Kubahatisha, Mali Zinazoshikika",
+      "Riba, Fulani, za Uhakika, Mali Zinazoshikika"
+    ]
+  },
+  "Masharti yaliyopendekezwa na Charles Darwin ya uteuzi asilia yanajumuisha yote yafuatayo kuhusu idadi fulani ya watu ISIPOKUWA|||kuzaa kupita kiasi|||tofauti ya maisha na mafanikio ya uzazi|||urithi wa jeni \"zinazofaa\" na \"zisizofaa\".|||ushindani wa rasilimali chache": {
+    "source": "test",
+    "index": 9,
+    "choices": [
+      "urithi wa jeni \"zinazofaa\" na \"zisizofaa\".",
+      "tofauti ya maisha na mafanikio ya uzazi",
+      "ushindani wa rasilimali chache",
+      "kuzaa kupita kiasi"
+    ]
+  },
+  "Katika 25°C, kiwango cha juu cha PbI2 ambacho kinaweza kuchanganywa katika 1.00 L ya maji safi ni 1.0 mmol. Kwa kuchukulia kutakuwa na mtengano kamili, mzidisho wa umumunyifu, K_sp, kwa iodidi ya risasi ifikapo 25°C|||1.0 × 10^−3|||1.0 × 10^−6|||1.0 × 10^−9|||4.0 × 10^−9": {
+    "source": "test",
+    "index": 10,
+    "choices": [
+      "1.0 × 10^−3",
+      "1.0 × 10^−6",
+      "1.0 × 10^−9",
+      "4.0 × 10^−9"
+    ]
+  },
+  "Ngazi yenye urefu wa mita 9 inaegemea ukuta wima kwenye ardhi tambarare. Wakati mwisho wa chini wa ngazi unaposogezwa mbali na ukuta kwa kasi isiobadilika ya mita 2 kwa sekunde, mwisho wa juu huteleza chini kando ya ukuta. Je, ni kwa kasi gani, katika mita kwa sekunde, mwisho wa juu wa ngazi utakuwa unateleza kuelekea chini wakati ncha ya juu iko mita 3 juu ya ardhi?|||1/(2*sqrt(2))|||12*sqrt(2)|||4*sqrt(2)|||6*sqrt(2)": {
+    "source": "test",
+    "index": 11,
+    "choices": [
+      "12*sqrt(2)",
+      "6*sqrt(2)",
+      "4*sqrt(2)",
+      "1/(2*sqrt(2))"
+    ]
+  },
+  "Nadharia ya Mifumo ya Dunia inagawa dunia kama kitengo katika vikundi vitatu: nchi zenye msingi , nchi zenye pembezoni , na nchi zenye nusu-pembezoni . Ni jibu lipi kati ya yafuatayo linafanana zaidi na nchi zenye nusu-pembezoni?|||Idadi ndogo ya watu wa daraja la juu sana.|||Serikali yenye nguvu ya kati.|||Uchumi ulio na aina mbalimbali ya shughuli na umekuwa.|||Uchumi uliojikita katika rasilimali moja ya asili.": {
+    "source": "test",
+    "index": 12,
+    "choices": [
+      "Serikali yenye nguvu ya kati.",
+      "Uchumi uliojikita katika rasilimali moja ya asili.",
+      "Uchumi ulio na aina mbalimbali ya shughuli na umekuwa.",
+      "Idadi ndogo ya watu wa daraja la juu sana."
+    ]
+  },
+  "Wakati wa kufanya oparesheni kwenye usambazaji wa masafa ya kutofautisha, mota ya AC inahitaji volti inayobadilika ili|||kuboresha uwezo wa kigeuzo.|||kuepuka athari ya kueneza.|||kulinda kizuio.|||kulinda thairista kutokana na dV / dt.": {
+    "source": "test",
+    "index": 13,
+    "choices": [
+      "kulinda kizuio.",
+      "kuepuka athari ya kueneza.",
+      "kuboresha uwezo wa kigeuzo.",
+      "kulinda thairista kutokana na dV / dt."
+    ]
+  },
+  "Mwangaza kwa nukta ya mita 5 chini ya taa katika 6 lux. Nguvu ya mshumaa ya taa ni|||140|||150|||200|||30": {
+    "source": "test",
+    "index": 14,
+    "choices": [
+      "30",
+      "140",
+      "150",
+      "200"
+    ]
+  },
+  "Ramani fulani hutumia kipimo cha nchi 1 sawa na maili 25. Ni maili ngapi zinazowakilishwa na nchi 5 kwenye ramani hii?|||125|||25|||5|||50": {
+    "source": "test",
+    "index": 15,
+    "choices": [
+      "5",
+      "25",
+      "50",
+      "125"
+    ]
+  },
+  "Mavazi ya saladi hufanywa kwa kuchanganya sehemu 2 za siki na sehemu 5 za mafuta. Ni ounces ngapi za mafuta zinapaswa kuchanganywa na ounces 9 za siki?|||2|||22.5|||3.6|||63": {
+    "source": "test",
+    "index": 16,
+    "choices": [
+      "2",
+      "3.6",
+      "22.5",
+      "63"
+    ]
+  },
+  "Ni ipi kati ya zifuatazo SI sawa na 3 na 3 juu ya gal 4?|||13 qt|||15 qt|||30 pt|||60 c": {
+    "source": "test",
+    "index": 17,
+    "choices": [
+      "60 c",
+      "15 qt",
+      "30 pt",
+      "13 qt"
+    ]
+  },
+  "Kila ghorofa ya jumba in urefu wa futi 14.3. Ikiwa urefu wa jumba ni futi 185.9, jumba hilo lina ghorofa ngapi?|||10|||13|||17|||9": {
+    "source": "test",
+    "index": 18,
+    "choices": [
+      "10",
+      "13",
+      "17",
+      "9"
+    ]
+  },
+  "Je, ni takriban asilimia ngapi ya waliojibu katika utafiti kutoka India waliripoti kuwa walitoa hongo katika mwaka uliopita ili kupata huduma za umma (kama vile elimu, mahakama; matibabu na afya; polisi; huduma za usajili na vibali; gharama ya matumizi hudama za kawaida; mapato ya ushuru na forodha; na huduma ya ardhi) hadi 2017?|||29%|||49%|||69%|||89%": {
+    "source": "test",
+    "index": 19,
+    "choices": [
+      "29%",
+      "49%",
+      "69%",
+      "89%"
+    ]
+  },
+  "Kufikia 2017, ni sehemu gani ya watu nchini India walitumia mtandao katika miezi mitatu iliyopita?|||11%|||26%|||41%|||56%": {
+    "source": "test",
+    "index": 20,
+    "choices": [
+      "11%",
+      "26%",
+      "41%",
+      "56%"
+    ]
+  },
+  "Mnamo 1987 wakati wa Iran Contra ni asilimia ngapi ya Wamarekani wanaamini kuwa Reagan alikuwa anaficha habari?|||2%|||25%|||50%|||75%": {
+    "source": "test",
+    "index": 21,
+    "choices": [
+      "2%",
+      "25%",
+      "50%",
+      "75%"
+    ]
+  },
+  "Takwimu za Benki ya Dunia zinaonyesha kuwa mnamo 1995, 20% ya kaya maskini zaidi zilichangia 7.5% ya mapato ya kaya nchini Niger, 20% inayofuata ya kaya ilichangia 11.8% ya mapato, 20% ya kati ilichangia 15.5% ya mapato, ya matajiri wa pili 20% yalichangia 21.1% ya mapato, na 20% ya juu walichangia 44.1% ya mapato. Je! sehemu ya mapato ya jumla ya 60% ya kaya za chini nchini Niger ilikua ngapi?|||15.50%|||34.80%|||48.10%|||65.20%": {
+    "source": "test",
+    "index": 22,
+    "choices": [
+      "15.50%",
+      "34.80%",
+      "48.10%",
+      "65.20%"
+    ]
+  },
+  "Asilimia ya watoto nchini Ethiopia (umri wa miaka 8) walioripoti adhabu ya kimwili na walimu katika wiki iliyopita mwaka 2009 ilikuwa takriban?|||18%|||38%|||58%|||78%": {
+    "source": "test",
+    "index": 23,
+    "choices": [
+      "18%",
+      "38%",
+      "58%",
+      "78%"
+    ]
+  },
+  "Kufikia 2019, ni takriban asilimia ngapi ya Waitaliano wanasema ni muhimu kabisa kuwa na vyombo vya habari huru katika nchi yetu bila udhibiti wa serikali/taifa?|||41%|||56%|||71%|||86%": {
+    "source": "test",
+    "index": 24,
+    "choices": [
+      "41%",
+      "56%",
+      "71%",
+      "86%"
+    ]
+  },
+  "Kufikia 2013, ni nchi gani kati ya zifuatazo ilikuwa na kiwango cha juu zaidi cha watu wasio na makazi?|||Ayalandi|||Chile|||Hispania|||Marekani": {
+    "source": "test",
+    "index": 25,
+    "choices": [
+      "Marekani",
+      "Chile",
+      "Ayalandi",
+      "Hispania"
+    ]
+  },
+  "Kuanzia na mmumunyo wa 18.0 M H2SO4, ni utaratibu gani unaofaa wa kuunda sampuli ya 1.00 L ya mmumunyo wa 3.0 M wa H2SO4 katika chupa cha kupima wingi?|||Jaza chupa kwa sehemu ya maji, kisha uongeze 167 ml ya mmumunyo, ukizungusha upesi upesi ili kuchanganya. Mwishowe, jaza chupa kwa sehemu iliyobaki na maji yaliyosafishwa.|||Jaza chupa kwa sehemu ya maji, kisha uongeze 600 ml ya mmumunyo, ukizungusha upesi upesi ili kuchanganya. Mwishowe, jaza chupa kwa sehemu iliyobaki na maji yaliyosafishwa.|||Ongeza 167 mL ya mmumunyo kwenye chupa, kisha ujaze chupa sehemu iliyobaki na maji yaliyosafishwa huku ukizungusha mmumunyo upesi upesi.|||Ongeza 600 mL ya mmumunyo kwenye chupa, kisha ujaze chupa sehemu iliyobaki na maji yaliyosafishwa huku ukizungusha mmumunyo upesi upesi.": {
+    "source": "test",
+    "index": 26,
+    "choices": [
+      "Ongeza 167 mL ya mmumunyo kwenye chupa, kisha ujaze chupa sehemu iliyobaki na maji yaliyosafishwa huku ukizungusha mmumunyo upesi upesi.",
+      "Ongeza 600 mL ya mmumunyo kwenye chupa, kisha ujaze chupa sehemu iliyobaki na maji yaliyosafishwa huku ukizungusha mmumunyo upesi upesi.",
+      "Jaza chupa kwa sehemu ya maji, kisha uongeze 167 ml ya mmumunyo, ukizungusha upesi upesi ili kuchanganya. Mwishowe, jaza chupa kwa sehemu iliyobaki na maji yaliyosafishwa.",
+      "Jaza chupa kwa sehemu ya maji, kisha uongeze 600 ml ya mmumunyo, ukizungusha upesi upesi ili kuchanganya. Mwishowe, jaza chupa kwa sehemu iliyobaki na maji yaliyosafishwa."
+    ]
+  },
+  "Mtengenezaji programu hutumia msimbo uliochapishwa mtandaoni chini ya leseni ya Creative Commons Attribution (C C B Y) katika bidhaa ya kibiashara. Je, ni ipi kati ya zifuatazo inaelezea vyema matumizi yanayokubalika ya msimbo?|||Kunakili msimbo kutoka chanzo cha mtandaoni hadi kwenye bidhaa ya mtengenezaji programu bila vitendo vingine vyovyote|||Kunakili msimbo kutoka chanzo cha mtandaoni hadi kwenye bidhaa ya mtengenezaji programu na kubadilisha majina yote ya vigezo|||Kunakili msimbo kutoka chanzo cha mtandaoni hadi kwenye bidhaa ya mtengenezaji programu na kupunguza msimbo ulionakiliwa mpaka mistari kumi ya msimbo|||Kunakili msimbo kutoka kwa chanzo cha mtandaoni hadi kwenye bidhaa ya mtengenezaji programu na kusadikisha mwandishi halisi kwa njia iliyoonyeshwa na leseni": {
+    "source": "test",
+    "index": 27,
+    "choices": [
+      "Kunakili msimbo kutoka chanzo cha mtandaoni hadi kwenye bidhaa ya mtengenezaji programu bila vitendo vingine vyovyote",
+      "Kunakili msimbo kutoka chanzo cha mtandaoni hadi kwenye bidhaa ya mtengenezaji programu na kupunguza msimbo ulionakiliwa mpaka mistari kumi ya msimbo",
+      "Kunakili msimbo kutoka chanzo cha mtandaoni hadi kwenye bidhaa ya mtengenezaji programu na kubadilisha majina yote ya vigezo",
+      "Kunakili msimbo kutoka kwa chanzo cha mtandaoni hadi kwenye bidhaa ya mtengenezaji programu na kusadikisha mwandishi halisi kwa njia iliyoonyeshwa na leseni"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nSoma kanuni zifuatazo za serikali\nSheria ya Wanahabari\nMradi amri hii itakuwa ikifanya kazihakuna chapisho linalotolewa kila siku, au ya kufululiza isiozidi karatasi ishirini za jambo lilochapishwa, itaenda kuchapishwa kwa jimbo lolote la muungano bila maafisa wa jimbo kujua kabla. Maandishi ambayo sio ya kiwango kilichotajwa hapo juu itashughulikiwa kulingana na sheria zinazotumika, au zile zinaweza kubuniwa, katika majimbo binafsi ya muungano. . . . Kila jimbo la muungano linawajibika, sio tu kwa lile jimbo ambalo kosa moja kwa moja limefanyika, lakini kwa Shirikisho lote, kwa kila chapisho linaloonekana chini ya usimamizi wake ambalo heshima au usalama wa majimbo mengine umekiukwa au katiba au usalama wao kushambuliwa. . . .\n—Maazimio ya Carlsbad yaliyopitishwa na Majimbo ya Kijerumani, 1819\nMaazimio ya Carlsbad yalikuwa moja ya njama za Metternich, kama ile Tamasha ya Europa, iliyokusudia to kutekeleza yapi ya haya?|||Kandamiza mageuzi yote ya kizalendo kote barani.|||Kandamiza usemi isipokuwa ule wa Watawala.|||Kuimarisha udhibiti wa mataifa ya Europa kwa demokrasia katika jadi ya Kutiwa Nuru.|||Kukandamiza sauti zote serikalini isipokuwa yake mwenyewe na kudhibiti nyanja zote za maisha ya raia.": {
+    "source": "test",
+    "index": 28,
+    "choices": [
+      "Kuimarisha udhibiti wa mataifa ya Europa kwa demokrasia katika jadi ya Kutiwa Nuru.",
+      "Kukandamiza sauti zote serikalini isipokuwa yake mwenyewe na kudhibiti nyanja zote za maisha ya raia.",
+      "Kandamiza mageuzi yote ya kizalendo kote barani.",
+      "Kandamiza usemi isipokuwa ule wa Watawala."
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nChini ya jina Chartist watu wasio na maana na wanaume wengine waliopotoshwa wana katika hali nyingi sana, kote nchini kutoka magharibi uliokithiri hadi mashariki kali nakutoka Brighton kusini hadi karibu kaskazini mwa Scotland, alimshutumu kila mtu ambaye sio mtu anayefanya kazi, kutumika kwake, wasifu mmbaya sana na nia mbaya zaidi na mwenendo, wamewatishia kwa kulipiza kisasi na katika baadhi ya maeneo, wamependekeza mipango ya kukamatwa na kugawana mali zao—idai ya watu waliopotoshwa na wengine wenye tabia mbaya, chini ya kujulikana kwa Wacharti wamekwenda kutoka mahali hadi mahali na kwa njia ya vurugu zaidi walisumbua na kutawanya mikutano ya aina mbalimbali. Kamati yako inapinga maneno Haki ya Kupiga Kura ya Kinyumbakwa kuwa chini ya ufafanuzi wowote wa maneno—ingewatenga watu wengi wa falme hizi—na kwa sababu wamekuwa kwa kiwango wakaidi kwa sehemu ya kisiasa ya watu wanaofanya kazi.\n—Dondoo ya barua kutoka kwa mwanamageuzi wa kijamii wa Uingereza Francis Place, iliyoandikwa mnamo 1842\nlengo kuu la harakati za Charti lilikuwa na lipi kati ya yafuatayo?|||Huduma ya afya kwa Wote|||Upiga kura wa Kijumla|||Upiga kura wa Kijumla wa wanaume|||Usalama wa kijamii na bima ya ukosefu wa uajiri": {
+    "source": "test",
+    "index": 29,
+    "choices": [
+      "Upiga kura wa Kijumla",
+      "Upiga kura wa Kijumla wa wanaume",
+      "Huduma ya afya kwa Wote",
+      "Usalama wa kijamii na bima ya ukosefu wa uajiri"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nPerestroika [Kurekebisha Muundo] ni hitaji la haraka linalotokana na michakato mikubwa ya maendeleo katika jamii yetu ya kijamaa. Jamii imeiva kwa ajili ya mabadiliko Imeiitamani kwa muda mrefu. Kuchelewa kwa mwanzo wa kurekebisha muundo kunaweza kusababisha hali ya ndani iliyoongezeka katika siku za usoni, ambayo, kuiweka wazi, ingekuwa imekumbwa na shida kubwa za kjamii . kiuchumi, na kisiasa.\nMikhail Gorbachev, Kurekebisha Muundo: Mawazo Mapya kwa nchi yetu na ulimwengu, 1987\nKutoka kwa kifungu hicho, mtu anaweza kusema kwamba Gorbachev aliamini kuwa|||jamii ya kijamaa haiwezi kufanya kazi|||jamii ya kijamaa haiwezi kuishi pamoja na ubepari|||matatizo ambayo yalihitaji yalikuwa ya ndani kwa maendeleo ya jamii ya kijamaa|||matatizo yaliyomhitaji perestroika yalikuwa ni makosa ya maadui wa kirasilimali wa ujamaa": {
+    "source": "test",
+    "index": 30,
+    "choices": [
+      "matatizo yaliyomhitaji perestroika yalikuwa ni makosa ya maadui wa kirasilimali wa ujamaa",
+      "matatizo ambayo yalihitaji yalikuwa ya ndani kwa maendeleo ya jamii ya kijamaa",
+      "jamii ya kijamaa haiwezi kufanya kazi",
+      "jamii ya kijamaa haiwezi kuishi pamoja na ubepari"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nHistoria ya jamii zote zilizopo ni historia ya mapambano ya tabaka. … Jamii ya kisasa ya mabwanyenye ambayo imeibuka kutoka kwa magofu ya jamii ya kikabaila haijaondoa uhasama wa kitabaka. Imeanzisha tabaka mpya, hali mpya za ukandamizaji, aina mpya za mapambano badala ya zile za zamani. Mwanzo, mwanzo wa mabwanyenye,  ina hata hivyo, kipengele hiki tofauti: imerahisisha uhasama wa kitabaka. Jamii kwa ujumla inagawanyika zaidi na zaidi katika kambi mbili kubwa za uhasama, katika tabaka mawili makubwa, moja kwa moja yakikabiliana: Tabaka la Mabwanyenye na Tabaka la Chini.\nKarl Marx na Friedrich Engels, Hati ya Sera za Kikomunisti, 1848\nMarx na Engels wangependa zaidi kufahamu ni tukio gani kati ya yafuatayo ni tukio muhimu katika historia ya Ulaya?|||Mapinduzi ya Kitukufu ya Uingereza ya mwaka 1688|||Mapinduzi ya Ufaransa ya mwaka 1789 hadi 1793|||Vita vya Miaka Saba|||Vita vya Roses": {
+    "source": "test",
+    "index": 31,
+    "choices": [
+      "Vita vya Roses",
+      "Mapinduzi ya Ufaransa ya mwaka 1789 hadi 1793",
+      "Vita vya Miaka Saba",
+      "Mapinduzi ya Kitukufu ya Uingereza ya mwaka 1688"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nSoma sehemu ya maandishi ifuatayo.\nKama elimu ya ustaarabu ingekuza katika kila mtoto mwelekeo wake wa asili, tunapaswa kuona karibu watoto wote matajiri wamepata kazi mbalimbali za tabaka ya chini, kama vile mwashi, seremala, mhunzi, fundi wa shogi. Nimemtoa mfano Louis the XVI, ambaye alipenda biashara ya ufundi wa vifuli; Binti wa mfalame wa Hispania aliyependelea kazi ya kushona viatu, mfalme fulani wa Denmark alijiridhisha kwa kutengeneza sindano, mfalme wa zamani wa Napoli alipenda kuuza samaki aliokuwa amekamata katika soko myenyewe; mkuu wa Parma, ambaya Condillac alikuwa amefundisha katika manukuu ya misingi ya mambo, katika uelewa wa mambo, utambuzi, hakuwa na ladha isipokuwa ya mtunza kanisa.\nIdadi kubwa wa watoto matajiri wangefuata ladha hizi za hali ya chini ikiwa elimu ya ustaarabu haikupinga maendeleo yao; na kama uchafu wa karakana kukwaruza kwa wafanyakazi haukuamsha ukaidi wenye nguvu kuliko kivutio. Ni mtoto gani wa mkuu ambaya hana ladha kwa moja ya kazi nne nilizotaja, ile ya mwashi, seremala, mhunzi, fundi wa shogi , na ambaye angeendelea ndani yao ikiwa aliona kutoka umri mdogo kazi iliyofanywa katika karakana za baka, na watu walioelimika, ambao daima wangepanga semina ndogo kwa watoto, na vifaa vodgo na kazi nyepesi?\n—Charles Fourier, Juu ya Elimu, 1838\nNi taifa gani lililojaribu kutumia mawazo ya Fourier na wengine kama yeye kuunda warsha za kitaifa mnamo mwaka 1848?|||Austria|||Ufaransa|||Uingereza|||Ujerumani": {
+    "source": "test",
+    "index": 32,
+    "choices": [
+      "Ujerumani",
+      "Ufaransa",
+      "Uingereza",
+      "Austria"
+    ]
+  },
+  "Kuzaliwa kwa wafanyikazi wa viwanda vya mijini huko Uropa kulichangia kwa kuanza kwa|||Mapinduzi ya Kwanza ya Kilimo.|||Mapinduzi ya Nne ya Kilimo.|||Mapinduzi ya Pili ya Kilimo.|||Mapinduzi ya Tatu ya Kilimo.": {
+    "source": "test",
+    "index": 33,
+    "choices": [
+      "Mapinduzi ya Kwanza ya Kilimo.",
+      "Mapinduzi ya Pili ya Kilimo.",
+      "Mapinduzi ya Tatu ya Kilimo.",
+      "Mapinduzi ya Nne ya Kilimo."
+    ]
+  },
+  "Je, ni kipi kati ya mambo yafuatayo kinaweza kuchukuliwa kuwa sababu ya \"kuvuta\" kwa Riva akizingatia kuhama kutoka India hadi Marekani?|||Kazi bora na mishahara ya juu|||Mfumo wa tabaka wa India|||Umaskini uliokithiri|||Vurugu katika mtaa wake": {
+    "source": "test",
+    "index": 34,
+    "choices": [
+      "Umaskini uliokithiri",
+      "Kazi bora na mishahara ya juu",
+      "Mfumo wa tabaka wa India",
+      "Vurugu katika mtaa wake"
+    ]
+  },
+  "Zote zifuatazo ni sababu za miji mikuu kuvutia vijana katika Marekani Kusini ILA|||familia zao wanaishi huko tayari.|||fursa za elimu.|||upatikanaji wa ajira.|||uwezekano wa makazi bora.": {
+    "source": "test",
+    "index": 35,
+    "choices": [
+      "upatikanaji wa ajira.",
+      "uwezekano wa makazi bora.",
+      "fursa za elimu.",
+      "familia zao wanaishi huko tayari."
+    ]
+  },
+  "Je, ni lipi kati ya zifuatazo SI tatizo ambalo Ulaya inakabili kwa sasa?|||Ghetto za makabila mijini zinaongezeka|||Kuongezeka kwa uhamiaji|||Kutojali mazingira|||Ukosefu wa ukuaji wa idadi ya watu": {
+    "source": "test",
+    "index": 36,
+    "choices": [
+      "Kuongezeka kwa uhamiaji",
+      "Ukosefu wa ukuaji wa idadi ya watu",
+      "Kutojali mazingira",
+      "Ghetto za makabila mijini zinaongezeka"
+    ]
+  },
+  "Wengi wa Wakurdi wanapatikana katika nchi gani?|||Iran|||Iraq|||Misri|||Uturuki": {
+    "source": "test",
+    "index": 37,
+    "choices": [
+      "Iran",
+      "Iraq",
+      "Uturuki",
+      "Misri"
+    ]
+  },
+  "Eneo la miji linalokua kwa kasi zaidi duniani ni:|||Afrika mwa Jangwa la Sahara|||Asia Mashariki|||Asia ya Kusini|||Ulaya": {
+    "source": "test",
+    "index": 38,
+    "choices": [
+      "Ulaya",
+      "Asia Mashariki",
+      "Afrika mwa Jangwa la Sahara",
+      "Asia ya Kusini"
+    ]
+  },
+  "Upinzani wa Muungano wa Uhuru wa Kiraia wa Marekani (ACLU), Chama cha Kitaifa cha Wanasheria Wanawake (NAWL), na Shirikisho la Wafanyakazi wa Marekani na Bunge la Mashirika ya Viwanda (AFL-CIO) dhidi ya uteuzi wa Samuel Alito wa 2006 katika Mahakama ya Juu ni mfano. ya|||mashtaka|||uchaguzi wa marejeo|||ujenzi wa muungano|||urekebishaji upya": {
+    "source": "test",
+    "index": 39,
+    "choices": [
+      "urekebishaji upya",
+      "ujenzi wa muungano",
+      "mashtaka",
+      "uchaguzi wa marejeo"
+    ]
+  },
+  "Je, ni gani kati ya yafuatayo lisiloonekana kwenye Katiba?|||Chuo cha uchaguzi|||Mgawanyo wa madaraka|||Urefu wa muda kwa wanachama wa Bunge|||Vyama vya siasa": {
+    "source": "test",
+    "index": 40,
+    "choices": [
+      "Chuo cha uchaguzi",
+      "Vyama vya siasa",
+      "Mgawanyo wa madaraka",
+      "Urefu wa muda kwa wanachama wa Bunge"
+    ]
+  },
+  "Chukulia mahitaji ya hifadhi ni asilimia 10. Ikiwa Mfumo wa Hifadhi ya Shirikisho (FED) utauza dhamana za serikali zenye thamani ya milioni $29 katika operesheni ya soko huria basi ugavi wa pesa unaweza|||kuongezeka kwa milioni $2.9.|||kuongezeka kwa milioni $290.|||kupungua kwa $2.9 million.|||kupungua kwa milioni $290.": {
+    "source": "test",
+    "index": 41,
+    "choices": [
+      "kuongezeka kwa milioni $2.9.",
+      "kupungua kwa $2.9 million.",
+      "kuongezeka kwa milioni $290.",
+      "kupungua kwa milioni $290."
+    ]
+  },
+  "Kulingana na uchanganuzi wa Kikenesi (Keynesian) kupungua kwa usambazaji wa pesa|||kungeongeza kiwango cha bei katika uchumi.|||kungeongeza kiwango cha bei na pato katika uchumi.|||kungepunguza kiwango cha bei katika uchumi.|||kungepunguza kiwango cha bei na pato katika uchumi.": {
+    "source": "test",
+    "index": 42,
+    "choices": [
+      "kungeongeza kiwango cha bei na pato katika uchumi.",
+      "kungepunguza kiwango cha bei na pato katika uchumi.",
+      "kungeongeza kiwango cha bei katika uchumi.",
+      "kungepunguza kiwango cha bei katika uchumi."
+    ]
+  },
+  "Kuna mahitaji makubwa ya wachomelea huko California lakini Bill mchomelea asiye na ajira anaishi New York. Bill|||anachukuliwa kuwa mfanyakazi aliyejifichwa.|||hana ajira kimuundo.|||hana ajira kwa msuguano.|||hana ajira kwa mzunguko.": {
+    "source": "test",
+    "index": 43,
+    "choices": [
+      "hana ajira kwa msuguano.",
+      "hana ajira kwa mzunguko.",
+      "hana ajira kimuundo.",
+      "anachukuliwa kuwa mfanyakazi aliyejifichwa."
+    ]
+  },
+  "Kiasi unaowezekana cha pesa kuundwa baada ya Mfumo wa hifadhi ya shirikisho (Fed) kuongeza hifadhi ya benki kitapungua ikiwa|||kasi ya pesa kitapungua.|||taasisi za amana zitaamua kushikilia hifadhi zaidi ya ziada.|||tabia ya pembezoni ya kutumia zitapungua.|||umma unapendelea kushikilia pesa kidogo zaidi.": {
+    "source": "test",
+    "index": 44,
+    "choices": [
+      "umma unapendelea kushikilia pesa kidogo zaidi.",
+      "kasi ya pesa kitapungua.",
+      "taasisi za amana zitaamua kushikilia hifadhi zaidi ya ziada.",
+      "tabia ya pembezoni ya kutumia zitapungua."
+    ]
+  },
+  "Kulingana na nadharia ya Mmonetari (Monetarist)|||Mfumo wa Hifadhi ya Shirikisho (FED) unapaswa kufanya sera ya kifedha.|||Mfumo wa Hifadhi ya Shirikisho (FED) unapaswa kuruhusu ugavi wa pesa kukua kwa kiwango kisichobadilika.|||mabadiliko katika ugavi wa pesa hayana athari kubwa.|||sera ya ushuru na utumiaji wa serikali ndiyo njia inayopendelewa ya kuhamisha mkunjo wa jumla ya mahitaji.": {
+    "source": "test",
+    "index": 45,
+    "choices": [
+      "Mfumo wa Hifadhi ya Shirikisho (FED) unapaswa kufanya sera ya kifedha.",
+      "mabadiliko katika ugavi wa pesa hayana athari kubwa.",
+      "sera ya ushuru na utumiaji wa serikali ndiyo njia inayopendelewa ya kuhamisha mkunjo wa jumla ya mahitaji.",
+      "Mfumo wa Hifadhi ya Shirikisho (FED) unapaswa kuruhusu ugavi wa pesa kukua kwa kiwango kisichobadilika."
+    ]
+  },
+  "Katika mwaka wa 1960, kulikuwa na visa 450,000 vya surua vilivyoripotiwa Marekani. Katika mwaka wa 1996, kulikuwa na visa 500 vilivyoripotiwa. Je, ni visa vingapi ambavyo vingeweza kuripotiwa mwaka 1987 ikiwa idadi ya visa vilivyoripotiwa kuanzia mwaka wa 1960 hadi 1996 vilipungua kwa idadi sawa (linearly)?|||112875|||27|||337125|||449500": {
+    "source": "test",
+    "index": 46,
+    "choices": [
+      "337125",
+      "449500",
+      "27",
+      "112875"
+    ]
+  },
+  "Gharama za fursa au gharama za ndani za biashara inayomilikiwa na “Mama na Baba” ni:|||sawa na faida za uhasibu.|||sawa na gharama za uhasibu.|||sawa na mapato au faida ambazo zilitokea kwa biashara ya Mama na Baba.|||sawa na mapato au faida ambazo zingeweza kutokea kwa kutumia rasilimali mahali pengine.": {
+    "source": "test",
+    "index": 47,
+    "choices": [
+      "sawa na gharama za uhasibu.",
+      "sawa na faida za uhasibu.",
+      "sawa na mapato au faida ambazo zingeweza kutokea kwa kutumia rasilimali mahali pengine.",
+      "sawa na mapato au faida ambazo zilitokea kwa biashara ya Mama na Baba."
+    ]
+  },
+  "Boriti ya elektroni ina kasi 10 ^ 7 m/s. Inatamaniwa kutumia eneo la magnetiki la Ardhi, 5 × 10-5 T, kupinda boriti ya elektroni kwenye duara. Nusu kipenyo cha mduara huu itakuwa nini?|||1 m|||1 mm|||1 nm|||1 μm": {
+    "source": "test",
+    "index": 48,
+    "choices": [
+      "1 nm",
+      "1 μm",
+      "1 mm",
+      "1 m"
+    ]
+  },
+  "Kitu kinawekwa sentimita 10 mbele ya kioo kinachoachana. Je, ni urefu gani wa kuzingatia wa kioo ikiwa picha inaonekana sentimita 2 nyuma ya kioo?|||-Sentimita -2/5|||-Sentimita -3/5 |||-Sentimita -5/2|||-Sentimita -5/3": {
+    "source": "test",
+    "index": 49,
+    "choices": [
+      "-Sentimita -3/5 ",
+      "-Sentimita -5/3",
+      "-Sentimita -2/5",
+      "-Sentimita -5/2"
+    ]
+  },
+  "Gari linaanza mwendo na linazidisha mwendo kwa usawa hadi kasi ya mwisho ya 20.0 m/s kwa muda wa sekunde 15.0 . Je, gari linasafiri umbali gani wakati huu?|||150 m|||450 m|||mita 300|||mita 600": {
+    "source": "test",
+    "index": 50,
+    "choices": [
+      "150 m",
+      "mita 300",
+      "450 m",
+      "mita 600"
+    ]
+  },
+  "Toroli ya kilo 1.5 inayoenda inagongana na kushikamana na toroli ya kilo 0.5 ambayo awali ilikuwa imesimama. Mara tu baada ya mgongano, kila toroli ina ______ sawa na nyingine.|||Kasi mstari|||Nguvu za kinetiki|||Uzito|||Velositi": {
+    "source": "test",
+    "index": 51,
+    "choices": [
+      "Velositi",
+      "Nguvu za kinetiki",
+      "Uzito",
+      "Kasi mstari"
+    ]
+  },
+  "Uzito wa Ardhi ni kilogramu 5.97 × 10 ^ 24. Mwezi, ambao katikati yake ni mita 3.84 × 10 ^ 8 kutoka katikati ya Ardhi, ina uzito wa kilogramu 7.35 × 10 ^ 22. Je, kati ya yafuatayo ni makadirio gani bora zaidi ya nguvu ya mvutano ya Ardhi kwenye Mwezi?|||10^19 N|||10^29 N|||10^39 N|||10^9 N": {
+    "source": "test",
+    "index": 52,
+    "choices": [
+      "10^39 N",
+      "10^29 N",
+      "10^19 N",
+      "10^9 N"
+    ]
+  },
+  "Wanafunzi wa Fizikia wanakagua milinganyo ya kuongeza kasi isiyobadilikaa ya kinematiki kwa kupima velositi ya mpira wa tenisi unaoangushwa na kuanguka mita 6 na kisha kupita kwenye kifaa cha fotogeti. Velositi iliyotabiriwa ni 20% juu ya velositi iliyopimwa na fotogeti. Ni ipi kati ya zifuatazo inaelezea vyema zaidi sababu ya tofauti kubwa ya asilimia?|||Mpira unabadilisha umbo lake unapoanguka.|||Mwongezo kasi wa mipira unatofautiana na velositi.|||Mwongezo kasi wa mvuto unatofautiana mpira unapoanguka.|||Upinzani wa hewa unaongeza mwongezo kasi wa mpira.": {
+    "source": "test",
+    "index": 53,
+    "choices": [
+      "Mpira unabadilisha umbo lake unapoanguka.",
+      "Mwongezo kasi wa mvuto unatofautiana mpira unapoanguka.",
+      "Upinzani wa hewa unaongeza mwongezo kasi wa mpira.",
+      "Mwongezo kasi wa mipira unatofautiana na velositi."
+    ]
+  },
+  "Chantal anasema kwamba mama yake ni jeuri na mbabe. Marafiki wote wa Chantal wanakubali kwamba yeye ndiye mwenye tabia hizi, si mama yake. Freud angependekeza kuwa tabia ya Chantal ni kielelezo kipi kati ya mbinu zifuatazo za kujilinda?|||Kulenga|||Kurudi nyuma|||Uhamisho|||Uzuiaji kwa nguvu": {
+    "source": "test",
+    "index": 54,
+    "choices": [
+      "Uzuiaji kwa nguvu",
+      "Kurudi nyuma",
+      "Kulenga",
+      "Uhamisho"
+    ]
+  },
+  "Kipi kati ya haya yafuatayo kinaeleza kwa ubora ugunduzi wa bahati mbaya wa Ivan Pavlov?|||Wakati akifanya majaribi na njiwa, Pavlov aligundua kwamba ikiwa angeweka njiwa katika kasha, angeweza kumfanya atambue kwamba angedonoa kitufe fulani, angeweza kupokea kipande cha chakula.|||Wakati akifanya majaribio katika mbwa, Pavlov aligundua kwamba mara tu mbwa wake walipozoea kumuona na kumsikia mhudumu ambaye alikuwa akiwaletea chakula wakati wa chakula, vinywa vyao vilijaa mate pale walipomwona na kusikia sauti ya mhudumu huyo.|||Wakati akifanya majaribio katika panya, Pavlov aligundua kwamba ikiwa ataweka vipande vya chakula kwa kurudia katika upande mmoja wa “mzingile-T,” panya wangekimbia moja kwa moja kwenye upande huo wa mzingile.|||Wakati akifanya majaribio kwa paka, Pavlov aligundua kwamba ikiwa akiweka paka mwenye njaa katika kasha na chakula nje ya kasha, paka “angejifunza” kubofya wenzo ili kufungua mlango wa kasha.": {
+    "source": "test",
+    "index": 55,
+    "choices": [
+      "Wakati akifanya majaribio katika panya, Pavlov aligundua kwamba ikiwa ataweka vipande vya chakula kwa kurudia katika upande mmoja wa “mzingile-T,” panya wangekimbia moja kwa moja kwenye upande huo wa mzingile.",
+      "Wakati akifanya majaribio katika mbwa, Pavlov aligundua kwamba mara tu mbwa wake walipozoea kumuona na kumsikia mhudumu ambaye alikuwa akiwaletea chakula wakati wa chakula, vinywa vyao vilijaa mate pale walipomwona na kusikia sauti ya mhudumu huyo.",
+      "Wakati akifanya majaribio kwa paka, Pavlov aligundua kwamba ikiwa akiweka paka mwenye njaa katika kasha na chakula nje ya kasha, paka “angejifunza” kubofya wenzo ili kufungua mlango wa kasha.",
+      "Wakati akifanya majaribi na njiwa, Pavlov aligundua kwamba ikiwa angeweka njiwa katika kasha, angeweza kumfanya atambue kwamba angedonoa kitufe fulani, angeweza kupokea kipande cha chakula."
+    ]
+  },
+  "Katika katuni, malaika ameegemea bega moja na shetani ameegemea bega lingine la mhusika ambaye anapaswa kuamua ikiwa ampatie fedha au la mwanaume asiyekuwa na makazi. Shetani anasema, “Usimpatie chochote, utatumia pesa vizuri zaidi yake.” Malaika anasema, “Mpatie hiyo fedha kwa sababu anahitaji kuliko wewe.” Mhusika anampatia mwanaume huyo asiye na makasi nusu ya fedha zake. Katika tafsiri ya Freudia, malaika anawakilisha sifa ya mhusika ya|||ashiki|||dhamiri|||silka|||ubinafsi": {
+    "source": "test",
+    "index": 56,
+    "choices": [
+      "ashiki",
+      "silka",
+      "ubinafsi",
+      "dhamiri"
+    ]
+  },
+  "Kutokana na Kanuni ya Athari, tabia ikifuatiwa na matokeo hasi|||haitorudiwa tena kufanywa|||hutokea mara chache sana|||hutokea mara nyingi zaidi|||itafanyika zaidi kwa kulazimishwa": {
+    "source": "test",
+    "index": 57,
+    "choices": [
+      "hutokea mara nyingi zaidi",
+      "hutokea mara chache sana",
+      "haitorudiwa tena kufanywa",
+      "itafanyika zaidi kwa kulazimishwa"
+    ]
+  },
+  "Takriban ni asilimia ngapi ya watu wanapata alama kati ya 70 na 130 kwenye WISC?|||34|||50|||68|||95": {
+    "source": "test",
+    "index": 58,
+    "choices": [
+      "34",
+      "50",
+      "68",
+      "95"
+    ]
+  },
+  "Kampuni kubwa ina ofisi katika maeneo maiwli, moja huko New Jersey na nyingine huko Utah. Wastani wa mshahara wa msaidizi wa ofisi katika ofisi ya New Jersey ni $28,500. Wastani wa mshahara wa msaidizi wa ofisi ya Utah ni $22,500. Ofisi ya New Jersey ina wasaidizi wa ofisi 128 na ile ofisi ya Utah ina wasaidizi wa ofisi 32. Je, upi ni wastani wa mshahara ambao unalipwa kwa wasaidizi wa ofisi katika kampuni?|||$22,500|||$23,700|||$25,500|||$27,300": {
+    "source": "test",
+    "index": 59,
+    "choices": [
+      "$22,500",
+      "$23,700",
+      "$25,500",
+      "$27,300"
+    ]
+  },
+  "Kibanda kidogo cha kuuzia bidhaa katika kiwanja cha ndege cha Atlanta huuza vitu vya ukumbusho kwa bei inayoanzia $3.99 hadi $29.99, huku wastani wa bei ikiwa $14.75. Uongozi wa kiwanja unaamua kuongeza kodi inayotozwa kwa kibanda kwa asilimia 5. Ili kufidia ongezeko la kodi, mmiliki wa kibanda anaamua kuongeza bei ya vitu vyote kwa senti 50. Kutokana na hilo, kipi kati ya haya yafuatayo kitatokea?|||Bei ya wastani itabaki ile ile, lakini utofauti wa bei utaongezeka kwa senti 50.|||Bei ya wastani itaongezeka kwa senti 50, lakini mkengeuko wa kawaida wa bei utabaki ukiwa sawa.|||Bei ya wastani na mkengeuko wa kawaida wa bei utaongezeka kwa senti 50.|||Bei ya wastani na utofauti wa bei utaongeza kwa senti 50.": {
+    "source": "test",
+    "index": 60,
+    "choices": [
+      "Bei ya wastani na utofauti wa bei utaongeza kwa senti 50.",
+      "Bei ya wastani itabaki ile ile, lakini utofauti wa bei utaongezeka kwa senti 50.",
+      "Bei ya wastani na mkengeuko wa kawaida wa bei utaongezeka kwa senti 50.",
+      "Bei ya wastani itaongezeka kwa senti 50, lakini mkengeuko wa kawaida wa bei utabaki ukiwa sawa."
+    ]
+  },
+  "Machungwa hamsini ya aina moja yalichaguliwa kwa nasibu na kupimwa uzito. Asilimia 95 ya utofauti wa uhakika uliochakatwa kutoka kwenye uzito wa sampuli ili kupima wastani wa uzito wa machungwa ya aina hii ni aunsi (7.58, 8.72). Je, ni maelezo gani kati ya haya yafuatayo ambayo ni ya kweli kwa kutegemea kiwango cha uhakika ambacho kimetumika?|||Asilimia tisini na tano ya machungwa katika sampuli hii yana uzito wa kati ya aunsi 7.58 na 8.72.|||Asilimia tisini na tano ya machungwa ya aina hii yana uzito wa kati ya aunsi 7.58 na 8.72.|||Katika upangaji unaojirudia wa sampuli za ukubwa unaofanana, asilimia 95 ya utofauti (interval) ulioundwa utajumuisha sampuli ya uzito wa wastani ya machungwa.|||Katika upangaji unaojirudia wa sampuli za ukubwa unaofanana, asilimia 95 ya utofauti (interval) ulioundwa utajumuisha wastani wa uzito wa kweli wa machungwa ya aina hii.": {
+    "source": "test",
+    "index": 61,
+    "choices": [
+      "Katika upangaji unaojirudia wa sampuli za ukubwa unaofanana, asilimia 95 ya utofauti (interval) ulioundwa utajumuisha wastani wa uzito wa kweli wa machungwa ya aina hii.",
+      "Katika upangaji unaojirudia wa sampuli za ukubwa unaofanana, asilimia 95 ya utofauti (interval) ulioundwa utajumuisha sampuli ya uzito wa wastani ya machungwa.",
+      "Asilimia tisini na tano ya machungwa katika sampuli hii yana uzito wa kati ya aunsi 7.58 na 8.72.",
+      "Asilimia tisini na tano ya machungwa ya aina hii yana uzito wa kati ya aunsi 7.58 na 8.72."
+    ]
+  },
+  "Kimiminio cha vinywaji baridi kinaweza kurekebishwa ili kiweze kutoa idadi yoyote ya aunsi iliyowekwa. Ikiwa mashine inafanya kazi kwa mkengeuko wa kawaida katika utoaji ambao ni sawa na aunsi 0.3, je, upi unapaswa kuwa mpangilio wa wastani ili kikombe cha aunsi 12 kiweze kujaa na kumwagika chini ya 1% ya muda? Chukulia kwamba usambazaji wa kawaida wa aunsi umetolewa.|||Aunsi 12 + 2.326(0.3)|||Aunsi 12 - 0.99(0.3)|||Aunsi 12 - 2.326(0.3)|||Aunsi 12 - 2.576(0.3)": {
+    "source": "test",
+    "index": 62,
+    "choices": [
+      "Aunsi 12 - 0.99(0.3)",
+      "Aunsi 12 - 2.326(0.3)",
+      "Aunsi 12 - 2.576(0.3)",
+      "Aunsi 12 + 2.326(0.3)"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\n\"Lincoln alikuwa anapinga sana utumwa, lakini hakuwa mkomeshaji au Republican Radical na hakuwahi kudai kuwa mmoja. Alitoa tofauti kubwa kati ya matakwa yake ya kibinafsi yaliyorudiwa mara kwa mara kwamba 'watu wote kila mahali wawe huru' na majukumu yake rasmi kama mwanasheria, mbunge na rais katika mfumo wa kisheria na kikatiba ambao ulitambua haki ya Kusini ya mali katika watumwa. Hata baada ya kutoa Tangazo la Ukombozi aliendelea kutangaza upendeleo wake wa kukomesha kwa utaratibu. Ingawa maoni yake ya rangi yalibadilika wakati wa Vita vya Wenyewe kwa Wenyewe, hakuwahi kuwa na usawa wa kanuni kwa njia ya kukomesha kama vile Frederick Douglass au Wendell Phillips au Republican Radical kama Charles Sumner.\"\n—Eric Foner, The Fiery Trial, 2010\nJe, ni kwa jinsi gani utoaji wa Rais Lincoln wa Tangazo la Ukombozi ulibadilisha mkondo wa Vita vya wenyewe kwa wenyewe?|||Malengo ya vita ya Marekani hayakulenga tena kuuhifadhi Muungano.|||Rais Jefferson Davis wa Shirikisho aliapa upinzani mkubwa kwa juhudi zozote za Muungano kuwakomboa watumwa.|||Vita ilikua katika wigo kwa sababu Tangazo lilifanya Uingereza ijiunge na vita upande wa Muungano.|||Vita vilifikia hitimisho la haraka kwa sababu Tangazo lilifanya Shirikisho la kutambua ubatili wa madhumuni yao.": {
+    "source": "test",
+    "index": 63,
+    "choices": [
+      "Vita vilifikia hitimisho la haraka kwa sababu Tangazo lilifanya Shirikisho la kutambua ubatili wa madhumuni yao.",
+      "Vita ilikua katika wigo kwa sababu Tangazo lilifanya Uingereza ijiunge na vita upande wa Muungano.",
+      "Rais Jefferson Davis wa Shirikisho aliapa upinzani mkubwa kwa juhudi zozote za Muungano kuwakomboa watumwa.",
+      "Malengo ya vita ya Marekani hayakulenga tena kuuhifadhi Muungano."
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\n\"Wamarekani wana uhuru zaidi na haki pana kuliko raia wa karibu mataifa mengine yote duniani, ikiwa ni pamoja na uwezo wa kuikosoa serikali yao na viongozi wao waliowachagua. Lakini hatuna haki ya kugeukia vurugu—au tishio la vurugu—tusipopata tutakachotaka. Waanzilishi wetu walijenga mfumo wa serikali ili akili iweze kushinda hofu. Mji wa Oklahoma ulithibitisha tena kwamba bila sheria hakuna uhuru. Ukosoaji ni sehemu ya uhai wa demokrasia. Hakuna aliye sawa wakati wote. Lakini tunapaswa kukumbuka kuwa kuna tofauti kubwa kati ya kukosoa sera au mwanasiasa na kuichafua serikali inayotuhakikishia uhuru wetu na watumishi wa umma wanaotekeleza sheria zetu.\"\nRais Bill Clinton, \"What We Learned in Oklahoma City,\" 2010\n(Imeandikwa katika kumbukumbu ya miaka 15 ya shambulio la bomu la Mji wa Oklahoma)\n\"Kama kusingekuwa na Waco, ningeweka mizizi mahali fulani na nisingekuwa na wasiwasi na ukweli kwamba serikali yangu ... ilikuwa tishio kwangu. Kila kitu ambacho Waco anamaanisha nilikea kipaumbele. Aina hiyo iliongoza mienendo yangu kwa miaka michache iliyofuata.\"\nTimothy McVeigh, Oklahoma City bomber, 2001\nMwakilishi wa Marekani John Conyers, Matukio Yanayozingira Mgogoro wa Itikadi ya Davidian huko Waco, Texas: Kusikiza Mbele ya Kamati ya Mahakama, Baraza la Wawakilishi, 1993\nKatika dondoo la tatu, Conyers Mwakilishi anarejelea \"Goti Lililojeruhiwa\" kama mfano wa|||itikadi yenye vurugu|||mahali pa kulipua bomu|||matumizi mabaya ya mamlaka ya shirikisho|||mzozo wa hivi majuzi kati ya mawakala wa shirikisho na Wahindi wa Lakota": {
+    "source": "test",
+    "index": 64,
+    "choices": [
+      "itikadi yenye vurugu",
+      "matumizi mabaya ya mamlaka ya shirikisho",
+      "mahali pa kulipua bomu",
+      "mzozo wa hivi majuzi kati ya mawakala wa shirikisho na Wahindi wa Lakota"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nWakati huu wote Wahindi walikuja skulking juu yao, na wakati mwingine kujionyesha wamejitenga, lakini wakati yeyote aliwakaribia, wangekimbia; na mara moja waliiba zana zao mahali ambapo walikuwa wakifanya kazi na kwenda kula chakula cha jioni. Lakini mnamo Machi 16, Mhindi fulani alikuja kwa ujasiri kati yao na kuzungumza nao kwa Kiingereza kibaya, ambacho waliweza kukielewa lakini wakastaajabia. Mwishowe walielewa kwa mazungumzo naye, kwamba yeye hakuwa wa maeneo haya, lakini alikuwa wa maeneo ya mashariki ambapo baadhi ya meli za Wangereza zilienda kuvua, kwa wao alifahamisha na angeweza kuwataja watu wengi kwa majina yao, ambaye miongoni mwao alipata lugha yake. Alifanyika wa faida kwao kwa kuwafahamisha mambo mengi kuhusu hali ya nchi katika maeneo ya mashariki alikoishi, ambayo baadaye yalikuwa ya faida kwao; kama vile watu wa hapa, majina yao, idadi na nguvu zao, hali zao na umbali kutoka mahali hapo, na ni nani aliyekuwa mkuu kati yao. Alikuwa anaitwa Samoset. Aliwajulisha pia kuhusu Mhindi mwingine ambaye jina lake lilikuwa Squanto, mzaliwa wa mahali hapa, aliyeishi Uingereza na angeweza kuzungumza Kiingereza bora kumliko.\n—William Bradford, History of Plymouth Plantation\nKama fungu lililo hapo juu linavyoweka wazi, Mapilgrimu hawakuwa Wanaulaya pekee kwa eneo ambalo baadaye lilikuja kuwa jimbo la Massachusetts miaka ya 1620. Eneo hilo lilikuwa tayari limeanza kuwa muhimu kwa sababu ya|||kilimo.|||kuchimba madini.|||ujenzi wa meli.|||uvuvi.": {
+    "source": "test",
+    "index": 65,
+    "choices": [
+      "uvuvi.",
+      "kilimo.",
+      "kuchimba madini.",
+      "ujenzi wa meli."
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nWakati huu wote Wahindi walikuja skulking juu yao, na wakati mwingine kujionyesha wamejitenga, lakini wakati yeyote aliwakaribia, wangekimbia; na mara moja waliiba zana zao mahali ambapo walikuwa wakifanya kazi na kwenda kula chakula cha jioni. Lakini mnamo Machi 16, Mhindi fulani alikuja kwa ujasiri kati yao na kuzungumza nao kwa Kiingereza kibaya, ambacho waliweza kukielewa lakini wakastaajabia. Mwishowe walielewa kwa mazungumzo naye, kwamba yeye hakuwa wa maeneo haya, lakini alikuwa wa maeneo ya mashariki ambapo baadhi ya meli za Wangereza zilienda kuvua, kwa wao alifahamisha na angeweza kuwataja watu wengi kwa majina yao, ambaye miongoni mwao alipata lugha yake. Alifanyika wa faida kwao kwa kuwafahamisha mambo mengi kuhusu hali ya nchi katika maeneo ya mashariki alikoishi, ambayo baadaye yalikuwa ya faida kwao; kama vile watu wa hapa, majina yao, idadi na nguvu zao, hali zao na umbali kutoka mahali hapo, na ni nani aliyekuwa mkuu kati yao. Alikuwa anaitwa Samoset. Aliwajulisha pia kuhusu Mhindi mwingine ambaye jina lake lilikuwa Squanto, mzaliwa wa mahali hapa, aliyeishi Uingereza na angeweza kuzungumza Kiingereza bora kumliko.\n—William Bradford, History of Plymouth Plantation\nMapilgrimu hao walisafiri kwenda Amerika na kufanya makazi kule Plymouth kwa sababu|||waliamuriwa kuanzisha kituo cha kuwachunguza Wafaransa nchini Kanada.|||walikuwa Wanautengano waliokuwa wakitafuta mahali pa kufanyia ibada yao kwa uhuru. |||walikuwa wakitumaini kutoroka madeni makubwa huko Uingereza.|||walitumaini kupata dhahabu au kuanzisha biashara nono ya manyoya.": {
+    "source": "test",
+    "index": 66,
+    "choices": [
+      "walikuwa wakitumaini kutoroka madeni makubwa huko Uingereza.",
+      "walitumaini kupata dhahabu au kuanzisha biashara nono ya manyoya.",
+      "walikuwa Wanautengano waliokuwa wakitafuta mahali pa kufanyia ibada yao kwa uhuru. ",
+      "waliamuriwa kuanzisha kituo cha kuwachunguza Wafaransa nchini Kanada."
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\n\"Wamarekani wana uhuru zaidi na haki pana kuliko raia wa karibu mataifa mengine yote duniani, ikiwa ni pamoja na uwezo wa kuikosoa serikali yao na viongozi wao waliowachagua. Lakini hatuna haki ya kugeukia vurugu—au tishio la vurugu—tusipopata tutakachotaka. Waanzilishi wetu walijenga mfumo wa serikali ili akili iweze kushinda hofu. Mji wa Oklahoma ulithibitisha tena kwamba bila sheria hakuna uhuru. Ukosoaji ni sehemu ya uhai wa demokrasia. Hakuna aliye sawa wakati wote. Lakini tunapaswa kukumbuka kuwa kuna tofauti kubwa kati ya kukosoa sera au mwanasiasa na kuichafua serikali inayotuhakikishia uhuru wetu na watumishi wa umma wanaotekeleza sheria zetu.\"\nRais Bill Clinton, \"What We Learned in Oklahoma City,\" 2010\n(Imeandikwa katika kumbukumbu ya miaka 15 ya shambulio la bomu la Mji wa Oklahoma)\n\"Kama kusingekuwa na Waco, ningeweka mizizi mahali fulani na nisingekuwa na wasiwasi na ukweli kwamba serikali yangu ... ilikuwa tishio kwangu. Kila kitu ambacho Waco anamaanisha nilikea kipaumbele. Aina hiyo iliongoza mienendo yangu kwa miaka michache iliyofuata.\"\nTimothy McVeigh, Oklahoma City bomber, 2001\nMwakilishi wa Marekani John Conyers, Matukio Yanayozingira Mgogoro wa Itikadi ya Davidian huko Waco, Texas: Kusikiza Mbele ya Kamati ya Mahakama, Baraza la Wawakilishi, 1993\nDondoo zilizo hapo juu zinaunga mkono zaidi dokezo gani kati ya madokezo yafuatayo?|||Akihofia kuibuka kwa maoni ya kupinga serikali baada ya shambulio la bomu kwenye Jiji la Oklahoma, Mkuu wa Sheria Janet Reno alipeleka majeshi kuzima Mapambano ya Farakano la Branch Davidian, kisha baadaye akakosolewa na bunge la Congress.|||Katika miaka ya 1990, maoni ya kupinga serikali, kwa kujibu matumizi ya kupita kiasi ya mamlaka ya serikali kuu kutatua migogoro ya ndani, yalichochea makundi ya mgambo na sungusungu, kama vile Timothy McVeigh.|||Mkuu wa Sheria Janet Reno alijiuzulu kazi sababu moja ikiwa ni shinikizo kutoka Congress ambalo Mwakilishi John Conyers aliweka juu ya Rais Clinton.|||Mwaka 1993 Mkuu wa Sheria Janet Reno alizindua mapambano dhidi ya farakano la Branch Davidian lililoongozwa na Timothy McVeigh, baadaye akikosolewa na Congress kwa hatua yake ya kutumia mabavu.": {
+    "source": "test",
+    "index": 67,
+    "choices": [
+      "Katika miaka ya 1990, maoni ya kupinga serikali, kwa kujibu matumizi ya kupita kiasi ya mamlaka ya serikali kuu kutatua migogoro ya ndani, yalichochea makundi ya mgambo na sungusungu, kama vile Timothy McVeigh.",
+      "Mwaka 1993 Mkuu wa Sheria Janet Reno alizindua mapambano dhidi ya farakano la Branch Davidian lililoongozwa na Timothy McVeigh, baadaye akikosolewa na Congress kwa hatua yake ya kutumia mabavu.",
+      "Akihofia kuibuka kwa maoni ya kupinga serikali baada ya shambulio la bomu kwenye Jiji la Oklahoma, Mkuu wa Sheria Janet Reno alipeleka majeshi kuzima Mapambano ya Farakano la Branch Davidian, kisha baadaye akakosolewa na bunge la Congress.",
+      "Mkuu wa Sheria Janet Reno alijiuzulu kazi sababu moja ikiwa ni shinikizo kutoka Congress ambalo Mwakilishi John Conyers aliweka juu ya Rais Clinton."
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nAibu, aibu, ewe maskini, Mfalme wa Majira ya Baridi!\nUmefanya nini?\nJe, si ni utukutu sana\nKunyakua taji la kaisari?\nSasa itakubidi ukae mbali\nSawasawa kutoka Rhine na Prague,\nNa zaidi ya hayo-aibu na fazaa\nMchana na usiku utakuwa na mapigo.\nUlijua vema, na walimwengu wote,\nWanajua vizuri jambo hili,\nKwamba ni Ferdinand pekee\nAnayeweza kuwa mfalme halali wa Bohemia.\nBasi njoo, mpendwa Fritz, inuka na uende\nKwa Ferdinand, mfalme wako,\nNa umwombe akusamehe kwa neema\nDhambi zako zote.\n\"Poor Winter King,\" wimbo wa karne ya kumi na saba\nKati ya mambo yafuatayo, ni gani ambalo ni msingi mkuu wa wimbo huu?|||Kanuni za mfuatano wa kifalme|||Mgogoro wa kidini|||Mgogoro wa matabaka ya kijamii|||Mvutano wa kijeshi": {
+    "source": "test",
+    "index": 68,
+    "choices": [
+      "Kanuni za mfuatano wa kifalme",
+      "Mgogoro wa kidini",
+      "Mvutano wa kijeshi",
+      "Mgogoro wa matabaka ya kijamii"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nSijui kama ulimwengu huu una maana inayoipita. Lakini najua kwamba sijui maana hiyo, na kwamba haiwezekani kwangu mimi kuijua sasa. Maana iliyo nje ya hali yangu ina maana gani kwangu? Naweza kuelewa tu kwa misingi ya binadamu.\nAlbert Camus, \"The Myth of Sisyphus,\" 1955\nMwandishi wa fungu hapo juu alihusishwa zaidi na vuguvugu gani kati ya zifuatazo?|||Existentialism|||Mchanganyiko mamboleo wa dini|||Teolojia ya ukombozi|||Ulokole wa kidini": {
+    "source": "test",
+    "index": 69,
+    "choices": [
+      "Existentialism",
+      "Ulokole wa kidini",
+      "Mchanganyiko mamboleo wa dini",
+      "Teolojia ya ukombozi"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nIngawa katika Ulaya ya Kiprotestanti, [Peter Mkuu] alizungukwa na uthibitisho wa haki mpya za raia na siasa za watu mmojammoja zilizotiwa katika katiba mbalimbali, sheria za haki za binadamu na mabunge, hakurudi Urusi akiwa ameazimia kushiriki mamlaka na watu wake. Kinyume chake, alirudi akiwa ameazimia kubadilisha nchi yake na pia aliamini kwamba ikiwa Urusi ingepata mageuzi, ni yeye ambaye anapaswa kutoa mwelekezo na pia nguvu za nia. Alijaribu kuongoza; lakini pale ambapo elimu na ushawishi havikutosha, alisukuma–na iwapo ni lazima kupiga–taifa hilo la lisilo na maendeleo kwenda mbele.\n—Robert K. Massie, Peter the Great: His Life and World\nPeter Mkuu alipotawala Urusi, aliendeleza zoea gani kati ya mazoea yafuatayo?|||Kugatua mamlaka|||Kujitenga|||Mageuzo|||Utwana/ujakazi": {
+    "source": "test",
+    "index": 70,
+    "choices": [
+      "Kugatua mamlaka",
+      "Kujitenga",
+      "Utwana/ujakazi",
+      "Mageuzo"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nShairi linalofuata linarejelea tukio huko Sharpeville, Afrika Kusini, mwaka 1960. Ili kupinga takwa la kwamba wabebe hati zinazoonyesha utambulisho wao na makazi, Waafrika weusi wa Afrika Kusini walikusanyika mbele ya vituo vya pollisi bila hati zao. Ingawa maandamano mengine yaliisha kwa amani, hata hivyo polisi walipiga risasi ndani ya umati kule Sharpeville.\nKilicho muhimu\nkuhusu Sharpeville\nsi kwamba sabini walikufa:\nwala kwamba walipigwa risasi mgongoni\nwakirudi nyuma, bila silaha, bila ulinzi\nna hakika si\nrisasi nzito\niliyopasua na kupenya mgongo wa mama\nna kumrarua mtoto aliye mikononi mwake\nna kumuua\nKumbuka Sharpeville\nsiku ya risasi mgongoni\nKwa sababu ilikuwa kilele cha udhalimu\nna asili ya jamii\nKwa wazi zaidi kuliko kitu kingine chochote;\nlilikuwa tukio la kawaida\nHakuna popote ambapo ukuu wa utawala\numebainishwa waziwazi\nhakuna palipo na nia ya kukandamiza\nkulikoonyeshwa waziwazi zaidi\nKile ambacho ulimwengu unanong’ona\nubaguzi wa rangi hutangaza kwa mtutu wa bunduki\ndamu ambayo inawadondosha mate matajiri\nAfrika Kusini inamwaga vumbi\nKumbuka Sharpeville\nKumbuka siku ya risasi mgongoni\nNa kumbuka kiu isiyoweza kukatwa ya kupata uhuru\nWakumbuke wafu\nna ufurahi\n—Dennis Brutus, 1973\nNi tukio gani lililoonyesha mwisho wa ubaguzi uliorasimishwa wa Afrika Kusini?|||Kuchaguliwa kwa F. W. de Klerk|||Kuchaguliwa kwa Nelson Mandela|||Kupigwa bomu kwa Lisutu|||Vita vya Makaburu": {
+    "source": "test",
+    "index": 71,
+    "choices": [
+      "Kuchaguliwa kwa F. W. de Klerk",
+      "Kuchaguliwa kwa Nelson Mandela",
+      "Kupigwa bomu kwa Lisutu",
+      "Vita vya Makaburu"
+    ]
+  },
+  "Swali hili linarejelea habari zifuatazo.\nIwe swali ni kuendeleza au kukomesha zoea la sati, uamuzi huo vilevile umezungukwa na wajibu mzito. Kuridhia hatma ya ukatili na wakati usiofaa mwaka baada ya mwaka ya wahanga wasio na hatia, wakati kuna uwezo wa kuizuia, ni hali ngumu ambayo hakuna mtu anayeweza kuifikiria bila kutishika. Lakini, kwa upande mwingine, kuhatarisha kwa kuchukua hatua tofauti usalama wenyewe wa Milki ya Uingereza nchini India ni mbadala ambao bado unaweza kuonwa kuwa uovu mkubwa hata zaidi. Tulipokuwa na majirani wenye nguvu na sababu kubwa hata zaidi ya kutilia shaka usalama wetu wenyewe, manufaa yetu huenda yakependekeza kuchukua hatua ya tahadhari zaidi, lakini kwa kuwa sasa tuna nguvu kuu maoni yangu yanapendelea kabisa upigaji marufuku wa wazi na wa jumla.\nWilliam Bentinck, Gavana Mkuu wa India, \"On the Suppression of Sati,\" 1829\nNimeweka mradi wa kuchunguza hali na tabia ya Wahindi [wanaofanya biashara nasi], na ingawa inakera sana hisia zetu, ninaamini kwamba ni lazima watawalie kwa fimbo ya chuma, ili kuwaleta na kuwatia katika udhibiti kamili, na njia hakika zaidi ya kutekeleza hilo ni kwa kuwaruhusu wajihisi kutegemea [vyakula na bidhaa za kutengenezwa tunazowauzia].\nGeorge Simpson, Head of Northern Department, Hudson's Bay Company, 1826\nMafungu hapo juu yanaeleweka vizuri zaidi katika muktadha wa mazoea gani kati ya yafuatayo?|||Juhudi za wamishonari wa Magharibi katika maeneo yaliyokuwa chini ya ukoloni|||Kuandaa rasilimali za kijeshi kutoka kwenye mali za kikoloni|||Kuhalalishwa kwa utumwa katika makoloni ya ng’ambo|||Kutekelezwa kwa mamlaka ya utawala juu ya wenyeji wa asili": {
+    "source": "test",
+    "index": 72,
+    "choices": [
+      "Kuhalalishwa kwa utumwa katika makoloni ya ng’ambo",
+      "Kutekelezwa kwa mamlaka ya utawala juu ya wenyeji wa asili",
+      "Juhudi za wamishonari wa Magharibi katika maeneo yaliyokuwa chini ya ukoloni",
+      "Kuandaa rasilimali za kijeshi kutoka kwenye mali za kikoloni"
+    ]
+  },
+  "Clifford na Lucia Pauling, katika Maoni Makuu, walituambia kwamba mabadiliko ya kimwili|||Hayapaswi kujadiliwa hadharani|||Ni ya haraka na ya kutisha|||Yana chukua muda mrefu|||Yanaweza kukabiliana na kutafakari": {
+    "source": "test",
+    "index": 73,
+    "choices": [
+      "Ni ya haraka na ya kutisha",
+      "Yanaweza kukabiliana na kutafakari",
+      "Yana chukua muda mrefu",
+      "Hayapaswi kujadiliwa hadharani"
+    ]
+  },
+  "Kwa sababu ya kuridhika kwa ndoa, ndoa nyingi za kudumu|||Uonyesha furaha na changamoto wakati wa muda wote wa ndoa |||Uonyesha kuridhika kwa hali ya juu ambayo hupungua polepole kadri miaka inavyopita|||Uonyesha kuridhika kwa hali ya juu kwa miaka yote ya ndoa|||Uonyesha viwango vya chini katika miaka ambayo watoto wapo": {
+    "source": "test",
+    "index": 74,
+    "choices": [
+      "Uonyesha kuridhika kwa hali ya juu kwa miaka yote ya ndoa",
+      "Uonyesha kuridhika kwa hali ya juu ambayo hupungua polepole kadri miaka inavyopita",
+      "Uonyesha viwango vya chini katika miaka ambayo watoto wapo",
+      "Uonyesha furaha na changamoto wakati wa muda wote wa ndoa "
+    ]
+  },
+  "Ni nchi gani kati ya zifuatazo ina umri mrefu zaidi wa kuishi?|||Japani|||Marekani|||Saudi Arabia|||Uswidi": {
+    "source": "test",
+    "index": 75,
+    "choices": [
+      "Marekani",
+      "Uswidi",
+      "Japani",
+      "Saudi Arabia"
+    ]
+  },
+  "Ni nchi gani watu wengi huchagua kuchomwa moto?|||Japani|||Kenya|||Marekani|||Mexico": {
+    "source": "test",
+    "index": 76,
+    "choices": [
+      "Japani",
+      "Marekani",
+      "Kenya",
+      "Mexico"
+    ]
+  },
+  "Sheria inayohitaji taasisi zote za afya zinazopokea fedha za Medicaid kuwafahamisha wagonjwa kuhusu maagizo ya mapema inajulikana kama|||Maagizo ya Mapema|||Sheria ya Idhini ya Ufahamu|||Sheria ya Mgonjwa Kujiamulia |||Sheria ya Taarifa ya Maagizo ya Medicaid": {
+    "source": "test",
+    "index": 77,
+    "choices": [
+      "Sheria ya Mgonjwa Kujiamulia ",
+      "Sheria ya Idhini ya Ufahamu",
+      "Maagizo ya Mapema",
+      "Sheria ya Taarifa ya Maagizo ya Medicaid"
+    ]
+  },
+  "Babu na nyanya walio na wajukuu chuoni wanaripoti kuhisi kupendwa hasa wakati hawa wajukuu |||Wanapowaalika babu na nyanya mahali pao na kuwapikia chakula kizuri|||Wanapowatembea ghafla na kuomba ushauri|||Wanapowatembelea wakati wa likizo na kuleta zawadi|||Wanauliza kuhusu kuridhika kwao na maisha na kujitolea kusaidia": {
+    "source": "test",
+    "index": 78,
+    "choices": [
+      "Wanauliza kuhusu kuridhika kwao na maisha na kujitolea kusaidia",
+      "Wanapowatembelea wakati wa likizo na kuleta zawadi",
+      "Wanapowatembea ghafla na kuomba ushauri",
+      "Wanapowaalika babu na nyanya mahali pao na kuwapikia chakula kizuri"
+    ]
+  },
+  "Takriban asilimia ngapi ya watu ambao wamekuwa na kazi za kudhibitisha uwezo wao wanasema ilikuwa bora kuliko kazi yao ya maisha?|||Chini ya 25%|||Chini ya 50%|||Zaidi ya 50%|||Zaidi ya 75%": {
+    "source": "test",
+    "index": 79,
+    "choices": [
+      "Chini ya 25%",
+      "Chini ya 50%",
+      "Zaidi ya 50%",
+      "Zaidi ya 75%"
+    ]
+  },
+  "Wazee walio na elimu ya juu na kujistahi wana uwezo  mkubwa wa kuwa|||Wameoana kwa muda mrefu|||Wametengwa kijamii|||Wana upweke jinsi wanavyozee|||Wanafanya ngono": {
+    "source": "test",
+    "index": 80,
+    "choices": [
+      "Wanafanya ngono",
+      "Wametengwa kijamii",
+      "Wana upweke jinsi wanavyozee",
+      "Wameoana kwa muda mrefu"
+    ]
+  },
+  "Dini ya Kiyahudi inachukulia ngono kama|||Jambo lenye uovu|||Wazo la baadaye la mungu na imefanyika kuwa jambo la kipotovu|||kimsingi kazi ya kibayolojia|||zawadi kutoka kwa mungu": {
+    "source": "test",
+    "index": 81,
+    "choices": [
+      "Jambo lenye uovu",
+      "Wazo la baadaye la mungu na imefanyika kuwa jambo la kipotovu",
+      "zawadi kutoka kwa mungu",
+      "kimsingi kazi ya kibayolojia"
+    ]
+  },
+  "Maagizo ya watawa wakiume na watawa wa kike wanaopatikana katika dini za Mashariki na katika Ukristo wanaothibitisha useja, ubikira na umaskini hufuata mfumo wa kimaadili wa:|||kufuata hali|||kujinyima|||kutafuta raha|||sheria": {
+    "source": "test",
+    "index": 82,
+    "choices": [
+      "sheria",
+      "kujinyima",
+      "kufuata hali",
+      "kutafuta raha"
+    ]
+  },
+  "Ikiwa mwanamke au mwanamume atapata maumivu mara kwa mara wakati wa ngono, labda atataka kushiriki katika ngono mara chache au asishiriki kamwe. Katika hali hii, ________ angeweza kuainisha maumivu kama adhabu.|||B. F. Skinner|||Havelock Ellis|||John Money|||Sigmund Freud": {
+    "source": "test",
+    "index": 83,
+    "choices": [
+      "Sigmund Freud",
+      "John Money",
+      "B. F. Skinner",
+      "Havelock Ellis"
+    ]
+  },
+  "Je, wasichana mara nyingi hujifunzaje kuhusu punyeto?|||kuambiwa na wenzao|||kuangalia wengine wakifanya.|||kujua wao wenyewe|||kupitia kusoma kuihusu": {
+    "source": "test",
+    "index": 84,
+    "choices": [
+      "kupitia kusoma kuihusu",
+      "kuambiwa na wenzao",
+      "kujua wao wenyewe",
+      "kuangalia wengine wakifanya."
+    ]
+  },
+  "Kuanzia 1988 hadi 1990 miongoni mwa wapenzi wa jinsia tofauti nchini Marekani, idadi ya watu wazima wasioolewa wenye umri wa miaka 20 hadi 45 ambao wanaripoti kuwa na wapenzi wengi:|||imepungua kwa wanaume na kubaki sawa kwa wanawake|||imepungua kwa wanaume na sio kwa wanawake|||imepungua kwa wanaume na wanawake|||imepungua kwa wanawake na sio kwa wanaume": {
+    "source": "test",
+    "index": 85,
+    "choices": [
+      "imepungua kwa wanaume na wanawake",
+      "imepungua kwa wanaume na sio kwa wanawake",
+      "imepungua kwa wanawake na sio kwa wanaume",
+      "imepungua kwa wanaume na kubaki sawa kwa wanawake"
+    ]
+  },
+  "Je, watu binafsi (wa kimwili) wanafurahia utu wa kisheria wa kimataifa kwa namna sawa na Mataifa na mashirika ya kimataifa?|||Watu binafsi hawafurahii utu wowote wa kisheria wa kimataifa|||Watu binafsi wanafurahia utu wa kisheria wa kimataifa usio na kikomo|||Watu binafsi wanafurahia utu wa kisheria wa kimataifa, lakini hii haitoshi|||Watu binafsi wanaweza tu kuleta madai mbele ya mahakama za kimataifa": {
+    "source": "test",
+    "index": 86,
+    "choices": [
+      "Watu binafsi wanafurahia utu wa kisheria wa kimataifa, lakini hii haitoshi",
+      "Watu binafsi wanafurahia utu wa kisheria wa kimataifa usio na kikomo",
+      "Watu binafsi hawafurahii utu wowote wa kisheria wa kimataifa",
+      "Watu binafsi wanaweza tu kuleta madai mbele ya mahakama za kimataifa"
+    ]
+  },
+  "Ni maelezo gani kati ya haya yafuatayo si sahihi?|||Katika miaka ya 1990, ilionekana wazi kwamba Mahakama ya Ulaya ya Haki za Kibinadamu ilibidi ibadilishwe kwa sababu haikuwa ikichunguza kesi za kutosha.|||Katika miaka ya 1990, ilionekana wazi kwamba Mahakama ya Ulaya ya Haki za Kibinadamu ilibidi ibadilishwe kwa sababu ilikuwa mahakama ya muda ambayo isingeweza kushughulikia malalamiko yanayoongezeka.|||Katika miaka ya 1990, ilionekana wazi kwamba Mahakama ya Ulaya ya Haki za Kibinadamu ilibidi ibadilishwe kwa sababu kazi ilikuwa imeongezeka.|||Katika miaka ya 1990, ilionekana wazi kwamba Mahakama ya Ulaya ya Haki za Kibinadamu ilibidi ibadilishwe kwa sababu ya ongezeko la idadi ya watu ambao wangeweza kufikia Mahakama hiyo baada ya kuongezeka kwa idadi ya nchi wanachama.": {
+    "source": "test",
+    "index": 87,
+    "choices": [
+      "Katika miaka ya 1990, ilionekana wazi kwamba Mahakama ya Ulaya ya Haki za Kibinadamu ilibidi ibadilishwe kwa sababu haikuwa ikichunguza kesi za kutosha.",
+      "Katika miaka ya 1990, ilionekana wazi kwamba Mahakama ya Ulaya ya Haki za Kibinadamu ilibidi ibadilishwe kwa sababu kazi ilikuwa imeongezeka.",
+      "Katika miaka ya 1990, ilionekana wazi kwamba Mahakama ya Ulaya ya Haki za Kibinadamu ilibidi ibadilishwe kwa sababu ilikuwa mahakama ya muda ambayo isingeweza kushughulikia malalamiko yanayoongezeka.",
+      "Katika miaka ya 1990, ilionekana wazi kwamba Mahakama ya Ulaya ya Haki za Kibinadamu ilibidi ibadilishwe kwa sababu ya ongezeko la idadi ya watu ambao wangeweza kufikia Mahakama hiyo baada ya kuongezeka kwa idadi ya nchi wanachama."
+    ]
+  },
+  "Ni kesi gani iliyokuwa ya kwanza kufafanua maana ya fundisho la 'kiwango cha kuthaminiwa' kama lilivyotumiwa na Mahakama ya Ulaya ya Haki za Kibinadamu?|||Airey dhidi ya Ireland (1979)|||Goodwin v Uingereza (2002)|||Handyside v Uingereza (1976)|||Osman v Uingereza (1998)": {
+    "source": "test",
+    "index": 88,
+    "choices": [
+      "Goodwin v Uingereza (2002)",
+      "Airey dhidi ya Ireland (1979)",
+      "Osman v Uingereza (1998)",
+      "Handyside v Uingereza (1976)"
+    ]
+  },
+  "Je, wajumbe wa mahakama ya usuluhishi wanateuliwa vipi?|||Wajumbe wote wa mahakama ya usuluhishi wanateuliwa na mtu wa tatu asiye na upendeleo, kama vile rais wa ICJ.|||Wajumbe wote wa mahakama ya usuluhishi wanateuliwa na vyama|||Wajumbe wote wa mahakama ya usuluhishi wanateuliwa na vyama|||Wajumbe wote wa mahakama ya usuluhishi wanateuliwa na wahusika kutoka kwa orodha iliyozuiliwa ya wasuluhishi.": {
+    "source": "test",
+    "index": 89,
+    "choices": [
+      "Wajumbe wote wa mahakama ya usuluhishi wanateuliwa na vyama",
+      "Wajumbe wote wa mahakama ya usuluhishi wanateuliwa na vyama",
+      "Wajumbe wote wa mahakama ya usuluhishi wanateuliwa na mtu wa tatu asiye na upendeleo, kama vile rais wa ICJ.",
+      "Wajumbe wote wa mahakama ya usuluhishi wanateuliwa na wahusika kutoka kwa orodha iliyozuiliwa ya wasuluhishi."
+    ]
+  },
+  "Mafundisho ya athari ni nini?|||Inasisitiza kwamba mamlaka yapo tu wakati yanafaa|||Mafundisho ya athari hutumika kutoa mamlaka kwa Serikali ambayo ina kiungo cha ufanisi na tabia mbaya|||Mafundisho ya athari hutumika kutoa mamlaka kwa Serikali ambayo tabia hiyo inaleta athari katika eneo lake.|||Mafundisho ya athari hutumika kutoa mamlaka kwa Serikali kushiriki utaifa wa mkosaji": {
+    "source": "test",
+    "index": 90,
+    "choices": [
+      "Inasisitiza kwamba mamlaka yapo tu wakati yanafaa",
+      "Mafundisho ya athari hutumika kutoa mamlaka kwa Serikali ambayo ina kiungo cha ufanisi na tabia mbaya",
+      "Mafundisho ya athari hutumika kutoa mamlaka kwa Serikali kushiriki utaifa wa mkosaji",
+      "Mafundisho ya athari hutumika kutoa mamlaka kwa Serikali ambayo tabia hiyo inaleta athari katika eneo lake."
+    ]
+  },
+  "Je, Weber anatatuaje 'tatizo la Uingereza'?|||Kwa kueleza tofauti kati ya sheria ya kawaida na sheria ya kiraia.|||Kwa kukataa kuwepo kwake.|||Kwa kutambua umuhimu wa kutawaliwa kihalali|||Kwa kutofautisha baadhi ya vipengele vya mfumo wa sheria wa Kiingereza ambao uliwezesha maendeleo ya ubepari.": {
+    "source": "test",
+    "index": 91,
+    "choices": [
+      "Kwa kukataa kuwepo kwake.",
+      "Kwa kueleza tofauti kati ya sheria ya kawaida na sheria ya kiraia.",
+      "Kwa kutofautisha baadhi ya vipengele vya mfumo wa sheria wa Kiingereza ambao uliwezesha maendeleo ya ubepari.",
+      "Kwa kutambua umuhimu wa kutawaliwa kihalali"
+    ]
+  },
+  "Je, ni nani alikuwa mtetezi wa \"sheria asilia yenye maudhui yanayotofautiana\"?|||Jerome Hall|||John Finns|||John Rawls|||Stammler": {
+    "source": "test",
+    "index": 92,
+    "choices": [
+      "John Rawls",
+      "Stammler",
+      "Jerome Hall",
+      "John Finns"
+    ]
+  },
+  "Ahadi kuu za msingi zaidi za chanya,' anaandika Ken Himma, 'ni Tasnifu ya Ukweli wa Kijamii.' Je, inadai nini?|||Jamii hiyo iko katika hali ya kubadilika kila wakati.|||Kuwa uchanya wa kisheria ni nadharia ya kijamii.|||Kwamba mifumo ya kisheria haihusiani na nguvu za kijamii.|||Sheria hiyo kimsingi ni kazi ya sanaa au ujenzi wa kijamii.": {
+    "source": "test",
+    "index": 93,
+    "choices": [
+      "Sheria hiyo kimsingi ni kazi ya sanaa au ujenzi wa kijamii.",
+      "Kwamba mifumo ya kisheria haihusiani na nguvu za kijamii.",
+      "Jamii hiyo iko katika hali ya kubadilika kila wakati.",
+      "Kuwa uchanya wa kisheria ni nadharia ya kijamii."
+    ]
+  },
+  "Ni kwa misingi gani John Finnis anakataa dhana ya Hume ya sababu ya vitendo?|||Hume huyo ni mwanaharakati wa kisheria.|||Mantiki hiyo ya sillogi ni ya uwongo.|||Sababu hiyo ya kibinadamu inaweza kutusaidia kujua maisha yenye faida.|||Sheria hiyo ya asili inalingana na sheria chanya.": {
+    "source": "test",
+    "index": 94,
+    "choices": [
+      "Sheria hiyo ya asili inalingana na sheria chanya.",
+      "Hume huyo ni mwanaharakati wa kisheria.",
+      "Mantiki hiyo ya sillogi ni ya uwongo.",
+      "Sababu hiyo ya kibinadamu inaweza kutusaidia kujua maisha yenye faida."
+    ]
+  },
+  "Je, umuhimu wa Kant ni upi?|||Haupaswi kumdhuru mtu mwingine ukifahamu.|||Lazima kila wakati utende kwa maslahi bora ya jamii.|||Lazima utende kulingana kana kwamba maadili yako yanatumika kwa kila mtu.|||Ni lazima uwatumikie wanadamu kama mwelekeo badala ya kuwa na malengo.": {
+    "source": "test",
+    "index": 95,
+    "choices": [
+      "Haupaswi kumdhuru mtu mwingine ukifahamu.",
+      "Lazima kila wakati utende kwa maslahi bora ya jamii.",
+      "Ni lazima uwatumikie wanadamu kama mwelekeo badala ya kuwa na malengo.",
+      "Lazima utende kulingana kana kwamba maadili yako yanatumika kwa kila mtu."
+    ]
+  },
+  "Wakati mtu fulani anajibu hoja yako kwa kauli ya kejeli kama vile, \"Ndio, sawa. Kana kwamba hilo litawahi kutendeka,\" mtu huyo anaweza kuwa ametenda dhana ani?|||kicheko cha farasi|||kivutio kwa ghadhabu|||kuvutia kwa chuki|||tu quoque": {
+    "source": "test",
+    "index": 96,
+    "choices": [
+      "kivutio kwa ghadhabu",
+      "kuvutia kwa chuki",
+      "kicheko cha farasi",
+      "tu quoque"
+    ]
+  },
+  "Ikiwa ulihoji kwamba kitu fulani ni kasoro kwa sababu kimefeli kutenda jambo fulani, wakati kamwe hakikusudiwa kufanya hivyo, unaweza kuwa umetenda gani kati ya dhana zifuatazo?|||Maswali mengi|||Pendekezo lenye maana nyingi|||Upanuzi|||ad ignorantium": {
+    "source": "test",
+    "index": 97,
+    "choices": [
+      "ad ignorantium",
+      "Maswali mengi",
+      "Upanuzi",
+      "Pendekezo lenye maana nyingi"
+    ]
+  },
+  "Ni ipi kati ya dhana zifuatazo hufanyika ikiwa mtu atahoji kwamba wewe ni mwney akili na mtu mwerevu, kwa hivyo bila shaka unaelewa dai lake ni la kweli?|||hoja kutoka kwa mamlaka|||kivutio kwa majivuno|||mteremko telezi|||umuhimu": {
+    "source": "test",
+    "index": 98,
+    "choices": [
+      "umuhimu",
+      "hoja kutoka kwa mamlaka",
+      "kivutio kwa majivuno",
+      "mteremko telezi"
+    ]
+  },
+  "Tuna haki kikamilifu kuamini kwamba kuna Mungu. Baada ya yote, kila juhudi za wasioamini kuna Mungu za kuthibitisha vinginevyo zimefeli.|||Kubishana kutokana na Ujinga|||Kukanusha iliyotangulia|||Kumvamia Mtu yule (ad hominem)|||Kuvutia kwa Mamlaka": {
+    "source": "test",
+    "index": 99,
+    "choices": [
+      "Kuvutia kwa Mamlaka",
+      "Kukanusha iliyotangulia",
+      "Kumvamia Mtu yule (ad hominem)",
+      "Kubishana kutokana na Ujinga"
+    ]
+  },
+  "Ikiwa mtu atasema ukifanya jambo fulani litasababisha matokeo mabaya sana, lakini hakupatii ushahidi wowote wa kisababisho na athari husiani kati ya kitendo chako na yale matokeo mabaya, mtu huyo pengine ametenda ipi kati ya dhana zifuatazo?|||ad nauseam|||kweli zinazojishuhudia|||mteremko telezi|||ushahidi uliofunikiwa": {
+    "source": "test",
+    "index": 100,
+    "choices": [
+      "ad nauseam",
+      "kweli zinazojishuhudia",
+      "mteremko telezi",
+      "ushahidi uliofunikiwa"
+    ]
+  },
+  "Ni ipi kati ya zifuatazo ni kipengele cha Nadharia X ya McGregor?|||Wafanyakazi wanafurahia wajibu.|||Wafanyakazi wanaona jitihada za kimwili na kiakili kama sehemu ya kiasili ya kazi.|||Wafanyakazi wanapenda kuelekezwa.|||Wafanyikazi wanapenda kuonyesha juhudi.": {
+    "source": "test",
+    "index": 101,
+    "choices": [
+      "Wafanyakazi wanafurahia wajibu.",
+      "Wafanyakazi wanaona jitihada za kimwili na kiakili kama sehemu ya kiasili ya kazi.",
+      "Wafanyikazi wanapenda kuonyesha juhudi.",
+      "Wafanyakazi wanapenda kuelekezwa."
+    ]
+  },
+  "Je! ni istilahi gani ya nguvu inayotokana na hadhi au nafasi katika shirika?|||Halali|||Mtaalamu|||Rejea|||Zawadi": {
+    "source": "test",
+    "index": 102,
+    "choices": [
+      "Rejea",
+      "Mtaalamu",
+      "Zawadi",
+      "Halali"
+    ]
+  },
+  "Ni nani kati ya wafuatao ni mfadhili wa viwanda?|||Frederick Taylor|||Henry Ford|||Max Weber|||Seebohm Rowntree": {
+    "source": "test",
+    "index": 103,
+    "choices": [
+      "Frederick Taylor",
+      "Seebohm Rowntree",
+      "Henry Ford",
+      "Max Weber"
+    ]
+  },
+  "Masomo ya Hawthorn yanahusishwa zaidi na mwandishi yupi?|||Elton Mayo|||Frederick Taylor|||Lillian Gilbreth|||Mary Parker Follett": {
+    "source": "test",
+    "index": 104,
+    "choices": [
+      "Mary Parker Follett",
+      "Elton Mayo",
+      "Lillian Gilbreth",
+      "Frederick Taylor"
+    ]
+  },
+  "Nani alikuwa mhusika mkuu wa utumishi?|||Adam Smith|||John Stuart Mill|||Karl Marx|||Thomas Hobbes": {
+    "source": "test",
+    "index": 105,
+    "choices": [
+      "John Stuart Mill",
+      "Thomas Hobbes",
+      "Karl Marx",
+      "Adam Smith"
+    ]
+  },
+  "Je, ni istilahi gani inatumika katika matrix ya Ansoff kwa kuongeza sehemu ya soko na bidhaa zilizopo katika masoko yaliyopo?|||Kupenya soko|||Maendeleo ya bidhaa|||Maendeleo ya soko|||Mseto": {
+    "source": "test",
+    "index": 106,
+    "choices": [
+      "Maendeleo ya bidhaa",
+      "Kupenya soko",
+      "Mseto",
+      "Maendeleo ya soko"
+    ]
+  },
+  "Ni kipengele kipi hakifanyi mojawapo ya kanuni 14 za usimamizi za Fayol?|||Agizo|||Hatua|||Ubinafsi|||Washiriki wa kikundi kujivunia na kuwa waaminifu": {
+    "source": "test",
+    "index": 107,
+    "choices": [
+      "Washiriki wa kikundi kujivunia na kuwa waaminifu",
+      "Hatua",
+      "Agizo",
+      "Ubinafsi"
+    ]
+  },
+  "Mpuliza filimbi ni nani?|||Mtu anayebuni vitendo visivyo halali au visivyo vya maadili|||Mtu anayefanya vitendo visivyo halali au visivyo vya maadili|||Mtu anayenufaika kutokana na vitendo visivyo halali au visivyo vya kimaadili|||Mtu anayeripoti vitendo visivyo halali au visivyo vya maadili": {
+    "source": "test",
+    "index": 108,
+    "choices": [
+      "Mtu anayeripoti vitendo visivyo halali au visivyo vya maadili",
+      "Mtu anayefanya vitendo visivyo halali au visivyo vya maadili",
+      "Mtu anayenufaika kutokana na vitendo visivyo halali au visivyo vya kimaadili",
+      "Mtu anayebuni vitendo visivyo halali au visivyo vya maadili"
+    ]
+  },
+  "Wamiliki wa vituo vya petroli katika jamii wanakutana kisiri na kukubaliana kupandisha bei zao ili kulinda upaji faida wao. Ikiwa mpango wao utagunduliwa na washtakiwe kwa uhalifu, wanaweza advertising|||kupatikana hawana hatia kwa sababu wauzaji rejareja wanaruhusiwa kuweka viwango vyao vya bei|||kupatikana wenye hatia chini ya Sheria ya Adamson na kukabiliwa na kifungo cha jela na faini|||kupatikana wenye hatia chini ya Sheria ya Hakikisho ya Magnuson-Moss na kukabiliwa na faini kubwa|||kupatikana wenye hatia chini ya Sheria ya Sherman Antitrust na kukabiliwa na kifungo cha jela": {
+    "source": "test",
+    "index": 109,
+    "choices": [
+      "kupatikana wenye hatia chini ya Sheria ya Sherman Antitrust na kukabiliwa na kifungo cha jela",
+      "kupatikana wenye hatia chini ya Sheria ya Hakikisho ya Magnuson-Moss na kukabiliwa na faini kubwa",
+      "kupatikana wenye hatia chini ya Sheria ya Adamson na kukabiliwa na kifungo cha jela na faini",
+      "kupatikana hawana hatia kwa sababu wauzaji rejareja wanaruhusiwa kuweka viwango vyao vya bei"
+    ]
+  },
+  "ACORN, mbinu ya uchambuzi wa ukatanishaji, ina maana gani kati ya yafuatayo?|||Uorodheshaji wa makazi ya ujirani.|||Uorodheshaji wa wananchi waliripotiwa.|||Upeaji nambari rasmi wa makazi yanayoambatana.|||Urambazaji rasmi wa nyenzo nchi nzima.": {
+    "source": "test",
+    "index": 110,
+    "choices": [
+      "Upeaji nambari rasmi wa makazi yanayoambatana.",
+      "Uorodheshaji wa wananchi waliripotiwa.",
+      "Uorodheshaji wa makazi ya ujirani.",
+      "Urambazaji rasmi wa nyenzo nchi nzima."
+    ]
+  },
+  "Pine na Gilmore (1999) wanatambua nyanja nne bayana za mapitio, kwa misigni ya viwango viwili. Ni viwango vigani hivi?|||Udumishaji wa mteja na uhusiano na mteja.|||Upataji wateja na uhusiano wa kimazingira.|||Ushiriki wa mteja na uhusiano na mteja.|||Ushiriki wa mteja na uhusiano wa kimazingira.": {
+    "source": "test",
+    "index": 111,
+    "choices": [
+      "Ushiriki wa mteja na uhusiano wa kimazingira.",
+      "Upataji wateja na uhusiano wa kimazingira.",
+      "Ushiriki wa mteja na uhusiano na mteja.",
+      "Udumishaji wa mteja na uhusiano na mteja."
+    ]
+  },
+  "Ni kipi kati ya aina za vipimo vifuatavyo imeundwa ili kimsingi isaidie kutabiri jinsi mtu anavyoweza kuwa na ufanisi katika kujifunza ujuzi mpya?|||Mafanikio|||Shauku|||Uelekevu|||Utu": {
+    "source": "test",
+    "index": 112,
+    "choices": [
+      "Mafanikio",
+      "Uelekevu",
+      "Shauku",
+      "Utu"
+    ]
+  },
+  "Ni ipi kati ya yafuatayo sio suala ambalo watafutaji masoko wanahitaji kutilia maanani wakati wanapotumia nyenzo za kidijitali kwa shughuli za utafutaji masoko?|||Mipaka.|||Ruhusa.|||Ufichuaji.|||Umiliki.": {
+    "source": "test",
+    "index": 113,
+    "choices": [
+      "Mipaka.",
+      "Ufichuaji.",
+      "Umiliki.",
+      "Ruhusa."
+    ]
+  },
+  "Ni filamu ipi ambayo ilifanya msemo wa \"You talkin' to me\" kuwa maarufu?|||Ghost Busters|||Groundhog Day|||Joker|||Taxi Driver": {
+    "source": "test",
+    "index": 114,
+    "choices": [
+      "Ghost Busters",
+      "Taxi Driver",
+      "Joker",
+      "Groundhog Day"
+    ]
+  },
+  "Kama kipande cha muziki kiko katika ‘muda wa kawaida’ kuna idadi ngapi za robo noti kwa kila kipimo?|||kumi|||moja|||nne|||tano": {
+    "source": "test",
+    "index": 115,
+    "choices": [
+      "moja",
+      "nne",
+      "tano",
+      "kumi"
+    ]
+  },
+  "Je, wastani wa kuishi kwa wanaume weupe waliozaliwa Marekani kabla tu ya Vita vya wenyewe kwa wenyewe ulikuwa upi?|||Miaka 40|||Miaka 50|||Miaka 60|||Miaka 70": {
+    "source": "test",
+    "index": 116,
+    "choices": [
+      "Miaka 40",
+      "Miaka 50",
+      "Miaka 60",
+      "Miaka 70"
+    ]
+  },
+  "Yupi kati ya hawa wagomea wa chama cha Democrat alishindwa na Ronald Reagani katika uchaguzi wa rais wa mwaka 1984?|||Gary Hart|||Jimmy Carter|||Michael Dukakis|||Walter Mondale": {
+    "source": "test",
+    "index": 117,
+    "choices": [
+      "Michael Dukakis",
+      "Walter Mondale",
+      "Gary Hart",
+      "Jimmy Carter"
+    ]
+  },
+  "Ni nani alikuwa mama wa mungu wa Kigiriki Zeus?|||Gaia|||Hera|||Phoebe|||Rhea": {
+    "source": "test",
+    "index": 118,
+    "choices": [
+      "Gaia",
+      "Phoebe",
+      "Rhea",
+      "Hera"
+    ]
+  },
+  "Je, mhusika wa Peanuts,  Lucy hutoza kiasi gani kwa ushauri wake wa tiba ya magonjwa ya akili?|||$125|||Senti 10|||Senti 5|||Senti 75": {
+    "source": "test",
+    "index": 119,
+    "choices": [
+      "Senti 5",
+      "Senti 10",
+      "Senti 75",
+      "$125"
+    ]
+  },
+  "Mwanamuziki wa popu Tiny Tim alikuwa maarufu kwa kucheza ala gani ya muziki?|||fido|||kazoo|||kodioni|||ukulele": {
+    "source": "test",
+    "index": 120,
+    "choices": [
+      "ukulele",
+      "kazoo",
+      "kodioni",
+      "fido"
+    ]
+  },
+  "Ni chapa gani ya chakula cha paka ambayo inadai kwamba ni kitamu sana hadi ‘paka wanakiomba kwa kutaja jina’?|||9-Lives|||Cat Chow|||Fancy Feast|||Meow Mix": {
+    "source": "test",
+    "index": 121,
+    "choices": [
+      "Fancy Feast",
+      "Cat Chow",
+      "Meow Mix",
+      "9-Lives"
+    ]
+  },
+  "Uzio wa umeme uliowekwa ili kuzuia ng’ombe na kondoo wakubwa kwenye uwanja unapaswa kuwa na waya ambao umeweka katika kimo kipi kati ya hivi? I. inchi 6 II. inchi 18 III. Inchi 40. IV. Inchi 60.|||I pekee|||II na III pekee|||II pekee|||III na IV pekee": {
+    "source": "test",
+    "index": 122,
+    "choices": [
+      "I pekee",
+      "II pekee",
+      "II na III pekee",
+      "III na IV pekee"
+    ]
+  },
+  "Ni nani kati ya hawa viongozi wa dunia aliuawa?|||Ferdinand Marcos|||Golda Meir|||Indira Gandhi|||Neville Chamberlain": {
+    "source": "test",
+    "index": 123,
+    "choices": [
+      "Indira Gandhi",
+      "Ferdinand Marcos",
+      "Golda Meir",
+      "Neville Chamberlain"
+    ]
+  },
+  "Je, majina ya kwanza ya Smothers Brothers ni yapi?|||Dave na George|||Ed na Pete|||Frank na Bill|||Tom na Dick": {
+    "source": "test",
+    "index": 124,
+    "choices": [
+      "Frank na Bill",
+      "Tom na Dick",
+      "Dave na George",
+      "Ed na Pete"
+    ]
+  },
+  "Neno lipi kati ya haya humaanisha pombe ambayo imeongezwa dawa za kulevya zinazoweza kumfanya mtu apoteze fahamu?|||Kamikaze|||Kokteli ya Molotov|||Mickey Finn|||Zombi": {
+    "source": "test",
+    "index": 125,
+    "choices": [
+      "Zombi",
+      "Kamikaze",
+      "Mickey Finn",
+      "Kokteli ya Molotov"
+    ]
+  },
+  "Ni yupi kati ya waigizaji hawa alicheza filamu yake ya kwanza katika kipindi cha 'Dothe Right Thing' cha Spike Lee?|||Jennifer Lopez|||Paula Abdul|||Rosie Perez|||Tisha Campbell": {
+    "source": "test",
+    "index": 126,
+    "choices": [
+      "Jennifer Lopez",
+      "Rosie Perez",
+      "Paula Abdul",
+      "Tisha Campbell"
+    ]
+  },
+  "Ni kitu gani mashuhuri cha kuchezea watoto ambacho kimeshirikishwa katika filamu ya 'The Hudsucker Proxy'?|||Beanie Babies|||Hula Hoop|||Lincoln Logs|||Lite Brite": {
+    "source": "test",
+    "index": 127,
+    "choices": [
+      "Beanie Babies",
+      "Hula Hoop",
+      "Lincoln Logs",
+      "Lite Brite"
+    ]
+  },
+  "Kati ya watu hawa ni watu gani watafaidika zaidi ikiwa thamani ya dola ya Kimarekani itapanda ikilinganishwa na ili ya yeni ya Kijapani?|||Mfanyakazi anayefanya kazi katika kiwanda cha bia nchini Marekani|||Muokaji wa Kijapani anayenunua ngano kutoka Marekani|||Wachuuzi wa magari wa Marekani wanaoagiza magari ya Kijapani|||Watalii wa Kijapani ambao wako likizo nchini Marekani": {
+    "source": "test",
+    "index": 128,
+    "choices": [
+      "Wachuuzi wa magari wa Marekani wanaoagiza magari ya Kijapani",
+      "Watalii wa Kijapani ambao wako likizo nchini Marekani",
+      "Mfanyakazi anayefanya kazi katika kiwanda cha bia nchini Marekani",
+      "Muokaji wa Kijapani anayenunua ngano kutoka Marekani"
+    ]
+  },
+  "Ili kupiga simu ya kimataifa kutoka ndani ya nchi ya Marekani unapaswa kutangulia kwa kupiga namba zipi?|||101|||11|||888|||911": {
+    "source": "test",
+    "index": 129,
+    "choices": [
+      "11",
+      "101",
+      "888",
+      "911"
+    ]
+  },
+  "‘Kichokonozi cha meno cha Arkansas’ kinajulikana zaidi kwa jina gani?|||Scottie Pippen|||Sime|||kidole kidogo zaidi|||mbavu ya nguruwe": {
+    "source": "test",
+    "index": 130,
+    "choices": [
+      "Scottie Pippen",
+      "mbavu ya nguruwe",
+      "kidole kidogo zaidi",
+      "Sime"
+    ]
+  },
+  "Ni makala gani ya mavazi inayofafanua vizuri zaidi 'pashmina'?|||chupi|||nguo ya ndani|||skafu|||viatu": {
+    "source": "test",
+    "index": 131,
+    "choices": [
+      "viatu",
+      "chupi",
+      "skafu",
+      "nguo ya ndani"
+    ]
+  },
+  "Je, balalaika ni nini?|||aina ya kofia|||jamii ya papa|||kifaa cha muziki|||mkulima wa Kirusi": {
+    "source": "test",
+    "index": 132,
+    "choices": [
+      "kifaa cha muziki",
+      "mkulima wa Kirusi",
+      "aina ya kofia",
+      "jamii ya papa"
+    ]
+  },
+  "Ni yupi kati ya viongozi hawa wa Vita ya Pili ya Dunia hakuwepo kwenye Mkutano wa Yalta?|||Churchill|||Mussolini|||Roosevelt|||Stalin": {
+    "source": "test",
+    "index": 133,
+    "choices": [
+      "Stalin",
+      "Mussolini",
+      "Churchill",
+      "Roosevelt"
+    ]
+  },
+  "Je, jina la kuzaliwa la kiongozi wa haki za kiraia Malcolm ni lipi?|||Malcolm Lincoln|||Malcolm Little|||Michael Brown|||Michael Lloyd": {
+    "source": "test",
+    "index": 134,
+    "choices": [
+      "Michael Brown",
+      "Malcolm Little",
+      "Malcolm Lincoln",
+      "Michael Lloyd"
+    ]
+  },
+  "Ni ipi kati ya zifuatazo ni mfano wa nadharia ya maadili yenye msingi wa thamani?|||kulingana na matokeo|||maadili ya wema|||sio A wala B|||zote A na B": {
+    "source": "test",
+    "index": 135,
+    "choices": [
+      "kulingana na matokeo",
+      "maadili ya wema",
+      "zote A na B",
+      "sio A wala B"
+    ]
+  },
+  "Je, Pence anafikiri watu wanaopinga SCNT hufanya nini wanaposema kuwa SCNT haifai kwa mtoto?|||Hatuwezi kujua nia ya wazazi hao ni gani.|||Wazazi hao wana nia mbaya.|||Wazazi hao wana nia nzuri.|||hakunakati ya hayo hapo juu": {
+    "source": "test",
+    "index": 136,
+    "choices": [
+      "Wazazi hao wana nia nzuri.",
+      "Hatuwezi kujua nia ya wazazi hao ni gani.",
+      "Wazazi hao wana nia mbaya.",
+      "hakunakati ya hayo hapo juu"
+    ]
+  },
+  "Ipi kati ya zifuatazo ni uzuri wa kimsingi, kulingana na toleo la Aquinas la nadharia ya sheria asilia?|||Uzaanaji wa binadamu|||maisha ya binadamu|||uhusiano wa kibinadamu|||yote hapo juu": {
+    "source": "test",
+    "index": 137,
+    "choices": [
+      "maisha ya binadamu",
+      "Uzaanaji wa binadamu",
+      "uhusiano wa kibinadamu",
+      "yote hapo juu"
+    ]
+  },
+  "Je, ni gani kati ya zifuatazo linaelezea vyema maoni ya de Marneffe?|||Matumizi ya dawa za kulevya kunapaswa kuwa halali, lakini uuzaji na uzalishaji wake unapaswa kuwa haramu.|||Matumizi ya dawa za kulevya kunapaswa kuwa haramu, lakini uuzaji na uzalishaji wake kunapaswa kuna halali.|||Matumizi, uuzaji na uzalishaji wa madawa ya kulevya kunapaswa kuwa halali.|||Matumizi, uuzaji na uzalishaji wa madawa ya kulevya kunapaswa kuwa haramu.": {
+    "source": "test",
+    "index": 138,
+    "choices": [
+      "Matumizi, uuzaji na uzalishaji wa madawa ya kulevya kunapaswa kuwa halali.",
+      "Matumizi, uuzaji na uzalishaji wa madawa ya kulevya kunapaswa kuwa haramu.",
+      "Matumizi ya dawa za kulevya kunapaswa kuwa halali, lakini uuzaji na uzalishaji wake unapaswa kuwa haramu.",
+      "Matumizi ya dawa za kulevya kunapaswa kuwa haramu, lakini uuzaji na uzalishaji wake kunapaswa kuna halali."
+    ]
+  },
+  "Mill anatoa wazo kwamba kwamba hata maoni ya uongo hayapaswi kudhibitiwa kwa sababu|||Yote yaliyo hapa juu.|||hakuna anayejua chochote.|||hujui iwapo kitu ni cha uongo au la.|||hujui mtazamo wa kweli isipokuwa unaweza kueleza kwa nini maoni ya uongo ni ya uongo.": {
+    "source": "test",
+    "index": 139,
+    "choices": [
+      "hakuna anayejua chochote.",
+      "hujui mtazamo wa kweli isipokuwa unaweza kueleza kwa nini maoni ya uongo ni ya uongo.",
+      "hujui iwapo kitu ni cha uongo au la.",
+      "Yote yaliyo hapa juu."
+    ]
+  },
+  "Ni dawa gani zimeidhinishwa kwa matibabu ya ugonjwa wa unene kupita kiasi barani Ulaya?|||Lorcaserin|||Naltrexone/Bupropion|||Orlistat|||Phentermine/Topiramate": {
+    "source": "test",
+    "index": 140,
+    "choices": [
+      "Orlistat",
+      "Phentermine/Topiramate",
+      "Lorcaserin",
+      "Naltrexone/Bupropion"
+    ]
+  },
+  "Mapendekezo ya sasa ni kwamba:|||Chakula kinapaswa kuletwa katika umri wa miezi 4|||Kulisha kwa chupa ni vyema zaidi kwa watoto kuliko kunyonyesha|||Maziwa ya ng'ombe yanafaa kwa watoto wote kutoka miezi 6|||Watoto wote wanapaswa kunyonyeshwa maziwa ya mama pekee hadi karibu miezi 6": {
+    "source": "test",
+    "index": 141,
+    "choices": [
+      "Watoto wote wanapaswa kunyonyeshwa maziwa ya mama pekee hadi karibu miezi 6",
+      "Chakula kinapaswa kuletwa katika umri wa miezi 4",
+      "Maziwa ya ng'ombe yanafaa kwa watoto wote kutoka miezi 6",
+      "Kulisha kwa chupa ni vyema zaidi kwa watoto kuliko kunyonyesha"
+    ]
+  },
+  "Je, ni gani kati ya zifuatazo inaweza kusababisha upungufu wa iodini?|||Ukosefu wa mwanga wa jua|||Ulaji kwa kiwango cha chini wa matunda na mboga|||Ulaji wa kutosha wa kalori|||Ulaji wa vyakula vinavyolimwa hapa Afrika ya kati pekee": {
+    "source": "test",
+    "index": 142,
+    "choices": [
+      "Ulaji kwa kiwango cha chini wa matunda na mboga",
+      "Ulaji wa vyakula vinavyolimwa hapa Afrika ya kati pekee",
+      "Ulaji wa kutosha wa kalori",
+      "Ukosefu wa mwanga wa jua"
+    ]
+  },
+  "Je, ni nini athari za utandawazi katika usalama wa chakula?|||Maduka makubwa ndiyo njia pekee hadi sasa ambayo chakula na kilimo vimepitia utandawazi.|||Nchi zinazoendelea zinahitaji kuunda akiba ya chakula inayomilikiwa na umma ili kufikia faida zinazowezekana.|||Ruzuku za nchi tajiri na vikwazo vya kibiashara hufanya iwe vigumu kwa nchi zinazoendelea kuchukua fursa ya uwezekano wa utandawazi katika kuendeleza usalama wa chakula.|||Sheria za Shirika la Biashara Ulimwenguni hazihusu kilimo, kwa hivyo utandawazi hauathiri usalama wa chakula.": {
+    "source": "test",
+    "index": 143,
+    "choices": [
+      "Ruzuku za nchi tajiri na vikwazo vya kibiashara hufanya iwe vigumu kwa nchi zinazoendelea kuchukua fursa ya uwezekano wa utandawazi katika kuendeleza usalama wa chakula.",
+      "Sheria za Shirika la Biashara Ulimwenguni hazihusu kilimo, kwa hivyo utandawazi hauathiri usalama wa chakula.",
+      "Maduka makubwa ndiyo njia pekee hadi sasa ambayo chakula na kilimo vimepitia utandawazi.",
+      "Nchi zinazoendelea zinahitaji kuunda akiba ya chakula inayomilikiwa na umma ili kufikia faida zinazowezekana."
+    ]
+  },
+  "Stevenson anajibuje lile pingamizi kwamba nadharia yake haielezi aina ya wema ambao ni wa kusudi na unajulikana kama priori?|||Anadai haelewi mali kama hiyo.|||Anadai kwamba  ametoa hesabu ya mali kama hiyo.     |||Anadai kwamba amedhibitisha kuwa mali kama hiyo haipo.    |||Hamna kati ya zilizo hapa juu.": {
+    "source": "test",
+    "index": 144,
+    "choices": [
+      "Anadai kwamba amedhibitisha kuwa mali kama hiyo haipo.    ",
+      "Anadai kwamba  ametoa hesabu ya mali kama hiyo.     ",
+      "Anadai haelewi mali kama hiyo.",
+      "Hamna kati ya zilizo hapa juu."
+    ]
+  },
+  "Paley anashikilia kwamba tofauti kuu kati ya  “ujanja” wa saa na ule wa asili ni kwamba wa asili ni _____.|||kubwa na tukufu zaidi|||mzee zaidi|||rahis zaidi|||ya kiasili zaidi.": {
+    "source": "test",
+    "index": 145,
+    "choices": [
+      "rahis zaidi",
+      "ya kiasili zaidi.",
+      "mzee zaidi",
+      "kubwa na tukufu zaidi"
+    ]
+  },
+  "Hume anadai kwamba mtu asiyeathiriwa na picha za furaha ya binadamu au taabu pia atakua hajali ku:|||hali njema yake mwenyewe.|||sanaa na uzuri.|||wema na ubaya.|||yote hapa juu.": {
+    "source": "test",
+    "index": 146,
+    "choices": [
+      "sanaa na uzuri.",
+      "wema na ubaya.",
+      "hali njema yake mwenyewe.",
+      "yote hapa juu."
+    ]
+  },
+  "Nussbaum anadai kwamba ufafanuzi ya wema fulani:|||daima utakua na jibu moja.|||ni lazima unahusiana na utamaduni.|||unaweza kutatuliwa kwa njia ambayo hautaweza kurekebishwa tena.|||wakati mwingine huenda ukageuka kuwa mtenganyiko.": {
+    "source": "test",
+    "index": 147,
+    "choices": [
+      "daima utakua na jibu moja.",
+      "wakati mwingine huenda ukageuka kuwa mtenganyiko.",
+      "ni lazima unahusiana na utamaduni.",
+      "unaweza kutatuliwa kwa njia ambayo hautaweza kurekebishwa tena."
+    ]
+  },
+  "Descartes anatangaza kuwa pepo mbaya _____.|||bila shaka ipo|||haiwezekani kuwepo|||hawekana kuwa anamdanganya|||lazima kuwepo kama Mungu yupo": {
+    "source": "test",
+    "index": 148,
+    "choices": [
+      "bila shaka ipo",
+      "haiwezekani kuwepo",
+      "hawekana kuwa anamdanganya",
+      "lazima kuwepo kama Mungu yupo"
+    ]
+  },
+  "Mtazamo kwamba tunajumuisha vitu viwili tofauti (mwili na akili) na kwamba vitu vilivyo viwili vinaingiliana yanajulikana kama____.|||nadharia ya utambulisho|||ubinafsi wa vitu|||utendaji|||uwili wa dutu": {
+    "source": "test",
+    "index": 149,
+    "choices": [
+      "utendaji",
+      "nadharia ya utambulisho",
+      "uwili wa dutu",
+      "ubinafsi wa vitu"
+    ]
+  },
+  "Kuna ushahidi kwamba Hohokam walichukua zoea gani kutoka kwa utamaduni wa Mesoamerican? |||dhabihu ya kidesturi ya binadamu|||kucheza michezo ya kidesturi ya mpira|||matumizi ya desturi ya bia ya mahindi|||ujenzi wa piramidi zenye ngazi": {
+    "source": "test",
+    "index": 150,
+    "choices": [
+      "matumizi ya desturi ya bia ya mahindi",
+      "dhabihu ya kidesturi ya binadamu",
+      "kucheza michezo ya kidesturi ya mpira",
+      "ujenzi wa piramidi zenye ngazi"
+    ]
+  },
+  "Utafiti wa kinasaba ukilinganisha kiunzi chenye umri wa miaka 7,000 kilichopatikana Ujerumani, mifupa minane ya binadamu ya miaka 8,000 iliyopita kule Luxembourg, na zaidi ya Walaya wanaoishi 2,300 uligundua kuwa jinomu ya kisasa ya Ulaya ilijumuisha michango kutoka:|||Homo sapeins wa kisasa wenye anatomiki ya kale walioishi Ulaya miaka 45,000 iliyopita.|||watu waliohamia huko kutoka magharibi mwa Asia chini ya miaka 5,000 iliyopita.|||watu wanaoweza kufuatiliwa kinasaba hadi Mashariki ya Kati ambao waliamia Ulaya takriban miaka 9,000 iliyopita.|||yote hapa juu.": {
+    "source": "test",
+    "index": 151,
+    "choices": [
+      "Homo sapeins wa kisasa wenye anatomiki ya kale walioishi Ulaya miaka 45,000 iliyopita.",
+      "watu wanaoweza kufuatiliwa kinasaba hadi Mashariki ya Kati ambao waliamia Ulaya takriban miaka 9,000 iliyopita.",
+      "watu waliohamia huko kutoka magharibi mwa Asia chini ya miaka 5,000 iliyopita.",
+      "yote hapa juu."
+    ]
+  },
+  "Wakati wa Pleistocene, visiwa vya Java, Sumatra, Bali, na Bormeo viliundwa ___________. ardhi inayounganisha Australia, New Guinea, na Tasmania iliitwa ___________.|||Beringia; Sahul|||Sunda; Sahul|||Sunda; Wallacea|||Wallacea; Beringia": {
+    "source": "test",
+    "index": 152,
+    "choices": [
+      "Sunda; Wallacea",
+      "Wallacea; Beringia",
+      "Beringia; Sahul",
+      "Sunda; Sahul"
+    ]
+  },
+  "Ushawishi wa Watiwanaku ulifunikwa na utamaduni wa ______, kaskazini na magharibi.|||Azteki|||Inca|||Moche|||Wari": {
+    "source": "test",
+    "index": 153,
+    "choices": [
+      "Moche",
+      "Inca",
+      "Wari",
+      "Azteki"
+    ]
+  },
+  "________ mila ya vitu vilivyotengenezwa vizuri, visu  vya mawe vyenye umbo la jani. Mila ya __________ iliyofuata nyuma yake inasisitiza kazi ya mfupa na atler.|||Aurignacian; Gravettian.|||Gravettian; Solutrean|||Magdelanian; Aurignacian|||Solutrean; Magdelanian": {
+    "source": "test",
+    "index": 154,
+    "choices": [
+      "Solutrean; Magdelanian",
+      "Gravettian; Solutrean",
+      "Magdelanian; Aurignacian",
+      "Aurignacian; Gravettian."
+    ]
+  },
+  "Katika Kipengele cha Mauzo cha UCC, ni hali gani kati ya zifuatazo inaelezea vyema jinsi dhamana iliyoonyeshwa ya usawa kwa matumizi maalum ilipanda katika shughuli za mauzo ya bidhaa?|||Mnunuzi ananunua bidhaa hizo kwa ajili ya matumizi hususan na anategemea ujuzi na uamuzi wa muuzaji kuchagua bidhaa zitakazomfaa.|||Mnunuzi ananunua bidhaa kwa ajili ya matumizi hususan na muuzaji ni mfanyabiashara wa bidhaa aina hio.|||Muuzaji anajua matumizi maalum ambayo mnunuzi atatumia bidhaa kwa ajili yake na muuzaji ni mfanyabiashara wa bidhaa hizo.|||Muuzaji anajuwa matumizi maalum ambayo mnunuzi atatumia bidhaa kwa ajili yake na mnunuzi anategemea ujuzi na uamuzi wa muuzaji kuchagua bidhaa zitakazomfaa. ": {
+    "source": "test",
+    "index": 155,
+    "choices": [
+      "Mnunuzi ananunua bidhaa hizo kwa ajili ya matumizi hususan na anategemea ujuzi na uamuzi wa muuzaji kuchagua bidhaa zitakazomfaa.",
+      "Mnunuzi ananunua bidhaa kwa ajili ya matumizi hususan na muuzaji ni mfanyabiashara wa bidhaa aina hio.",
+      "Muuzaji anajuwa matumizi maalum ambayo mnunuzi atatumia bidhaa kwa ajili yake na mnunuzi anategemea ujuzi na uamuzi wa muuzaji kuchagua bidhaa zitakazomfaa. ",
+      "Muuzaji anajua matumizi maalum ambayo mnunuzi atatumia bidhaa kwa ajili yake na muuzaji ni mfanyabiashara wa bidhaa hizo."
+    ]
+  },
+  "Katika siku ya 1, Jackson, mfanyabiashara, alimtumia Sands barua iliyosainishwa ambayo ilikuwa na toleo la kumuuzia Sands feni 500 za umeme kwa $10 kwa kila feni. Barua hio ilipokelewa na Sands siku ya 3. Barua hio ilikuwa na ahadi ya kutolikataa toleo hilo ila haikuwa na tarehe ya mwisho wa toleo. Siku ya 4, Jackson alimtumia Sands barua ya kuondosha toleo hilo la kuuza feni hizo. Sands alipokea barua ya kuondosha toleo siku ya 6. Siku ya 7, Sands alimtumia Jackson barua ya kukubali toleo hilo. Jackson alipokea barua ya kukubali toleo kutoka kwa Sands siku ya 9. Chini ya Vipengele vya Mauzo vya UCC, je kandarasi yeyote ilifanyika? |||Hakuna kandarasi iliyofanyika kwa sababu Sands alipokea barua ya kuondosha toleo hilo kabla Sands hajakubali toleo hilo|||Hakuna kandarasi iliyofanyika kwa sababu toleo hilo lilikosa kuarifu tarehe ya mwisho wa toleo.|||Kandarasi ilifanyika siku ambayo Jackson alipokea barua ya kukubali toleo la Sands|||Kandarasi ilifanyika siku ambayo Sands alituma barua ya kukubali toleo kwa Jackson": {
+    "source": "test",
+    "index": 156,
+    "choices": [
+      "Hakuna kandarasi iliyofanyika kwa sababu toleo hilo lilikosa kuarifu tarehe ya mwisho wa toleo.",
+      "Hakuna kandarasi iliyofanyika kwa sababu Sands alipokea barua ya kuondosha toleo hilo kabla Sands hajakubali toleo hilo",
+      "Kandarasi ilifanyika siku ambayo Jackson alipokea barua ya kukubali toleo la Sands",
+      "Kandarasi ilifanyika siku ambayo Sands alituma barua ya kukubali toleo kwa Jackson"
+    ]
+  },
+  "Smile Inc. ilinunua kompyuta tarehe 1 Mei kwa $12,000 na thamani ya kusalia ya takriban $1,500 na maisha ya miaka 3. Gharama ya matumizi kwa mwaka ulioisha tarehe 31 Desemba kwa kutumia njia ya kupunguza maradufu ya kupungua kwa thamani ni ipi?|||$5,333|||$7,000|||$8,000|||4667": {
+    "source": "test",
+    "index": 157,
+    "choices": [
+      "$8,000",
+      "$7,000",
+      "$5,333",
+      "4667"
+    ]
+  },
+  "Ukusanyaji wa taarifa za kifedha kulingana na Viwango vya Huduma za Uhasibu na Ukaguzi umepunguzwa kuonyesha|||Taarifa katika mfumo wa kauli za kifedha ambazo ni uwakilishi wa usimamizi.|||Taarifa za kifedha ambazo hazijakaguliwa ambazo zimeacha kwa kiasi kikubwa ufichuzi wote unaohitajika wa GAAP.|||Taarifa za kifedha za ziada ambazo zimefanyiwa uchunguzi na taratibu za uchambuzi.|||Takwimu za uhasibu ambazo zinafuata mfumo maalum wa madhumuni mengine tofauti na GAAP.": {
+    "source": "test",
+    "index": 158,
+    "choices": [
+      "Takwimu za uhasibu ambazo zinafuata mfumo maalum wa madhumuni mengine tofauti na GAAP.",
+      "Taarifa za kifedha ambazo hazijakaguliwa ambazo zimeacha kwa kiasi kikubwa ufichuzi wote unaohitajika wa GAAP.",
+      "Taarifa katika mfumo wa kauli za kifedha ambazo ni uwakilishi wa usimamizi.",
+      "Taarifa za kifedha za ziada ambazo zimefanyiwa uchunguzi na taratibu za uchambuzi."
+    ]
+  },
+  "Ni kinga gani kati ya zifuatazo iliyo na nafasi kubwa ya kufanikiwa katika kesi inayodai uzembe na mhasibu wa umma aliyeidhinishwa?|||Kutojua sheria.|||Kutokuwa na nia.|||Kutokuwa na uwezo wa akili.|||Uangalifu unaostahili.": {
+    "source": "test",
+    "index": 159,
+    "choices": [
+      "Uangalifu unaostahili.",
+      "Kutojua sheria.",
+      "Kutokuwa na nia.",
+      "Kutokuwa na uwezo wa akili."
+    ]
+  },
+  "Ni muamala gani kati ya yafuatayo unaoonyesha kwa usahihi kanuni ya utendaji mkubwa?|||Blair alinunua seti ya viti kumi na mbili vyeusi kutoka kwa Kyle, lakini Kyle alimtumia seti ya viti kumi na mbili vyeupe.|||Daktari wa meno alikamilisha kwa ufanisi upasuaji wa kung'oa jino la Lee lakini kwa makosa akalitoa jino lisilo sahihi.|||Leslie alipaka rangi chumba kizima lakini hakufunga tena vifuniko vya soketi za umeme.|||Mkataba ulihitaji mtindo wa nywele ufanywe kulingana na kuridhika kwa Toby lakini Toby hakuridhika kwa dhati na matokeo yaliofanyika.": {
+    "source": "test",
+    "index": 160,
+    "choices": [
+      "Blair alinunua seti ya viti kumi na mbili vyeusi kutoka kwa Kyle, lakini Kyle alimtumia seti ya viti kumi na mbili vyeupe.",
+      "Leslie alipaka rangi chumba kizima lakini hakufunga tena vifuniko vya soketi za umeme.",
+      "Mkataba ulihitaji mtindo wa nywele ufanywe kulingana na kuridhika kwa Toby lakini Toby hakuridhika kwa dhati na matokeo yaliofanyika.",
+      "Daktari wa meno alikamilisha kwa ufanisi upasuaji wa kung'oa jino la Lee lakini kwa makosa akalitoa jino lisilo sahihi."
+    ]
+  },
+  "Kiwanda kinatayarisha taarifa zake za kifedha kulingana na msingi wake wa kodi ya mapato. Vidokezo vinavyotumika vinaorodhesha sera muhimu za uhasibu ambazo zinajadili msingi wa uwasilishaji na kuelezea jinsi msingi huo unatofautiana na GAAP. Kiwango cha dola cha athari za tofauti kati ya msingi wa kodi ya mapato na GAAP|||Haitakiwi kuhesabiwa na kujumuishwa katika vidokezo vya taarifa za kifedha au ripoti ya mkaguzi.|||Inahitajika kuwa ni sehemu ya ripoti ya mkaguzi pekee.|||Inahitajika kuwa ni sehemu ya vidokezo vya taarifa za kifedha tu.|||Inahitajika kuwa sehemu ya vidokezo vya taarifa za kifedha na ripoti ya mkaguzi.": {
+    "source": "test",
+    "index": 161,
+    "choices": [
+      "Inahitajika kuwa ni sehemu ya ripoti ya mkaguzi pekee.",
+      "Inahitajika kuwa ni sehemu ya vidokezo vya taarifa za kifedha tu.",
+      "Inahitajika kuwa sehemu ya vidokezo vya taarifa za kifedha na ripoti ya mkaguzi.",
+      "Haitakiwi kuhesabiwa na kujumuishwa katika vidokezo vya taarifa za kifedha au ripoti ya mkaguzi."
+    ]
+  },
+  "Mkaguzi wa mkaguzi asiyetoa pesa hawezi kutoa maoni yenye sifa wakati|||Chombo hicho huacha taarifa ya mtiririko wa pesa kutoka kwa taarifa zake za fedha.|||Mkaguzi hana uhuru kwa kuzingatia chombo.|||Ripoti ya mkaguzi inahusu kazi ya mtaalamu wa uhasibu.|||Usimamizi humzuia mkaguzi kutazama hesabu za shirika.": {
+    "source": "test",
+    "index": 162,
+    "choices": [
+      "Mkaguzi hana uhuru kwa kuzingatia chombo.",
+      "Usimamizi humzuia mkaguzi kutazama hesabu za shirika.",
+      "Chombo hicho huacha taarifa ya mtiririko wa pesa kutoka kwa taarifa zake za fedha.",
+      "Ripoti ya mkaguzi inahusu kazi ya mtaalamu wa uhasibu."
+    ]
+  },
+  "Shabiki wa besiboli alinunua tikiti mbili kwa ajili ya mchezo wa besiboli wa Mfululizo wa Dunia. Shabiki huyo aliwasiliana na rafiki yake mkubwa na kumwalika kwenda mchezoni. Rafiki huyo, ambaye alikuwa shabiki mkubwa wa besiboli, alikubali kwa shauku. Shabiki huyo alimwambia rafiki huyo kuwa mchezo unaanza saa 7:00 usiku. na kuwa angemchukua karibu saa 5:00 jioni ili waweze kufika huko mapema kutazama mazoezi ya kupiga mpira na vibao vya kupiga mpira . Walikuwa wakiendesha gari hadi kwenye mchezo pamoja wakati shabiki alipoongeza kasi ya gari ili kuvuka eneo la makutano wakati ishara ya trafiki ikibadilika kutoka kahawia hadi nyekundu. Alipofika kwenye eneo la makutano, shabiki huyo alikuwa akisafiri kwa umbali wa mita 50 kwa saa ingawa kikomo cha kasi kilichotumwa kilikuwa ni mita 25 kwa saa. Wakati huo huo, gari liliingia kwenye makutano baada ya rangi kubadilika na kuwa nyekundu na kugongana na gari la shabiki. Rafiki huyo alivunjika nyonga katika ajali hiyo. Mamlaka ya eneo hili imepitisha sheria \"iliyorekebishwa\" ya uzembe linganishi ifuatayo: \"Mlalamishi aliyezembea ana haki ya kupata fidia ili mradi uzembe wa mlalamishi si sawa au mkubwa kuliko ule wa mshtakiwa; vinginevyo hakuna ufidiaji unaoruhusiwa. \"Tuseme rafiki huyo anamshtaki dereva wa gari lililoingia kwenye makutano baada ya taa kubadilika na kuwa nyekundu ili kufidia hasara ya jeraha lake. Jopo la majaji lilitoa uamuzi maalum na matokeo yafuatayo: (1) Shabiki alizembea kwa asilimia 55 katika mwendo kasi; (2) Dereva alizembea kwa asilimia 45 katika kuendesha gari kupitia rangi ya taa ikiwa nyekundu; na (3) Rafiki huyo alipata hasara ya dola 100,000. Kwa hiyo, mahakama inapaswa kutoa hukumu kwa ajili ya rafiki huyo kupewa fidia ya kiasi cha|||$100,000. 00|||$45,000. 00|||$55,000. 00|||kutopewa fidia ya kiasi chochote, kwa sababu shabiki alikuwa na uzembe zaidi kuliko dereva.": {
+    "source": "test",
+    "index": 163,
+    "choices": [
+      "$100,000. 00",
+      "$55,000. 00",
+      "$45,000. 00",
+      "kutopewa fidia ya kiasi chochote, kwa sababu shabiki alikuwa na uzembe zaidi kuliko dereva."
+    ]
+  },
+  "Siku ya Jumanne, mmiliki wa nyumba alinunua mashine mpya ya kukatakata nyasi kutoka kwa duka kubwa. Siku iliyofuata, alikuwa akikata nyasi kwa yadi yake ya nyuma na mashine ya kukata nyasa mvua ikaanza kunyesha. Alisimamisha mashine ya kukata nyasi na kuzima motor. Aliingia ndani na kuamua kungoja mvua iishe kabla ya kukata nyasi zilizobaki. Dakika chache baadaye wakati mwenye nyumba akiwa ndani ya nyumba yake, mashine ya kukata nyasi kwa ghafla ilisonga mbele, ikabigirika chini mlimani, na kuingia kwa mali ya jirani yake. Mashine hiyo ilikata bustani ya waridi ya gharama za jirani, na kuziharibu. Baadaye ilibainika kuwa swichi ya mashine ya kukata nyasi ilikuwa na kasoro. Ijapokuwa mwenye nyumba alikuwa amewasha swichi ya kuwasha kwenye nafasi ya kuzima, injini haikuzima. Kwa sababu mashine ya kukata nyasi ilijengwa kwa injini mpya ya kuzunguka bila kutoa sauti, mwenye nyumba hangeweza kutambua kasoro kwa njia ya kuchuguza. Ikiwa jirani anadai madai dhidi ya mwenye nyumba kwa kuvuka kwake, Je jirani atafaulu?|||Hapana, kwa sababu mwenye nyumba alikuwa akitumia mower kwa kusudi iliyokusudiwa.|||Hapana, kwa sababu swichi yenye kasoro ya  motor hakikuweza kugunduliwa kwa ukaguzi unaofaa.|||Ndio, kwa sababu mashine ya kukata nyasi iliingia kwenye mali ya jirani.|||Ndio, kwa sababu mwenye nyumba anashurutishwa kuwajibika kwa uharibifu unaosababishwa na mashine iliyoharibika.": {
+    "source": "test",
+    "index": 164,
+    "choices": [
+      "Ndio, kwa sababu mashine ya kukata nyasi iliingia kwenye mali ya jirani.",
+      "Ndio, kwa sababu mwenye nyumba anashurutishwa kuwajibika kwa uharibifu unaosababishwa na mashine iliyoharibika.",
+      "Hapana, kwa sababu mwenye nyumba alikuwa akitumia mower kwa kusudi iliyokusudiwa.",
+      "Hapana, kwa sababu swichi yenye kasoro ya  motor hakikuweza kugunduliwa kwa ukaguzi unaofaa."
+    ]
+  },
+  "Katika siku za mwisho za urais wake, wajumbe wengi wa Baraza la Mawaziri la Rais walianza kuvujisha habari za aibu kuhusu Rais kwenye vyombo vya habari. Katika moja ya habari kama hizo, iliyotoka kwenye gazeti, mjumbe mmoja wa Baraza la Mawaziri ambaye hakufahamika jina lake alinukuliwa akisema kuwa Rais alimsamehe mmiliki wa timu ya mpira kwa hatia ya awali kwa sababu mmiliki aliahidi kumpa Rais pasi ya maisha kwenye michezo yote ijayo. Akiwa amekasirishwa na \"uvujaji\" huu wa habari, Rais, katika kitendo chake rasmi cha mwisho, alitoa amri ya utendaji inayopiga marufuku wafanyakazi wote wa utendaji kufanya mazungumzo na waandishi wa habari isipokuwa wapate ruhusa kutoka kwa msimamizi wa utawala. Amri ya utendaji ilitoa wito wa kufutwa kazi kwa mfanyakazi yeyote akiuka agizo hilo. Baada ya Rais kuondoka madarakani, vyombo vya habari vilirejelea mara kwa mara agizo la utendaji na kulitaja kwa dhihaka kuwa urithi wa Rais. Hata hivyo, baada ya Rais mpya kuingia madarakani aliahidi kutii agizo hilo. Baada ya hapo mmoja wa washauri waandamizi wa Makamu wa Rais, alivujisha habari kwenye gazeti moja iliyoeleza kuwa Makamu wa Rais aliwaambia wafanyakazi kuwa sababu pekee ya kutembelea jiji moja kufuatia tetemeko la ardhi ni kutaka kucheza gofu kwenye uwanja wa gofu wa jirani. Gazeti hili lilichapisha habari hiyo na kumtaja mshauri mkuu kuwa ndiye chanzo. Kwa kuzingatia kanuni za utumishi wa umma, usikilizaji ulifanyika na mshauri mkuu alipatikana amekiuka amri ya utendaji inayozuia kuzungumza bila ruhusa na vyombo vya habari. Baadaye, mshauri mkuu alifukuzwa kazi kutoka kwenye wadhifa wake mkuu. Mshauri mkuu ameleta hatua inayofaa ya kutaka kurejeshwa na kupinga uhalali wa utaratibu wa utendaji. Ikiwa kesi hii itafikia Mahakama ya Juu ya Marekani, majaji wanapaswa kuamuru amri ya utendaji ni|||kikatiba, kwa sababu Rais ana mamlaka ya jumla ya kuweka kanuni za ajira kwa watumishi wa idara ya utendaji.|||kikatiba, kwa sababu ajira serikalini ni fursa na si haki.|||kinyume na katiba, kwa sababu Bunge, si Rais, ana mamlaka ya kudhibiti sheria na masharti ya ajira ya shirikisho.|||kinyume na katiba, kwa sababu Rais hawezi kuwekea mipaka uhuru wa kuzungumza na kujumuika kwa watumishi wote watendaji.": {
+    "source": "test",
+    "index": 165,
+    "choices": [
+      "kikatiba, kwa sababu ajira serikalini ni fursa na si haki.",
+      "kikatiba, kwa sababu Rais ana mamlaka ya jumla ya kuweka kanuni za ajira kwa watumishi wa idara ya utendaji.",
+      "kinyume na katiba, kwa sababu Bunge, si Rais, ana mamlaka ya kudhibiti sheria na masharti ya ajira ya shirikisho.",
+      "kinyume na katiba, kwa sababu Rais hawezi kuwekea mipaka uhuru wa kuzungumza na kujumuika kwa watumishi wote watendaji."
+    ]
+  },
+  "Wanawake wawili waliishi katika nyumba ya chumba kimoja na mbwa 20. Mtembeza mbwa aliyeingia ndani ya nyumba hiyo alishtushwa na hali yao mbaya ya maisha. Kinyesi cha wanyama hao kiliwekwa ndani ya nyumba yote, kiliwekwa kwenye mazizi madogo na baadhi ya wanyama walikuwa wagonjwa. Mgeni aliita SPCA, jumuiya ya binafsi isiyo ya faida ya kibinadamu. Sheria ya serikali iliidhinisha jamii za kibinadamu kupokea wanyama waliodhulumiwa au waliopuuzwa kutoka kwa maafisa wa kudhibiti wanyama, kuwatunza na kuwapitisha nje. SPCA ilichukua wanyama walioteuliwa na maafisa. Maafisa hao kisha wakawakamata wanawake hao kwa kutelekeza wanyama. Katika kesi hiyo, mwendesha mashtaka hakuwa tayari, na hakimu alifutilia mbali mashtaka. Wanawake hao kisha waliwashtaki maafisa na SPCA chini ya 42 U.S.C. Â§ 1983 kwa ukiukaji wa haki za kiraia. Washitakiwa hao wa SPCA waliwasilisha ombi la kutupilia mbali kutokana na kutokuwepo kwa \"hatua ya serikali\" kwa upande wao. Je, kuna uwezekano mahakama ikakubali ombi la kutupilia mbali?|||Hapana, kwa sababu SPCA ilifanya kazi chini ya mamlaka ya sheria ya serikali na ilishirikiana na mamlaka za serikali kutekeleza majukumu yaliyoidhinishwa.|||Hapana, kwa sababu SPCA ilipangwa chini ya cheti cha kuanzishwa kwa shirika lisilo la faida ambacho kilitolewa na serikali.|||Ndiyo, kwa sababu hakukuwa na chochote kilichofanywa na jumuiya ya kibinadamu ambayo ilihusisha hatua za polisi.|||Ndiyo, kwa sababu wafanyakazi wa SPCA hawakutenda wakati wowote \"chini ya sheria\" katika matendo yao.": {
+    "source": "test",
+    "index": 166,
+    "choices": [
+      "Ndiyo, kwa sababu hakukuwa na chochote kilichofanywa na jumuiya ya kibinadamu ambayo ilihusisha hatua za polisi.",
+      "Ndiyo, kwa sababu wafanyakazi wa SPCA hawakutenda wakati wowote \"chini ya sheria\" katika matendo yao.",
+      "Hapana, kwa sababu SPCA ilipangwa chini ya cheti cha kuanzishwa kwa shirika lisilo la faida ambacho kilitolewa na serikali.",
+      "Hapana, kwa sababu SPCA ilifanya kazi chini ya mamlaka ya sheria ya serikali na ilishirikiana na mamlaka za serikali kutekeleza majukumu yaliyoidhinishwa."
+    ]
+  },
+  "Mmiliki wa ardhi anayemiliki majengo makubwa kwenye jiji. Tarehe 15, Januari, mmiliki wa ardhi alipangisha jengo kwa mpangaji kwa muda wa miaka 20 kwa malipo ya kodi ya $10,000 kwa mwezi. Mkataba wa upangishaji kati ya mmiliki wa ardhi na mpangaji ulieleza kwamba barua haitaruhusiwa “kuhamishia mkataba huu kwa yeyote isipokuwa kampuni yenye kiwando cha mkopo A’ kutoka kampuni inayojulikana ya upimaji wa mkopo. “ Mnamo Februari 1 ya mwaka uliofuata, mpangaji alikodisha eneo kwa kampuni ambayo haikuwa na kiwango cha mkopo kilichohitajika. Mkataba wa upangishaji ulikuwa wa kipindi cha miaka mitano, kwa kodi ya $15,000 kwa mwezi, yalilipwa na kampuni kwa mpangaji. Kwa nyongeza, kampuni ilikubali kungojea “kulingana na masharti yote ya mkataba kati ya mmiliki wa ardhi na mpangaji. “Ni ipi kati ya zifuatazo inaelezea kwa usahihi athari ya kisheria ya kifungu cha kutoshiriki kilichomo kwenye mkataba wa mmiliki wa ardhi?|||Ingawa mkataba wa mpangaji-kampuni ulisababisha uvunjaji wa mkataba kati ya mmiliki wa ardhi na mpangaji, mmiliki wa ardhi bado angehitaji kutambua uhalali wa uhamisho (wa eneo) kwenda kwa kampuni.|||Kifungu cha kutokushiriki hakikuwa na athari ya kisheria.|||Kifungu cha kutokushiriki kilifanya uhamisho kutoka kwa mpangaji kwenda kwa kampuni kuwa batili.|||Mkataba wa upangaji-kampuni haukusababisha uvunjaji wa mkataba kati ya mmiliki wa ardhi na mpangaji.": {
+    "source": "test",
+    "index": 167,
+    "choices": [
+      "Kifungu cha kutokushiriki hakikuwa na athari ya kisheria.",
+      "Kifungu cha kutokushiriki kilifanya uhamisho kutoka kwa mpangaji kwenda kwa kampuni kuwa batili.",
+      "Mkataba wa upangaji-kampuni haukusababisha uvunjaji wa mkataba kati ya mmiliki wa ardhi na mpangaji.",
+      "Ingawa mkataba wa mpangaji-kampuni ulisababisha uvunjaji wa mkataba kati ya mmiliki wa ardhi na mpangaji, mmiliki wa ardhi bado angehitaji kutambua uhalali wa uhamisho (wa eneo) kwenda kwa kampuni."
+    ]
+  },
+  "Mwanamke aliye na afya hapo awali mwenye umri wa miaka 27 anakuja kwenye idara ya dharura kwa sababu ya maumivu ya wastani hadi makali na uvimbe wa labia ya kushoto kwa muda wa siku 2. Anafanya ngono na hatumii kondomu mara kwa mara. Halijoto yake ni 37.2°C (99°F), mapigo ya moyo ni 92/dak, hali kupumua ni 18/dak, na shinikizo la damu ni 115/75 mm Hg. Uchunguzi wa fupanyonga unaonyesha kivimbe cha ukubwa wa 4 x 3-cm, chenye maumivu, ambacho kinasonga kuelekea kushoto ya labium majus kinachohatarisha ufunguzi wa uke. Je, ni ipi kati ya zifuatazo ni hatua ifuatayo inayofaa zaidi katika usimamizi?|||Kukata na kutoa kioevu|||Kumdunga sindano kwenye kivimbe kwa kuongozwa na mashine|||Kumpa metronidazole kwa njia ya mishipa|||Kumpa penicillin kwa njia ya mishipa": {
+    "source": "test",
+    "index": 168,
+    "choices": [
+      "Kumpa metronidazole kwa njia ya mishipa",
+      "Kumpa penicillin kwa njia ya mishipa",
+      "Kumdunga sindano kwenye kivimbe kwa kuongozwa na mashine",
+      "Kukata na kutoa kioevu"
+    ]
+  },
+  "Dk. A. Praise ameajiriwa kufanya tathmini iliyoamriwa na mahakama kwa mshtakiwa katika kesi ya jinai. Anajadili madhumuni ya tathmini na mshtakiwa ambaye anasema hataki kushirikiana. Kulingana na Miongozo Maalum ya Saikolojia ya Uchunguzi, Dk. Praise anapaswa:|||kuahirisha tathmini na kumshauri mshitakiwa awasiliane na wakili wake.|||kukataa kufanya tathmini isipokuwa apate kibali kilichotiwa saini kutoka kwa mshtakiwa.|||kukataa kufanya tathmini isipokuwa apate kibali kilichotiwa saini kutoka kwa wakili wa washitakiwa.|||kumkumbusha mshtakiwa kuwa hana chaguo kwani tathmini hiyo imeamriwa na mahakama.": {
+    "source": "test",
+    "index": 169,
+    "choices": [
+      "kumkumbusha mshtakiwa kuwa hana chaguo kwani tathmini hiyo imeamriwa na mahakama.",
+      "kukataa kufanya tathmini isipokuwa apate kibali kilichotiwa saini kutoka kwa mshtakiwa.",
+      "kukataa kufanya tathmini isipokuwa apate kibali kilichotiwa saini kutoka kwa wakili wa washitakiwa.",
+      "kuahirisha tathmini na kumshauri mshitakiwa awasiliane na wakili wake."
+    ]
+  },
+  "Mtu aliye katika hatua ya kuelewa upendeleo wa wazungu ya utambulisho wa rangi Nyeupe kwa sasa ________.|||Anachunguza maana ya kuwa Mzungu na kukabiliana na mapendeleo yako mwenyewe|||Anajaribu kutatua matatizo ya kimaadili yanayohusishwa na ufahamu wa ubaguzi wa mbari na rangi|||Anakuza ufahamu wa nafasi ya Wazungu katika kuendeleza ubaguzi wa rangi|||Hajui ubaguzi wa mbari na rangi": {
+    "source": "test",
+    "index": 170,
+    "choices": [
+      "Anakuza ufahamu wa nafasi ya Wazungu katika kuendeleza ubaguzi wa rangi",
+      "Hajui ubaguzi wa mbari na rangi",
+      "Anachunguza maana ya kuwa Mzungu na kukabiliana na mapendeleo yako mwenyewe",
+      "Anajaribu kutatua matatizo ya kimaadili yanayohusishwa na ufahamu wa ubaguzi wa mbari na rangi"
+    ]
+  },
+  "Wakati wowote wateja wake wanapoghairi miadi na Dk. Penny Pincher chini ya saa 24 baada ya miadi hiyo, Dk. Pincher hutoza bili kwa kampuni ya bima ya mteja kwa ada yake kamili ya kila saa. Mazoea haya ni:|||kinyume cha sheria lakini ya kimaadili.|||kinyume cha sheria na kinyume cha maadili.|||kisheria lakini kinyume cha maadili.|||legal and ethical.": {
+    "source": "test",
+    "index": 171,
+    "choices": [
+      "kinyume cha sheria na kinyume cha maadili.",
+      "kinyume cha sheria lakini ya kimaadili.",
+      "legal and ethical.",
+      "kisheria lakini kinyume cha maadili."
+    ]
+  },
+  "Mzazi asiye mlezi anaomba Dk. Maxine Miller, mwanasaikolojia wa shule, kumpa matokeo ya vipimo alivyomfanyia mtoto wake wa darasa la 5 hivi majuzi. Ikiwa Dk. Miller atatii ombi la baba, atakuwa ametenda:|||kinyume cha sheria lakini kimaadili.|||kinyume cha sheria na kinyume cha maadili.|||kisheria lakini kinyume cha maadili.|||kisheria na kimaadili.": {
+    "source": "test",
+    "index": 172,
+    "choices": [
+      "kisheria na kimaadili.",
+      "kisheria lakini kinyume cha maadili.",
+      "kinyume cha sheria na kinyume cha maadili.",
+      "kinyume cha sheria lakini kimaadili."
+    ]
+  },
+  "Kwa upande wa tathmini ya mpango wa mafunzo, Kirkpatrick (1976) anasisitiza kuwa vigezo vya _______ ni vigezo muhimu zaidi vya kutathmini lakini mara nyingi ndivyo vigumu zaidi kuvikuza na, kwa hivyo, vinatumika mara chache sana.|||kitabia|||kusoma|||majibu|||matokeo": {
+    "source": "test",
+    "index": 173,
+    "choices": [
+      "kusoma",
+      "kitabia",
+      "majibu",
+      "matokeo"
+    ]
+  },
+  "Je, ni kauli gani kati ya zifuatazo inaelezea vyema zaidi wajibu wa mtafiti kuhusu matumizi ya wanyama katika utafiti wa kisaikolojia?|||Kusababisha maumivu au mkazo kwa wanyama kunakubalika katika utafiti mradi tu kiwango kipunguzwe na maisha ya mnyama yakatishwe kwa haraka iwezekanavyo.|||Kusababisha maumivu au mkazo kwa wanyama kunakubalika katika utafiti tu wakati utaratibu mbadala (usio na uchungu) haupatikani na matumizi ya utaratibu huo yanathibitishwa na thamani ya utafiti.|||Wanyama hawapaswi kamwe kutumika katika utafiti ikiwa utaratibu wa utafiti utasababisha wahisi maumivu au mkazo.|||Wanyama hawapaswi kamwe kutumika katika utafiti wakati taratibu mbadala zinapatikana.": {
+    "source": "test",
+    "index": 174,
+    "choices": [
+      "Wanyama hawapaswi kamwe kutumika katika utafiti wakati taratibu mbadala zinapatikana.",
+      "Wanyama hawapaswi kamwe kutumika katika utafiti ikiwa utaratibu wa utafiti utasababisha wahisi maumivu au mkazo.",
+      "Kusababisha maumivu au mkazo kwa wanyama kunakubalika katika utafiti tu wakati utaratibu mbadala (usio na uchungu) haupatikani na matumizi ya utaratibu huo yanathibitishwa na thamani ya utafiti.",
+      "Kusababisha maumivu au mkazo kwa wanyama kunakubalika katika utafiti mradi tu kiwango kipunguzwe na maisha ya mnyama yakatishwe kwa haraka iwezekanavyo."
+    ]
+  },
+  "Je, BBC ilianza redio ya utangazaji mwaka gani?|||1917|||1922|||1925|||1927": {
+    "source": "test",
+    "index": 175,
+    "choices": [
+      "1917",
+      "1922",
+      "1925",
+      "1927"
+    ]
+  },
+  "Ni ipi kati ya zifuatazo SI mojawapo ya kategoria nne za mikakati ya mawasiliano ya kushawishi iliyotambuliwa na W. Timothy Coombs?|||kudharau|||kueka katika umbali|||kujiimarisha katika upendeleo|||kutokuwepo": {
+    "source": "test",
+    "index": 176,
+    "choices": [
+      "kujiimarisha katika upendeleo",
+      "kudharau",
+      "kueka katika umbali",
+      "kutokuwepo"
+    ]
+  },
+  "Ni chombo gani kati ya zifuatazo hakiwezi kushtaki kwa kashfa?|||Chumba cha ibada|||Kampuni inayouzwa kwa umma|||Mwanasiasa|||Taasisi ya serikali": {
+    "source": "test",
+    "index": 177,
+    "choices": [
+      "Mwanasiasa",
+      "Chumba cha ibada",
+      "Taasisi ya serikali",
+      "Kampuni inayouzwa kwa umma"
+    ]
+  },
+  "Je, ni shirika gani kati ya haya linaufanisi zaidi katika kuwasiliana na wateja mtandaoni?|||Coca-Cola|||Redbull|||Starbucks|||Wholefoods": {
+    "source": "test",
+    "index": 178,
+    "choices": [
+      "Starbucks",
+      "Coca-Cola",
+      "Wholefoods",
+      "Redbull"
+    ]
+  },
+  "Ni mwanzilishi gani wa mahusiano ya umma anayepewa sifa ya kuwa mtaalamu wa kwanza kusisitiza juu ya \"nafasi kwenye meza ya usimamizi\"?|||Arthur Page|||Carl Byoir|||Doris Fleischman|||Edward Bernays": {
+    "source": "test",
+    "index": 179,
+    "choices": [
+      "Carl Byoir",
+      "Edward Bernays",
+      "Doris Fleischman",
+      "Arthur Page"
+    ]
+  },
+  "Je, ni maelezo gani ambayo yanaelezea bora zaidi mtazamo wa Booth kuhusu ujenzi wa maarifa na marekebisho ya uhakiki katika Masomo ya Uchambuzi wa Usalama?|||Mfumo Unaoswali Marekebisho ya Uhakiki haitoi msingi wa hatua za kisiasa, ikiwa ni mchanganyo hatari wa msimamo mkali wa bandia, ambapo ujenzi wa maarifa ni mwelekeo wa siasa za ulimwengu badala ya kuwa nadharia fulani ya kisiasa.|||Mfumo Unaoswali Marekebisho ya Uhakiki na ujenzi wa maarifa ni nadharia zilizofafanuliwa vimbaya ambazo zinaweza kuelezwa kama mwelekeo wa kisiasa, inayotumika kwa maneno yasioeleweka ikikosa ubayana unaohitajika na wasomi katika masomo ya usalama ya kisasa.|||Ujenzi wa Maarifa ni mchanganyo hatari wa nadharia za kisiasa, uwiano. Mfumo Unaoswali marekibisho ya uhakiki ni mwekekeo wa kisiasa hasa, kuliko nadharia fulani kisiasa inayotumika.|||Ujenzi wa Maarifa unatoa nadharia kadhaa za kisiasa  zinazoweza kutumika kwa Masomo ya Uchambuzi wa Usalama lakini zote hizi zinakosa tetezi inayohitajika katika masomo ya usalama. Ujenzi wa maarifa wa Baadaye pia unakosaile kudumu inayohitajika na wasomi wa CSS.": {
+    "source": "test",
+    "index": 180,
+    "choices": [
+      "Mfumo Unaoswali Marekebisho ya Uhakiki haitoi msingi wa hatua za kisiasa, ikiwa ni mchanganyo hatari wa msimamo mkali wa bandia, ambapo ujenzi wa maarifa ni mwelekeo wa siasa za ulimwengu badala ya kuwa nadharia fulani ya kisiasa.",
+      "Ujenzi wa Maarifa unatoa nadharia kadhaa za kisiasa  zinazoweza kutumika kwa Masomo ya Uchambuzi wa Usalama lakini zote hizi zinakosa tetezi inayohitajika katika masomo ya usalama. Ujenzi wa maarifa wa Baadaye pia unakosaile kudumu inayohitajika na wasomi wa CSS.",
+      "Mfumo Unaoswali Marekebisho ya Uhakiki na ujenzi wa maarifa ni nadharia zilizofafanuliwa vimbaya ambazo zinaweza kuelezwa kama mwelekeo wa kisiasa, inayotumika kwa maneno yasioeleweka ikikosa ubayana unaohitajika na wasomi katika masomo ya usalama ya kisasa.",
+      "Ujenzi wa Maarifa ni mchanganyo hatari wa nadharia za kisiasa, uwiano. Mfumo Unaoswali marekibisho ya uhakiki ni mwekekeo wa kisiasa hasa, kuliko nadharia fulani kisiasa inayotumika."
+    ]
+  },
+  "Je, ni kwa njia gani matukio ya baada ya Vita Baridi yamedhoofisha mamlaka ya serikali?|||Kuongezeka kwa viwango vya utandawazi katika biashara, fedha, na harakati kumezalisha mazingira yanayofaa kwa TNC kwa kurahisisha wahalifu kuhamisha faida haramu na bidhaa haramu, kutoa huduma, na kusafirisha watu kuvuka mipaka.|||Machaguo haya yote|||Ongezeko kubwa la migogoro ya wenyewe kwa wenyewe duniani kote pia liliunda kizazi kipya cha wakimbizi. Wanadiaspora hawa wametoa uhusiano wa kifamilia na kikabila ambao husaidia kuwezesha biashara ya uhalifu ya kimataifa.|||Wimbi la mabadiliko ya kisiasa kuelekea demokrasia na mabadiliko ya kiuchumi hadi ubepari wa soko huria tangu miaka ya 1980 - jambo ambalo lilitokea mara kwa mara katika nchi hiyo hiyo - limedhoofisha uwezo wa serikali wa kutekeleza sheria na kuunda fursa mpya kwa vikundi vya uhalifu uliopangwa kupenya jamii. mpito.": {
+    "source": "test",
+    "index": 181,
+    "choices": [
+      "Kuongezeka kwa viwango vya utandawazi katika biashara, fedha, na harakati kumezalisha mazingira yanayofaa kwa TNC kwa kurahisisha wahalifu kuhamisha faida haramu na bidhaa haramu, kutoa huduma, na kusafirisha watu kuvuka mipaka.",
+      "Wimbi la mabadiliko ya kisiasa kuelekea demokrasia na mabadiliko ya kiuchumi hadi ubepari wa soko huria tangu miaka ya 1980 - jambo ambalo lilitokea mara kwa mara katika nchi hiyo hiyo - limedhoofisha uwezo wa serikali wa kutekeleza sheria na kuunda fursa mpya kwa vikundi vya uhalifu uliopangwa kupenya jamii. mpito.",
+      "Ongezeko kubwa la migogoro ya wenyewe kwa wenyewe duniani kote pia liliunda kizazi kipya cha wakimbizi. Wanadiaspora hawa wametoa uhusiano wa kifamilia na kikabila ambao husaidia kuwezesha biashara ya uhalifu ya kimataifa.",
+      "Machaguo haya yote"
+    ]
+  },
+  "Je, ni nini sababu za ugaidi?|||Demokrasia na utaifa huzuia fursa ya ugaidi: utaifa hutoa nguvu ya kiitikadi ya kuunganisha tofauti za kikabila, na demokrasia inaruhusu kuelezea malalamiko kwa njia ya kujenga. Ndani ya uchambuzi huu mataifa yenye sifa hafifu za kidemokrasia na utaifa yanaweza kutoa hali zinazochangia maendeleo ya ugaidi.|||Miundo ya serikali isiyo ya kidemokrasia yenye sifa ya mfumo dhabiti wa serikali kuu na mbinu kandamizi hufungua mwanya wa kutoridhika kwa watu wengi kubadilika kuwa shughuli za kigaidi zinazofanya kazi kwa nia ya kukomesha mfumo wa kisiasa. Wakati fursa za ushiriki wa watu wengi katika demokrasia huria huzuia kutoridhika kwa watu wengi kuelezewa kwa njia hasi.|||Shughuli za soko la kibepari na mapinduzi ya kiteknolojia na mawasiliano yamezidi kuingilia tamaduni na jamii za jadi. Ukosefu wa usawa wa kimaendeleo na kuongezeka kwa kutengwa kwa baadhi ya makabila au makundi ya kiuchumi katika idadi ya watu, pamoja na kuongezeka kwa ufahamu wa kunyang'anywa kwao kunatoa sababu za kukuza ugaidi.|||Ugaidi miongoni mwa makundi ya Kiislamu huendelezwa kwa misingi ya kikabila kinyume na usekula unaoambatana na usasa. Pengine inashangaza kwamba wakati ugaidi ulipangwa karibu na tishio kwa jamii ya Kiislamu katika Mashariki ya Kati, kukabiliana na tishio kumesababisha makundi barani Ulaya kuhisi kutishiwa na uingiliaji wa Waislamu kwenye maadili ya Magharibi.": {
+    "source": "test",
+    "index": 182,
+    "choices": [
+      "Demokrasia na utaifa huzuia fursa ya ugaidi: utaifa hutoa nguvu ya kiitikadi ya kuunganisha tofauti za kikabila, na demokrasia inaruhusu kuelezea malalamiko kwa njia ya kujenga. Ndani ya uchambuzi huu mataifa yenye sifa hafifu za kidemokrasia na utaifa yanaweza kutoa hali zinazochangia maendeleo ya ugaidi.",
+      "Ugaidi miongoni mwa makundi ya Kiislamu huendelezwa kwa misingi ya kikabila kinyume na usekula unaoambatana na usasa. Pengine inashangaza kwamba wakati ugaidi ulipangwa karibu na tishio kwa jamii ya Kiislamu katika Mashariki ya Kati, kukabiliana na tishio kumesababisha makundi barani Ulaya kuhisi kutishiwa na uingiliaji wa Waislamu kwenye maadili ya Magharibi.",
+      "Shughuli za soko la kibepari na mapinduzi ya kiteknolojia na mawasiliano yamezidi kuingilia tamaduni na jamii za jadi. Ukosefu wa usawa wa kimaendeleo na kuongezeka kwa kutengwa kwa baadhi ya makabila au makundi ya kiuchumi katika idadi ya watu, pamoja na kuongezeka kwa ufahamu wa kunyang'anywa kwao kunatoa sababu za kukuza ugaidi.",
+      "Miundo ya serikali isiyo ya kidemokrasia yenye sifa ya mfumo dhabiti wa serikali kuu na mbinu kandamizi hufungua mwanya wa kutoridhika kwa watu wengi kubadilika kuwa shughuli za kigaidi zinazofanya kazi kwa nia ya kukomesha mfumo wa kisiasa. Wakati fursa za ushiriki wa watu wengi katika demokrasia huria huzuia kutoridhika kwa watu wengi kuelezewa kwa njia hasi."
+    ]
+  },
+  "Je, ni gani kati ya haya yafuatayo ambayo haikuibuka kama mwelekeo wa biashara ya ulinzi katika karne ya 20?|||Biashara ya silaha inabadilika kutoka kuwa ya kibinafsi hadi biashara inayodhibitiwa na serikali.|||Kuongezeka kwa biashara ya ulinzi.|||Kuongezeka kwa idadi na anuwai ya silaha zinazouzwa.|||Kupungua kwa biashara ya silaha.": {
+    "source": "test",
+    "index": 183,
+    "choices": [
+      "Biashara ya silaha inabadilika kutoka kuwa ya kibinafsi hadi biashara inayodhibitiwa na serikali.",
+      "Kuongezeka kwa biashara ya ulinzi.",
+      "Kupungua kwa biashara ya silaha.",
+      "Kuongezeka kwa idadi na anuwai ya silaha zinazouzwa."
+    ]
+  },
+  "Tangu mwisho wa Vita Baridi, matumizi ya diplomasia ya kulazimishwa na mataifa ya Magharibi yamebadikaje?|||Dipomasia ya kulazimishwa imethibitisha zana yenye mafanikio ya sera na ambayo ni muhimu kwa udhibiti wa migogoro. Mafanikio ya mipango ya zamani ya sera katika jumuiya ya baada ya 9/11 yameimarisha mwelekeo kuelekea diplomasia ya kulazimishwa kwa kuongeza nia ya kisiasa ya Marekani ili kukabiliana na ugaidi wa mauaji makuwa katika mataifa yaliyoshindwa.|||Kuangamia kwa mgawanyiko wa kiitikadi wa jamii ya kimataifa katka Vita Baridi, badala ya kusababisha kupunguzwa kwa uhasama, kumeacha historia isiyo imara ambapo sera ya nguvu na kulipiza kisasi kwa wingi inaendelea kuwa tishio la kweli. Hatari ya kuongezeka kwa kasi isiyodhibitiwa bado inabakia lakini katika hali tofauti; ugaidi wa majeruhi wengi, uambukizo kutoka kwa mataifa yaliyoshindwa na watendaji wasio wa serikali wanaotaka kupata WMD ni jimbo la msingi la mataifa na linahitaji majibu kwa njia ya kuingilia kijeshi.|||Mazingira mazuri ya kisiasa ya kijiografia, yenye sifa ya ukuu wa kijeshi wa Magharibi na hatari ndogo ya uingiliaji kati wa madaraka makubwa, yamezalisha shinikizo na motisha kwa watunga sera wa Magharibi kukuza ajenda zao za sera, na kudhibiti mizozo ya kivita kutoka kwa majimbo dhaifu na nchi zinazoshindwa.|||Mazingira ya kijiografia na kisiasa yaliyo na uhasama yamehimiza mataifa kutafuta mikakati ya kijeshi ili kupata maslahi yao. Matumizi ya vurugu badala ya diplomasia au motisha imekuwa jibu la msingi kwa vitisho, iwe hivi vinaletwa na mataifa mengine, uhaba wa raslimali, magonjwa ya mlipuko, au vitisho vingine visivyo vya kawaida.": {
+    "source": "test",
+    "index": 184,
+    "choices": [
+      "Dipomasia ya kulazimishwa imethibitisha zana yenye mafanikio ya sera na ambayo ni muhimu kwa udhibiti wa migogoro. Mafanikio ya mipango ya zamani ya sera katika jumuiya ya baada ya 9/11 yameimarisha mwelekeo kuelekea diplomasia ya kulazimishwa kwa kuongeza nia ya kisiasa ya Marekani ili kukabiliana na ugaidi wa mauaji makuwa katika mataifa yaliyoshindwa.",
+      "Mazingira mazuri ya kisiasa ya kijiografia, yenye sifa ya ukuu wa kijeshi wa Magharibi na hatari ndogo ya uingiliaji kati wa madaraka makubwa, yamezalisha shinikizo na motisha kwa watunga sera wa Magharibi kukuza ajenda zao za sera, na kudhibiti mizozo ya kivita kutoka kwa majimbo dhaifu na nchi zinazoshindwa.",
+      "Kuangamia kwa mgawanyiko wa kiitikadi wa jamii ya kimataifa katka Vita Baridi, badala ya kusababisha kupunguzwa kwa uhasama, kumeacha historia isiyo imara ambapo sera ya nguvu na kulipiza kisasi kwa wingi inaendelea kuwa tishio la kweli. Hatari ya kuongezeka kwa kasi isiyodhibitiwa bado inabakia lakini katika hali tofauti; ugaidi wa majeruhi wengi, uambukizo kutoka kwa mataifa yaliyoshindwa na watendaji wasio wa serikali wanaotaka kupata WMD ni jimbo la msingi la mataifa na linahitaji majibu kwa njia ya kuingilia kijeshi.",
+      "Mazingira ya kijiografia na kisiasa yaliyo na uhasama yamehimiza mataifa kutafuta mikakati ya kijeshi ili kupata maslahi yao. Matumizi ya vurugu badala ya diplomasia au motisha imekuwa jibu la msingi kwa vitisho, iwe hivi vinaletwa na mataifa mengine, uhaba wa raslimali, magonjwa ya mlipuko, au vitisho vingine visivyo vya kawaida."
+    ]
+  },
+  "Mtu mpya' wa miaka ya 1980 alidaiwa kuwa:|||aliye na jinsia mbili na anajivunia|||anayeweza kukimu mahitaji ya familia  na kutegemewa|||mwenye utoto, mkali, na jeuri|||nyeti, kujali, na mwenye hisia": {
+    "source": "test",
+    "index": 185,
+    "choices": [
+      "nyeti, kujali, na mwenye hisia",
+      "mwenye utoto, mkali, na jeuri",
+      "anayeweza kukimu mahitaji ya familia  na kutegemewa",
+      "aliye na jinsia mbili na anajivunia"
+    ]
+  },
+  "Weber alifafanua 'hali ya tabaka' kuwa:|||mtindo wa maisha wa tabaka la kijamii, kama inavyofafanuliwa na mifumo ya matumizi|||nafasi ya mtu katika soko la mitaji, bidhaa na kazi, kulingana na rasilimali zao za kiuchumi|||ufahamu wa kikundi cha kijamii juu ya hali yao na nafasi za maisha|||unyanyasaji wa tabaka la wafanyakazi na waajiri wao mabepari": {
+    "source": "test",
+    "index": 186,
+    "choices": [
+      "unyanyasaji wa tabaka la wafanyakazi na waajiri wao mabepari",
+      "ufahamu wa kikundi cha kijamii juu ya hali yao na nafasi za maisha",
+      "nafasi ya mtu katika soko la mitaji, bidhaa na kazi, kulingana na rasilimali zao za kiuchumi",
+      "mtindo wa maisha wa tabaka la kijamii, kama inavyofafanuliwa na mifumo ya matumizi"
+    ]
+  },
+  "Kuanzishwa kwa kanuni za soko kwenye sera ya elimu katika miaka ya 1980 kulisababisha:|||kuongezeka kwa udhibiti wa serikali kupitia upimaji na ukaguzi wa kitaifa|||kupunguzika kwa uchaguzi wa shule kutoka kwa wazazi|||ufadhili zaidi kwa wanafunzi walio kwenye elimu ya juu|||ugawaji wa mamlaka na udhibiti wa bajeti kwa LEA": {
+    "source": "test",
+    "index": 187,
+    "choices": [
+      "ufadhili zaidi kwa wanafunzi walio kwenye elimu ya juu",
+      "ugawaji wa mamlaka na udhibiti wa bajeti kwa LEA",
+      "kupunguzika kwa uchaguzi wa shule kutoka kwa wazazi",
+      "kuongezeka kwa udhibiti wa serikali kupitia upimaji na ukaguzi wa kitaifa"
+    ]
+  },
+  "Pilcher (1999) itambua vipindi vya soap operas kama 'aina ya kike' ya vyombo vya habari kwa sababu:|||wanatenga wanawake na kuvutia athira ya wanaume|||wanawakilisha taswira za wanawake kama waliofugwa na pia waliohuru|||wazalishaji wa kike wa televisheni wana uwezekano zaidi wa kufanya kazi katika sehumu hii|||wengi wa waigizaji katika soap operas ni wanawake": {
+    "source": "test",
+    "index": 188,
+    "choices": [
+      "wengi wa waigizaji katika soap operas ni wanawake",
+      "wanawakilisha taswira za wanawake kama waliofugwa na pia waliohuru",
+      "wanatenga wanawake na kuvutia athira ya wanaume",
+      "wazalishaji wa kike wa televisheni wana uwezekano zaidi wa kufanya kazi katika sehumu hii"
+    ]
+  },
+  "Ni ipi kati ya yafuatayo sio mkakati unaotumika na serikali ya Kihafidhina ya mwaka wa 1979 ili kupunguza nguvu za vyama vya wafanyikazi?|||kuharamisha kitendo cha upili (katika kuwaunga mkono wafanyikazi kwingineko)|||kuharamisha vitendo vyote vya mgomo|||kupiga marufuku migomo ya kisiasa ambayo haikuwa kimsingi ikihusika na hali za kikazi za wafanyikazi|||kuwekea vikwazo maandamano": {
+    "source": "test",
+    "index": 189,
+    "choices": [
+      "kuharamisha vitendo vyote vya mgomo",
+      "kuwekea vikwazo maandamano",
+      "kupiga marufuku migomo ya kisiasa ambayo haikuwa kimsingi ikihusika na hali za kikazi za wafanyikazi",
+      "kuharamisha kitendo cha upili (katika kuwaunga mkono wafanyikazi kwingineko)"
+    ]
+  },
+  "Mafia ni mfano wa:|||ugaidi wa kimataifa|||uhalifu usio wa kutumia nguvu|||uhalifu wa magenge|||upotovu usio wa kihalifu": {
+    "source": "test",
+    "index": 190,
+    "choices": [
+      "uhalifu usio wa kutumia nguvu",
+      "uhalifu wa magenge",
+      "upotovu usio wa kihalifu",
+      "ugaidi wa kimataifa"
+    ]
+  },
+  "Je, ni nini matokeo ya Vita Baridi kwa upekekee wa Marekani?|||Ilimaliza ushawishi wa upekee wa Marekani kabisa|||Upanuzi wa mamlaka ya Marekani ulipinga mawazo ya kimsingi ya upekee duniani kote|||Upekee uliimarishwa na hadhi ya Marekani kama 'kiongozi wa ulimwengu huru'|||Zote b na c": {
+    "source": "test",
+    "index": 191,
+    "choices": [
+      "Ilimaliza ushawishi wa upekee wa Marekani kabisa",
+      "Upekee uliimarishwa na hadhi ya Marekani kama 'kiongozi wa ulimwengu huru'",
+      "Upanuzi wa mamlaka ya Marekani ulipinga mawazo ya kimsingi ya upekee duniani kote",
+      "Zote b na c"
+    ]
+  },
+  "Katika miaka ya mwanzo ya utawala wake, sera za kigeni na ulinzi za Reagan zilisisitiza|||antikomunisti.|||biashara huria ya kimataifa.|||détente.|||upokonyaji silaha za nyuklia.": {
+    "source": "test",
+    "index": 192,
+    "choices": [
+      "upokonyaji silaha za nyuklia.",
+      "détente.",
+      "antikomunisti.",
+      "biashara huria ya kimataifa."
+    ]
+  },
+  "Kwa nini upekee wa Marekani unaweza kusababisha upinzani kwa serikali ya ulimwengu?|||Inaonelea Umoja wa Mataifa kama mfumo wa kutosha wa utawala wa kimataifa|||Inaonelea serikali ya ulimwengu kuwa isiyowezekana|||Upinzani wake wa jumla dhidi ya takwimu unapinga serikali kuu|||zisizo hapo": {
+    "source": "test",
+    "index": 193,
+    "choices": [
+      "Upinzani wake wa jumla dhidi ya takwimu unapinga serikali kuu",
+      "Inaonelea serikali ya ulimwengu kuwa isiyowezekana",
+      "Inaonelea Umoja wa Mataifa kama mfumo wa kutosha wa utawala wa kimataifa",
+      "zisizo hapo"
+    ]
+  },
+  "Je, mbinu ya dhana kwa sera ya kigeni ya Marekani wakati wa Vita Baridi hutofautiana vipi na akaunti za Mwanahalisi za kipindi hicho hicho?|||Wanatilia mkazo zaidi itikadi na imani|||Wanatilia mkazo zaidi mambo ya kiuchumi|||Wanatilia mkazo zaidi siasa za kijiografia|||Wanaweka mkazo zaidi juu ya masilahi ya nyenzo na nguvu": {
+    "source": "test",
+    "index": 194,
+    "choices": [
+      "Wanatilia mkazo zaidi mambo ya kiuchumi",
+      "Wanaweka mkazo zaidi juu ya masilahi ya nyenzo na nguvu",
+      "Wanatilia mkazo zaidi itikadi na imani",
+      "Wanatilia mkazo zaidi siasa za kijiografia"
+    ]
+  },
+  "Je, ni kwa njia gani utawala wa George W Bush ulibadilisha mwelekeo wa sera za nje za Marekani?|||Iliongeza msaada wa kimataifa kwa Marekani|||Ilipanua NATO kujumuisha majimbo ya zamani ya Soviet|||Ilizingatia mtindo wa kibinafsi zaidi wa uongozi|||It criticized international organizations, rather than trying to strengthen them": {
+    "source": "test",
+    "index": 195,
+    "choices": [
+      "It criticized international organizations, rather than trying to strengthen them",
+      "Ilipanua NATO kujumuisha majimbo ya zamani ya Soviet",
+      "Ilizingatia mtindo wa kibinafsi zaidi wa uongozi",
+      "Iliongeza msaada wa kimataifa kwa Marekani"
+    ]
+  },
+  "Jumuiya kubwa zaidi ya Latino nchini Marekani ni:|||Mbrazil|||Mkuba |||Mmeksiko |||Mpuertoriko": {
+    "source": "test",
+    "index": 196,
+    "choices": [
+      "Mpuertoriko",
+      "Mmeksiko ",
+      "Mkuba ",
+      "Mbrazil"
+    ]
+  },
+  "Virusi vya arena zinapatikana wapi ulimwenguni?|||Afrika na Kusini Amerika|||Kaskazini Amerika|||SE Asia|||Urusi": {
+    "source": "test",
+    "index": 197,
+    "choices": [
+      "SE Asia",
+      "Urusi",
+      "Afrika na Kusini Amerika",
+      "Kaskazini Amerika"
+    ]
+  },
+  "Hatari kubwa zaidi ya kuambukizwa VVU kati ya watumiaji wa dawa za kulevya nchini Merika iko katika:|||Kusini mwa California|||Marekani ya kati (Kansas, Missouri n.k.)|||Pacific ya Kaskazini Magharibi (Washington, Oregon, Idaho)|||Pwani ya mashariki": {
+    "source": "test",
+    "index": 198,
+    "choices": [
+      "Pwani ya mashariki",
+      "Marekani ya kati (Kansas, Missouri n.k.)",
+      "Kusini mwa California",
+      "Pacific ya Kaskazini Magharibi (Washington, Oregon, Idaho)"
+    ]
+  },
+  "Hatari ya kupata VVU kutoka kwa kitengo cha damu nchini Marekani sasa ni:|||Kitengo 1 kwa milioni 2|||Vitengo 1/10,000|||Vitengo 1/200,000|||Vitengo 1/500,000": {
+    "source": "test",
+    "index": 199,
+    "choices": [
+      "Vitengo 1/10,000",
+      "Vitengo 1/200,000",
+      "Vitengo 1/500,000",
+      "Kitengo 1 kwa milioni 2"
+    ]
+  }
+}
