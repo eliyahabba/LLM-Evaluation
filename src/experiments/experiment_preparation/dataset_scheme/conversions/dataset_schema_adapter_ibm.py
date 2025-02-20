@@ -450,22 +450,26 @@ class SchemaConverter:
         }
 
     def _get_guestion_index(self, df_map, row):
+        """Find matching question and choices in the mapping DataFrame."""
         try:
+            # Clean and normalize row choices
             row_choices = [answer.split(". ")[1] for answer in row['options']]
+            row_choices_set = set(row_choices)  # Convert to set for comparison
             self.logger.debug(f"Row choices: {row_choices}")
             
+            # First find questions that match
             question_mask = df_map['question'] == row['question']
             self.logger.debug(f"Question: {row['question']}")
             self.logger.debug(f"Number of matching questions: {question_mask.sum()}")
-            
-            row_choices_str = str(sorted(row_choices))
-            self.logger.debug(f"Sorted choices string: {row_choices_str}")
-            
-            choices_mask = df_map['choices'].apply(
-                lambda x: str(sorted(x if isinstance(x, list) else x)) == row_choices_str)
-            self.logger.debug(f"Number of matching choices: {choices_mask.sum()}")
-            
-            matches = df_map[question_mask & choices_mask]
+
+            # Then check if any of these questions have matching choices
+            def compare_choices(df_choices):
+                # Convert df choices to set for comparison
+                df_choices_set = set(df_choices if isinstance(df_choices, list) else df_choices.split(", "))
+                return df_choices_set == row_choices_set
+
+            # Find matches where both question and choices match
+            matches = df_map[question_mask & df_map['choices'].apply(compare_choices)]
             self.logger.debug(f"Total matches found: {len(matches)}")
 
             if len(matches) == 0:
@@ -473,21 +477,21 @@ class SchemaConverter:
                 self.logger.warning(f"Sample of df_map:\n{df_map.head()}")
                 self.logger.warning("Attempting to find questions with different choices")
 
-                question_mask = df_map['question'] == row['question']
-                self.logger.warning(f"Questions with same text found: {question_mask.sum()}")
+                # Log all questions with matching text
+                question_matches = df_map[question_mask]
+                self.logger.warning(f"Questions with same text found: {len(question_matches)}")
 
-                choices_in_df = df_map[question_mask]['choices'].apply(
-                    lambda x: str(sorted(x if isinstance(x, list) else x)))
-                self.logger.warning(f"All choices found for this question:\n{choices_in_df.tolist()}")
-
-                self.logger.warning(f"Original row choices: {row_choices}")
-                self.logger.warning("Comparing with existing choices in df_map:")
-                for i, df_row in df_map[question_mask].iterrows():
-                    self.logger.warning(f"Index {i} - choices: {df_row['choices']}")
+                # Log all choices for matching questions
+                for i, df_row in question_matches.iterrows():
+                    df_choices = df_row['choices']
+                    df_choices_set = set(df_choices if isinstance(df_choices, list) else df_choices.split(", "))
+                    self.logger.warning(f"Index {i} - choices in df: {sorted(df_choices_set)}")
+                    self.logger.warning(f"Row choices: {sorted(row_choices_set)}")
+                    self.logger.warning(f"Sets equal: {df_choices_set == row_choices_set}")
+                    self.logger.warning(f"Difference: {df_choices_set.symmetric_difference(row_choices_set)}")
 
                 self.logger.warning("No matching question-choices combination found, returning -1")
-                return -1
-
+                return -1, 'test'  # Default to 'test' split when no match found
 
             match_data = matches.iloc[0]
             self.logger.debug(f"Match found - index: {match_data['index']}, source: {match_data['source']}")
