@@ -3,6 +3,8 @@ import concurrent.futures
 import logging
 from pathlib import Path
 from typing import List, Optional
+from multiprocessing import Process
+import numpy as np
 
 from config.get_config import Config
 from constants import ProcessingConstants
@@ -98,61 +100,93 @@ class UnifiedDatasetProcessor:
             return []
 
     def process_all_files(self):
-        """Process all new files from the source repository."""
+        """Process all new files using both process and thread pools."""
         try:
-            # Get list of new files
             new_files = self.downloader.get_new_files()
             if not new_files:
                 self.downloader.logger.info("No new files to process")
                 return
 
-            processed_files = []  # Collect all processed files
-
-            # Process files sequentially with ThreadPoolExecutor instead of ProcessPoolExecutor
-            with concurrent.futures.ThreadPoolExecutor(
-                    max_workers=self.downloader.num_workers
-            ) as executor:
-                futures = {
-                    executor.submit(self.process_single_file, f): f
-                    for f in new_files
-                }
-
+            # Use ProcessPoolExecutor for file batches
+            with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.NUM_PROCESSES) as process_executor:
+                # Split files into batches
+                file_batches = np.array_split(new_files, ProcessingConstants.NUM_PROCESSES)
+                
+                # Submit each batch to a separate process
+                futures = []
+                for batch in file_batches:
+                    futures.append(process_executor.submit(self._process_file_batch, batch))
+                
+                # Collect results
+                all_processed_files = []
                 for future in concurrent.futures.as_completed(futures):
-                    file_path = futures[future]
                     try:
-                        # Collect results from each worker
-                        result_files = future.result()
-                        processed_files.extend(result_files)  # Add to our collection
-                        self.downloader.logger.info(
-                            f"Processed {file_path} into {len(result_files)} output files"
-                        )
+                        processed_files = future.result()
+                        all_processed_files.extend(processed_files)
+                        self.logger.info(f"Batch processed, got {len(processed_files)} files")
                     except Exception as e:
-                        self.downloader.logger.error(f"Error processing {file_path}: {e}")
-                        self.downloader.logger.error(f"Exception details: {str(e)}")
+                        self.logger.error(f"Batch processing error: {e}")
                         import traceback
-                        self.downloader.logger.error(f"Traceback: {traceback.format_exc()}")
+                        self.logger.error(f"Traceback: {traceback.format_exc()}")
 
-            # After all files are processed, deduplicate only new files
-            if processed_files:  # Use collected files instead of self.files_processed_this_run
-                self.logger.info("Starting deduplication of newly processed files")
-                if not self.deduplicator.deduplicate_files(set(processed_files)):
-                    self.logger.error("Deduplication failed")
+                # After all batches are processed, deduplicate
+                if all_processed_files:
+                    self.logger.info(f"Starting deduplication of {len(all_processed_files)} files")
+                    if not self.deduplicator.deduplicate_files(set(all_processed_files)):
+                        self.logger.error("Deduplication failed")
 
         except Exception as e:
             self.logger.error(f"Error in process_all_files: {e}")
             import traceback
             self.logger.error(f"Traceback: {traceback.format_exc()}")
-        # finally:
-        #     # Cleanup temp directory
-        #     self.downloader.cleanup_temp_dir(force=True)
+
+    def _process_file_batch(self, file_batch):
+        """Process a batch of files using thread pool for I/O operations."""
+        processed_files = []
+        
+        # Use ThreadPoolExecutor for I/O operations within each process
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.downloader.num_workers) as thread_executor:
+            futures = {
+                thread_executor.submit(self.process_single_file, f): f
+                for f in file_batch
+            }
+            
+            for future in concurrent.futures.as_completed(futures):
+                file_path = futures[future]
+                try:
+                    result = future.result()
+                    processed_files.extend(result)
+                    self.logger.info(f"Processed {file_path} into {len(result)} files")
+                except Exception as e:
+                    self.logger.error(f"Error processing {file_path}: {e}")
+                    import traceback
+                    self.logger.error(f"Traceback: {traceback.format_exc()}")
+
+        return processed_files
+
+
+def process_batch_files(file_batch):
+    processor = UnifiedDatasetProcessor(
+        source_repo=ProcessingConstants.SOURCE_REPO,
+        output_repo=ProcessingConstants.OUTPUT_REPO,
+        input_dir=ProcessingConstants.INPUT_DATA_DIR,
+        output_dir=ProcessingConstants.OUTPUT_DATA_DIR,
+        num_workers=ProcessingConstants.DEFAULT_NUM_WORKERS,
+        batch_size=ProcessingConstants.DEFAULT_BATCH_SIZE,
+        token=TOKEN
+    )
+    
+    # Process this batch of files
+    for file in file_batch:
+        processor.process_single_file(file)
 
 
 if __name__ == "__main__":
     processor = UnifiedDatasetProcessor(
         source_repo=ProcessingConstants.SOURCE_REPO,
         output_repo=ProcessingConstants.OUTPUT_REPO,
-        input_dir=ProcessingConstants.INPUT_DATA_DIR,    # For HF downloads
-        output_dir=ProcessingConstants.OUTPUT_DATA_DIR,  # For processed files
+        input_dir=ProcessingConstants.INPUT_DATA_DIR,
+        output_dir=ProcessingConstants.OUTPUT_DATA_DIR,
         num_workers=ProcessingConstants.DEFAULT_NUM_WORKERS,
         batch_size=ProcessingConstants.DEFAULT_BATCH_SIZE,
         token=TOKEN
