@@ -76,6 +76,7 @@ class SchemaConverter:
         self._load_models_metadata()
         self._template_cache = {}  # Cache for templates
         self._index_map_cache = {}  # Cache for index map
+        self.logger = None  # Assuming a logger is set up
 
     def _load_models_metadata(self) -> None:
         """Load models metadata from file."""
@@ -192,26 +193,42 @@ class SchemaConverter:
 
     def convert_row(self, row: pd.Series, probs: bool = True, logger: Optional = None) -> Dict:
         """Convert a single DataFrame row to schema format."""
-        task_data = row['task_data']
-        recipe = self._parse_config_string(row['run_unitxt_recipe'])
-        combined_strings = row['run_id'] + row['id']
-        evaluation_id = hashlib.sha256(combined_strings.encode()).hexdigest()
+        try:
+            task_data = row['task_data']
+            if logger:
+                logger.debug(f"Task data: {task_data}")
+            
+            recipe = self._parse_config_string(row['run_unitxt_recipe'])
+            if logger:
+                logger.debug(f"Recipe: {recipe}")
+            
+            combined_strings = row['run_id'] + row['id']
+            evaluation_id = hashlib.sha256(combined_strings.encode()).hexdigest()
 
-        model_section = self._build_model_section(row)
-        prompt_section = self._build_prompt_section(task_data, recipe, logger=logger)
-        instance_section = self._build_instance_section(row, task_data, recipe, probs)
-        output_section = self._build_output_section(row, probs)
-        evaluation_section = self._build_evaluation_section(task_data, row)
-        schema = {
-            "evaluation_id": evaluation_id,
-            "model": model_section,
-            "prompt_config": prompt_section,
-            "instance": instance_section,
-            "output": output_section,
-            "evaluation": evaluation_section
-        }
+            model_section = self._build_model_section(row)
+            prompt_section = self._build_prompt_section(task_data, recipe, logger=logger)
+            instance_section = self._build_instance_section(row, task_data, recipe, probs)
+            output_section = self._build_output_section(row, probs)
+            evaluation_section = self._build_evaluation_section(task_data, row)
+            
+            schema = {
+                "evaluation_id": evaluation_id,
+                "model": model_section,
+                "prompt_config": prompt_section,
+                "instance": instance_section,
+                "output": output_section,
+                "evaluation": evaluation_section
+            }
 
-        return schema
+            return schema
+        
+        except Exception as e:
+            if logger:
+                logger.error(f"Error in convert_row: {str(e)}")
+                logger.error(f"Row data: {row.to_dict()}")
+                import traceback
+                logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
 
     def _parse_config_string(self, config_string: str) -> Dict:
         """Parse configuration string to dictionary."""
@@ -423,16 +440,40 @@ class SchemaConverter:
         }
 
     def _get_guestion_index(self, df_map, row):
-        row_choices = [answer.split(". ")[1] for answer in row['options']]
-        question_mask = df_map['question'] == row['question']
-        row_choices_str = str(sorted(row_choices))
-        choices_mask = df_map['choices'].apply(
-            lambda x: str(sorted(x if isinstance(x, list) else x)) == row_choices_str)
-        matches = df_map[question_mask & choices_mask]
-
-        if len(matches) == 0:
-            return -1
-        return matches.iloc[0]['index'], matches.iloc[0]['source']
+        try:
+            row_choices = [answer.split(". ")[1] for answer in row['options']]
+            self.logger.debug(f"Row choices: {row_choices}")
+            
+            question_mask = df_map['question'] == row['question']
+            self.logger.debug(f"Question: {row['question']}")
+            self.logger.debug(f"Number of matching questions: {question_mask.sum()}")
+            
+            row_choices_str = str(sorted(row_choices))
+            self.logger.debug(f"Sorted choices string: {row_choices_str}")
+            
+            choices_mask = df_map['choices'].apply(
+                lambda x: str(sorted(x if isinstance(x, list) else x)) == row_choices_str)
+            self.logger.debug(f"Number of matching choices: {choices_mask.sum()}")
+            
+            matches = df_map[question_mask & choices_mask]
+            self.logger.debug(f"Total matches found: {len(matches)}")
+            
+            if len(matches) == 0:
+                self.logger.warning(f"No matches found for question: {row['question']}")
+                self.logger.warning(f"Sample of df_map:\n{df_map.head()}")
+                return -1  # This is where we return -1
+            
+            match_data = matches.iloc[0]
+            self.logger.debug(f"Match found - index: {match_data['index']}, source: {match_data['source']}")
+            return match_data['index'], match_data['source']
+        
+        except Exception as e:
+            self.logger.error(f"Error in _get_guestion_index: {str(e)}")
+            self.logger.error(f"Row data: {row}")
+            self.logger.error(f"DataFrame map shape: {df_map.shape}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
 
     def _build_output_section(self, row: pd.Series, probs: bool) -> Dict:
         """Build output section of schema."""
