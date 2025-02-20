@@ -207,6 +207,12 @@ class SchemaConverter:
             task_data = row['task_data']
             if logger:
                 logger.debug(f"Task data: {task_data}")
+            if isinstance(task_data, dict):
+                # take the 0 key
+                # assert there is only 1 key
+                assert len(task_data) == 1
+                task_data = task_data[list(task_data.keys())[0]]
+
             
             recipe = self._parse_config_string(row['run_unitxt_recipe'])
             if logger:
