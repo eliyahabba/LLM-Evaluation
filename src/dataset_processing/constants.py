@@ -7,7 +7,7 @@ class ProcessingConstants:
     # Processing batch sizes and limits
     DEFAULT_BATCH_SIZE = 10
     DEFAULT_NUM_WORKERS = 1
-    DEFAULT_NUM_BATCHES = 10  # Number of batches to process before stopping
+    DEFAULT_NUM_BATCHES = 10
     
     # Directory structure
     TEMP_DIR_NAME = "temp"
@@ -16,9 +16,13 @@ class ProcessingConstants:
     PROCESSED_FILES_RECORD = "processed_files.txt"
     
     # File paths
-    DEFAULT_DATA_DIR = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split"
-    DEFAULT_DATA_DIR = "/Users/ehabba/Desktop/IBM_Results"
+    INPUT_DATA_DIR = "/Users/ehabba/Desktop/IBM_Results"
+    INPUT_DATA_DIR = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split"  # For HF downloads
+    OUTPUT_DATA_DIR = "/Users/ehabba/Desktop/IBM_Results_Processed"
+    OUTPUT_DATA_DIR = "/cs/snapless/gabis/eliyahabba/processed_data"  # For processed files
+
     MODELS_METADATA_PATH = Path(__file__).parents[2] / "src" / "utils" / "models_metadata.json"
+    
     # File extensions
     PARQUET_EXTENSION = ".parquet"
     LOCK_FILE_EXTENSION = ".lock"

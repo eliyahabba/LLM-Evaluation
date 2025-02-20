@@ -22,9 +22,10 @@ class UnifiedDatasetProcessor:
             self,
             source_repo: str,
             output_repo: str,
-            data_dir: str,
-            num_workers: int = 4,
-            batch_size: int = 10000,
+            input_dir: str,  # Directory for HF downloads
+            output_dir: str,  # Directory for processed files
+            num_workers: int = ProcessingConstants.DEFAULT_NUM_WORKERS,
+            batch_size: int = ProcessingConstants.DEFAULT_BATCH_SIZE,
             temp_dir: Optional[str] = None,
             token: Optional[str] = None
     ):
@@ -32,12 +33,14 @@ class UnifiedDatasetProcessor:
         self.logger = None
 
         # Create directories
-        data_dir_path = Path(data_dir)
-        full_schema_dir = data_dir_path / "full_schema"
-        lean_schema_dir = data_dir_path / "lean_schema"
-        temp_dir = data_dir_path / "temp"  # Single temp directory at root level
+        input_dir_path = Path(input_dir)
+        output_dir_path = Path(output_dir)
+        full_schema_dir = output_dir_path / ProcessingConstants.FULL_SCHEMA_DIR_NAME
+        lean_schema_dir = output_dir_path / ProcessingConstants.LEAN_SCHEMA_DIR_NAME
+        temp_dir = output_dir_path / ProcessingConstants.TEMP_DIR_NAME
 
         # Create all directories
+        input_dir_path.mkdir(parents=True, exist_ok=True)
         full_schema_dir.mkdir(parents=True, exist_ok=True)
         lean_schema_dir.mkdir(parents=True, exist_ok=True)
         temp_dir.mkdir(parents=True, exist_ok=True)
@@ -45,16 +48,19 @@ class UnifiedDatasetProcessor:
         common_args = {
             "num_workers": num_workers,
             "batch_size": batch_size,
-            "temp_dir": str(temp_dir),  # Pass the same temp_dir to all processors
+            "temp_dir": str(temp_dir),
             "token": token
         }
 
         try:
-            self.downloader = HFFileDownloader(source_repo, data_dir=data_dir, **common_args)
+            # Downloader uses input directory
+            self.downloader = HFFileDownloader(source_repo, data_dir=input_dir, **common_args)
+            
+            # Processors use output directory
             self.full_processor = FullSchemaProcessor(data_dir=str(full_schema_dir), **common_args)
             self.lean_processor = LeanSchemaProcessor(data_dir=str(lean_schema_dir), **common_args)
-            self.uploader = HFUploader(output_repo, data_dir=data_dir, **common_args)
-            self.deduplicator = DeduplicationProcessor(data_dir=data_dir, **common_args)
+            self.uploader = HFUploader(output_repo, data_dir=output_dir, **common_args)
+            self.deduplicator = DeduplicationProcessor(data_dir=output_dir, **common_args)
 
             self.logger = self.downloader.logger
             self.files_processed_this_run = set()
@@ -143,7 +149,8 @@ if __name__ == "__main__":
     processor = UnifiedDatasetProcessor(
         source_repo=ProcessingConstants.SOURCE_REPO,
         output_repo=ProcessingConstants.OUTPUT_REPO,
-        data_dir=ProcessingConstants.DEFAULT_DATA_DIR,
+        input_dir=ProcessingConstants.INPUT_DATA_DIR,    # For HF downloads
+        output_dir=ProcessingConstants.OUTPUT_DATA_DIR,  # For processed files
         num_workers=ProcessingConstants.DEFAULT_NUM_WORKERS,
         batch_size=ProcessingConstants.DEFAULT_BATCH_SIZE,
         token=TOKEN
