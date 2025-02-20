@@ -70,13 +70,23 @@ class LogProbToken:
 class SchemaConverter:
     """Handles conversion of model evaluation data to standardized schema format."""
 
-    def __init__(self, models_metadata_path: Union[str, Path]):
-        """Initialize converter with path to models metadata."""
+    def __init__(self, models_metadata_path: Union[str, Path], logger=None):
+        """
+        Initialize converter with path to models metadata.
+        
+        Args:
+            models_metadata_path: Path to models metadata file
+            logger: Logger instance to use (optional)
+        """
         self.models_metadata_path = Path(models_metadata_path)
         self._load_models_metadata()
         self._template_cache = {}  # Cache for templates
         self._index_map_cache = {}  # Cache for index map
-        self.logger = None  # Assuming a logger is set up
+        self.logger = logger
+
+    def set_logger(self, logger):
+        """Set logger after initialization."""
+        self.logger = logger
 
     def _load_models_metadata(self) -> None:
         """Load models metadata from file."""

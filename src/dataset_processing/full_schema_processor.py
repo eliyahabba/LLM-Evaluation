@@ -22,7 +22,7 @@ class FullSchemaProcessor(BaseProcessor):
         
         # Initialize schema converter
         models_metadata_path = Path(ProcessingConstants.MODELS_METADATA_PATH)
-        self.converter = SchemaConverter(models_metadata_path)
+        self.converter = SchemaConverter(models_metadata_path, logger=self.logger)
         
         # Dictionary to store parquet writers
         self.writers = {}
