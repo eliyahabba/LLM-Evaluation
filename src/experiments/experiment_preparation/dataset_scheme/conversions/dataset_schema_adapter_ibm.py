@@ -461,15 +461,8 @@ class SchemaConverter:
             question_mask = df_map['question'] == row['question']
             self.logger.debug(f"Question: {row['question']}")
             self.logger.debug(f"Number of matching questions: {question_mask.sum()}")
-
-            # Then check if any of these questions have matching choices
-            def compare_choices(df_choices):
-                # Convert df choices to set for comparison
-                df_choices_set = set(df_choices if isinstance(df_choices, list) else df_choices.split(", "))
-                return df_choices_set == row_choices_set
-
-            # Find matches where both question and choices match
-            matches = df_map[question_mask & df_map['choices'].apply(compare_choices)]
+            choices_mask = df_map['choices'].apply(set).apply(lambda x: x == row_choices_set)
+            matches = df_map[question_mask & choices_mask]
             self.logger.debug(f"Total matches found: {len(matches)}")
 
             if len(matches) == 0:
@@ -484,7 +477,11 @@ class SchemaConverter:
                 # Log all choices for matching questions
                 for i, df_row in question_matches.iterrows():
                     df_choices = df_row['choices']
-                    df_choices_set = set(df_choices if isinstance(df_choices, list) else df_choices.split(", "))
+                    if isinstance(df_choices, np.ndarray):
+                        df_choices = df_choices.tolist()
+                    elif isinstance(df_choices, str):
+                        df_choices = df_choices.split(", ")
+                    df_choices_set = set(df_choices)
                     self.logger.warning(f"Index {i} - choices in df: {sorted(df_choices_set)}")
                     self.logger.warning(f"Row choices: {sorted(row_choices_set)}")
                     self.logger.warning(f"Sets equal: {df_choices_set == row_choices_set}")
