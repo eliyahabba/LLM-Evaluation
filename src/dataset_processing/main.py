@@ -108,8 +108,8 @@ class UnifiedDatasetProcessor:
 
             processed_files = []  # Collect all processed files
 
-            # Process files in parallel
-            with concurrent.futures.ProcessPoolExecutor(
+            # Process files sequentially with ThreadPoolExecutor instead of ProcessPoolExecutor
+            with concurrent.futures.ThreadPoolExecutor(
                     max_workers=self.downloader.num_workers
             ) as executor:
                 futures = {
@@ -128,6 +128,9 @@ class UnifiedDatasetProcessor:
                         )
                     except Exception as e:
                         self.downloader.logger.error(f"Error processing {file_path}: {e}")
+                        self.downloader.logger.error(f"Exception details: {str(e)}")
+                        import traceback
+                        self.downloader.logger.error(f"Traceback: {traceback.format_exc()}")
 
             # After all files are processed, deduplicate only new files
             if processed_files:  # Use collected files instead of self.files_processed_this_run
@@ -137,6 +140,8 @@ class UnifiedDatasetProcessor:
 
         except Exception as e:
             self.logger.error(f"Error in process_all_files: {e}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
         # finally:
         #     # Cleanup temp directory
         #     self.downloader.cleanup_temp_dir(force=True)
