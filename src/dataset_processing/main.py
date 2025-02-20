@@ -103,6 +103,8 @@ class UnifiedDatasetProcessor:
                 self.downloader.logger.info("No new files to process")
                 return
 
+            processed_files = []  # Collect all processed files
+
             # Process files in parallel
             with concurrent.futures.ProcessPoolExecutor(
                     max_workers=self.downloader.num_workers
@@ -115,17 +117,19 @@ class UnifiedDatasetProcessor:
                 for future in concurrent.futures.as_completed(futures):
                     file_path = futures[future]
                     try:
-                        processed_files = future.result()
+                        # Collect results from each worker
+                        result_files = future.result()
+                        processed_files.extend(result_files)  # Add to our collection
                         self.downloader.logger.info(
-                            f"Processed {file_path} into {len(processed_files)} output files"
+                            f"Processed {file_path} into {len(result_files)} output files"
                         )
                     except Exception as e:
                         self.downloader.logger.error(f"Error processing {file_path}: {e}")
 
             # After all files are processed, deduplicate only new files
-            if self.files_processed_this_run:
+            if processed_files:  # Use collected files instead of self.files_processed_this_run
                 self.logger.info("Starting deduplication of newly processed files")
-                if not self.deduplicator.deduplicate_files(self.files_processed_this_run):
+                if not self.deduplicator.deduplicate_files(set(processed_files)):
                     self.logger.error("Deduplication failed")
 
         except Exception as e:

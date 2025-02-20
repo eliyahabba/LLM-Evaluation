@@ -115,13 +115,3 @@ class BaseProcessor:
                     self.logger.info(f"Keeping failed file for debugging: {file_path}")
         except Exception as e:
             self.logger.error(f"Error cleaning up file {file_path}: {e}")
-
-    def __del__(self):
-        """Cleanup on object destruction."""
-        try:
-            # Only force cleanup on destruction if environment variable is set
-            force_cleanup = os.getenv('FORCE_CLEANUP', 'false').lower() == 'true'
-            self.cleanup_temp_dir(force=force_cleanup)
-        except:
-            # Suppress errors during deletion
-            pass

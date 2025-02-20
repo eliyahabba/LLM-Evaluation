@@ -5,20 +5,20 @@ class ProcessingConstants:
     """Constants for data processing configuration."""
     
     # Processing batch sizes and limits
-    DEFAULT_BATCH_SIZE = 100000
-    DEFAULT_NUM_WORKERS = 24
+    DEFAULT_BATCH_SIZE = 10
+    DEFAULT_NUM_WORKERS = 1
     DEFAULT_NUM_BATCHES = 10  # Number of batches to process before stopping
     
     # Directory structure
     TEMP_DIR_NAME = "temp"
     FULL_SCHEMA_DIR_NAME = "full_schema"
     LEAN_SCHEMA_DIR_NAME = "lean_schema"
-    PROCESSED_FILES_RECORD = ".processed_files.txt"
+    PROCESSED_FILES_RECORD = "processed_files.txt"
     
     # File paths
     DEFAULT_DATA_DIR = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split"
-    MODELS_METADATA_PATH = Path(__file__).parents[2] / "Data" / "models_metadata.json"
-    
+    DEFAULT_DATA_DIR = "/Users/ehabba/Desktop/IBM_Results"
+    MODELS_METADATA_PATH = Path(__file__).parents[2] / "src" / "utils" / "models_metadata.json"
     # File extensions
     PARQUET_EXTENSION = ".parquet"
     LOCK_FILE_EXTENSION = ".lock"
