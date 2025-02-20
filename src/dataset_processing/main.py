@@ -101,7 +101,7 @@ class UnifiedDatasetProcessor:
         """Process all new files from the source repository."""
         try:
             # Get list of new files
-            new_files = self.downloader.get_new_files()[:1]
+            new_files = self.downloader.get_new_files()
             if not new_files:
                 self.downloader.logger.info("No new files to process")
                 return
