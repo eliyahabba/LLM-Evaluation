@@ -17,7 +17,7 @@ class ProcessingConstants:
     
     # File paths
     INPUT_DATA_DIR = "/Users/ehabba/Desktop/IBM_Results"
-    INPUT_DATA_DIR = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full_split"  # For HF downloads
+    INPUT_DATA_DIR = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"  # For HF downloads
     OUTPUT_DATA_DIR = "/Users/ehabba/Desktop/IBM_Results_Processed"
     OUTPUT_DATA_DIR = "/cs/snapless/gabis/eliyahabba/processed_data"  # For processed files
 
