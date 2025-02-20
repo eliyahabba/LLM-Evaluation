@@ -100,69 +100,45 @@ class UnifiedDatasetProcessor:
             return []
 
     def process_all_files(self):
-        """Process all new files using both process and thread pools."""
+        """Process all new files in parallel using ProcessPoolExecutor."""
         try:
             new_files = self.downloader.get_new_files()
             if not new_files:
                 self.downloader.logger.info("No new files to process")
                 return
 
-            # Use ProcessPoolExecutor for file batches
-            with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as process_executor:
-                # Split files into batches
-                file_batches = np.array_split(new_files, ProcessingConstants.DEFAULT_NUM_WORKERS)
+            all_processed_files = []
+            
+            # Process each file in a separate process
+            with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as executor:
+                # Submit each file to a separate process
+                futures = {
+                    executor.submit(self.process_single_file, file_path): file_path 
+                    for file_path in new_files
+                }
                 
-                # Submit each batch to a separate process
-                futures = []
-                for batch in file_batches:
-                    futures.append(process_executor.submit(self._process_file_batch, batch))
-                
-                # Collect results
-                all_processed_files = []
+                # Collect results as they complete
                 for future in concurrent.futures.as_completed(futures):
+                    file_path = futures[future]
                     try:
                         processed_files = future.result()
                         all_processed_files.extend(processed_files)
-                        self.logger.info(f"Batch processed, got {len(processed_files)} files")
+                        self.logger.info(f"Processed {file_path} into {len(processed_files)} files")
                     except Exception as e:
-                        self.logger.error(f"Batch processing error: {e}")
+                        self.logger.error(f"Error processing {file_path}: {e}")
                         import traceback
                         self.logger.error(f"Traceback: {traceback.format_exc()}")
 
-                # After all batches are processed, deduplicate
-                if all_processed_files:
-                    self.logger.info(f"Starting deduplication of {len(all_processed_files)} files")
-                    if not self.deduplicator.deduplicate_files(set(all_processed_files)):
-                        self.logger.error("Deduplication failed")
+            # After all files are processed, deduplicate
+            if all_processed_files:
+                self.logger.info(f"Starting deduplication of {len(all_processed_files)} files")
+                if not self.deduplicator.deduplicate_files(set(all_processed_files)):
+                    self.logger.error("Deduplication failed")
 
         except Exception as e:
             self.logger.error(f"Error in process_all_files: {e}")
             import traceback
             self.logger.error(f"Traceback: {traceback.format_exc()}")
-
-    def _process_file_batch(self, file_batch):
-        """Process a batch of files using thread pool for I/O operations."""
-        processed_files = []
-        
-        # Use ThreadPoolExecutor for I/O operations within each process
-        with concurrent.futures.ThreadPoolExecutor(max_workers=self.downloader.num_workers) as thread_executor:
-            futures = {
-                thread_executor.submit(self.process_single_file, f): f
-                for f in file_batch
-            }
-            
-            for future in concurrent.futures.as_completed(futures):
-                file_path = futures[future]
-                try:
-                    result = future.result()
-                    processed_files.extend(result)
-                    self.logger.info(f"Processed {file_path} into {len(result)} files")
-                except Exception as e:
-                    self.logger.error(f"Error processing {file_path}: {e}")
-                    import traceback
-                    self.logger.error(f"Traceback: {traceback.format_exc()}")
-
-        return processed_files
 
 
 def process_batch_files(file_batch):
