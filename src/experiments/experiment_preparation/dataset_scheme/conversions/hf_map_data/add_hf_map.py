@@ -1,62 +1,65 @@
 import pandas as pd
 from tqdm import tqdm
 from datasets import load_dataset
+import json
 
 
 def save_to_csv(data, filename, num_of_samples=None):
-    """
-    Saves the data to a CSV file.
-
-    Args:
-        data (dict): Dictionary with metadata
-        filename (str): Name of the output file
-    """
+    """Saves the data to both JSON (for fast lookup) and CSV/Parquet (for compatibility)."""
     path = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/"
-    filename = path + filename
+    base_filename = path + filename.replace('.parquet', '').replace('.csv', '')
+    
+    # Save as JSON for fast lookup - no need for conversion since keys are strings
+    with open(f"{base_filename}.json", 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    #
+    # # Convert to records for DataFrame
+    # records = []
+    # for key, metadata in data.items():
+    #     question, *choices = key.split("|||")
+    #     record = {
+    #         'question': question,
+    #         'choices': metadata['choices'],  # Use original order
+    #         'source': metadata['source'],
+    #         'index': metadata['index']
+    #     }
+    #     records.append(record)
+    #
+    # # Apply sample limit if specified
+    # if num_of_samples:
+    #     records = records[:num_of_samples]
+    #
+    # # Save as DataFrame formats
+    # df = pd.DataFrame(records)
+    # df.to_parquet(f"{base_filename}.parquet", index=False)
+    # df.to_csv(f"{base_filename}.csv", index=False, encoding='utf-8')
 
-    # Convert the data to a format suitable for DataFrame
-    records = []
 
-    for question, choices in data.keys():
-        metadata = data[(question, choices)]
-        record = {
-            'question': question,
-            'choices': choices,  # Store choices directly as they are
-            'source': metadata['source'],
-            'index': metadata['index']
-        }
-        records.append(record)
-    if num_of_samples:
-        records = records[:num_of_samples]
-    # Create DataFrame and save to CSV
-    df = pd.DataFrame(records)
-    # df.to_csv(filename, index=False, encoding='utf-8')
-    df.to_parquet(filename, index=False)
-
-
-def create_question_metadata(questions, choices_list, source,dataname):
+def create_question_metadata(questions, choices_list, source, dataname):
     """
-    Creates metadata dictionary for questions and their choices.
-
-    Args:
-        questions (list): List of questions
-        choices_list (list): List of answer choices for each question
-        source (str): Source of the dataset
-
+    Creates metadata dictionary for questions and their choices with efficient lookup.
+    
     Returns:
-        dict: Dictionary with (question, choices) tuples as keys and metadata as values
+        dict: Dictionary with question+sorted_choices as key for O(1) lookup:
+        {
+            "question|||choice1,choice2,choice3": {"index": idx, "source": source, "choices": [original choices]}
+        }
     """
     result = {}
     for idx, (question, choices) in enumerate(zip(questions, choices_list)):
-        # Store choices directly as a string if it's already a string,
-        # otherwise keep it as is
-        if (question, choices if isinstance(choices, str) else tuple(choices)) in result:
-            print(f"Duplicate question: {dataname}: {source}: {idx}")
-            continue
-        result[(question, choices if isinstance(choices, str) else tuple(choices))] = {
+        # Normalize choices to list format
+        choices_list = choices if isinstance(choices, list) else choices.split(", ")
+        
+        # Create a unique key by combining question with sorted choices
+        key = f"{question}|||{'|||'.join(sorted(choices_list))}"
+            
+        # Store metadata
+        result[key] = {
             "source": source,
-            "index": idx
+            "index": idx,
+            "choices": choices_list  # Keep original order
         }
+        
     return result
 
 
@@ -183,7 +186,7 @@ if __name__ == '__main__':
     save_to_csv(enumerated_questions, 'ai2_arc_samples.parquet')
 
     enumerated_questions = add_social()
-    save_to_csv(enumerated_questions, 'social_iqa_samples.parquet', num_of_samples=200)
+    save_to_csv(enumerated_questions, 'social_iqa_samples.parquet' )
 
     questions = add_openbook()
     save_to_csv(questions, 'openbook_qa_samples.parquet', num_of_samples=200)

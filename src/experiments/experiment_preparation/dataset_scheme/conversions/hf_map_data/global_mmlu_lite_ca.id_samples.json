@@ -1,0 +1,2002 @@
+{
+  "Dari opsi berikut, manakah yang akan memiliki berat paling besar di bulan?|||Lima kilogram batu bata|||Lima kilogram bulu|||Lima pound batu bata ketika diukur di Bumi|||Satu kilogram bulu": {
+    "source": "test",
+    "index": 0,
+    "choices": [
+      "Satu kilogram bulu",
+      "Lima pound batu bata ketika diukur di Bumi",
+      "Lima kilogram bulu",
+      "Lima kilogram batu bata"
+    ]
+  },
+  "Menurut Schnackenberg dan Tomlinson (2014), apa saja ketiga kriteria yang dapat digunakan untuk menilai kualitas transparansi perusahaan?|||Luasnya dimensi, Kejelasan, Akurasi|||Pengungkapan, Detail, Akurasi|||Pengungkapan, Kejelasan, Akurasi|||Pengungkapan, Kejelasan, Efisiensi": {
+    "source": "test",
+    "index": 1,
+    "choices": [
+      "Luasnya dimensi, Kejelasan, Akurasi",
+      "Pengungkapan, Detail, Akurasi",
+      "Pengungkapan, Kejelasan, Akurasi",
+      "Pengungkapan, Kejelasan, Efisiensi"
+    ]
+  },
+  "Keadaan di mana tidak mampu mengambil keputusan berdasarkan informasi yang beralasan mengenai pembelian suatu produk disebut sebagai?|||Eksklusi konsumen|||Inklusi konsumen|||Kerentanan konsumen|||Kompetensi konsumen": {
+    "source": "test",
+    "index": 2,
+    "choices": [
+      "Inklusi konsumen",
+      "Kompetensi konsumen",
+      "Eksklusi konsumen",
+      "Kerentanan konsumen"
+    ]
+  },
+  "Mengganti rantai pasokan dengan _______ akan meningkatkan pentingnya produk _______ demikian juga desain ulang yang fundamental dari setiap aktivitas yang dilakukan perusahaan yang menghasilkan _______.|||Jaringan produksi global, Desain Ulang, Laba|||Jaringan produksi global, Perebutan Kembali, Pemborosan|||Lingkaran pasokan, Desain ulang, Laba|||Lingkaran pasokan, Perebutan Kembali, Pemborosan": {
+    "source": "test",
+    "index": 3,
+    "choices": [
+      "Lingkaran pasokan, Perebutan Kembali, Pemborosan",
+      "Lingkaran pasokan, Desain ulang, Laba",
+      "Jaringan produksi global, Perebutan Kembali, Pemborosan",
+      "Jaringan produksi global, Desain Ulang, Laba"
+    ]
+  },
+  "Ada dua masalah utama yang terkait dengan _____. _______ adalah isu utama karena berdasarkan kebijakan informasi perusahaan, dapat dikatakan bahwa karyawan mempunyai hak untuk mengetahui apakah mereka diberhentikan. _______ adalah isu kedua, khususnya paket ________ yang diterima karyawan saat diberhentikan.|||Penambahan karyawan, Keterlibatan, Otonomi, Kompensasi|||Penambahan karyawan, Keterlibatan, Tunjangan|||Pengurangan karyawan, Keterlibatan, Remunerasi, Kompensasi|||Pengurangan karyawan, Otonomi, Remunerasi, Tunjangan": {
+    "source": "test",
+    "index": 4,
+    "choices": [
+      "Pengurangan karyawan, Keterlibatan, Remunerasi, Kompensasi",
+      "Penambahan karyawan, Keterlibatan, Otonomi, Kompensasi",
+      "Pengurangan karyawan, Otonomi, Remunerasi, Tunjangan",
+      "Penambahan karyawan, Keterlibatan, Tunjangan"
+    ]
+  },
+  "______ tempat kerja melibatkan pemberdayaan karyawan melalui, misalnya, 'pengayaan pekerjaan' di mana karyawan diberikan ruang lingkup yang lebih besar untuk memutuskan bagaimana mengatur pekerjaan mereka atau 'perluasan pekerjaan' di mana karyawan diberikan tugas yang lebih luas untuk dilakukan.|||Memanusiakan kembali|||Pengembangan kembali|||Penyegaran kembali|||Peremajaan kembali": {
+    "source": "test",
+    "index": 5,
+    "choices": [
+      "Penyegaran kembali",
+      "Pengembangan kembali",
+      "Peremajaan kembali",
+      "Memanusiakan kembali"
+    ]
+  },
+  "Meningkatnya peraturan swasta yang didorong oleh dunia usaha dapat dikaitkan dengan: dorongan terhadap pendekatan _______ dari industri, _________ dan pencapaian tujuan _______.|||Lebih Cepat, Peningkatan Biaya, Lebih Lambat|||Lebih cepat, Efektivitas biaya, Lebih lambat|||Proaktif, Efektivitas biaya, Lebih cepat|||Proaktif, Peningkatan biaya, Lebih cepat": {
+    "source": "test",
+    "index": 6,
+    "choices": [
+      "Lebih cepat, Efektivitas biaya, Lebih lambat",
+      "Lebih Cepat, Peningkatan Biaya, Lebih Lambat",
+      "Proaktif, Efektivitas biaya, Lebih cepat",
+      "Proaktif, Peningkatan biaya, Lebih cepat"
+    ]
+  },
+  "Perspektif ________ terhadap keberlanjutan dihasilkan dari model pertumbuhan yang menganalisis kapasitas dukung bumi, yang secara keseluruhan menyimpulkan bahwa terbatasnya kapasitas bumi dan_______, ________ dan _______ bagi generasi saat ini dan masa lalu dapat menurunkan kualitas hidup generasi mendatang. Hal ini berbeda dengan perspektif lingkungan yang berfokus pada perlunya menjaga dan melestarikan lingkungan alam.|||Ekonomi, Kurangnya penggunaan sumber daya, Kurangnya populasi, Tidak berkelanjutan|||Ekonomi, Penggunaan sumber daya yang berlebihan, Kelebihan populasi, Polusi yang berlebihan,|||Lingkungan, Kurangnya penggunaan sumber daya, Kelebihan populasi, Polusi berlebihan|||Lingkungan, Penggunaan sumber daya yang berlebihan, Kurangnya populasi, Tidak berkelanjutan": {
+    "source": "test",
+    "index": 7,
+    "choices": [
+      "Ekonomi, Penggunaan sumber daya yang berlebihan, Kelebihan populasi, Polusi yang berlebihan,",
+      "Ekonomi, Kurangnya penggunaan sumber daya, Kurangnya populasi, Tidak berkelanjutan",
+      "Lingkungan, Kurangnya penggunaan sumber daya, Kelebihan populasi, Polusi berlebihan",
+      "Lingkungan, Penggunaan sumber daya yang berlebihan, Kurangnya populasi, Tidak berkelanjutan"
+    ]
+  },
+  "________ adalah alat manajemen etika bisnis yang telah berkembang selama beberapa dekade terakhir. Bidang-bidang yang biasanya dicakup oleh hal ini adalah masalah kepatuhan, korupsi, dan lingkungan hidup. Namun, hal ini terus berkembang, misalnya saja tanggung jawab terhadap __________ semakin meningkat dalam beberapa tahun terakhir.|||Kode etik, Internet - media sosial dan jaringan|||Kode etik, Kinerja keuangan Perusahaan|||Laporan tahunan, Internet - media sosial dan jaringan|||Laporan tahunan, kinerja keuangan Perusahaan": {
+    "source": "test",
+    "index": 8,
+    "choices": [
+      "Laporan tahunan, kinerja keuangan Perusahaan",
+      "Laporan tahunan, Internet - media sosial dan jaringan",
+      "Kode etik, Kinerja keuangan Perusahaan",
+      "Kode etik, Internet - media sosial dan jaringan"
+    ]
+  },
+  "Sel-sel kanker yang dibiakkan dalam kultur serupa dengan sel-sel normal yang dibiakkan dalam kultur yaitu|||berproliferasi dengan kerapatan sel yang sama|||membelah dalam jumlah tidak terbatas|||memerlukan permukaan perlekatan agar dapat tumbuh|||tidak menunjukkan inhibisi kontak": {
+    "source": "test",
+    "index": 9,
+    "choices": [
+      "membelah dalam jumlah tidak terbatas",
+      "tidak menunjukkan inhibisi kontak",
+      "memerlukan permukaan perlekatan agar dapat tumbuh",
+      "berproliferasi dengan kerapatan sel yang sama"
+    ]
+  },
+  "Manakah dari berikut yang ini yang merupakan semikonduktor tipe-n?|||Berlian|||Silikon|||Silikon karbida|||Silikon terdoping arsenik": {
+    "source": "test",
+    "index": 10,
+    "choices": [
+      "Silikon",
+      "Berlian",
+      "Silikon karbida",
+      "Silikon terdoping arsenik"
+    ]
+  },
+  "Manakah dari berikut ini yang merupakan interval valid dari konvergensi untuk rangkaian day?\n(I) [−1, 3)\n(II) (−∞, 0]\n(III) [2, 2] ∪ [3, 3]\n(IV) (−∞,∞)|||(I) dan (IV )|||(II) dan (III)|||(II) saja|||(IV) saja": {
+    "source": "test",
+    "index": 11,
+    "choices": [
+      "(II) saja",
+      "(IV) saja",
+      "(I) dan (IV )",
+      "(II) dan (III)"
+    ]
+  },
+  "Metode tercepat untuk sintesis ulang ATP selama latihan fisik adalah:|||glikogenolisis.|||glikolisis.|||pemecahan fosfokreatin.|||siklus asam trikarboksilat (siklus Krebs).": {
+    "source": "test",
+    "index": 12,
+    "choices": [
+      "glikolisis.",
+      "pemecahan fosfokreatin.",
+      "siklus asam trikarboksilat (siklus Krebs).",
+      "glikogenolisis."
+    ]
+  },
+  "Disipasi daya pada induktor ideal adalah|||Maksimum|||Minimum|||Nilai terbatas|||Nol": {
+    "source": "test",
+    "index": 13,
+    "choices": [
+      "Maksimum",
+      "Minimum",
+      "Nol",
+      "Nilai terbatas"
+    ]
+  },
+  "Material yang digunakan pada heat sink harus memiliki|||Semua jawaban benar.|||bidang permukaan besar.|||konduktivitas termal yang tinggi.|||titik leleh yang tinggi.": {
+    "source": "test",
+    "index": 14,
+    "choices": [
+      "konduktivitas termal yang tinggi.",
+      "bidang permukaan besar.",
+      "titik leleh yang tinggi.",
+      "Semua jawaban benar."
+    ]
+  },
+  "Cari selisi 142,76 – 16,5.|||126,26|||14.111|||159,26|||2,224": {
+    "source": "test",
+    "index": 15,
+    "choices": [
+      "159,26",
+      "2,224",
+      "14.111",
+      "126,26"
+    ]
+  },
+  "Berapa perkiraan yang paling wajar untuk panjang kolam renang di suatu kota?|||1 kilometer|||1 meter|||25 kilometer|||25 meter": {
+    "source": "test",
+    "index": 16,
+    "choices": [
+      "1 meter",
+      "25 meter",
+      "1 kilometer",
+      "25 kilometer"
+    ]
+  },
+  "Cari jawaban: 942 / 3|||214|||304|||314|||642": {
+    "source": "test",
+    "index": 17,
+    "choices": [
+      "214",
+      "304",
+      "314",
+      "642"
+    ]
+  },
+  "Salah satu pertunjukan di sirkus adalah Gabriella, si Manusia Meriam. Di hari Sabtu, dia tampil di empat pertunjukan. Jarak yang dia tempuh adalah 7,04 meter, 18,81 meter, 18,39 meter, dan 19,94 meter. Berapa total jarak yang dicapai Gabriella pada hari itu?|||57,14 m|||59,24 m|||64,18 m|||74,18 m": {
+    "source": "test",
+    "index": 18,
+    "choices": [
+      "64,18 m",
+      "74,18 m",
+      "57,14 m",
+      "59,24 m"
+    ]
+  },
+  "Per 2019, berapa persen populasi dunia yang hidup dalam kemiskinan ekstrem (kurang dari $1.90 per hari)|||10%|||15%|||25%|||5%": {
+    "source": "test",
+    "index": 19,
+    "choices": [
+      "5%",
+      "10%",
+      "15%",
+      "25%"
+    ]
+  },
+  "Mana yang bukan elemen kebijakan retribusi dengan pertumbuhan?|||Peningkatan akses pendidikan|||Perpajakan progresif|||Reklamasi lahan|||Undang-undang upah minimum": {
+    "source": "test",
+    "index": 20,
+    "choices": [
+      "Undang-undang upah minimum",
+      "Reklamasi lahan",
+      "Perpajakan progresif",
+      "Peningkatan akses pendidikan"
+    ]
+  },
+  "Berapa persen dari populasi global yang melek huruf di tahun 1950?|||36%|||56%|||76%|||96%": {
+    "source": "test",
+    "index": 21,
+    "choices": [
+      "36%",
+      "56%",
+      "76%",
+      "96%"
+    ]
+  },
+  "Mana dari pernyataan yang benar pada tahun 2020|||Laki-laki lebih rentan mengalami depresi dan gangguan konsumsi alkohol dibanding perempuan.|||Laki-laki lebih rentan mengalami depresi sedangkan perempuan lebih rentan mengalami gangguan konsumsi alkohol.|||Perempuan lebih rentan mengalami depresi dan gangguan konsumsi alkohol dibanding laki-laki|||Perempuan lebih rentan mengalami depresi sedangkan laki-laki lebih rentan mengalami gangguan konsumsi alkohol.": {
+    "source": "test",
+    "index": 22,
+    "choices": [
+      "Laki-laki lebih rentan mengalami depresi dan gangguan konsumsi alkohol dibanding perempuan.",
+      "Perempuan lebih rentan mengalami depresi dan gangguan konsumsi alkohol dibanding laki-laki",
+      "Laki-laki lebih rentan mengalami depresi sedangkan perempuan lebih rentan mengalami gangguan konsumsi alkohol.",
+      "Perempuan lebih rentan mengalami depresi sedangkan laki-laki lebih rentan mengalami gangguan konsumsi alkohol."
+    ]
+  },
+  "Berapa banyak anak berusia antara 5-14 tahun yang bekerja di seluruh dunia pada tahun 2012?|||150 juta|||30 juta|||5 juta|||500 juta": {
+    "source": "test",
+    "index": 23,
+    "choices": [
+      "5 juta",
+      "30 juta",
+      "150 juta",
+      "500 juta"
+    ]
+  },
+  "Pada tahun 2017, persentase kematian global akibat bunuh diri adalah sekitar|||0.70%|||1.40%|||2.80%|||5.60%": {
+    "source": "test",
+    "index": 24,
+    "choices": [
+      "0.70%",
+      "1.40%",
+      "2.80%",
+      "5.60%"
+    ]
+  },
+  "Banyak negara yang merdeka setelah Perang Dunia II mendapati bahwa warisan kolonialisme menghambat perkembangan ekonomi mereka. Daftar hambatan tersebut meliputi|||Semua yang disebutkan di atas|||akses yang tidak memadai terhadap pendidikan tinggi dan pelatihan bagi warga negara di bawah pemerintahan kolonial|||batas-batas politik buatan yang mencakup beragam kelompok etnis dengan sedikit kesamaan|||penguasaan perdagangan dalam negeri oleh kelompok minoritas asing yang dibawa masuk oleh kekuasaan kolonial": {
+    "source": "test",
+    "index": 25,
+    "choices": [
+      "batas-batas politik buatan yang mencakup beragam kelompok etnis dengan sedikit kesamaan",
+      "akses yang tidak memadai terhadap pendidikan tinggi dan pelatihan bagi warga negara di bawah pemerintahan kolonial",
+      "penguasaan perdagangan dalam negeri oleh kelompok minoritas asing yang dibawa masuk oleh kekuasaan kolonial",
+      "Semua yang disebutkan di atas"
+    ]
+  },
+  "Manakah dari berikut ini yang benar untuk semua basa?|||Hanya basa kuat yang menghasilkan larutan yang mengandung ion OH-.|||Hanya basa kuat yang merupakan konduktor yang baik saat dilarutkan dalam larutan.|||Semua basa menyumbangkan ion OH- ke larutan.|||Untuk basa lemah, konsentrasi ion OH- melebihi konsentrasi basa dalam larutan.": {
+    "source": "test",
+    "index": 26,
+    "choices": [
+      "Semua basa menyumbangkan ion OH- ke larutan.",
+      "Hanya basa kuat yang menghasilkan larutan yang mengandung ion OH-.",
+      "Hanya basa kuat yang merupakan konduktor yang baik saat dilarutkan dalam larutan.",
+      "Untuk basa lemah, konsentrasi ion OH- melebihi konsentrasi basa dalam larutan."
+    ]
+  },
+  "Algoritma di bawah ini digunakan untuk menyimulasikan hasil lempar koin sebanyak 4 kali. Tujuannya adalah menentukan apakah simulasi menghasilkan jumlah kepala dan ekor yang sama.\n\n  Langkah l : Tetapkan variabel head_counter dan f1ip_counter ke 0.\n  Langkah 2 : Variabel coin_f1ip secara acak diberi nilai 0 atau l.\n  Jika coin_f1ip bernilai 0 maka hasil pelemparan koin adalah kepala, jadi \n nilai heads_counter bertambah 1.\n  Langkah 3 : Tambahkan nilai f1ip_counter sebanyak l.\n  Langkah 4 : Ulangi langkah 2 dan 3 hingga f1ip_counter sama dengan 4.\n\n Setelah algoritma dijalankan, manakah ekspresi berikut yang menunjukkan bahwa simulasi menghasilkan jumlah kepala dan ekor yang sama?|||coin_f1ip = 1|||flip_counter = 1|||flip_counter = 2|||heads_counter = 2": {
+    "source": "test",
+    "index": 27,
+    "choices": [
+      "coin_f1ip = 1",
+      "flip_counter = 1",
+      "flip_counter = 2",
+      "heads_counter = 2"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nFlorence lebih indah dan berusia lima ratus empat puluh tahun lebih tua daripada Venesia. … Ada sekitar tiga puluh ribu tanah yang dimiliki oleh kaum bangsawan dan pedagang, warga negara dan perajin, yang menghasilkan roti dan daging, anggur dan minyak, sayur dan keju, jerami dan kayu, dengan nilai tunai sembilan ribu dukat. … Kami punya dua perdagangan yang lebih besar dari empat perdagangan di Venesia—perdagangan wol dan sutra. … Florence kami yang indah memiliki … dua ratus tujuh puluh toko yang dimiliki oleh perkumpulan pedagang wol, yang mengirimkan barang-barang mereka ke Roma dan Marches, Napoli, dan Sisilia, Konstantinopel … dan seantero Turki. Kota tersebut juga memiliki delapan puluh tiga gudang sutra yang dimiliki perkumpulan pedagang.\nBenedetto Dei, \"Letter to a Venetian,\" 1472\nKutipan tersebut dapat digunakan sebagai bukti atas hadirnya karakteristik budaya Renaisans apa?|||Kebanggaan dalam penguasaan seni militer|||Kebanggaan sipil|||Kesopanan|||Perlindungan seni": {
+    "source": "test",
+    "index": 28,
+    "choices": [
+      "Kebanggaan dalam penguasaan seni militer",
+      "Kesopanan",
+      "Kebanggaan sipil",
+      "Perlindungan seni"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nSekitar tahun 1645, ketika saya tinggal di London … Saya berkenalan dengan berbagai orang-orang yang layak, yang penasaran dengan filsafat alam, dan bagian lain dari pembelajaran manusia; dan terutama apa yang disebut “Filosofi Baru” atau “Filosofi Eksperimental”. Kami mengadakan kesepakatan … berkumpul setiap minggu di London pada hari tertentu, untuk membahas masalah tersebut. … Urusan kami adalah (selain masalah teologi dan urusan kenegaraan) membahas Pertanyaan Filosofis, dan hal-hal yang berkaitan dengannya: seperti fisika, anatomi, geometri, astronomi, navigasi, statis, magnetis, kimia, mekanik, dan eksperimen alam; dengan keadaan studi-studi ini, kemudian disebarkan di dalam dan di luar negeri. Kemudian, kami membahas sirkulasi darah, katup dalam pembuluh darah, vena lactae, pembuluh limfatik, hipotesis Copernicus, sifat komet dan bintang baru, satelit Jupiter, bentuk oval (seperti yang timbul pada saat itu) Saturnus, bintik matahari, dan perputaran pada sumbunya, ketidaksamaan dan selenografi bulan, beberapa fase Venus dan Merkurius, perkembangan teleskop, dan penggilingan kaca untuk tujuan tersebut, bobot udara, kemungkinan atau kemustahilan kekosongan, dan kebencian alam daripadanya, eksperimen Torricellian terhadap air raksa, turunnya tubuh berat, dan derajat akselerasi di dalamnya, dan membahas hal-hal lain, seperti alam. Beberapa di antaranya kemudian disebut penemuan baru, tetapi yang lain umumnya tidak dikenali dan dianut, seperti halnya sekarang. …\nKami melarang semua diskursus ketuhanan, urusan negara, dan berita, selain yang berkaitan dengan bisnis Filosofi. Kami segera menghentikan pertemuan ini setelah Bull Head di Cheapside dan dalam periode Gresham College, di mana kami bertemu setiap minggu dalam kuliah Pak Foster (Dosen Astronomi saat itu), dan setelah kuliah berakhir, terkadang bertamu ke rumah Pak Foster, terkadang ke tempat lain yang tidak terlalu jauh, di mana kami meneruskan diskusi, dan jumlah kami meningkat.\nDr. John Wallis, Tulisan dari Sebagian Perjalanan Hidupnya, 1700\nKutipan tersebut dapat digunakan sebagi bukti perkembangan|||masyarakat independen untuk studi filosofi alam pada abad tujuh belas|||studi filosofi alam di Gereja pada abad tujuh belas|||studi filosofi alam di istana kerajaan pada abad tujuh belas|||universitas baru untuk studi filosofi alam pada abad tujuh belas": {
+    "source": "test",
+    "index": 29,
+    "choices": [
+      "masyarakat independen untuk studi filosofi alam pada abad tujuh belas",
+      "studi filosofi alam di istana kerajaan pada abad tujuh belas",
+      "universitas baru untuk studi filosofi alam pada abad tujuh belas",
+      "studi filosofi alam di Gereja pada abad tujuh belas"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nDua kutipan di bawah ini ditulis oleh penjelajah Christopher Columbus dan Uskup Dominika Chiapas, Meksiko, Bartholomew de las Casas.\nSumber 1\nIndian akan memberikan apa pun yang diperlukan penjual. . . . Dengan demikian, mereka membarter, seperti orang bodoh, kapas dan emas untuk bagian dari busur, kaca, botol, dan stoples; yang menurut saya tidak adil, dan saya sendiri memberi mereka banyak barang yang indah dan layak yang saya bawa, tetapi tidak mengambil apa pun dari mereka; saya melakukan ini agar saya dapat berkomunikasi lebih mudah dengan mereka, bahwa mereka mungkin akan menjadi penganut Kristen, dan cenderung tunduk pada Raja dan Ratu, Pangeran kami, dan seluruh orang Spanyol, dan saya mungkin dapat membujuk mereka untuk mengumpulkan dan memberikan kepada kami hal-hal melimpah yang mereka miliki, yang sangat kami perlukan.\n—Christopher Columbus: surat kepada Raphael Sanchez, 1493\nSumber 2\nTerhadap domba yang lembut ini . . . sejak hari pertama mereka melihat orang Spanyol berlarian seperti serigala buas menuju kandang domba, atau seperti harimau dan singa liar yang belum makan daging selama berhari-hari. Pola yang terbentuk pada permulaan tetap tidak berubah hingga hari ini, dan orang-orang Spanyol tidak melakukan apa pun kecuali membantai para penduduk asli, membunuh mereka, dan menimbulkan penderitaan dan kesedihan yang tidak terperikan, yang menyiksa mereka tanpa belas kasihan. Kami pada waktunya akan menjelaskan banyak metode penyiksaan yang mereka temukan dan sempurnakan untuk tujuan ini, tetapi kita dapat memperoleh ide keefektifan metode mereka dari gambar itu sendiri. Saat orang Spanyol tiba untuk pertama kalinya di sana, populasi penduduk asli pulau Hispaniola adalah sekitar tiga juta; saat ini hanya ada dua ratus yang bertahan. Alasan pembunuhan dan pembantaian orang-orang tersebut adalah penganut Kristen memiliki tujuan akhir, yaitu memperoleh emas, dan untuk memperoleh kekayaan dalam waktu yang sangat singkat, dan dengan demikian, memperoleh tanah yang tidak layak mereka dapatkan.\n—Bartholomew de las Casas: A Short Account of the Destruction of the Indies, 1542\nMotif eksplorasi apa yang dikritik oleh de las Casas dalam Sumber 2?|||Kejayaan pribadi|||Keuntungan finansial|||Membuat penduduk asli memeluk Kristen|||Mencari teman baru": {
+    "source": "test",
+    "index": 30,
+    "choices": [
+      "Membuat penduduk asli memeluk Kristen",
+      "Keuntungan finansial",
+      "Kejayaan pribadi",
+      "Mencari teman baru"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nPerestroika [Restrukturisasi] adalah kebutuhan mendesak yang timbul dari proses menonjol dalam masyarakat sosialis kita. Masyarakat siap untuk perubahan. Masyarakat telah lama mendambakannya. Keterlambatan dalam memulai perestroika dapat mengakibatkan situasi internal yang semakin memburuk di masa depan, yang secara terus terang, akan dipenuhi oleh krisis sosial, ekonomi, dan politik yang serius.\nMikhail Gorbachev, Perestroika: New Thinking for Our Country and the World, 1987\nDari kutipan tersebut, kita dapat menyimpulkan Gorbachev berpendapat bahwa|||restrukturisasi masyarakat sosialis Uni Soviet akan memperparah situasi saat ini|||restrukturisasi masyarakat sosialis Uni Soviet diperlukan untuk menghindari krisis|||restrukturisasi masyarakat sosialis Uni Soviet tidak dapat dihindari|||restrukturisasi masyarakat sosialis diperlukan untuk menghindari keruntuhan Uni Soviet": {
+    "source": "test",
+    "index": 31,
+    "choices": [
+      "restrukturisasi masyarakat sosialis Uni Soviet tidak dapat dihindari",
+      "restrukturisasi masyarakat sosialis Uni Soviet akan memperparah situasi saat ini",
+      "restrukturisasi masyarakat sosialis Uni Soviet diperlukan untuk menghindari krisis",
+      "restrukturisasi masyarakat sosialis diperlukan untuk menghindari keruntuhan Uni Soviet"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nSekitar tahun 1645, ketika saya tinggal di London … Saya berkenalan dengan berbagai orang-orang yang layak, yang penasaran dengan filsafat alam, dan bagian lain dari pembelajaran manusia; dan terutama apa yang disebut “Filosofi Baru” atau “Filosofi Eksperimental”. Kami mengadakan kesepakatan … berkumpul setiap minggu di London pada hari tertentu, untuk membahas masalah tersebut. … Urusan kami adalah (selain masalah teologi dan urusan kenegaraan) membahas Pertanyaan Filosofis, dan hal-hal yang berkaitan dengannya: seperti fisika, anatomi, geometri, astronomi, navigasi, statis, magnetis, kimia, mekanik, dan eksperimen alam; dengan keadaan studi-studi ini, kemudian disebarkan di dalam dan di luar negeri. Kemudian, kami membahas sirkulasi darah, katup dalam pembuluh darah, vena lactae, pembuluh limfatik, hipotesis Copernicus, sifat komet dan bintang baru, satelit Jupiter, bentuk oval (seperti yang timbul pada saat itu) Saturnus, bintik matahari, dan perputaran pada sumbunya, ketidaksamaan dan selenografi bulan, beberapa fase Venus dan Merkurius, perkembangan teleskop, dan penggilingan kaca untuk tujuan tersebut, bobot udara, kemungkinan atau kemustahilan kekosongan, dan kebencian alam daripadanya, eksperimen Torricellian terhadap air raksa, turunnya tubuh berat, dan derajat akselerasi di dalamnya, dan membahas hal-hal lain, seperti alam. Beberapa di antaranya kemudian disebut penemuan baru, tetapi yang lain umumnya tidak dikenali dan dianut, seperti halnya sekarang. …\nKami melarang semua diskursus ketuhanan, urusan negara, dan berita, selain yang berkaitan dengan bisnis Filosofi. Kami segera menghentikan pertemuan ini setelah Bull Head di Cheapside dan dalam periode Gresham College, di mana kami bertemu setiap minggu dalam kuliah Pak Foster (Dosen Astronomi saat itu), dan setelah kuliah berakhir, terkadang bertamu ke rumah Pak Foster, terkadang ke tempat lain yang tidak terlalu jauh, di mana kami meneruskan diskusi, dan jumlah kami meningkat.\nDr. John Wallis, Tulisan dari Sebagian Perjalanan Hidupnya, 1700\nDari kutipan tersebut, dapat disimpulkan bahwa kepentingan utama kelompok Wallis adalah|||memastikan status Filosofi Baru di Inggris dan di luar negeri|||menciptakan sains sekuler untuk menantang Gereja|||mengatur pengetahuan baru agar tidak merusak nilai-nilai tradisional|||merusak pandangan tradisional terhadap dunia": {
+    "source": "test",
+    "index": 32,
+    "choices": [
+      "merusak pandangan tradisional terhadap dunia",
+      "menciptakan sains sekuler untuk menantang Gereja",
+      "memastikan status Filosofi Baru di Inggris dan di luar negeri",
+      "mengatur pengetahuan baru agar tidak merusak nilai-nilai tradisional"
+    ]
+  },
+  "Suatu piramida populasi, atau struktur usia-jenis kelamin, menunjukkan semua informasi berikut tentang populasi suatu negara, KECUALI|||dampak perang terhadap populasi.|||dampak “ledakan angka kelahiran” terhadap populasi.|||gambaran visual cepat tentang demografis negara tersebut.|||kebutuhan pengeluaran sosial populasi di masa mendatang.": {
+    "source": "test",
+    "index": 33,
+    "choices": [
+      "kebutuhan pengeluaran sosial populasi di masa mendatang.",
+      "dampak “ledakan angka kelahiran” terhadap populasi.",
+      "dampak perang terhadap populasi.",
+      "gambaran visual cepat tentang demografis negara tersebut."
+    ]
+  },
+  "Toko baru yang dibuka di dekat pusat perbelanjaan besar mencerminkan konsep apa?|||Bias pergerakan|||Komplementaritas|||Konsep gravitasi|||Peluruhan jarak": {
+    "source": "test",
+    "index": 34,
+    "choices": [
+      "Konsep gravitasi",
+      "Peluruhan jarak",
+      "Komplementaritas",
+      "Bias pergerakan"
+    ]
+  },
+  "Penolakan atau ketidakpedulian terhadap agama di suatu negara disebut|||animisme.|||monoteisme.|||politeisme.|||sekularisme.": {
+    "source": "test",
+    "index": 35,
+    "choices": [
+      "politeisme.",
+      "animisme.",
+      "sekularisme.",
+      "monoteisme."
+    ]
+  },
+  "Ketika kita bicara tentang difusi ciri-ciri budaya, apa yang dimaksud dengan “rumah”?|||Asal|||Destinasi|||Semua lokasi di sepanjang jalan difusi|||Titik sumbu": {
+    "source": "test",
+    "index": 36,
+    "choices": [
+      "Destinasi",
+      "Asal",
+      "Semua lokasi di sepanjang jalan difusi",
+      "Titik sumbu"
+    ]
+  },
+  "Apa yang paling menggambarkan model hierarki perkotaan di mana populasi suatu kota berbanding terbalik dengan peringkatnya dalam hierarki?|||Aturan ukuran peringkat|||Efek pengganda|||Model sektor Burgess|||Teori tempat sentral": {
+    "source": "test",
+    "index": 37,
+    "choices": [
+      "Efek pengganda",
+      "Aturan ukuran peringkat",
+      "Teori tempat sentral",
+      "Model sektor Burgess"
+    ]
+  },
+  "Ketika desain mode baru diperkenalkan secara global, informasi awalnya menyebar melalui proses yang disebut|||difusi hierarkis|||difusi inovatif|||difusi menular|||difusi relokasi": {
+    "source": "test",
+    "index": 38,
+    "choices": [
+      "difusi menular",
+      "difusi relokasi",
+      "difusi inovatif",
+      "difusi hierarkis"
+    ]
+  },
+  "Kemenangan keberagaman presiden terjadi apabila|||Senat menyatakan pemenang resmi|||kandidat menerima jumlah suara elektoral dan suara terbanyak yang setara sehingga menentukan pemenang|||kandidat pemenang mendapat suara terbanyak kurang dari 50 persen|||kandidat pemenang mendapatkan suara terbanyak lebih dari 50%": {
+    "source": "test",
+    "index": 39,
+    "choices": [
+      "kandidat pemenang mendapat suara terbanyak kurang dari 50 persen",
+      "kandidat menerima jumlah suara elektoral dan suara terbanyak yang setara sehingga menentukan pemenang",
+      "Senat menyatakan pemenang resmi",
+      "kandidat pemenang mendapatkan suara terbanyak lebih dari 50%"
+    ]
+  },
+  "Manakah dari berikut yang merupakan contoh devolusi?|||Memungkinkan negara bagian untuk memutuskan cara memenuhi target emisi gas rumah kaca yang diwajibkan secara federal|||Negara bagian dihalangi untuk menerapkan standar efisiensi bahan bakar yang lebih ketat dari yang ditetapkan oleh pemerintah federal|||Negara bagian yang melegalkan kepemilikan ganja yang bertentangan dengan undang-undang federal|||“Balapan ke bawah” ketika negara bagian saling berkompetisi untuk memiliki peraturan lingkungan yang paling sedikit": {
+    "source": "test",
+    "index": 40,
+    "choices": [
+      "Memungkinkan negara bagian untuk memutuskan cara memenuhi target emisi gas rumah kaca yang diwajibkan secara federal",
+      "“Balapan ke bawah” ketika negara bagian saling berkompetisi untuk memiliki peraturan lingkungan yang paling sedikit",
+      "Negara bagian yang melegalkan kepemilikan ganja yang bertentangan dengan undang-undang federal",
+      "Negara bagian dihalangi untuk menerapkan standar efisiensi bahan bakar yang lebih ketat dari yang ditetapkan oleh pemerintah federal"
+    ]
+  },
+  "Misalkan konsumen mengharapkan harga jagung lebih rendah dalam waktu dekat, sementara harga benih jagung dan pupuk turun. Apa yang akan terjadi pada harga keseimbangan dan kuantitas keseimbangan?|||Harga keseimbangan akan naik sementara kuantitas keseimbangan tidak tentu.|||Harga keseimbangan akan turun sementara kuantitas keseimbangan tidak tentu.|||Harga keseimbangan tidak tentu sedangkan kuantitas keseimbangan akan naik.|||Harga keseimbangan tidak tentu sedangkan kuantitas keseimbangan akan turun.": {
+    "source": "test",
+    "index": 41,
+    "choices": [
+      "Harga keseimbangan akan naik sementara kuantitas keseimbangan tidak tentu.",
+      "Harga keseimbangan akan turun sementara kuantitas keseimbangan tidak tentu.",
+      "Harga keseimbangan tidak tentu sedangkan kuantitas keseimbangan akan naik.",
+      "Harga keseimbangan tidak tentu sedangkan kuantitas keseimbangan akan turun."
+    ]
+  },
+  "Peningkatan permintaan uang dalam perekonomian dapat disebabkan oleh|||proyeksi inflasi yang akan datang.|||resesi.|||suku bunga yang lebih tinggi.|||tingkat harga yang lebih tinggi.": {
+    "source": "test",
+    "index": 42,
+    "choices": [
+      "resesi.",
+      "tingkat harga yang lebih tinggi.",
+      "suku bunga yang lebih tinggi.",
+      "proyeksi inflasi yang akan datang."
+    ]
+  },
+  "Manakah dari pernyataan berikut ini yang benar mengenai defisit anggaran federal dan utang federal?|||Defisit adalah akumulasi dari utang masa lalu.|||Ketika defisit negatif, utang berkurang.|||Ketika utang negatif, defisit menurun.|||Ketika utang positif, defisit menurun.": {
+    "source": "test",
+    "index": 43,
+    "choices": [
+      "Ketika utang negatif, defisit menurun.",
+      "Ketika utang positif, defisit menurun.",
+      "Defisit adalah akumulasi dari utang masa lalu.",
+      "Ketika defisit negatif, utang berkurang."
+    ]
+  },
+  "Jika PDB riil per kapita adalah $10.000 pada tahun 1990 dan $15.000 pada tahun 2000, jumlah pertumbuhan ekonomi adalah|||0,5 persen.|||3,3 persen.|||5,0 persen.|||50 persen.": {
+    "source": "test",
+    "index": 44,
+    "choices": [
+      "0,5 persen.",
+      "5,0 persen.",
+      "50 persen.",
+      "3,3 persen."
+    ]
+  },
+  "Kurva permintaan agregat adalah|||penjumlahan horizontal dari kurva permintaan pasar|||penjumlahan horizontal dari kurva permintaan perusahaan|||penjumlahan sederhana dari kurva permintaan untuk barang individual|||tidak ditemukan dengan menambahkan kurva permintaan produk secara horizontal atau vertikal": {
+    "source": "test",
+    "index": 45,
+    "choices": [
+      "penjumlahan horizontal dari kurva permintaan pasar",
+      "penjumlahan horizontal dari kurva permintaan perusahaan",
+      "penjumlahan sederhana dari kurva permintaan untuk barang individual",
+      "tidak ditemukan dengan menambahkan kurva permintaan produk secara horizontal atau vertikal"
+    ]
+  },
+  "Area yang dibatasi oleh parabola y = x^2 dan garis y = 1 dan y = 9 sama dengan|||104/3|||64\\sqrt{2}/3|||8|||84/3": {
+    "source": "test",
+    "index": 46,
+    "choices": [
+      "8",
+      "84/3",
+      "64\\sqrt{2}/3",
+      "104/3"
+    ]
+  },
+  "Pajak penjualan yang Anda bayarkan di toko kelontong biasanya dilabeli sebagai|||pajak cukai.|||pajak progresif.|||pajak proporsional.|||pajak regresif.": {
+    "source": "test",
+    "index": 47,
+    "choices": [
+      "pajak progresif.",
+      "pajak regresif.",
+      "pajak proporsional.",
+      "pajak cukai."
+    ]
+  },
+  "Dua wadah yang identik diisi dengan gas berbeda. Wadah 1 diisi dengan hidrogen dan wadah 2 diisi dengan nitrogen. Setiap wadah diletakkan di meja laboratorium dan dibiarkan mencapai kesetimbangan panas dengan ruangan. Manakah dari pernyataan berikut ini yang membandingkan sifat kedua gas tersebut dengan benar?|||Energi kinetik rata-rata gas hidrogen lebih besar daripada gas nitrogen.|||Gaya rata-rata yang diberikan pada wadah oleh gas hidrogen lebih besar daripada gas nitrogen.|||Kerapatan gas hidrogen kurang dari gas nitrogen.|||Tekanan gas tidak dapat dibandingkan tanpa mengetahui jumlah molekul dalam setiap wadah.": {
+    "source": "test",
+    "index": 48,
+    "choices": [
+      "Energi kinetik rata-rata gas hidrogen lebih besar daripada gas nitrogen.",
+      "Gaya rata-rata yang diberikan pada wadah oleh gas hidrogen lebih besar daripada gas nitrogen.",
+      "Kerapatan gas hidrogen kurang dari gas nitrogen.",
+      "Tekanan gas tidak dapat dibandingkan tanpa mengetahui jumlah molekul dalam setiap wadah."
+    ]
+  },
+  "Jika air panas dituangkan ke dalam beaker yang berisi alkohol dingin, suhu campuran pada akhirnya akan mencapai suhu yang sama. Dengan mempertimbangkan skala ukuran molekul cairan, manakah dari pernyataan berikut yang merupakan alasan utama terjadinya fenomena ini?|||Air bersuhu tinggi akan naik ke bagian atas wadah hingga dingin lalu bercampur dengan alkohol.|||Air panas menghasilkan radiasi panas yang diserap oleh alkohol dingin hingga energi kinetik semua molekul menjadi sama.|||Molekul air akan terus memiliki energi kinetik yang lebih tinggi dibandingkan molekul alkohol, tetapi kedua cairan tersebut akan bercampur hingga energi tersebar merata ke seluruh bagian wadah.|||Molekul air bertumbukan dengan molekul alkohol sehingga memindahkan energi hingga energi kinetik rata-rata molekul air dan alkohol menjadi sama.": {
+    "source": "test",
+    "index": 49,
+    "choices": [
+      "Air bersuhu tinggi akan naik ke bagian atas wadah hingga dingin lalu bercampur dengan alkohol.",
+      "Molekul air akan terus memiliki energi kinetik yang lebih tinggi dibandingkan molekul alkohol, tetapi kedua cairan tersebut akan bercampur hingga energi tersebar merata ke seluruh bagian wadah.",
+      "Air panas menghasilkan radiasi panas yang diserap oleh alkohol dingin hingga energi kinetik semua molekul menjadi sama.",
+      "Molekul air bertumbukan dengan molekul alkohol sehingga memindahkan energi hingga energi kinetik rata-rata molekul air dan alkohol menjadi sama."
+    ]
+  },
+  "Sebuah proton memasuki solenoid. Saat masuk, proton bergerak dalam garis lurus di sepanjang sumbu solenoid. Manakah dari berikut ini yang merupakan deskripsi yang benar dari gerakan proton di dalam solenoid?|||Proton akan dikirim dalam jalur melingkar.|||Proton akan dikirim dalam jalur parabola.|||Proton akan terus berada di jalur yang lurus dan melambat.|||Proton akan terus berada di jalur yang lurus dengan kecepatan konstan.": {
+    "source": "test",
+    "index": 50,
+    "choices": [
+      "Proton akan dikirim dalam jalur parabola.",
+      "Proton akan dikirim dalam jalur melingkar.",
+      "Proton akan terus berada di jalur yang lurus dengan kecepatan konstan.",
+      "Proton akan terus berada di jalur yang lurus dan melambat."
+    ]
+  },
+  "Manakah dari berikut ini yang akan meningkatkan kapasitansi dari kapasitor pelat paralel?|||Lebih mendekatkan jarak pelat|||Mengganti bahan dielektrik antara pelat dengan bahan yang memiliki konstanta dielektrik yang lebih kecil|||Menggunakan pelat yang lebih kecil|||Menurunkan tegangan antara pelat": {
+    "source": "test",
+    "index": 51,
+    "choices": [
+      "Menggunakan pelat yang lebih kecil",
+      "Mengganti bahan dielektrik antara pelat dengan bahan yang memiliki konstanta dielektrik yang lebih kecil",
+      "Menurunkan tegangan antara pelat",
+      "Lebih mendekatkan jarak pelat"
+    ]
+  },
+  "Sebuah bola bermassa dipasang ke tali yang disambungkan ke langit-langit sehingga membentuk bandul. Jika tali tersebut diangkat hingga membentuk sudut 50 derajat di bawah horizontal (langit-langit) dan dilepaskan, bola akan berayun maju mundur dengan periode 0,4 detik. Manakah dari perubahan berikut terhadap bandul yang akan menurunkan periode bandul?|||Memperkecil sudut tali dari garis horizontal saat dilepaskan|||Mengurangi massa bola|||Mengurangi panjang tali|||Meningkatkan massa bola": {
+    "source": "test",
+    "index": 52,
+    "choices": [
+      "Meningkatkan massa bola",
+      "Mengurangi panjang tali",
+      "Memperkecil sudut tali dari garis horizontal saat dilepaskan",
+      "Mengurangi massa bola"
+    ]
+  },
+  "Panas ditambahkan ke batang aluminium silinder dengan jari-jari Q dan panjang ℓ. Perbedaan suhu antara kedua ujung batang bervariasi mulai 10 °C hingga 20 °C. Apakah faktor geometrik yang akan memengaruhi laju perpindahan panas di sepanjang batang?|||Bukan panjang maupun luas|||Hanya luas batang|||Hanya panjangnya|||Panjang dan luas batang": {
+    "source": "test",
+    "index": 53,
+    "choices": [
+      "Hanya panjangnya",
+      "Hanya luas batang",
+      "Panjang dan luas batang",
+      "Bukan panjang maupun luas"
+    ]
+  },
+  "Manakah dari pendekatan berikut ini yang menekankan pentingnya perasaan manusia dan memandang sifat manusia sebagai hal yang positif dan mencari pertumbuhan?|||Perilaku|||biologi|||humanistik|||kognitif": {
+    "source": "test",
+    "index": 54,
+    "choices": [
+      "biologi",
+      "Perilaku",
+      "kognitif",
+      "humanistik"
+    ]
+  },
+  "Seorang psikolog yang berfokus pada apakah perkembangan terjadi secara bertahap paling tertarik pada kontroversi yang manakah?|||kontinuitas versus diskontinuitas|||natural versus pengasuhan|||stabilitas versus perubahan|||subjektivitas versus objektivitas": {
+    "source": "test",
+    "index": 55,
+    "choices": [
+      "natural versus pengasuhan",
+      "kontinuitas versus diskontinuitas",
+      "stabilitas versus perubahan",
+      "subjektivitas versus objektivitas"
+    ]
+  },
+  "Manakah dari jenis pemindaian otak berikut yang paling berguna untuk menyangkal pernyataan: \"Kebanyakan orang hanya menggunakan 10 persen otaknya\"?|||CAT|||EEG|||MRI|||PET": {
+    "source": "test",
+    "index": 56,
+    "choices": [
+      "CAT",
+      "MRI",
+      "EEG",
+      "PET"
+    ]
+  },
+  "Dalam studi tentang perkembangan otak, dua kelompok tikus dipelihara di lingkungan laboratorium. Pada Kelompok I, setiap tikus dipelihara secara terisolasi tanpa mainan, sedangkan pada Kelompok II, tikus dibagi menjadi kelompok-kelompok kecil dan diberikan mainan untuk dimainkan. Manakah dari pernyataan berikut yang paling akurat mencerminkan kemungkinan temuan penelitian ini?|||Otak tikus yang dibesarkan di Kelompok I akan lebih banyak terdiri dari materi putih, sedangkan otak tikus yang dibesarkan di Kelompok II akan terdiri dari lebih banyak materi abu-abu.|||Otak tikus yang dipelihara pada Kelompok I tidak akan jauh berbeda dengan otak tikus yang dipelihara pada Kelompok II.|||Tikus yang dipelihara pada Kelompok I akan memiliki otak depan yang lebih berat dibandingkan tikus yang dipelihara pada Kelompok II.|||Tikus yang dipelihara pada Kelompok I akan memiliki otak depan yang lebih ringan dibandingkan tikus yang dipelihara pada Kelompok II.": {
+    "source": "test",
+    "index": 57,
+    "choices": [
+      "Tikus yang dipelihara pada Kelompok I akan memiliki otak depan yang lebih berat dibandingkan tikus yang dipelihara pada Kelompok II.",
+      "Tikus yang dipelihara pada Kelompok I akan memiliki otak depan yang lebih ringan dibandingkan tikus yang dipelihara pada Kelompok II.",
+      "Otak tikus yang dipelihara pada Kelompok I tidak akan jauh berbeda dengan otak tikus yang dipelihara pada Kelompok II.",
+      "Otak tikus yang dibesarkan di Kelompok I akan lebih banyak terdiri dari materi putih, sedangkan otak tikus yang dibesarkan di Kelompok II akan terdiri dari lebih banyak materi abu-abu."
+    ]
+  },
+  "Dalam perjalanan ke otak, informasi dari retina kedua mata melintasi|||fovea.|||kiasma optik.|||nukleus genikulatum lateral.|||saraf optik.": {
+    "source": "test",
+    "index": 58,
+    "choices": [
+      "saraf optik.",
+      "kiasma optik.",
+      "fovea.",
+      "nukleus genikulatum lateral."
+    ]
+  },
+  "Jika semua variabel lain tetap konstan, manakah dari hal-hal berikut yang akan meningkatkan kekuatan uji hipotesis? I.Meningkatkan ukuran sampel, II.Memperbesar tingkat signifikansi. III.Meningkatkan probabilitas kesalahan Tipe II.|||I dan II|||I saja|||II saja|||III saja": {
+    "source": "test",
+    "index": 59,
+    "choices": [
+      "I saja",
+      "II saja",
+      "III saja",
+      "I dan II"
+    ]
+  },
+  "Pengujian cacing hati pada anjing menunjukkan hasil positif pada 96% anjing yang benar-benar terinfeksi cacing hati, dan menunjukkan hasil negatif pada 98% anjing yang tidak terinfeksi cacing hati. Jika cacing hati benar-benar ada pada 10% anjing, berapakah probabilitas bahwa seekor anjing yang dipilih secara acak dan diuji positif terkena cacing hati benar-benar terinfeksi cacing hati?|||11%|||18%|||84%|||88%": {
+    "source": "test",
+    "index": 60,
+    "choices": [
+      "11%",
+      "18%",
+      "84%",
+      "88%"
+    ]
+  },
+  "Di satu wilayah metropolitan, penulis teknis mendapatkan gaji tahunan yang terdistribusi secara normal dengan rata-rata $55.800. Gaji kuartil pertama adalah $48.815. Berapakah simpangan bakunya?|||$10.356|||$10.476|||$13.968|||$6.984": {
+    "source": "test",
+    "index": 61,
+    "choices": [
+      "$6.984",
+      "$10.356",
+      "$10.476",
+      "$13.968"
+    ]
+  },
+  "Jika semua nilai kumpulan data sama, maka semua nilai berikut harus sama dengan nol, kecuali yang manakah?|||Jangkauan|||Rata-rata|||Simpangan baku|||Varian": {
+    "source": "test",
+    "index": 62,
+    "choices": [
+      "Rata-rata",
+      "Simpangan baku",
+      "Varian",
+      "Jangkauan"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\n“Jika perorangan mana pun, sejak dan setelah berlakunya undang-undang ini, melalui paksaan atau kekerasan, mengambil dan membawa, atau menyebabkan diambilnya atau dibawanya, dan, melalui penipuan atau pengelabuan, membujuk, atau menyebabkan keterbujukan, atau berupaya untuk mengambil, membawa, atau membujuk orang kulit hitam atau keturunan campuran, dari wilayah mana pun dari persemakmuran ini, dengan rencana dan niat untuk menjual atau menggunakan, atau menyebabkan penjualan, atau untuk disekap dan ditahan, atau menyebabkan penyekapan dan penahanan, orang kulit hitam tersebut atau keturunan campuran, sebagai budak atau pelayan seumur hidup, atau selama jangka waktu apa pun, perorangan tersebut, orang-orang yang membantunya atau bersekongkol dengannya, akan didakwa di pengadilan mana pun di persemakmuran ini yang memiliki yurisdiksi kompeten, dan dinyatakan bersalah telah melakukan kejahatan.”\n—Kutipan dari undang-undang Pennsylvania, 1826\nKutipan dan implementasi undang-undang Pennsylvania ini mencerminkan konflik berkelanjutan antara|||hukum federal dan hukum negara bagian.|||kepentingan pedesaan dan perkotaan.|||mereka yang mendukung emansipasi bertahap dan mereka yang mendukung emansipasi segera.|||pendukung dan penentang peraturan pemerintah tentang perdagangan.": {
+    "source": "test",
+    "index": 63,
+    "choices": [
+      "kepentingan pedesaan dan perkotaan.",
+      "hukum federal dan hukum negara bagian.",
+      "mereka yang mendukung emansipasi bertahap dan mereka yang mendukung emansipasi segera.",
+      "pendukung dan penentang peraturan pemerintah tentang perdagangan."
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nMalam ini, putri seorang wanita, yang cita-cita terbesarnya adalah masa depan untuk anak-anaknya, berbicara dengan partai politik tertua di negara tentang masa depan kita semua. Malam ini, putri warga Amerika kelas pekerja memberi tahu semua rakyat Amerika bahwa masa depan berada di tangan kita, jika kita ingin mencapainya. Malam ini, putri seorang imigran dari Italia telah dipilih untuk mengikuti pemilihan (wakil) presiden di tanah baru yang dicintai ayah saya.… Amerika ingin hidup dengan seperangkat aturan yang sama. Namun, di bawah pemerintahan ini, aturan dimanipulasi dan merugikan banyak orang. Bukan merupakan hal yang benar apabila setiap tahun, bagian pajak yang dibayarkan oleh warga negara individu naik, sementara bagian yang dibayarkan oleh perusahaan besar semakin turun.… Bukan hal yang benar apabila pasangan muda mempertanyakan apakah mereka akan melahirkan anak ke dunia yang memiliki 50.000 hulu ledak nuklir.. Itu bukan visi yang diperjuangkan oleh rakyat Amerika selama lebih dari dua abad.… Malam ini, kita merebut kembali mimpi kita.. Kita akan membuat peraturan hidup rakyat Amerika kembali berpihak kepada rakyat Amerika.… Masalahnya bukan apa yang dapat Amerika lakukan untuk wanita, tetapi apa yang wanita dapat lakukan untuk Amerika.\n—Geraldine Ferraro, Pidato Penerimaan Pencalonan Wakil Presiden, 19 Juli 1984\nGagasan yang ditunjukkan dalam kutipan di atas akan memperkuat hal apa selama 1980-an?|||Mendukung kebijakan perang dingin pemerintah|||Penentangan peningkatan senjata oleh pemerintah|||Upaya untuk menderegulasi banyak industri|||Upaya untuk mereformasi sistem kesejahteraan": {
+    "source": "test",
+    "index": 64,
+    "choices": [
+      "Penentangan peningkatan senjata oleh pemerintah",
+      "Upaya untuk menderegulasi banyak industri",
+      "Upaya untuk mereformasi sistem kesejahteraan",
+      "Mendukung kebijakan perang dingin pemerintah"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\n“Oposisi berkata bahwa kita tidak boleh mengatur masyarakat tanpa izin dari mereka. Tanggapan saja, aturan kebebasan yang menyatakan bahwa semua pemerintah yang adil memperoleh kewenangannya dari persetujuan rakyat yang diaturnya hanya berlaku bagi mereka yang mampu menyelenggarakan pemerintahan mandiri. Kita mengatur orang-orang Indian tanpa persetujuan mereka, kita mengatur wilayah kita tanpa persetujuan mereka, kita mengatur anak-anak kita tanpa persetujuan mereka. Bagaimana mereka tahu pemerintah kita tanpa persetujuan mereka? Bukannya rakyat Filipina lebih memilih pemerintah Republik ini yang adil, manusiawi, dan beradab dibandingkan penguasa kejam yang menjarah dan memeras yang darinya kita menyelamatkan mereka? Selain itu, terlepas dari perumusan kata-kata yang hanya ditujukan bagi rakyat tercerahkan yang mampu mewujudkan pemerintahan mandiri, bukannya kita memiliki kewajiban terhadap dunia? Apakah kita harus berpaling dari orang-orang ini kepada orang-orang yang telah menindas mereka? Haruskah kita meninggalkan mereka ketika Jerman, Inggris, Jepang mengincar mereka? Haruskah kita menyelamatkan mereka dari negara-negara tersebut agar mereka terperangkap dalam tragedi pemerintahan mandiri?…Kemudian, seperti pria dewasa dan bukan seperti anak-anak mari kita laksanakan tugas, misi, dan memenuhi takdir kita.”\nAlbert J. Beveridge, \"The March of the Flag,\" 1898\nManakah dari alasan-alasan berikut yang digunakan oleh Beveridge dalam argumennya?|||Negara kuat memiliki kewajiban moral untuk memerintah negara-negara yang kurang maju.|||Pemerintahan wilayah memberikan manfaat ekonomi kepada bangsa Eropa dan nonkulit putih.|||Penutupan perbatasan barat mendorong Amerika Serikat untuk memperluas wilayahnya ke luar negeri.|||Superioritas rasial memberikan tanggung jawab kepada Amerika Serikat dan Eropa atas urusan negara-negara berkembang.": {
+    "source": "test",
+    "index": 65,
+    "choices": [
+      "Penutupan perbatasan barat mendorong Amerika Serikat untuk memperluas wilayahnya ke luar negeri.",
+      "Pemerintahan wilayah memberikan manfaat ekonomi kepada bangsa Eropa dan nonkulit putih.",
+      "Negara kuat memiliki kewajiban moral untuk memerintah negara-negara yang kurang maju.",
+      "Superioritas rasial memberikan tanggung jawab kepada Amerika Serikat dan Eropa atas urusan negara-negara berkembang."
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nMalam ini, putri seorang wanita, yang cita-cita terbesarnya adalah masa depan untuk anak-anaknya, berbicara dengan partai politik tertua di negara tentang masa depan kita semua. Malam ini, putri warga Amerika kelas pekerja memberi tahu semua rakyat Amerika bahwa masa depan berada di tangan kita, jika kita ingin mencapainya. Malam ini, putri seorang imigran dari Italia telah dipilih untuk mengikuti pemilihan (wakil) presiden di tanah baru yang dicintai ayah saya.… Amerika ingin hidup dengan seperangkat aturan yang sama. Namun, di bawah pemerintahan ini, aturan dimanipulasi dan merugikan banyak orang. Bukan merupakan hal yang benar apabila setiap tahun, bagian pajak yang dibayarkan oleh warga negara individu naik, sementara bagian yang dibayarkan oleh perusahaan besar semakin turun.… Bukan hal yang benar apabila pasangan muda mempertanyakan apakah mereka akan melahirkan anak ke dunia yang memiliki 50.000 hulu ledak nuklir.. Itu bukan visi yang diperjuangkan oleh rakyat Amerika selama lebih dari dua abad.… Malam ini, kita merebut kembali mimpi kita.. Kita akan membuat peraturan hidup rakyat Amerika kembali berpihak kepada rakyat Amerika.… Masalahnya bukan apa yang dapat Amerika lakukan untuk wanita, tetapi apa yang wanita dapat lakukan untuk Amerika.\n—Geraldine Ferraro, Pidato Penerimaan Pencalonan Wakil Presiden, 19 Juli 1984\nPencalonan Geraldine Ferraro sebagai wakil presiden secara langsung merupakan kelanjutan dari hal apa di bawah ini?|||Meningkatnya demokratisasi dalam proses pencalonan politik|||Meningkatnya peluang ekonomi dan politik bagi perempuan|||Perjuangan hak-hak sipil bagi etnis minoritas|||Suksesnya asimilasi imigran ke Amerika Serikat": {
+    "source": "test",
+    "index": 66,
+    "choices": [
+      "Suksesnya asimilasi imigran ke Amerika Serikat",
+      "Perjuangan hak-hak sipil bagi etnis minoritas",
+      "Meningkatnya peluang ekonomi dan politik bagi perempuan",
+      "Meningkatnya demokratisasi dalam proses pencalonan politik"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\n“Pada 4 Maret mendatang partai ini [partai Republik] akan mengambil alih pemerintahan. Telah diumumkan bahwa Selatan akan dikeluarkan dari wilayah bersama, pengadilan yudisial akan dibentuk terpisah, dan perang melawan perbudakan harus dilancarkan hingga hal itu menghilang di seluruh Amerika Serikat. Jaminan Konstitusi tidak akan ada lagi; hak setara negara-negara bagian akan menghilang. Negara-negara bagian yang menerapkan perbudakan tidak akan lagi memiliki kekuatan untuk memerintah atau melindungi diri mereka sendiri, dan pemerintah federal akan menjadi musuh mereka.\nMaka, kami, warga Carolina Selatan, melalui perwakilan kami dalam konvensi yang kami hadiri, dengan sungguh-sungguh menyatakan bahwa persatuan yang sebelumnya terjalin antara negara bagian ini dan negara-negara bagian lain di Amerika Utara telah dibubarkan; dan Negara Bagian Carolina Selatan sekarang menempati posisinya di antara bangsa-bangsa di dunia, sebagai [sebuah] negara yang terpisah dan merdeka, memiliki kuasa penuh untuk mengumpulkan pajak perang, menegosiasikan perdamaian, menjalin kontrak aliansi, mengatur perdagangan, dan melakukan segala tindakan serta hal-hal lain yang berhak dilakukan oleh negara merdeka.”\nCarolina Selatan menguraikan alasan pemisahan diri, 1860\nDalam kutipan di atas, penyebutan \"sanksi dari keyakinan agama yang lebih menyimpang\" kemungkinan besar mengacu pada|||Justifikasi kaum Baptis Selatan terkait perbudakan atas dasar superioritas ras kulit putih|||Penerimaan umat Yahudi terkait perbudakan dalam Taurat|||Penolakan kaum abolisionis Kristen terhadap perbudakan atas dasar moral|||penghapusan perbudakan oleh kaum Puritan di negara-negara bagian New England": {
+    "source": "test",
+    "index": 67,
+    "choices": [
+      "Justifikasi kaum Baptis Selatan terkait perbudakan atas dasar superioritas ras kulit putih",
+      "penghapusan perbudakan oleh kaum Puritan di negara-negara bagian New England",
+      "Penerimaan umat Yahudi terkait perbudakan dalam Taurat",
+      "Penolakan kaum abolisionis Kristen terhadap perbudakan atas dasar moral"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nBerdasarkan prinsip nalar apa orang-orang asing mengirimkan obat-obatan beracun? Tanpa bermaksud bahwa orang asing memiliki niat merusak tersebut, dalam hati mereka, kita harus menegaskan secara positif bahwa dari rasa haus mereka akan keuntungan yang tiada henti, mereka sangat tidak peduli dengan cedera yang mereka timbulkan terhadap kita! Oleh karena itu, kita harus bertanya ke mana nurani yang ditanamkan tuhan di dalam dada semua manusia? Kita telah mendengar bahwa di negara Anda, opium dilarang dengan peraturan yang sangat ketat. Ini adalah bukti kuat bahwa Anda tahu betul seberapa menyakitkannya hal tersebut bagi umat manusia. Karena Anda tidak mengizinkannya untuk mencederai negara Anda sendiri, Anda seharusnya tidak mengirimkan obat-obatan berbahaya ini ke negara lain, dan yang terpenting, sesedikit apa pun ke Daratan Utama! Dar produk yang diekspor Tiongkok ke negara asing, tidak satu pun yang tidak bermanfaat bagi umat manusia dalam bentuk apa pun.\nLin Zexu, Komisi perdagangan Tiongkok, surat kepada Ratu Victoria, 1839\nArgumen mana yang dijadikan dasar bagi penulis dalam kutipan?|||Ajaran konfusius melarang penggunaan semua narkotika dan menyebutnya sebagai perbuatan tidak bermoral.|||Inggris tidak bijak dengan risiko amarah negara yang lebih kuat secara militer.|||Kecanduan membuat Tiongkok menderita neraca perdagangan yang tidak baik.|||Merupakan hal yang bersifat hipotesis untuk menjual kepada satu negara suatu material yang dilarang karena berbahaya bagi seseorang.": {
+    "source": "test",
+    "index": 68,
+    "choices": [
+      "Merupakan hal yang bersifat hipotesis untuk menjual kepada satu negara suatu material yang dilarang karena berbahaya bagi seseorang.",
+      "Ajaran konfusius melarang penggunaan semua narkotika dan menyebutnya sebagai perbuatan tidak bermoral.",
+      "Kecanduan membuat Tiongkok menderita neraca perdagangan yang tidak baik.",
+      "Inggris tidak bijak dengan risiko amarah negara yang lebih kuat secara militer."
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nSetelah menangkapku, dia membawaku ke Rumah Kegelapan…\nKe rumah di mana siapa pun yang masuk tidak akan keluar,\nDi sepanjang jalan tanpa pulang,\nKe rumah di mana tidak ada cahaya bagi mereka yang tinggal di sana,\nDi mana debu jadi minuman mereka, dan tanah jadi makanan mereka…\nDi mana cahaya tidak nampak. Mereka tinggal di kegelapan,\nDan di atas pintu dan selot, hanya ada debu.\ndari Tablet VII, The Epic of Gilgamesh, Sumeria, 2100 SM\nKebenaran itu baik dan nilainya abadi.\nKebenaran tidak terganggu sejak hari penciptanya,\nDi mana dia yang melanggar aturannya akan dihukum.\nKebenaran ada di depannya yang tidak tahu apa-apa.\nKesalahan belum pernah membawa upayanya ke pelabuhan…\nMereka yang dibimbing dewa tidak dapat tersesat.\nMereka yang dihalangi dari jalan tidak akan dapat menyeberangi sungai kehidupan.\ndari The Maxims of Ptahhotep, Mesir, 2400 SM.\nApa kesimpulan yang didukung oleh kedua teks di atas?|||Orang Mesir Kuno lebih cenderung memandang ketaatan politik sebagai hal yang baik secara moral dibandingkan orang Sumeria kuno.|||Orang Mesir kuno lebih patriarki dalam hubungan gender dibandingkan orang Sumeria kuno.|||Orang Mesir kuno memiliki hierarki sosial yang lebih kaku dibandingkan orang Sumeria kuno.|||Orang Mesir kuno memiliki pandangan yang lebih baik tentang akhirat dibandingkan orang Sumeria kuno.": {
+    "source": "test",
+    "index": 69,
+    "choices": [
+      "Orang Mesir kuno memiliki pandangan yang lebih baik tentang akhirat dibandingkan orang Sumeria kuno.",
+      "Orang Mesir Kuno lebih cenderung memandang ketaatan politik sebagai hal yang baik secara moral dibandingkan orang Sumeria kuno.",
+      "Orang Mesir kuno lebih patriarki dalam hubungan gender dibandingkan orang Sumeria kuno.",
+      "Orang Mesir kuno memiliki hierarki sosial yang lebih kaku dibandingkan orang Sumeria kuno."
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nDi puncak kekuasaan mereka wilayah khan, atau penguasa, Mongolia terdiri dari wilayah yang luas di mana orang-orang yang dulunya tidak bersahabat hidup berdampingan dengan damai, dan semua agama diizinkan. . . . Undang-undang yang pertama kali dirumuskan oleh Chinggis Khan memerintahkan interaksi manusia. Hasilnya adalah tahap baru yang penting dalam kontak internasional. Dari Eropa timur hingga Tiongkok selatan, pedagang dan pelancong dapat melakukan perjalanan di wilayah Mongolia yang aman tanpa rasa takut kehilangan nyawa atau harta benda. Wilayah Mongolia yang luas yang mencakup atau menghubungkan sebagian besar Eropa, Asia, dan Timur Tengah berfungsi sebagai jembatan antara berbagi peradaban di Belahan Bumi Bagian Timur. Karavan dan utusan yang melintasi tanah Mongolia mengirimkan makanan, penemuan, dan gagasan baru dari satu masyarakat beradab ke masyarakat lain, dan dari beberapa masyarakat beradab ke orang-orang nomaden yang berperan sebagai perantara. Rute perdagangan yang aman membuat pedagang makmur dan kota kosmopolitan kaya. Mereka juga memfasilitasi penyebaran pangan [dan] penemuan . . . kekuatan besar untuk perkembangan ekonomi dan sosial, serta peningkatan hidup yang beradab.\n—Robert Guisepi, 1992\nPernyataan mana yang paling akurat membandingkan kerajaan Mongol (pascaklasik) dengan kerajaan Persia (klasik)?|||Baik Mongol dan Persia mengizinkan orang-orang yang ditaklukkan untuk mempertahankan tradisi dan budaya lokal mereka.|||Baik Persia dan Mongol meningkatkan status sosial, ekonomi, dan hukum perempuan.|||Mongol membangun monumen besar, sedangkan Persia berfokus pada pekerjaan umum.|||Mongol membuat sistem kepercayaan sinkretis, sedangkan Persia mempertahankan agama monoteistik tradisional.": {
+    "source": "test",
+    "index": 70,
+    "choices": [
+      "Baik Mongol dan Persia mengizinkan orang-orang yang ditaklukkan untuk mempertahankan tradisi dan budaya lokal mereka.",
+      "Mongol membangun monumen besar, sedangkan Persia berfokus pada pekerjaan umum.",
+      "Baik Persia dan Mongol meningkatkan status sosial, ekonomi, dan hukum perempuan.",
+      "Mongol membuat sistem kepercayaan sinkretis, sedangkan Persia mempertahankan agama monoteistik tradisional."
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\n“Saat orang Portugis pergi dari Makau di Tiongkok ke Jepang, mereka membawa banyak sutra putih, emas, kesturi, dan porselen: dan mereka tidak membawa apa-apa dari Jepang kecuali perak. Mereka memiliki karak besar yang berlayar ke sana setiap tahun, dan membawa sekitar enam ratus koin setiap tahun dari sana: dan semua perak Jepang ini, dan dua ribu koin perak lainnya yang mereka bawa setiap tahun dari India, mereka memanfaatkan keuntungan besar mereka di Tiongkok: dan mereka membawa emas, kesturi, sutra, tembaga, porselen, dan masih banyak hal lain yang sangat mahal dan bersepuh dari sana.\nKetika orang Portugis datang dari Kanton ke Tiongkok untuk berdagang, mereka harus tetap berada di sana selama beberapa hari: dan ketika mereka masuk ke gerbang kota tersebut, mereka harus mencatatkan namanya di sebuah buku, dan saat mereka keluar malam, mereka harus mengeluarkan namanya. Mereka mungkin tidak berada di kota tersebut sepanjang malam, tetapi haris tinggal di kapal mereka di luar kota. Dan saat waktu mereka habis tetapi ada yang tepat tinggal, dia akan dipenjara.”\nRalph Fitch, Catatan perjalanannya ke Timur Jauh, 1599 Masehi\nPerkembangan apakah dari periode 1750–1900 M yang merusak pola perdagangan yang disebutkan dalam paragraf pertama?|||Kolonisasi Afrika|||Penemuan barang-barang tertentu yang ingin dibeli Tiongkok dari pedagang Eropa|||Revolusi Industri|||Revolusi Pencerahan di Eropa dan Amerika": {
+    "source": "test",
+    "index": 71,
+    "choices": [
+      "Penemuan barang-barang tertentu yang ingin dibeli Tiongkok dari pedagang Eropa",
+      "Revolusi Pencerahan di Eropa dan Amerika",
+      "Revolusi Industri",
+      "Kolonisasi Afrika"
+    ]
+  },
+  "Pertanyaan ini mengacu pada informasi berikut.\nMaka bercerailah jika kamu menginginkannya, aku tidak bisa menyalahkanmu. Untuk menunggu begitu lama. Dan aku tidak tahu apakah sang Pencipta akan langsung memberikan rasa damai agar aku dapat pulang, atau apakah masalah perlu waktu agar aku tidak dapat pulang tanpa apa-apa. Apa pun keputusannya, semua ada di tanganmu. Jika kamu ingin mengakhiri pernikahan kita, terima lah akta cerai ini, dan kamu bebas. Semoga Tuhan memberi inspirasi kepadamu dengan pilihan yang tepat.\nSurat dari pedagang Yahudi di India kepada istrinya di Kairo, 1200.\nManakah dari hal-hal berikut yang merupakan penyebab utama tekanan terhadap pernikahan yang disebutkan dalam kutipan di atas?|||Kebangkrutan yang membuat pedagang jauh dari rumah|||Keputusan pedagang untuk tinggal secara permanen di India|||Pertentangan agama yang timbul karena pedagang terpapar pada Hindu|||Tekanan terjadi terhadap keluarga pedagang karena perpisahan dalam periode waktu yang lama": {
+    "source": "test",
+    "index": 72,
+    "choices": [
+      "Tekanan terjadi terhadap keluarga pedagang karena perpisahan dalam periode waktu yang lama",
+      "Pertentangan agama yang timbul karena pedagang terpapar pada Hindu",
+      "Keputusan pedagang untuk tinggal secara permanen di India",
+      "Kebangkrutan yang membuat pedagang jauh dari rumah"
+    ]
+  },
+  "Penelitian telah memberikan dukungan longitudinal dan cross sectional terhadap teori yang dikemukakan oleh|||Erikson|||Foos|||Levenson|||Peck": {
+    "source": "test",
+    "index": 73,
+    "choices": [
+      "Peck",
+      "Foos",
+      "Levenson",
+      "Erikson"
+    ]
+  },
+  "Saat adik Anda Patricia merasa tertekan, Anda menghiburnya dan mengenang saat-saat bahagia. Anda memberikan jenis dukungan sosial apa?|||Emosional|||Informasional|||Instrumental|||Keramahan": {
+    "source": "test",
+    "index": 74,
+    "choices": [
+      "Emosional",
+      "Instrumental",
+      "Informasional",
+      "Keramahan"
+    ]
+  },
+  "Orang yang kurang terorganisir, jarang menetapkan tujuan, dan sering menunda-nunda sampai menit terakhir dikatakan rendah dalam sifat yang mana?|||Kehati-hatian|||Keramahan|||Keterbukaan|||Neurotisme": {
+    "source": "test",
+    "index": 75,
+    "choices": [
+      "Keramahan",
+      "Kehati-hatian",
+      "Keterbukaan",
+      "Neurotisme"
+    ]
+  },
+  "Rancangan lingkungan yang membawa hewan peliharaan dan tumbuhan ke panti jompo dan remaja serta anak-anak sebagai pengunjung tetap disebut sebagai|||Alternatif Eden|||Desain Hidup Instrumental|||Kesesuaian Manusia-Lingkungan|||Pilihan Humanistik": {
+    "source": "test",
+    "index": 76,
+    "choices": [
+      "Desain Hidup Instrumental",
+      "Pilihan Humanistik",
+      "Kesesuaian Manusia-Lingkungan",
+      "Alternatif Eden"
+    ]
+  },
+  "Manakah dari berikut ini yang selalu paling panjang?|||Harapan hidup pada usia tertentu (LEASA)|||Harapan hidup saat lahir (LEAB)|||Masa hidup|||Tidak ada cara untuk mengetahuinya": {
+    "source": "test",
+    "index": 77,
+    "choices": [
+      "Harapan hidup saat lahir (LEAB)",
+      "Masa hidup",
+      "Harapan hidup pada usia tertentu (LEASA)",
+      "Tidak ada cara untuk mengetahuinya"
+    ]
+  },
+  "Keyakinan negatif orang lanjut usia tentang ingatan mereka tampaknya lebih dipengaruhi oleh _____ dibandingkan kinerja aktual mereka dalam tes ingatan|||Dengan siapa mereka berbicara|||Kecepatan pemrosesannya lebih lambat|||Stereotipe negatif tentang ingatan yang lebih tua|||Waktu hari dan kondisi cuaca": {
+    "source": "test",
+    "index": 78,
+    "choices": [
+      "Stereotipe negatif tentang ingatan yang lebih tua",
+      "Waktu hari dan kondisi cuaca",
+      "Dengan siapa mereka berbicara",
+      "Kecepatan pemrosesannya lebih lambat"
+    ]
+  },
+  "Omega 3 tampaknya mengurangi risiko|||Beberapa jenis kanker|||Insomnia|||Penyakit kardiovaskular|||Radang sendi": {
+    "source": "test",
+    "index": 79,
+    "choices": [
+      "Beberapa jenis kanker",
+      "Penyakit kardiovaskular",
+      "Radang sendi",
+      "Insomnia"
+    ]
+  },
+  "Dalam bab Senior View ini, Tolly Kleckley memberi tahu kita bahwa kepribadian|||Banyak berubah setelah usia 50 tahun|||Hampir semuanya tetap sama|||Perubahan lebih banyak terjadi pada wanita dibandingkan pria|||Tidak berubah melewati usia 50 tahun": {
+    "source": "test",
+    "index": 80,
+    "choices": [
+      "Banyak berubah setelah usia 50 tahun",
+      "Tidak berubah melewati usia 50 tahun",
+      "Hampir semuanya tetap sama",
+      "Perubahan lebih banyak terjadi pada wanita dibandingkan pria"
+    ]
+  },
+  "Apa yang tampaknya terjadi saat ungkapan populer “lawan jenis saling tertarik” (yaitu, kekontrasan cenderung menimbulkan rasa suka) jika dianalisis menurut penelitian saat ini?|||Tampaknya itu benar untuk heteroseksual tetapi tidak untuk homoseksual.|||Tampaknya itu benar untuk homoseksual tetapi tidak untuk heteroseksual.|||Tampaknya itu benar untuk wanita tetapi tidak untuk pria|||Tampaknya itu tidak benar.": {
+    "source": "test",
+    "index": 81,
+    "choices": [
+      "Tampaknya itu tidak benar.",
+      "Tampaknya itu benar untuk heteroseksual tetapi tidak untuk homoseksual.",
+      "Tampaknya itu benar untuk homoseksual tetapi tidak untuk heteroseksual.",
+      "Tampaknya itu benar untuk wanita tetapi tidak untuk pria"
+    ]
+  },
+  "Jam menunjukkan pukul 3:00 pagi. Anda laki-laki. Anda terbangun untuk buang air kecil. Anda sangat tersiksa saat di urinoir. Penis terasa seperti terbakar. Anda melihat cairan kekuningan keluar dari penis seusai buang air kecil. Jeritan Anda membangunkan pasangan Anda. Dia berlari ke kamar mandi dan bertanya ada apa. Anda mengatakan kepadanya bahwa Anda mungkin mengalami:|||AIDS|||gonore|||herpes genital|||sifilis": {
+    "source": "test",
+    "index": 82,
+    "choices": [
+      "herpes genital",
+      "AIDS",
+      "sifilis",
+      "gonore"
+    ]
+  },
+  "Manakah dari peristiwa berikut ini yang merupakan TANDA AWAL pubertas?|||hipotalamus melepaskan GNRS|||hipotalamus melepaskan LH|||kelenjar pituitari melepaskan FSH|||kelenjar pituitari melepaskan hormon pertumbuhan": {
+    "source": "test",
+    "index": 83,
+    "choices": [
+      "kelenjar pituitari melepaskan FSH",
+      "kelenjar pituitari melepaskan hormon pertumbuhan",
+      "hipotalamus melepaskan GNRS",
+      "hipotalamus melepaskan LH"
+    ]
+  },
+  "Mana yang benar berkaitan dengan pengintip?|||Mereka biasanya berbahaya.|||Mereka biasanya ingin melihat perilaku seksual teman.|||Mereka biasanya ingin mengamati aktivitas orang asing.|||Mereka umumnya usia paruh baya.": {
+    "source": "test",
+    "index": 84,
+    "choices": [
+      "Mereka umumnya usia paruh baya.",
+      "Mereka biasanya berbahaya.",
+      "Mereka biasanya ingin melihat perilaku seksual teman.",
+      "Mereka biasanya ingin mengamati aktivitas orang asing."
+    ]
+  },
+  "Nona Jones mengkhawatirkan kesehatannya akhir-akhir ini. Dia mengalami gatal dan iritasi kulit di sekitar alat kelaminnya. Mengingat riwayat seks bebasnya, dia curiga telah tertular:|||gonore|||klamidia|||kutil kelamin|||kutu kemaluan": {
+    "source": "test",
+    "index": 85,
+    "choices": [
+      "klamidia",
+      "kutil kelamin",
+      "gonore",
+      "kutu kemaluan"
+    ]
+  },
+  "Manakah yang merupakan ‘batu karang’ berdasarkan Konvensi Hukum Laut PBB (UN Convention of the Law of the Sea, UNCLOS)?|||Batu karang merupakan kepulauan kecil yang dapat menopang tempat tinggal manusia|||Batu karang merupakan kepulauan yang luasnya kurang dari 10 mil persegi|||Batu karang merupakan kepulauan yang tidak dapat menopang tempat tinggal manusia atau kehidupan ekonominya sendiri dan menurut pasal 121 (3) tidak memiliki Zona Ekonomi Eksklusif atau landas kontinen.|||Batu karang merupakan kepulauan yang tidak memiliki zona maritim": {
+    "source": "test",
+    "index": 86,
+    "choices": [
+      "Batu karang merupakan kepulauan yang luasnya kurang dari 10 mil persegi",
+      "Batu karang merupakan kepulauan yang tidak memiliki zona maritim",
+      "Batu karang merupakan kepulauan yang tidak dapat menopang tempat tinggal manusia atau kehidupan ekonominya sendiri dan menurut pasal 121 (3) tidak memiliki Zona Ekonomi Eksklusif atau landas kontinen.",
+      "Batu karang merupakan kepulauan kecil yang dapat menopang tempat tinggal manusia"
+    ]
+  },
+  "Bagaimana hukum adat dapat dikaitkan dengan ketentuan perjanjian?|||Hukum adat hanya dapat muncul dari beberapa perjanjian multilateral|||Hukum adat merupakan sumber internasional yang berbeda dan tidak dapat diwujudkan dalam perjanjian|||Perjanjian dapat 1) mengodifikasi hukum adat, 2) ‘merealisasikan' hukum adat, 3) menyebabkan munculnya hukum adat|||Perjanjian hanya dapat menyusun hukum adat": {
+    "source": "test",
+    "index": 87,
+    "choices": [
+      "Perjanjian hanya dapat menyusun hukum adat",
+      "Hukum adat merupakan sumber internasional yang berbeda dan tidak dapat diwujudkan dalam perjanjian",
+      "Perjanjian dapat 1) mengodifikasi hukum adat, 2) ‘merealisasikan' hukum adat, 3) menyebabkan munculnya hukum adat",
+      "Hukum adat hanya dapat muncul dari beberapa perjanjian multilateral"
+    ]
+  },
+  "Apa masalah ‘fragmentasi’ hukum internasional?|||Fragmentasi hukum internasional mengenai kemungkinan rezim hukum yang berbeda menerapkan aturan hukum internasional yang sama|||Fragmentasi terjadi ketika Negara Bagian mengambil penafsiran yang berbeda dari aturan hukum internasional yang sama|||Fragmentasi terjadi ketika Negara Bagian tidak setuju untuk mematuhi aturan hukum internasional tertentu|||Kemungkinan beberapa rezim hukum (yaitu, hukum penanaman modal asing dan hukum hak asasi manusia) ada dan berkembang secara terpisah satu sama lain, sehingga akhirnya memuncak pada produksi aturan hukum internasional yang berbeda": {
+    "source": "test",
+    "index": 88,
+    "choices": [
+      "Fragmentasi hukum internasional mengenai kemungkinan rezim hukum yang berbeda menerapkan aturan hukum internasional yang sama",
+      "Kemungkinan beberapa rezim hukum (yaitu, hukum penanaman modal asing dan hukum hak asasi manusia) ada dan berkembang secara terpisah satu sama lain, sehingga akhirnya memuncak pada produksi aturan hukum internasional yang berbeda",
+      "Fragmentasi terjadi ketika Negara Bagian mengambil penafsiran yang berbeda dari aturan hukum internasional yang sama",
+      "Fragmentasi terjadi ketika Negara Bagian tidak setuju untuk mematuhi aturan hukum internasional tertentu"
+    ]
+  },
+  "Apa perbedaan antara sarana penyelesaian sengketa politik dan hukum?|||Hasil yang berasal dari metode hukum, yaitu arbitrasi atau ajudikasi oleh ICJ, bersifat final dan mengikat para pihak, sedangkan sarana hukum tidak demikian halnya dengan metode diplomatik|||Metode hukum penyelesaian sengketa hanya dilakukan sehubungan dengan sengketa penting, sedangkan sarana politik digunakan dalam seluruh sengketa|||Metode politik dilakukan atas persetujuan para pihak yang bersengketa, sedangkan metode hukum tidak|||Sarana politik mengarah pada penyelesaian akhir sengketa, sedangkan tidak demikian halnya dengan metode hukum": {
+    "source": "test",
+    "index": 89,
+    "choices": [
+      "Hasil yang berasal dari metode hukum, yaitu arbitrasi atau ajudikasi oleh ICJ, bersifat final dan mengikat para pihak, sedangkan sarana hukum tidak demikian halnya dengan metode diplomatik",
+      "Metode politik dilakukan atas persetujuan para pihak yang bersengketa, sedangkan metode hukum tidak",
+      "Sarana politik mengarah pada penyelesaian akhir sengketa, sedangkan tidak demikian halnya dengan metode hukum",
+      "Metode hukum penyelesaian sengketa hanya dilakukan sehubungan dengan sengketa penting, sedangkan sarana politik digunakan dalam seluruh sengketa"
+    ]
+  },
+  "Kapan tindakan kekerasan ilegal di laut lepas tidak memenuhi syarat sebagai pembajakan?|||Ketika dilakukan oleh kapal perang bahkan ketika awaknya telah memberontak dan mengendalikan kapal tersebut|||Ketika dilakukan terhadap kapal umum dari Negara Bagian lain|||Ketika dilakukan untuk ‘tujuan pribadi’|||Ketika tidak dilakukan terhadap kapal lain dan ketika tidak dilakukan untuk ‘tujuan pribadi’": {
+    "source": "test",
+    "index": 90,
+    "choices": [
+      "Ketika dilakukan terhadap kapal umum dari Negara Bagian lain",
+      "Ketika dilakukan untuk ‘tujuan pribadi’",
+      "Ketika dilakukan oleh kapal perang bahkan ketika awaknya telah memberontak dan mengendalikan kapal tersebut",
+      "Ketika tidak dilakukan terhadap kapal lain dan ketika tidak dilakukan untuk ‘tujuan pribadi’"
+    ]
+  },
+  "Proposisi mana di bawah yang merupakan sanggahan paling kuat terhadap kalkulus felicific Bentham?|||Kebahagiaan tidak sepenting kemakmuran ekonomi.|||Rasa sakit dan kesenangan adalah hal yang tak terelakkan dalam kehidupan.|||Tidak mungkin menghitung seluruh konsekuensi dari tindakan seseorang.|||Utilitarianisme gagal memperhitungkan perbedaan latar belakang sosial.": {
+    "source": "test",
+    "index": 91,
+    "choices": [
+      "Kebahagiaan tidak sepenting kemakmuran ekonomi.",
+      "Tidak mungkin menghitung seluruh konsekuensi dari tindakan seseorang.",
+      "Rasa sakit dan kesenangan adalah hal yang tak terelakkan dalam kehidupan.",
+      "Utilitarianisme gagal memperhitungkan perbedaan latar belakang sosial."
+    ]
+  },
+  "Sekolah yurisprudensi ________ menyatakan bahwa hukum dibentuk oleh logika.|||Analitis|||Perintah|||Sejarah|||Sosiologis": {
+    "source": "test",
+    "index": 92,
+    "choices": [
+      "Sejarah",
+      "Analitis",
+      "Perintah",
+      "Sosiologis"
+    ]
+  },
+  "Manakah dari sekolah berikut yang mendukung pandangan bahwa adat menjadi hukum ketika adat tersebut mendapat pengakuan yudisial dari pengadilan|||Sekolah Analitik|||Sekolah Hukum Alamiah|||Sekolah Sejarah|||Sekolah Sosiologi": {
+    "source": "test",
+    "index": 93,
+    "choices": [
+      "Sekolah Analitik",
+      "Sekolah Hukum Alamiah",
+      "Sekolah Sejarah",
+      "Sekolah Sosiologi"
+    ]
+  },
+  "Tom dan Jerry menandatangani kontrak, yakni Tom setuju untuk menjual heroin sebesar $1.000 kepada Jerry, barang ilegal. Ini adalah contoh dari:|||kontrak batal|||kontrak penerima manfaat pihak kedua|||kontrak semu|||kontrak yang dapat dibatalkan": {
+    "source": "test",
+    "index": 94,
+    "choices": [
+      "kontrak semu",
+      "kontrak batal",
+      "kontrak yang dapat dibatalkan",
+      "kontrak penerima manfaat pihak kedua"
+    ]
+  },
+  "Mengapa pendekatan ‘kemampuan’ terhadap keadilan menolak teori Rawls?|||Karena gagal membahas kemampuan aktual orang untuk mendapatkan manfaat dari teori keadilannya.|||Karena hanya berlaku untuk masyarakat demokratis.|||Karena mengabaikan kewajiban individu.|||Karena mengabaikan pentingnya pengadilan.": {
+    "source": "test",
+    "index": 95,
+    "choices": [
+      "Karena gagal membahas kemampuan aktual orang untuk mendapatkan manfaat dari teori keadilannya.",
+      "Karena mengabaikan kewajiban individu.",
+      "Karena hanya berlaku untuk masyarakat demokratis.",
+      "Karena mengabaikan pentingnya pengadilan."
+    ]
+  },
+  "Kekeliruan komposisi adalah|||berargumen bahwa apa yang benar pada bagian suatu objek harus juga benar pada keseluruhan objek|||menarik kesimpulan tanpa cukup bukti untuk mendukung kesimpulan tersebut|||menarik suatu kesimpulan berdasarkan penalaran tanda padahal sebenarnya tidak ada hubungan langsung antara tanda yang diduga dengan subjek dari kesimpulan|||mengatribusikan penyebab suatu peristiwa ke penyebab sederhana ketika penyebabnya lebih kompleks": {
+    "source": "test",
+    "index": 96,
+    "choices": [
+      "mengatribusikan penyebab suatu peristiwa ke penyebab sederhana ketika penyebabnya lebih kompleks",
+      "berargumen bahwa apa yang benar pada bagian suatu objek harus juga benar pada keseluruhan objek",
+      "menarik kesimpulan tanpa cukup bukti untuk mendukung kesimpulan tersebut",
+      "menarik suatu kesimpulan berdasarkan penalaran tanda padahal sebenarnya tidak ada hubungan langsung antara tanda yang diduga dengan subjek dari kesimpulan"
+    ]
+  },
+  "Kekeliruan kepribadian tercela adalah jenis tertentu dari|||Dilema palsu|||Memohon pertanyaan|||Penalaran melingkar|||kekeliruan kecelakaan": {
+    "source": "test",
+    "index": 97,
+    "choices": [
+      "kekeliruan kecelakaan",
+      "Dilema palsu",
+      "Memohon pertanyaan",
+      "Penalaran melingkar"
+    ]
+  },
+  "Dalam silogisme kondisional, premis minor menyangkal pendahulunya|||kesimpulannya harus menegaskan konsekuensinya|||kesimpulannya harus menegaskan konsekuensinya|||kesimpulannya harus menegaskan pendahulunya|||tidak ada kesimpulan valid yang dapat ditarik": {
+    "source": "test",
+    "index": 98,
+    "choices": [
+      "tidak ada kesimpulan valid yang dapat ditarik",
+      "kesimpulannya harus menegaskan konsekuensinya",
+      "kesimpulannya harus menegaskan konsekuensinya",
+      "kesimpulannya harus menegaskan pendahulunya"
+    ]
+  },
+  "Jika menurut Anda argumen seseorang kuat berdasarkan penggunaan bahasa yang meyakinkan dan penyampaiannya yang percaya diri, Anda mungkin melakukan kekeliruan yang manakah?|||Amfiboli|||Ekuivokasi|||Gaya ketimbang substansi|||Permohonan khusus": {
+    "source": "test",
+    "index": 99,
+    "choices": [
+      "Amfiboli",
+      "Ekuivokasi",
+      "Permohonan khusus",
+      "Gaya ketimbang substansi"
+    ]
+  },
+  "Manakah dari yang berikut ini yang merupakan nama lain dari kekeliruan amfibi?|||Majas|||Menyalahgunakan ambiguitas|||Permohonan khusus|||Reifikasi": {
+    "source": "test",
+    "index": 100,
+    "choices": [
+      "Menyalahgunakan ambiguitas",
+      "Reifikasi",
+      "Majas",
+      "Permohonan khusus"
+    ]
+  },
+  "Apa yang dimaksud dengan bagan Gantt?|||Desain alur kerja|||Desain jadwal kerja|||Desain tingkat kerja|||desain hasil kerja": {
+    "source": "test",
+    "index": 101,
+    "choices": [
+      "Desain alur kerja",
+      "Desain jadwal kerja",
+      "Desain tingkat kerja",
+      "desain hasil kerja"
+    ]
+  },
+  "Bagaimana Anda dapat menggambarkan pemikiran dan pandangan para pemimpin transformasional?|||Fungsional|||Operasional|||Pengembangan|||Strategis": {
+    "source": "test",
+    "index": 102,
+    "choices": [
+      "Strategis",
+      "Operasional",
+      "Fungsional",
+      "Pengembangan"
+    ]
+  },
+  "Mana yang bukan merupakan keuntungan dari struktur hierarki?|||Disiplin dan stabilitas|||Rantai komando yang jelas|||Rentang kendali yang kecil|||Respons cepat terhadap perubahan": {
+    "source": "test",
+    "index": 103,
+    "choices": [
+      "Rantai komando yang jelas",
+      "Respons cepat terhadap perubahan",
+      "Disiplin dan stabilitas",
+      "Rentang kendali yang kecil"
+    ]
+  },
+  "Manakah yang bukan merupakan jenis rencana yang diakui?|||Ad hoc|||Bisnis|||Finansial|||Suksesi": {
+    "source": "test",
+    "index": 104,
+    "choices": [
+      "Bisnis",
+      "Suksesi",
+      "Ad hoc",
+      "Finansial"
+    ]
+  },
+  "Berapa rentang kendali yang optimal?|||2|||5|||7|||Tidak satupun dari yang disebutkan di atas": {
+    "source": "test",
+    "index": 105,
+    "choices": [
+      "2",
+      "5",
+      "7",
+      "Tidak satupun dari yang disebutkan di atas"
+    ]
+  },
+  "Apa istilah untuk keputusan yang dibatasi oleh kapasitas manusia untuk menyerap dan menganalisis informasi?|||Rasionalitas kognitif|||Rasionalitas sadar|||Rasionalitas terbatas|||Rasionalitas terikat": {
+    "source": "test",
+    "index": 106,
+    "choices": [
+      "Rasionalitas kognitif",
+      "Rasionalitas sadar",
+      "Rasionalitas terikat",
+      "Rasionalitas terbatas"
+    ]
+  },
+  "Apa yang mendasari pengambilan keputusan intuitif?|||Insting|||Judi|||Rasionalitas|||Tebak menebak": {
+    "source": "test",
+    "index": 107,
+    "choices": [
+      "Tebak menebak",
+      "Judi",
+      "Insting",
+      "Rasionalitas"
+    ]
+  },
+  "Apa istilah untuk badan usaha otonom dalam perusahaan korporat secara keseluruhan yang terpisah dari area bisnis lainnya?|||Aliansi strategis|||Kemitraan strategis|||Unit usaha strategis|||anak perusahaan": {
+    "source": "test",
+    "index": 108,
+    "choices": [
+      "anak perusahaan",
+      "Kemitraan strategis",
+      "Aliansi strategis",
+      "Unit usaha strategis"
+    ]
+  },
+  "____________ menggambarkan sifat ekstrinsik dari produk (warna, kemasan, konsistensi produk, asosiasi) dan tingkat kepuasan kebutuhan psikologis atau sosial pelanggan.|||Citra merek.|||Ekuitas merek.|||Peregangan merek.|||Reposisi merek.": {
+    "source": "test",
+    "index": 109,
+    "choices": [
+      "Reposisi merek.",
+      "Peregangan merek.",
+      "Ekuitas merek.",
+      "Citra merek."
+    ]
+  },
+  "AIDA adalah singkatan dari awareness (kesadaran), ________, desire (keinginan) dan _________.|||Intensity; appeal (intensitas; daya tarik).|||Interest; action (minat; tindakan).|||Involvement; action (keterlibatan; tindakan).|||Involvement; appeal (Keterlibatan; daya tarik).": {
+    "source": "test",
+    "index": 110,
+    "choices": [
+      "Interest; action (minat; tindakan).",
+      "Intensity; appeal (intensitas; daya tarik).",
+      "Involvement; action (keterlibatan; tindakan).",
+      "Involvement; appeal (Keterlibatan; daya tarik)."
+    ]
+  },
+  "Buletin, katalog, dan undangan ke acara yang disponsori perusahaan, pada umumnya berkaitan dengan aktivitas marketing mix (campuran pemasaran) dari:|||Distribusi.|||Harga.|||Pengembangan produk.|||Promosi.": {
+    "source": "test",
+    "index": 111,
+    "choices": [
+      "Harga.",
+      "Distribusi.",
+      "Pengembangan produk.",
+      "Promosi."
+    ]
+  },
+  "Penjual yang memandang situasi sebagaimana pelanggan melihatnya, adalah memamerkan|||empati|||kerja sama|||tanggung jawab|||toleransi": {
+    "source": "test",
+    "index": 112,
+    "choices": [
+      "kerja sama",
+      "empati",
+      "tanggung jawab",
+      "toleransi"
+    ]
+  },
+  "Berbagai barang di toko ini untuk jangka waktu sedang hingga jangka waktu panjang:|||Gudang penyimpanan|||Pertukaran data elektronik.|||Pusat distribusi.|||Transportasi angkutan barang.": {
+    "source": "test",
+    "index": 113,
+    "choices": [
+      "Gudang penyimpanan",
+      "Pusat distribusi.",
+      "Transportasi angkutan barang.",
+      "Pertukaran data elektronik."
+    ]
+  },
+  "Komputer Apple iMac tersedia dalam semua warna berikut ini, kecuali?|||Anggur|||Kiwi|||Strawberry|||Tangerine": {
+    "source": "test",
+    "index": 114,
+    "choices": [
+      "Tangerine",
+      "Strawberry",
+      "Kiwi",
+      "Anggur"
+    ]
+  },
+  "Hewan apakah yang dimaksud dengan burung peregrine?|||Burung|||Ikan|||Kucing|||Rusa": {
+    "source": "test",
+    "index": 115,
+    "choices": [
+      "Rusa",
+      "Kucing",
+      "Burung",
+      "Ikan"
+    ]
+  },
+  "Pengondisian operan akan sangat berguna untuk|||mencegah anterograde amnesia|||menentukan apakah balita terpasang dengan aman|||mengukur variabel dependen|||meningkatkan perilaku sesuai tugas di dalam kelas": {
+    "source": "test",
+    "index": 116,
+    "choices": [
+      "menentukan apakah balita terpasang dengan aman",
+      "meningkatkan perilaku sesuai tugas di dalam kelas",
+      "mengukur variabel dependen",
+      "mencegah anterograde amnesia"
+    ]
+  },
+  "Tenaga kerja terutama terdiri dari seluruh|||mempekerjakan pekerja di bawah usia 16 tahun|||orang yang diklasifikasikan sebagai pengangguran atau pekerja|||orang yang dipekerjakan sebagai pekerja penuh waktu|||pekerja yang menganggur, dipekerjakan, dan putus asa": {
+    "source": "test",
+    "index": 117,
+    "choices": [
+      "mempekerjakan pekerja di bawah usia 16 tahun",
+      "orang yang diklasifikasikan sebagai pengangguran atau pekerja",
+      "orang yang dipekerjakan sebagai pekerja penuh waktu",
+      "pekerja yang menganggur, dipekerjakan, dan putus asa"
+    ]
+  },
+  "Apa hewan terbesar yang pernah hidup di Bumi?|||Cumi-cumi raksasa|||Mammoth berbulu|||Paus Biru|||Tyrannosaurus": {
+    "source": "test",
+    "index": 118,
+    "choices": [
+      "Paus Biru",
+      "Cumi-cumi raksasa",
+      "Mammoth berbulu",
+      "Tyrannosaurus"
+    ]
+  },
+  "Orang-orang yang percaya bahwa pandangan politik mereka penting, bahwa pemerintah akan menghormati pandangan-pandangan ini, dan bahwa pandangan mereka dapat memengaruhi urusan politik dikatakan memiliki rasa yang kuat akan|||aliansi politik|||alienasi politik|||keberhasilan politik|||keberpihakan politik": {
+    "source": "test",
+    "index": 119,
+    "choices": [
+      "keberpihakan politik",
+      "alienasi politik",
+      "aliansi politik",
+      "keberhasilan politik"
+    ]
+  },
+  "Seorang guru taman kanak-kanak meminta murid-muridnya untuk menentukan hal-hal berikut. 'Ä¢ Berapa banyak siswa yang tidak hadir pada hari itu 'Ä¢ Apakah ada cukup cangkir makanan ringan untuk setiap siswa untuk mendapatkannya pada waktu makan siang 'Ä¢ Berapa banyak bola yang dibawa ke luar saat istirahat dan berapa banyak yang dibawa kembali ke dalam setelah istirahat. Manakah dari konsep-konsep berikut ini yang paling sesuai dengan keputusan yang diminta guru kepada siswa?|||Pencacahan|||Pengelompokan|||Pola|||Susunan": {
+    "source": "test",
+    "index": 120,
+    "choices": [
+      "Pengelompokan",
+      "Pencacahan",
+      "Pola",
+      "Susunan"
+    ]
+  },
+  "Manakah dari hal berikut ini yang merupakan tindakan yang paling masuk akal untuk dilakukan oleh seniman yang karyanya memerlukan penggunaan produk berbahaya tertentu?|||Berkonsultasi dengan ahli toksikologi yang berkualifikasi sebelum menggunakan bahan tersebut|||Memastikan tidak ada anak-anak saat menggunakan produk|||Membaca label produk dan melakukannya sesuai dengan petunjuk label|||Menemukan produk yang tidak beracun untuk digunakan dan mengadaptasi proses pembuatan karya seni seperlunya": {
+    "source": "test",
+    "index": 121,
+    "choices": [
+      "Menemukan produk yang tidak beracun untuk digunakan dan mengadaptasi proses pembuatan karya seni seperlunya",
+      "Membaca label produk dan melakukannya sesuai dengan petunjuk label",
+      "Memastikan tidak ada anak-anak saat menggunakan produk",
+      "Berkonsultasi dengan ahli toksikologi yang berkualifikasi sebelum menggunakan bahan tersebut"
+    ]
+  },
+  "Jika salah satu pihak dalam kontrak dipaksa untuk menandatangani, maka kontrak tersebut didefinisikan sebagai|||belum dilaksanakan|||dapat dibatalkan|||dapat dilaksanakan|||sepihak": {
+    "source": "test",
+    "index": 122,
+    "choices": [
+      "dapat dilaksanakan",
+      "belum dilaksanakan",
+      "sepihak",
+      "dapat dibatalkan"
+    ]
+  },
+  "Siapa nama saudara laki-laki Mario di gim video 'Super Mario'?|||Louis|||Luciano|||Luigi|||Zelda": {
+    "source": "test",
+    "index": 123,
+    "choices": [
+      "Louis",
+      "Luigi",
+      "Luciano",
+      "Zelda"
+    ]
+  },
+  "Fiksi ilmiah: para pembaca mengaku menyukainya atau membencinya; mereka menghindarinya seperti racun atau mereka melahap karya-karya favorit dan para pengarangnya seperti pecandu cokelat yang melahap fudge truffle. Penulis bagian ini membandingkan pembaca tertentu dengan “pecandu cokelat” terutama untuk|||membandingkan karakteristik fiksi ilmiah dengan genre sastra lainnya|||menjelaskan mengapa beberapa pembaca menganggap fiksi ilmiah berbahaya|||menunjukkan kedalaman perasaan pembaca tertentu tentang fiksi ilmiah|||menyarankan bahwa fiksi ilmiah bukanlah genre sastra yang serius": {
+    "source": "test",
+    "index": 124,
+    "choices": [
+      "menyarankan bahwa fiksi ilmiah bukanlah genre sastra yang serius",
+      "menunjukkan kedalaman perasaan pembaca tertentu tentang fiksi ilmiah",
+      "menjelaskan mengapa beberapa pembaca menganggap fiksi ilmiah berbahaya",
+      "membandingkan karakteristik fiksi ilmiah dengan genre sastra lainnya"
+    ]
+  },
+  "Carmen membelanjakan seluruh pendapatan mingguannya untuk membeli dua barang: X dan Y. Pada tingkat konsumsinya saat ini untuk kedua barang tersebut, utilitas marjinal dari uang terakhir yang dibelanjakan untuk barang X adalah 5 dan utilitas marjinal dari uang terakhir yang dibelanjakan untuk barang Y adalah 10. Untuk memaksimalkan utilitasnya, Carmen harus|||membela lebih sedikit baik unit X maupun Y|||membeli lebih sedikit unit X dan lebih banyak unit Y|||membeli lebih sedikit unit Y dan lebih banyak unit X|||mempertahankan tingkat konsumsi kedua barang tersebut": {
+    "source": "test",
+    "index": 125,
+    "choices": [
+      "mempertahankan tingkat konsumsi kedua barang tersebut",
+      "membeli lebih sedikit unit X dan lebih banyak unit Y",
+      "membeli lebih sedikit unit Y dan lebih banyak unit X",
+      "membela lebih sedikit baik unit X maupun Y"
+    ]
+  },
+  "Kemampuan untuk melakukan hal berikut ini, manakah yang merupakan karakteristik semua organisme hidup?|||Berpindah dari satu tempat ke tempat lain|||Mendeteksi dan merespons perubahan lingkungan|||Menghasilkan gula melalui fotosintesis|||Menghasilkan panas untuk mempertahankan suhu internal yang konstan": {
+    "source": "test",
+    "index": 126,
+    "choices": [
+      "Berpindah dari satu tempat ke tempat lain",
+      "Mendeteksi dan merespons perubahan lingkungan",
+      "Menghasilkan gula melalui fotosintesis",
+      "Menghasilkan panas untuk mempertahankan suhu internal yang konstan"
+    ]
+  },
+  "Para astronom mengusulkan bahwa tata surya terbentuk dari awan gas dan debu yang berputar. Penjelasan ini dikenal sebagai penjelasan yang mana dari yang berikut ini?|||Hipotesa Nebular|||Hukum Kepler|||Teori Dentuman Besar|||Teori string kosmik": {
+    "source": "test",
+    "index": 127,
+    "choices": [
+      "Hukum Kepler",
+      "Teori Dentuman Besar",
+      "Teori string kosmik",
+      "Hipotesa Nebular"
+    ]
+  },
+  "Manakah dari hal berikut ini yang harus dilakukan oleh pengguna komputer untuk mencegah kelelahan mata yang disebabkan oleh layar?|||Batasi resolusi pada monitor|||Beristirahatlah secara berkala untuk melihat pencahayaan alami|||Gunakan obat tetes mata secara teratur|||Ubah pilihan program perangkat lunak": {
+    "source": "test",
+    "index": 128,
+    "choices": [
+      "Gunakan obat tetes mata secara teratur",
+      "Ubah pilihan program perangkat lunak",
+      "Batasi resolusi pada monitor",
+      "Beristirahatlah secara berkala untuk melihat pencahayaan alami"
+    ]
+  },
+  "Pada Hari Valentine 2000, wahana antariksa NEAR milik NASA memulai orbitnya selama setahun di asteroid apa?|||Aphrodite|||Cupid|||Eros|||Venus": {
+    "source": "test",
+    "index": 129,
+    "choices": [
+      "Eros",
+      "Cupid",
+      "Aphrodite",
+      "Venus"
+    ]
+  },
+  "Apa yang unik dari kunci rangka?|||Itu membuka banyak kunci|||Sudah sangat tua|||Terbuat dari tulang|||Tergantung di lemari": {
+    "source": "test",
+    "index": 130,
+    "choices": [
+      "Itu membuka banyak kunci",
+      "Terbuat dari tulang",
+      "Sudah sangat tua",
+      "Tergantung di lemari"
+    ]
+  },
+  "Manakah dari berikut ini yang biasa digunakan untuk mengobati alergi?|||Antihistamin|||Antikoagulan|||Antimateri|||Antiseptik": {
+    "source": "test",
+    "index": 131,
+    "choices": [
+      "Antimateri",
+      "Antikoagulan",
+      "Antiseptik",
+      "Antihistamin"
+    ]
+  },
+  "Apa kepanjangan dari REM?|||random energy module|||rapid eye movement|||really energetic music|||red entertainment machine": {
+    "source": "test",
+    "index": 132,
+    "choices": [
+      "random energy module",
+      "rapid eye movement",
+      "red entertainment machine",
+      "really energetic music"
+    ]
+  },
+  "Sejak awal, saya menulis untuk menjelaskan kehidupan saya kepada diri saya sendiri, dan saya mengundang setiap pembaca yang memilih untuk melakukan perjalanan bersama saya untuk bergabung dengan saya di atas kawat. Saya akan bekerja tanpa jaring dan tanpa suara orang banyak yang mengganggu saya. Pemandangan dari ketinggian sangat memusingkan dan instruktif. Saya tidak merekam dunia persis seperti apa yang saya lihat, tetapi mengubahnya dengan membuatnya melewati prisma kisah-kisah luar biasa yang saya kumpulkan dalam perjalanan. Saya mengumpulkan cerita seperti seorang lepidopteris menimbun spesimen kloroform dari ngengat langka, atau kumbang Kosta Rika. Cerita-cerita itu seperti wadah yang saya gunakan untuk menafsirkan dunia bagi diri saya sendiri. ----------Pat Conroy Manakah dari hal berikut ini yang paling tepat menggambarkan organisasi bagian ini?|||Penulis memberikan beberapa penjelasan untuk mengambil tindakan tertentu.|||Penulis membuat perbandingan antara pengalamannya sendiri dan pengalaman orang lain dalam profesinya.|||Penulis mencatat berbagai fase karyanya dalam suatu disiplin ilmu tertentu.|||Penulis menggunakan analogi untuk menjelaskan pengalamannya tentang suatu tindakan tertentu.": {
+    "source": "test",
+    "index": 133,
+    "choices": [
+      "Penulis memberikan beberapa penjelasan untuk mengambil tindakan tertentu.",
+      "Penulis menggunakan analogi untuk menjelaskan pengalamannya tentang suatu tindakan tertentu.",
+      "Penulis membuat perbandingan antara pengalamannya sendiri dan pengalaman orang lain dalam profesinya.",
+      "Penulis mencatat berbagai fase karyanya dalam suatu disiplin ilmu tertentu."
+    ]
+  },
+  "Peralatan olahraga apa yang digunakan selama kelas 'Pemintalan'?|||Barbel|||Mesin dayung|||Pengisar|||Sepeda stasioner ": {
+    "source": "test",
+    "index": 134,
+    "choices": [
+      "Sepeda stasioner ",
+      "Pengisar",
+      "Mesin dayung",
+      "Barbel"
+    ]
+  },
+  "Gagasan dasar dari teori moralitas kontrak sosial adalah bahwa aturan atau prinsip moral yang benar dan dibenarkan merupakan hasil dari|||kontrak yang ditandatangani oleh sebagian besar pihak terdampak.|||pembebasan moral pemimpin sosial.|||semacam kesepakatan sosial yang aktual atau hipotetis.|||semua jawaban salah": {
+    "source": "test",
+    "index": 135,
+    "choices": [
+      "pembebasan moral pemimpin sosial.",
+      "semacam kesepakatan sosial yang aktual atau hipotetis.",
+      "kontrak yang ditandatangani oleh sebagian besar pihak terdampak.",
+      "semua jawaban salah"
+    ]
+  },
+  "Manakah dari berikut ini yang, menurut pengantar bab 8, umumnya menjelaskan tindakan atau praktik membunuh atau membiarkan seseorang mati?|||bunuh diri|||eutanasia|||pembunuhan|||pembunuhan etis": {
+    "source": "test",
+    "index": 136,
+    "choices": [
+      "pembunuhan",
+      "pembunuhan etis",
+      "bunuh diri",
+      "eutanasia"
+    ]
+  },
+  "Manakah dari berikut ini yang bukan merupakan persyaratan definisi \"hukuman sah\"?|||Harus dilakukan dengan sengaja oleh manusia selain pelakunya.|||Harus karena pelanggaran terhadap aturan hukum.|||Harus menimbulkan konsekuensi yang tidak menyenangkan.|||Tidak harus merupakan pelaku sebenarnya atau yang diduga pelakunya.": {
+    "source": "test",
+    "index": 137,
+    "choices": [
+      "Harus karena pelanggaran terhadap aturan hukum.",
+      "Harus menimbulkan konsekuensi yang tidak menyenangkan.",
+      "Tidak harus merupakan pelaku sebenarnya atau yang diduga pelakunya.",
+      "Harus dilakukan dengan sengaja oleh manusia selain pelakunya."
+    ]
+  },
+  "Berkata bahwa suatu tindakan pada hakikatnya diizinkan (fitur yang disebutkan dalam doktrin efek ganda) adalah berkata bahwa|||tidak ada orang yang akan mendukung tindakan tersebut.|||tindakan tersebut berharga karena hubungannya dengan hal-hal yang pada hakikatnya bernilai.|||tindakan tersebut, hanya karena dampaknya, diperbolehkan secara moral.|||tindakan tersebut, terlepas dari dampaknya, diperbolehkan secara moral.": {
+    "source": "test",
+    "index": 138,
+    "choices": [
+      "tindakan tersebut, terlepas dari dampaknya, diperbolehkan secara moral.",
+      "tindakan tersebut, hanya karena dampaknya, diperbolehkan secara moral.",
+      "tidak ada orang yang akan mendukung tindakan tersebut.",
+      "tindakan tersebut berharga karena hubungannya dengan hal-hal yang pada hakikatnya bernilai."
+    ]
+  },
+  "Shapiro mengklaim bahwa manusia adalah hewan sosial atau berbudaya, yang sangat penting bagi pandangannya karena menyiratkan bahwa|||kita hanyalah produk dari biokimia kita.|||normal atau aturan sosial memainkan peranan penting dalam memengaruhi perilaku.|||pengalaman di masa lalu memainkan peranan penting dalam memengaruhi perilaku.|||semua jawaban salah": {
+    "source": "test",
+    "index": 139,
+    "choices": [
+      "normal atau aturan sosial memainkan peranan penting dalam memengaruhi perilaku.",
+      "kita hanyalah produk dari biokimia kita.",
+      "pengalaman di masa lalu memainkan peranan penting dalam memengaruhi perilaku.",
+      "semua jawaban salah"
+    ]
+  },
+  "Manakah pernyataan yang benar tentang pencernaan dan absorpsi lemak?|||Absorpsi asam lemak di dalam usus terjadi utamanya melalui protein pengangkut FABP dan FAT/CD36 di dalam enterosit duodenum distal|||Hasil dari pencernaan parsial trigliseria (triasilgliserol) dapat membentuk campuran misel dengan kolesterol pankreatik dan fosfolipid, dan ini meningkatkan absorpsi |||Setelah absorpsi, trigliserida rantai sedang (MCT) memasuki sistem limfatik, sementara trigliserida rantai panjang memasuki sistem darah portal.|||Trigliserida (triasilgliserol) harus diemulsifikasi dan dicerna sebelum asam lemak dapat diangkut": {
+    "source": "test",
+    "index": 140,
+    "choices": [
+      "Absorpsi asam lemak di dalam usus terjadi utamanya melalui protein pengangkut FABP dan FAT/CD36 di dalam enterosit duodenum distal",
+      "Setelah absorpsi, trigliserida rantai sedang (MCT) memasuki sistem limfatik, sementara trigliserida rantai panjang memasuki sistem darah portal.",
+      "Hasil dari pencernaan parsial trigliseria (triasilgliserol) dapat membentuk campuran misel dengan kolesterol pankreatik dan fosfolipid, dan ini meningkatkan absorpsi ",
+      "Trigliserida (triasilgliserol) harus diemulsifikasi dan dicerna sebelum asam lemak dapat diangkut"
+    ]
+  },
+  "Banyak minum minuman beralkohol akut berkaitan dengan?|||Sindrom Beach heart|||Sindrom Happy heart|||Sindrom Holiday heart|||Sindrom Home heart": {
+    "source": "test",
+    "index": 141,
+    "choices": [
+      "Sindrom Happy heart",
+      "Sindrom Home heart",
+      "Sindrom Beach heart",
+      "Sindrom Holiday heart"
+    ]
+  },
+  "Suplemen dengan asam lemak rantai panjang, EPA dan DHA, selama kehamilan dan masa bayi kemungkinan akan memberikan manfaat:|||Daya ingat|||Kelainan perilaku|||Kinerja motorik|||Kinerja visual": {
+    "source": "test",
+    "index": 142,
+    "choices": [
+      "Kinerja visual",
+      "Kinerja motorik",
+      "Kelainan perilaku",
+      "Daya ingat"
+    ]
+  },
+  "Sejak KTT Pangan Dunia tahun 1996, bagaimana jumlah orang yang rawan pangan di dunia berubah?|||Jumlahnya menurun, tetapi tidak cukup untuk memenuhi target KTT.|||Jumlahnya sedikit meningkat.|||Karena kenaikan harga pangan, jumlah tersebut meningkat drastis.|||Tujuan KTT untuk mengurangi jumlah orang yang kelaparan hingga setengahnya pada tahun 2015 telah tercapai.": {
+    "source": "test",
+    "index": 143,
+    "choices": [
+      "Tujuan KTT untuk mengurangi jumlah orang yang kelaparan hingga setengahnya pada tahun 2015 telah tercapai.",
+      "Jumlahnya menurun, tetapi tidak cukup untuk memenuhi target KTT.",
+      "Jumlahnya sedikit meningkat.",
+      "Karena kenaikan harga pangan, jumlah tersebut meningkat drastis."
+    ]
+  },
+  "Aristoteles berkata bahwa yang menjadikan berbagai hal seperti apa adanya–esensi mereka– tidak ada selain individu yang ada di dunia. Jadi, jika anggota suatu spesies musnah, esensi atau wujud mereka:|||akan musnah hanya jika tidak ada satu orang pun yang mengingat spesies tersebut.|||akan musnah karena tidak ada esensi atau wujud asli yang dimusnahkan; hanya ada individu, bukan esensi universal atau sifat-sifat berbagai hal.|||akan terus ada (seperti halnya Wujud Plato) di dunia lain.|||juga akan musnah.": {
+    "source": "test",
+    "index": 144,
+    "choices": [
+      "juga akan musnah.",
+      "akan musnah hanya jika tidak ada satu orang pun yang mengingat spesies tersebut.",
+      "akan terus ada (seperti halnya Wujud Plato) di dunia lain.",
+      "akan musnah karena tidak ada esensi atau wujud asli yang dimusnahkan; hanya ada individu, bukan esensi universal atau sifat-sifat berbagai hal."
+    ]
+  },
+  "Ketika dihadapkan pada keluhan bahwa utilitarianisme adalah sebuah doktrin yang layak diterima oleh babi, Mill menjawab kesenangannya berbeda-beda dalam hal:|||berat.|||kemurnian.|||kualitas.|||spesies.": {
+    "source": "test",
+    "index": 145,
+    "choices": [
+      "kemurnian.",
+      "kualitas.",
+      "spesies.",
+      "berat."
+    ]
+  },
+  "Saat menggunakan metode visual dalam proyek penelitian, apa yang harus Anda pertimbangkan selain pedoman hukum?|||Apa yang dimaksud dengan ruang publik|||Melindungi individu dari potensi bahaya|||Segala risiko pelanggaran privasi|||semua jawaban di atas.": {
+    "source": "test",
+    "index": 146,
+    "choices": [
+      "Apa yang dimaksud dengan ruang publik",
+      "Melindungi individu dari potensi bahaya",
+      "Segala risiko pelanggaran privasi",
+      "semua jawaban di atas."
+    ]
+  },
+  "Behaviorisme logis bertentangan dengan intuisi akal sehat kita yang menyatakan kondisi mental _____.|||ada|||menyebabkan perilaku|||tidak ada|||tidak pernah menyebabkan perilaku": {
+    "source": "test",
+    "index": 147,
+    "choices": [
+      "menyebabkan perilaku",
+      "tidak pernah menyebabkan perilaku",
+      "ada",
+      "tidak ada"
+    ]
+  },
+  "Apa sajakah rasa frustrasi yang sering terjadi saat menulis atau membaca tentang etika penelitian?|||Kasus pelanggaran etika cenderung dikaitkan dengan metode penelitian tertentu.|||Para penulis berbeda pendapat mengenai apa yang dapat diterima secara etis.|||Perdebatan yang sama telah dilakukan selama beberapa dekade.|||semua jawaban di atas.": {
+    "source": "test",
+    "index": 148,
+    "choices": [
+      "Para penulis berbeda pendapat mengenai apa yang dapat diterima secara etis.",
+      "Perdebatan yang sama telah dilakukan selama beberapa dekade.",
+      "Kasus pelanggaran etika cenderung dikaitkan dengan metode penelitian tertentu.",
+      "semua jawaban di atas."
+    ]
+  },
+  "Nilai estetika berkaitan dengan _______|||baik buruknya karya seni dan benda lain yang dapat dinilai indah|||keputusan pragmatis mengenai tampilan seni|||nilai moral karya seni dan benda lain yang dapat dinilai indah|||nilai-nilai moral seniman dan kritikus": {
+    "source": "test",
+    "index": 149,
+    "choices": [
+      "nilai moral karya seni dan benda lain yang dapat dinilai indah",
+      "baik buruknya karya seni dan benda lain yang dapat dinilai indah",
+      "nilai-nilai moral seniman dan kritikus",
+      "keputusan pragmatis mengenai tampilan seni"
+    ]
+  },
+  "Manakah dari berikut ini yang merupakan perangkat penginderaan jauh yang digunakan di situs arkeologi?|||Semua jawaban benar|||magnetometer proton|||radar penembus tanah|||resistivitas listrik": {
+    "source": "test",
+    "index": 150,
+    "choices": [
+      "radar penembus tanah",
+      "magnetometer proton",
+      "resistivitas listrik",
+      "Semua jawaban benar"
+    ]
+  },
+  "Konstruksi fitur berskala besar, seperti gundukan dan timbunan (midden) cangkang kerang, sering dianggap oleh para arkeolog sebagai bukti:|||kompleksitas sosial dan politik.|||peralihan dari Paleolitik ke Neolitik.|||praktik perbudakan.|||sebuah tradisi Mesolitikum.": {
+    "source": "test",
+    "index": 151,
+    "choices": [
+      "praktik perbudakan.",
+      "kompleksitas sosial dan politik.",
+      "sebuah tradisi Mesolitikum.",
+      "peralihan dari Paleolitik ke Neolitik."
+    ]
+  },
+  "Apa kesimpulan yang dihasilkan penelitian terbaru yang membandingkan genom masyarakat modern dengan sisa-sisa kerangka kuno di Amerika Utara dan Selatan?|||Pemisahan antara penduduk asli Siberia dan Penduduk Asli Amerika awal terjadi antara 20.000 dan 30.000 tahun yang lalu.|||Penduduk Asli Amerika di Amerika Utara dan Amerika Selatan secara genetik berbeda dari satu sama lain dan nenek moyang mereka di wilayah ujung utara sekitar 30.000 tahun yang lalu.|||Semua Penduduk Asli Amerika, baik kuno maupun modern, berasal dari satu migrasi Australia-Melanesia ke Amerika sekitar 13.000 tahun yang lalu.|||Semua Penduduk Asli Amerika, baik kuno maupun modern, berasal dari satu migrasi Inuit yang tiba di Amerika sekitar 13.000 tahun yang lalu.": {
+    "source": "test",
+    "index": 152,
+    "choices": [
+      "Penduduk Asli Amerika di Amerika Utara dan Amerika Selatan secara genetik berbeda dari satu sama lain dan nenek moyang mereka di wilayah ujung utara sekitar 30.000 tahun yang lalu.",
+      "Semua Penduduk Asli Amerika, baik kuno maupun modern, berasal dari satu migrasi Australia-Melanesia ke Amerika sekitar 13.000 tahun yang lalu.",
+      "Semua Penduduk Asli Amerika, baik kuno maupun modern, berasal dari satu migrasi Inuit yang tiba di Amerika sekitar 13.000 tahun yang lalu.",
+      "Pemisahan antara penduduk asli Siberia dan Penduduk Asli Amerika awal terjadi antara 20.000 dan 30.000 tahun yang lalu."
+    ]
+  },
+  "Manakah dari hal-hal berikut yang merupakan bukti kawin silang antara manusia modern anatomis dengan Neandertal?|||Persentase kecil tetapi signifikan dari genom Neandertal ditemukan pada manusia modern anatomis yang memiliki keturunan Afrika.|||Persentase kecil tetapi signifikan dari genom modern manusia yang memiliki keturunan Eropa dan Asia berasal dari Neandertal.|||Semua Neandertal memiliki persentase genome utama yang sama dengan manusia modern.|||Semua manusia modern memiliki persentase genome utama yang sama dengan Neandertal.": {
+    "source": "test",
+    "index": 153,
+    "choices": [
+      "Semua manusia modern memiliki persentase genome utama yang sama dengan Neandertal.",
+      "Semua Neandertal memiliki persentase genome utama yang sama dengan manusia modern.",
+      "Persentase kecil tetapi signifikan dari genom modern manusia yang memiliki keturunan Eropa dan Asia berasal dari Neandertal.",
+      "Persentase kecil tetapi signifikan dari genom Neandertal ditemukan pada manusia modern anatomis yang memiliki keturunan Afrika."
+    ]
+  },
+  "Gagasan bahwa budaya berubah seiring berjalannya waktu berkaitan dengan lingkungan, melalui banyak jalur berbeda, yang dikenal sebagai:|||adaptasi multikultural.|||evolusi multilinear.|||evolusi unilineal.|||keseragaman lingkungan hidup.": {
+    "source": "test",
+    "index": 154,
+    "choices": [
+      "evolusi unilineal.",
+      "keseragaman lingkungan hidup.",
+      "adaptasi multikultural.",
+      "evolusi multilinear."
+    ]
+  },
+  "Manakah prosedur yang kemungkinan besar akan auditor lakukan sebelum neraca keuangan? tanggal?|||Memperoleh pemahaman mengenai aktivitas kontrol internal klien.|||Mempertimbangkan rencana dan kemampuan klien untuk memenuhi komitmen pembelian dalam waktu dekat serta kewajiban arus kas.|||Menentukan apakah terdapat hak gadai atau sitaan terhadap aset yang telah diajukan sebagai jaminan.|||Mengonfirmasi dengan pengacara klien bahwa semua kemungkinan tuntutan litigasi telah diungkapkan kepada auditor.": {
+    "source": "test",
+    "index": 155,
+    "choices": [
+      "Mengonfirmasi dengan pengacara klien bahwa semua kemungkinan tuntutan litigasi telah diungkapkan kepada auditor.",
+      "Memperoleh pemahaman mengenai aktivitas kontrol internal klien.",
+      "Menentukan apakah terdapat hak gadai atau sitaan terhadap aset yang telah diajukan sebagai jaminan.",
+      "Mempertimbangkan rencana dan kemampuan klien untuk memenuhi komitmen pembelian dalam waktu dekat serta kewajiban arus kas."
+    ]
+  },
+  "Mast Co., mengonversi dari metode FIFO untuk valuasi inventaris menjadi metode LIFO untuk tujuan laporan keuangan dan pajak. Selama periode inflasi, apakah inventaris akhir dan utang pajak penghasilan Mast yang menggunakan LIFO akan lebih tinggi atau lebih rendah dibandingkan FIFO? Inventaris akhir Utang pajak penghasilan|||Lebih rendah Lebih rendah|||Lebih rendah Lebih tinggi|||Lebih tinggi Lebih rendah|||Lebih tinggi Lebih tinggi": {
+    "source": "test",
+    "index": 156,
+    "choices": [
+      "Lebih rendah Lebih rendah",
+      "Lebih tinggi Lebih tinggi",
+      "Lebih rendah Lebih tinggi",
+      "Lebih tinggi Lebih rendah"
+    ]
+  },
+  "Manakah yang merupakan perlakuan yang tepat untuk biaya peralatan yang digunakan dalam aktivitas penelitian dan pengembangan yang akan memiliki penggunaan alternatif pada masa mendatang?|||Dicantumkan sebagai pengeluaran pada tahun dimulainya proyek penelitian dan pengembangan tersebut.|||Dikapitalisasi atau didepresiasi, tetapi tidak dilakukan keduanya bersamaan, tergantung pada masa proyek penelitian dan pengembangan.|||Dikapitalisasi dan didepresiasi selama masa proyek penelitian dan pengembangan.|||Dikapitaslisasi dan didepresiasi selama masa perkiraan penggunaannya.": {
+    "source": "test",
+    "index": 157,
+    "choices": [
+      "Dicantumkan sebagai pengeluaran pada tahun dimulainya proyek penelitian dan pengembangan tersebut.",
+      "Dikapitalisasi dan didepresiasi selama masa proyek penelitian dan pengembangan.",
+      "Dikapitaslisasi dan didepresiasi selama masa perkiraan penggunaannya.",
+      "Dikapitalisasi atau didepresiasi, tetapi tidak dilakukan keduanya bersamaan, tergantung pada masa proyek penelitian dan pengembangan."
+    ]
+  },
+  "Manakah pernyataan berikut yang kemungkinan besar akan muncul dan surat perikatan auditor?|||Kami akan mengidentifikasi kontrol internal yang relevan untuk pernyataan spesifik yang dapat mencegah atau mendeteksi salah saji material.|||Manajemen bertanggung jawab untuk melaporkan kepada kami setiap penyediaan yang tidak memadai untuk melindungi aset.|||Manajemen bertanggung jawab untuk menyediakan semua catatan keuangan dan informasi terkait bagi kami.|||Manajemen setuju untuk mengoreksi semua defisiensi dalam aktivitas kontrol interval yang kami identifikasi.": {
+    "source": "test",
+    "index": 158,
+    "choices": [
+      "Manajemen bertanggung jawab untuk melaporkan kepada kami setiap penyediaan yang tidak memadai untuk melindungi aset.",
+      "Kami akan mengidentifikasi kontrol internal yang relevan untuk pernyataan spesifik yang dapat mencegah atau mendeteksi salah saji material.",
+      "Manajemen setuju untuk mengoreksi semua defisiensi dalam aktivitas kontrol interval yang kami identifikasi.",
+      "Manajemen bertanggung jawab untuk menyediakan semua catatan keuangan dan informasi terkait bagi kami."
+    ]
+  },
+  "Berapa nilai sekarang dari $10 yang diterima setelah masa dua tahun jika tingkat diskon adalah 9%?|||$11|||$8,26|||$8,42|||$9": {
+    "source": "test",
+    "index": 159,
+    "choices": [
+      "$9",
+      "$11",
+      "$8,26",
+      "$8,42"
+    ]
+  },
+  "Margin kontribusi target 20% ditetapkan untuk Duct yang merupakan produk baru dengan biaya unit sebagai berikut: Ongkos produksi Variabel $12 Tetap 8 Penjualan & admin. Ongkos Variabel $3 Tetap 5 Berapa target harga jual Duct?|||$18,00|||$18,75|||$25,00|||33,6": {
+    "source": "test",
+    "index": 160,
+    "choices": [
+      "$18,00",
+      "$18,75",
+      "$25,00",
+      "33,6"
+    ]
+  },
+  "Manakah prosedur yang harus auditor pengguna sertakan dalam rencana audit untuk membuat audit yang paling efisien ketika klien audit menggunakan organisasi jasa untuk beberapa proses?|||Mengaudit kontrol organisasi untuk menguji kerja auditor jasa tersebut.|||Mengaudit kontrol organisasi, menilai risiko, dan menyiapkan rencana audit.|||Meninjau bahwa laporan auditor jasa dan membuat garis besar sistem akuntansi dalam memo ke kertas kerja|||Meninjau bahwa laporan auditor jasa mengenai kontrol diterapkan dalam operasi.": {
+    "source": "test",
+    "index": 161,
+    "choices": [
+      "Meninjau bahwa laporan auditor jasa mengenai kontrol diterapkan dalam operasi.",
+      "Meninjau bahwa laporan auditor jasa dan membuat garis besar sistem akuntansi dalam memo ke kertas kerja",
+      "Mengaudit kontrol organisasi, menilai risiko, dan menyiapkan rencana audit.",
+      "Mengaudit kontrol organisasi untuk menguji kerja auditor jasa tersebut."
+    ]
+  },
+  "Manakah dari pokok permasalahan berikut yang biasanya disertakan auditor dalam surat perikatan?|||Identifikasi defisiensi modal kerja.|||Indikasi arus kas negatif dari aktivitas operasional.|||Pengaturan mengenai biaya dan penagihan.|||Prosedur analisis yang rencananya akan dilakukan auditor tersebut.": {
+    "source": "test",
+    "index": 162,
+    "choices": [
+      "Pengaturan mengenai biaya dan penagihan.",
+      "Prosedur analisis yang rencananya akan dilakukan auditor tersebut.",
+      "Indikasi arus kas negatif dari aktivitas operasional.",
+      "Identifikasi defisiensi modal kerja."
+    ]
+  },
+  "Pria menyewa videografer untuk merekam pernikahan putrinya. Kontrak tertulis yang dimasukkan mencakup “klausul pembayaran”, yang menyatakan bahwa videografer akan “dibayar sebesar $10.000 untuk pembuatan film dan pengeditan video pernikahan dan resepsi berdurasi 60 menit”. Pria memasukkan dalam kontrak tersebut ketentuan bahwa video akan difilmkan menggunakan peralatan definisi tinggi. Kontrak tidak menyebutkan kompensasi lain. Setelah itu, videografer memfilmkan dan mengedit video berdurasi 60 menit, menggunakan peralatan definisi tinggi, dan menyajikannya kepada pria. Lalu, videografer menyerahkan kepada pria laporan faktur sejumlah $15.000. Selain angka kontrak $10.000, tagihan juga mencakup biaya sebesar $5.000 untuk penggunaan peralatan definisi tinggi. Menolak tanggung jawab tambahan, pria mengirimkan videografer cek sebesar $10.000. Lalu, videografer mengajukan gugatan terhadap pria untuk mendapatkan kembali tambahan sebesar $5.000. Manakah dari pendapat berikut yang paling persuasif untuk mendukung pendapat videografer bahwa ketika kontrak tertulis dilaksanakan, pria setuju untuk membayar videografer sebesar $5.000 untuk penggunaan peralatan definisi tinggi selain biaya $10.000?|||Berdasarkan UCC, barang bukti ekstrinsik, jika tersedia, mengenai persyaratan tambahan yang disetujui para pihak dapat diterima kecuali persyaratan tersebut “pasti akan berbeda atau bertentangan dengan yang tercantum dalam dokumen”.|||Dengan asumsi bahwa “klausul pembayaran” tertulis telah terintegrasi sepenuhnya dan tidak ambigu, pertimbangan yang setara memerlukan pengakuan barang bukti ekstrinsik, jika tersedia, mengenai maksud para pihak, karena videografer akan kehilangan $5.000 dalam kontrak.|||Menurut praktik perdagangan yang lazim di industri video, biaya $10.000 untuk pembuatan film dan pengeditan berarti $10.000 sebagai tambahan biaya tambahan jika peralatan definisi tinggi digunakan.|||Perjanjian lisan mengenai hal tersebut, jika dapat dibuktikan, hanya akan melengkapi, bukan bertentangan, dengan “klausul pembayaran” sebagaimana tertulis.": {
+    "source": "test",
+    "index": 163,
+    "choices": [
+      "Menurut praktik perdagangan yang lazim di industri video, biaya $10.000 untuk pembuatan film dan pengeditan berarti $10.000 sebagai tambahan biaya tambahan jika peralatan definisi tinggi digunakan.",
+      "Perjanjian lisan mengenai hal tersebut, jika dapat dibuktikan, hanya akan melengkapi, bukan bertentangan, dengan “klausul pembayaran” sebagaimana tertulis.",
+      "Berdasarkan UCC, barang bukti ekstrinsik, jika tersedia, mengenai persyaratan tambahan yang disetujui para pihak dapat diterima kecuali persyaratan tersebut “pasti akan berbeda atau bertentangan dengan yang tercantum dalam dokumen”.",
+      "Dengan asumsi bahwa “klausul pembayaran” tertulis telah terintegrasi sepenuhnya dan tidak ambigu, pertimbangan yang setara memerlukan pengakuan barang bukti ekstrinsik, jika tersedia, mengenai maksud para pihak, karena videografer akan kehilangan $5.000 dalam kontrak."
+    ]
+  },
+  "Mana dari situasi berikut yang paling mungkin menjadikan terdakwa bertanggung jawab secara pidana atas kematian korban?|||Korban, yang merupakan penjudi, terlilit utang kepada geng. Terdakwa, yang merupakan anggota geng, mengancam akan membunuh korban jika tidak membayar. Karena ketakutan, korban menumpangi pesawat tercepat ke luar kota. Pesawat jatuh, dan korban tewas.|||Terdakwa dan korban sedang mengemudi untuk bekerja bersama ketika terdakwa menikam lengan korban tanpa provokasi. Lalu, terdakwa mendorongnya keluar dari mobil. Korban terjatuh di pinggir jalan dan pergelangan kakinya patah. Karena tidak dapat beranjak dari jalan raya, korban tertabrak setengah jam kemudian oleh mobil yang dikendarai oleh pengemudi mabuk.|||Terdakwa dan korban tinggal dalam satu gedung apartemen. Terdakwa mengetahui bahwa korban memiliki hubungan gelap dengan wanita yang sudah menikah. Suatu hari, terdakwa mengetahui bahwa korban akan dibunuh oleh suami wanita. Meskipun terdakwa memiliki waktu yang cukup untuk memperingatkan korban, terdakwa tidak melakukannya. Malamnya, korban ditusuk hingga tewas oleh suami.|||Terdakwa menembak kepala korban. Lalu, korban dibawa ke rumah sakit untuk mendapatkan perawatan luka. Lalu, gempa bumi melanda kota, yang menyebabkan rumah sakit runtuh. Korban tewas tertimpa reruntuhan.": {
+    "source": "test",
+    "index": 164,
+    "choices": [
+      "Terdakwa menembak kepala korban. Lalu, korban dibawa ke rumah sakit untuk mendapatkan perawatan luka. Lalu, gempa bumi melanda kota, yang menyebabkan rumah sakit runtuh. Korban tewas tertimpa reruntuhan.",
+      "Terdakwa dan korban tinggal dalam satu gedung apartemen. Terdakwa mengetahui bahwa korban memiliki hubungan gelap dengan wanita yang sudah menikah. Suatu hari, terdakwa mengetahui bahwa korban akan dibunuh oleh suami wanita. Meskipun terdakwa memiliki waktu yang cukup untuk memperingatkan korban, terdakwa tidak melakukannya. Malamnya, korban ditusuk hingga tewas oleh suami.",
+      "Korban, yang merupakan penjudi, terlilit utang kepada geng. Terdakwa, yang merupakan anggota geng, mengancam akan membunuh korban jika tidak membayar. Karena ketakutan, korban menumpangi pesawat tercepat ke luar kota. Pesawat jatuh, dan korban tewas.",
+      "Terdakwa dan korban sedang mengemudi untuk bekerja bersama ketika terdakwa menikam lengan korban tanpa provokasi. Lalu, terdakwa mendorongnya keluar dari mobil. Korban terjatuh di pinggir jalan dan pergelangan kakinya patah. Karena tidak dapat beranjak dari jalan raya, korban tertabrak setengah jam kemudian oleh mobil yang dikendarai oleh pengemudi mabuk."
+    ]
+  },
+  "Terdakwa ditangkap dan didakwa karena memalsukan tanda tangan mantan suaminya pada cek gaji. Sebelum persidangan, terdakwa bernegosiasi dengan jaksa untuk mendapatkan hukuman yang lebih ringan. Dalam negosiasi, terdakwa mengirim surat kepada jaksa yang berbunyi: “Saya tidak ingin masuk penjara, jadi jika Anda merekomendasikan hukuman percobaan, saya akan mengaku bersalah dan mengakui bahwa saya memalsukan tanda tangan mantan suami saya pada cek.” Namun, negosiasi gagal. Tidak lama setelah itu, terdakwa kembali ditangkap dan didakwa memalsukan tanda tangan mantan suaminya pada cek gaji lainnya. Dia membantah bersalah atas tuduhan pemalsuan kedua. Dalam persidangan untuk kasus pemalsuan yang kedua, jaksa berusaha mengajukan surat yang pernah dikirimkan terdakwa selama negosiasi sebelumnya sebagai bukti. Pengacara terdakwa menolak pengajuan surat. Kini, hakim sidang harus memutuskan apakah surat|||dapat diterima sebagai barang bukti kecenderungan terdakwa untuk melakukan kejahatan.|||dapat diterima sebagai pengakuan.|||tidak dapat diterima, karena contoh pelanggaran tertentu tidak dapat diterima dalam perkara pidana.|||tidak dapat diterima, karena ditulis pada saat perundingan tawar-menawar pembelaan.": {
+    "source": "test",
+    "index": 165,
+    "choices": [
+      "dapat diterima sebagai barang bukti kecenderungan terdakwa untuk melakukan kejahatan.",
+      "dapat diterima sebagai pengakuan.",
+      "tidak dapat diterima, karena ditulis pada saat perundingan tawar-menawar pembelaan.",
+      "tidak dapat diterima, karena contoh pelanggaran tertentu tidak dapat diterima dalam perkara pidana."
+    ]
+  },
+  "Penjual dan pembeli menandatangani kontrak penjualan untuk peningkatan properti. Kontrak mencantumkan kontinjensi pembiayaan sebesar persentase tertentu dari harga beli. Pembeli memperoleh pembiayaan yang diperlukan dari bank. Pada penutupan, pembeli menandatangani wesel kepada penjual untuk sebagian dari harga beli, wesel tidak dijamin dengan hipotek. Pembeli lalu menandatangani wesel kedua yang dijamin dengan gadai kepada bank, menggunakan hasil pinjaman bank untuk membayar harga beli properti. Bank mengetahui adanya surat utang pertama kepada penjual. Bank segera mencatat gadai. Kini, pembeli gagal membayar kedua nota. Tanpa ada undang-undang yang berlaku, pihak mana yang memiliki prioritas?|||Bank, karena pinjaman memenuhi kontinjensi pembiayaan dalam kontrak penjualan.|||Bank, karena surat utang dijamin dengan uang pembelian gadai.|||Penjual, karena bank mempunyai pengetahuan yang sebenarnya mengenai nota penjual.|||Penjual, karena dia memegang hak gadai vendor yang pertama kali.": {
+    "source": "test",
+    "index": 166,
+    "choices": [
+      "Bank, karena pinjaman memenuhi kontinjensi pembiayaan dalam kontrak penjualan.",
+      "Bank, karena surat utang dijamin dengan uang pembelian gadai.",
+      "Penjual, karena bank mempunyai pengetahuan yang sebenarnya mengenai nota penjual.",
+      "Penjual, karena dia memegang hak gadai vendor yang pertama kali."
+    ]
+  },
+  "Seorang mahasiswa hukum tahun pertama bekerja sebagai asisten pengacara paruh waktu di sebuah firma hukum bergengsi. Ia diizinkan meminjam dan membawa pulang buku dan risalah hukum untuk penggunaan pribadinya sendiri. Suatu sore, mahasiswa hukum itu tengah menyiapkan ringkasan kasus di perpustakaan hukum firma itu, dan melihat sebuah buku tergeletak di meja konferensi. Memastikan tidak ada yang melihat, ia mengambil buku itu dan memasukkannya ke dalam kopernya. Ia berencana membawa pulang buku tersebut malam itu dan berniat tidak mengembalikannya. Apabila mahasiswa hukum itu kemudian didakwa melakukan pencurian buku itu, manakah dari klaim berikut, jika benar, yang paling TIDAK membantunya dalam pembelaannya?|||Firma hukum itu telah memberinya kepemilikan atas buku itu.|||Firma hukum itu telah menitipkan buku itu kepadanya.|||Firma hukum itu tidak menggajinya selama dua minggu, dan ia mengambil buku itu sebagai jaminan atas utang tersebut.|||Ia berniat mengembalikan buku itu setelah membacanya.": {
+    "source": "test",
+    "index": 167,
+    "choices": [
+      "Firma hukum itu tidak menggajinya selama dua minggu, dan ia mengambil buku itu sebagai jaminan atas utang tersebut.",
+      "Ia berniat mengembalikan buku itu setelah membacanya.",
+      "Firma hukum itu telah memberinya kepemilikan atas buku itu.",
+      "Firma hukum itu telah menitipkan buku itu kepadanya."
+    ]
+  },
+  "Seorang wanita berusia 68 tahun memiliki riwayat kanker payudara yang kambuh dua kali dalam 5 tahun terakhir. Ia telah menjalani radiasi dan kemoterapi untuk karsinoma yang telah menyebar ke tulang. Ia datang ke dokter hari ini untuk meminta bantuan dalam mengatasi nyeri punggu midtoraks agar ia dapat mengurang penggunaan obat pereda nyeri. Teknik manipulatif osteopatik yang paling tepat untuk mengobat tulang belakang pasien ini adalah|||kecepatan sedang, amplitudo sedang|||kecepatan tinggi, amplitudo rendah|||pelepasan miofasial tidak langsung|||terapi latihan isotonik": {
+    "source": "test",
+    "index": 168,
+    "choices": [
+      "kecepatan tinggi, amplitudo rendah",
+      "pelepasan miofasial tidak langsung",
+      "terapi latihan isotonik",
+      "kecepatan sedang, amplitudo sedang"
+    ]
+  },
+  "Penelitian menyarankan penyesuaian keberhasilan pada anak-anak terhadap perceraian orang tua mereka paling berhubungan dengan:|||frekuensi kontak dengan orang tua yang tidak mendapatkan hak asuh.|||kemampuan anak untuk memahami penyebab perceraian.|||kualitas hubungan orang tua-anak sebelum perceraian.|||tingkat konflik pascaperceraian di antara orang tua.": {
+    "source": "test",
+    "index": 169,
+    "choices": [
+      "frekuensi kontak dengan orang tua yang tidak mendapatkan hak asuh.",
+      "kualitas hubungan orang tua-anak sebelum perceraian.",
+      "kemampuan anak untuk memahami penyebab perceraian.",
+      "tingkat konflik pascaperceraian di antara orang tua."
+    ]
+  },
+  "Ketika sebaran skor meningkat, varians|||berkurang|||bertambah|||dapat bertambah atau berkurang|||tetap sama": {
+    "source": "test",
+    "index": 170,
+    "choices": [
+      "berkurang",
+      "bertambah",
+      "tetap sama",
+      "dapat bertambah atau berkurang"
+    ]
+  },
+  "Anda telah menemui Leticia Lopez dalam terapi selama beberapa bulan. Leticia berusia 24 tahun dan hidup dengan ibunya yang seorang janda, yang membayar terapi Leticia. Suatu hari, ibunya Leticia menelepon dan mengatakan bahwa dia sangat khawatir tentang Leticia dan ingin tahu apa yang dapat dia lakukan untuk membantu Leticia merasa lebih baik terhadap dirinya sendiri. Ny. Lopez meminta agar Anda tidak memberi tahu Leticia bahwa dirinya menelepon. Tindakan terbaik Anda dalam situasi ini adalah:|||Memberi nasihat spesifik kepada Ny. Lopez sesuai dengan apa yang dimintanya.|||Memberi tahu Ny. Lopez bahwa lebih baik jika Anda membahas hal ini dengan Leticia.|||Memberi tahu Ny. Lopez untuk bertanya kepada Leticia mengenai apa yang dia (Ny. Lopez) bisa lakukan untuk membantunya.|||menyarankan agar Ny. Lopez mendampingi Leticia pada sesi terapi berikutnya.": {
+    "source": "test",
+    "index": 171,
+    "choices": [
+      "Memberi nasihat spesifik kepada Ny. Lopez sesuai dengan apa yang dimintanya.",
+      "Memberi tahu Ny. Lopez untuk bertanya kepada Leticia mengenai apa yang dia (Ny. Lopez) bisa lakukan untuk membantunya.",
+      "Memberi tahu Ny. Lopez bahwa lebih baik jika Anda membahas hal ini dengan Leticia.",
+      "menyarankan agar Ny. Lopez mendampingi Leticia pada sesi terapi berikutnya."
+    ]
+  },
+  "Jika validasi silang terhadap sekumpulan prediktor menyebabkan penurunan signifikan pada koefisien korelasi berganda yang sebelumnya menjanjikan, kemungkinan besar|||jumlah variabel independen yang digunakan dalam penelitian pertama terlalu kecil|||pemilihan bobot untuk prediktor terjadi secara kebetulan|||tidak ada variabel prediktor yang cukup dapat diandalkan|||variabel kriteria tidak dapat diandalkan": {
+    "source": "test",
+    "index": 172,
+    "choices": [
+      "pemilihan bobot untuk prediktor terjadi secara kebetulan",
+      "tidak ada variabel prediktor yang cukup dapat diandalkan",
+      "jumlah variabel independen yang digunakan dalam penelitian pertama terlalu kecil",
+      "variabel kriteria tidak dapat diandalkan"
+    ]
+  },
+  "Menurut model kepemimpinan kontingensi Fiedler, pemimpin LPC tinggi:|||dianggap kurang dapat dipercaya oleh bawahannya dibandingkan dengan pemimpin dengan LPC rendah.|||lebih efektif daripada pemimpin LPC rendah dalam situasi yang cukup menguntungkan.|||menimbulkan lebih sedikit motivasi intrinsik dari bawahannya dibandingkan dengan pemimpin dengan LPC rendah.|||selalu lebih efektif daripada pemimpin LPC rendah.": {
+    "source": "test",
+    "index": 173,
+    "choices": [
+      "selalu lebih efektif daripada pemimpin LPC rendah.",
+      "lebih efektif daripada pemimpin LPC rendah dalam situasi yang cukup menguntungkan.",
+      "dianggap kurang dapat dipercaya oleh bawahannya dibandingkan dengan pemimpin dengan LPC rendah.",
+      "menimbulkan lebih sedikit motivasi intrinsik dari bawahannya dibandingkan dengan pemimpin dengan LPC rendah."
+    ]
+  },
+  "Manakah dari kemungkinan hasil eksperimen berikut yang paling tidak informatif|||Statistik signifikan saat daya rendah|||Statistik signifikan saat daya tinggi|||Statistik tidak signifikan saat daya rendah|||Statistik tidak signifikan saat daya tinggi": {
+    "source": "test",
+    "index": 174,
+    "choices": [
+      "Statistik tidak signifikan saat daya rendah",
+      "Statistik signifikan saat daya rendah",
+      "Statistik tidak signifikan saat daya tinggi",
+      "Statistik signifikan saat daya tinggi"
+    ]
+  },
+  "Teori awal komunikasi massa menyatakan bahwa audiens adalah penerima pesan media yang pasif dan karenanya rentan terhadap manipulasi. Manakah dari berikut ini yang paling menggambarkan pemikiran saat ini?|||Audiens menjadi lebih rentan dan pasif dibandingkan sebelumnya.|||Menonton televisi, khususnya, menciptakan peningkatan aktivitas di belahan otak kanan.|||Penerima aktif tidak terpengaruh secara seragam oleh pesan komunikasi massa.|||Teknologi telah menyebabkan semakin pasifnya penerima di ujung sistem transmisi pesan.": {
+    "source": "test",
+    "index": 175,
+    "choices": [
+      "Audiens menjadi lebih rentan dan pasif dibandingkan sebelumnya.",
+      "Menonton televisi, khususnya, menciptakan peningkatan aktivitas di belahan otak kanan.",
+      "Penerima aktif tidak terpengaruh secara seragam oleh pesan komunikasi massa.",
+      "Teknologi telah menyebabkan semakin pasifnya penerima di ujung sistem transmisi pesan."
+    ]
+  },
+  "Manakah pernyataan yang benar tentang penelitian kelompok fokus?|||Informasi tersebut dapat digeneralisasikan untuk menggambarkan populasi yang lebih besar.|||Ini adalah contoh alat penelitian formal bagi para praktisi.|||Para peserta harus dipilih secara acak.|||Temuan ini menghasilkan data kualitatif yang dapat digunakan untuk mengembangkan survei.": {
+    "source": "test",
+    "index": 176,
+    "choices": [
+      "Para peserta harus dipilih secara acak.",
+      "Ini adalah contoh alat penelitian formal bagi para praktisi.",
+      "Informasi tersebut dapat digeneralisasikan untuk menggambarkan populasi yang lebih besar.",
+      "Temuan ini menghasilkan data kualitatif yang dapat digunakan untuk mengembangkan survei."
+    ]
+  },
+  "Anda adalah direktur komunikasi untuk organisasi nirlaba lokal yang merupakan afiliasi dari organisasi nirlaba nasional yang besar. Anda sering diminta untuk mengamankan liputan media dengan menggunakan rilis berita yang disediakan oleh kantor pusat nasional yang berlokasi di negara bagian lain. Tindakan manakah yang paling meningkatkan peluang keberhasilan Anda dengan materi ini?|||Melokalkan rilis berita untuk audiens di wilayah Anda.|||Memanfaatkan hubungan Anda dengan donor lokal untuk mendapatkan liputan.|||Mempromosikan rilis berita seperti yang tertulis, tetapi sertakan kutipan dari direktur eksekutif cabang Anda.|||Mengingatkan editor bahwa organisasi Anda adalah organisasi nirlaba nasional terkemuka yang menerima sumbangan dari penerbitnya.": {
+    "source": "test",
+    "index": 177,
+    "choices": [
+      "Memanfaatkan hubungan Anda dengan donor lokal untuk mendapatkan liputan.",
+      "Melokalkan rilis berita untuk audiens di wilayah Anda.",
+      "Mempromosikan rilis berita seperti yang tertulis, tetapi sertakan kutipan dari direktur eksekutif cabang Anda.",
+      "Mengingatkan editor bahwa organisasi Anda adalah organisasi nirlaba nasional terkemuka yang menerima sumbangan dari penerbitnya."
+    ]
+  },
+  "Survei tahun 2008 menunjukkan berapa persentase perusahaan terbesar di dunia yang melaporkan tanggung jawab perusahaannya?|||50%|||60%|||70%|||80%": {
+    "source": "test",
+    "index": 178,
+    "choices": [
+      "50%",
+      "60%",
+      "70%",
+      "80%"
+    ]
+  },
+  "Dalam bidang humas manakah taktik berhubungan dengan promosi organisasi secara keseluruhan?|||Bisnis ke bisnis|||Hubungan keuangan|||Komunikasi internal|||Perusahaan": {
+    "source": "test",
+    "index": 179,
+    "choices": [
+      "Perusahaan",
+      "Komunikasi internal",
+      "Hubungan keuangan",
+      "Bisnis ke bisnis"
+    ]
+  },
+  "Apa itu Studi Keamanan Kritis?|||Istilah sekunder untuk Aliran Keamanan Kopenhagen.|||Pendekatan terhadap keamanan yang menerapkan pengetahuan kritis terhadap ortodoksi studi keamanan yang sudah ada.|||Studi keamanan di mana pentingnya negara, militer, dan keamanan tradisional dijaga.|||Teori keamanan spesifik yang mengidentifikasi agen, ancaman, dan proses yang telah ditetapkan dengan jelas.": {
+    "source": "test",
+    "index": 180,
+    "choices": [
+      "Pendekatan terhadap keamanan yang menerapkan pengetahuan kritis terhadap ortodoksi studi keamanan yang sudah ada.",
+      "Teori keamanan spesifik yang mengidentifikasi agen, ancaman, dan proses yang telah ditetapkan dengan jelas.",
+      "Istilah sekunder untuk Aliran Keamanan Kopenhagen.",
+      "Studi keamanan di mana pentingnya negara, militer, dan keamanan tradisional dijaga."
+    ]
+  },
+  "Apa saja jenis-jenis terorisme? Apakah semua kelompok sama?|||Kelompok teroris memperoleh gagasan mereka dari berbagai ideologi. Ada gelombang kekerasan teroris di Eropa pada 1970-an dan 1980-an yang berakar dari ideologi kiri dan Marxis, tetapi hal ini mulai menyusut pada akhir 1980-an. Kelompok sayap kanan juga ada dengan pandangan xenofobia dan rasis, yang menyasar kaum migran dan pekerja asing.|||Kelompok-kelompok yang digolongkan menurut identitas etnis dan bahasa mereka adalah kategori luas untuk organisasi kelompok teroris. Di beberapa negara, sejumlah besar kelompok antikolonial menggunakan identitas etnis dan menggunakan taktik teroris dalam perang meraih kebebasan. Loyalitas dan taktik tersebut, dalam beberapa kasus, terbukti kekal pascakemerdekaan. Afiliasi etnis dan bahasa terbukti merupakan motivasi yang kuat untuk aksi teroris saat berpadu dengan kemerdekaan wilayah dan etnis dari kelompok etnis lain.|||Semua jawaban di atas benar.|||Terorisme atas nama agama tampak menjadi salah satu ciri era pasca-Perang Dingin. Terorisme atas nama agama dipahami menunjukkan aktivitas ekstremis fundamentalisme Islam. Al-Qaeda adalah contoh paling nyata kelompok teroris yang mengatasnamakan agama dan digambarkan beroperasi secara global, walaupun terorisme atas nama agama tidak terbatas pada jaringan Al-Qaeda. Keyakinan Kristen digunakan untuk membenarkan pembantaian etnis di Bosnia, serta pembunuhan penganut antiaborsi di AS.": {
+    "source": "test",
+    "index": 181,
+    "choices": [
+      "Terorisme atas nama agama tampak menjadi salah satu ciri era pasca-Perang Dingin. Terorisme atas nama agama dipahami menunjukkan aktivitas ekstremis fundamentalisme Islam. Al-Qaeda adalah contoh paling nyata kelompok teroris yang mengatasnamakan agama dan digambarkan beroperasi secara global, walaupun terorisme atas nama agama tidak terbatas pada jaringan Al-Qaeda. Keyakinan Kristen digunakan untuk membenarkan pembantaian etnis di Bosnia, serta pembunuhan penganut antiaborsi di AS.",
+      "Kelompok teroris memperoleh gagasan mereka dari berbagai ideologi. Ada gelombang kekerasan teroris di Eropa pada 1970-an dan 1980-an yang berakar dari ideologi kiri dan Marxis, tetapi hal ini mulai menyusut pada akhir 1980-an. Kelompok sayap kanan juga ada dengan pandangan xenofobia dan rasis, yang menyasar kaum migran dan pekerja asing.",
+      "Kelompok-kelompok yang digolongkan menurut identitas etnis dan bahasa mereka adalah kategori luas untuk organisasi kelompok teroris. Di beberapa negara, sejumlah besar kelompok antikolonial menggunakan identitas etnis dan menggunakan taktik teroris dalam perang meraih kebebasan. Loyalitas dan taktik tersebut, dalam beberapa kasus, terbukti kekal pascakemerdekaan. Afiliasi etnis dan bahasa terbukti merupakan motivasi yang kuat untuk aksi teroris saat berpadu dengan kemerdekaan wilayah dan etnis dari kelompok etnis lain.",
+      "Semua jawaban di atas benar."
+    ]
+  },
+  "Apa saja efek senjata nuklir?|||Ledakan nuklir menghasilkan EMP, gelombang cahaya termal, ledakan, dan luruhan pada saat ledakan. Gelombang elektromagnetik terjadi saat radiasi gamma berinteraksi dengan materi (atmosfer), “efek Compton”. EMP menghasilkan arus listrik tegangan tinggi yang tidak berbahaya bagi manusia tetapi merusak sistem elektronik. Efek EMP mencapai tingkat maksimal di ketinggian. Namun, gelombang cahaya termal dapat menyebabkan kebutaan seketika, retina terbakar, dan api, sementara ledakan udara dapat menyebabkan luka bakar parah pada kulit.|||Ledakan nuklir menghasilkan gelombang kejut dari peningkatan tekanan atmosfer dan kelebihan tekanan dinamis yang cukup untuk menghancurkan bangunan beton. Efek ledakan umumnya digunakan oleh perencana militer untuk menghitung jumlah korban dalam serangan nuklir. Diperkirakan 50 persen orang-orang yang tinggal dalam radius lima mil dari pusat ledakan sebesar satu megaton akan tewas atau terluka akibat efek ledakan.|||Reaksi nuklir dalam ledakan nuklir awal atau luruhan dapat menyebabkan keracunan radiasi, karena serpihan teradiasi ditimbulkan oleh bola api nuklir dan dilontarkan ke atmosfer. Bom kotor menggunakan bahan kimia berpeledak tinggi untuk menyebarkan material radioaktif, mengandalkan radiasi untuk menghasilkan efek mematikan. Panik yang disebabkan oleh penyebaran terbatas material radio aktif dapat lebih merugikan dalam hal gangguan yang disebabkannya dibandingkan korban jiwa atau kerusakan terhadap bangunan yang ditimbulkan oleh ledakan bom kotor; beberapa pengamat meyakini bahwa ledakannya menyebabkan jumlah kerusakan terbesar.|||Semua jawaban benar": {
+    "source": "test",
+    "index": 182,
+    "choices": [
+      "Ledakan nuklir menghasilkan EMP, gelombang cahaya termal, ledakan, dan luruhan pada saat ledakan. Gelombang elektromagnetik terjadi saat radiasi gamma berinteraksi dengan materi (atmosfer), “efek Compton”. EMP menghasilkan arus listrik tegangan tinggi yang tidak berbahaya bagi manusia tetapi merusak sistem elektronik. Efek EMP mencapai tingkat maksimal di ketinggian. Namun, gelombang cahaya termal dapat menyebabkan kebutaan seketika, retina terbakar, dan api, sementara ledakan udara dapat menyebabkan luka bakar parah pada kulit.",
+      "Ledakan nuklir menghasilkan gelombang kejut dari peningkatan tekanan atmosfer dan kelebihan tekanan dinamis yang cukup untuk menghancurkan bangunan beton. Efek ledakan umumnya digunakan oleh perencana militer untuk menghitung jumlah korban dalam serangan nuklir. Diperkirakan 50 persen orang-orang yang tinggal dalam radius lima mil dari pusat ledakan sebesar satu megaton akan tewas atau terluka akibat efek ledakan.",
+      "Reaksi nuklir dalam ledakan nuklir awal atau luruhan dapat menyebabkan keracunan radiasi, karena serpihan teradiasi ditimbulkan oleh bola api nuklir dan dilontarkan ke atmosfer. Bom kotor menggunakan bahan kimia berpeledak tinggi untuk menyebarkan material radioaktif, mengandalkan radiasi untuk menghasilkan efek mematikan. Panik yang disebabkan oleh penyebaran terbatas material radio aktif dapat lebih merugikan dalam hal gangguan yang disebabkannya dibandingkan korban jiwa atau kerusakan terhadap bangunan yang ditimbulkan oleh ledakan bom kotor; beberapa pengamat meyakini bahwa ledakannya menyebabkan jumlah kerusakan terbesar.",
+      "Semua jawaban benar"
+    ]
+  },
+  "Jika ada, dalam hal apa lingkungan hidup dapat dianggap sebagai masalah keamanan?|||Keamanan lingkungan adalah proyek keamanan yang penting karena mempertanyakan siapa dan apa yang harus diamankan dan dari ancaman apa berdasarkan kebijakan keamanan ortodoks, atau apakah hubungan antara isu-isu lingkungan, keamanan dan pembangunan dapat dibuat.|||Keamanan lingkungan adalah upaya praktis untuk menilai bagaimana perubahan lingkungan menyebabkan konflik kekerasan di dalam dan antar negara, dan bagaimana keamanan lingkungan dapat melemahkan keamanan nasional.|||Keamanan lingkungan memerlukan pertimbangan terhadap keamanan lingkungan global, serta sub-sistem dan sistem sosial yang ada di luar batas-batas negara bangsa.|||Semua pilihan ini. Lingkungan hidup merupakan objek yang harus diamankan sekaligus sumber risiko, meskipun hal ini dapat memiliki arti yang berbeda bagi orang yang berbeda. Sementara konsep keamanan diperdalam, konsep ini memiliki dimensi kritis dan praktis meskipun kegunaan konsep tersebut masih diperdebatkan.": {
+    "source": "test",
+    "index": 183,
+    "choices": [
+      "Keamanan lingkungan memerlukan pertimbangan terhadap keamanan lingkungan global, serta sub-sistem dan sistem sosial yang ada di luar batas-batas negara bangsa.",
+      "Keamanan lingkungan adalah proyek keamanan yang penting karena mempertanyakan siapa dan apa yang harus diamankan dan dari ancaman apa berdasarkan kebijakan keamanan ortodoks, atau apakah hubungan antara isu-isu lingkungan, keamanan dan pembangunan dapat dibuat.",
+      "Keamanan lingkungan adalah upaya praktis untuk menilai bagaimana perubahan lingkungan menyebabkan konflik kekerasan di dalam dan antar negara, dan bagaimana keamanan lingkungan dapat melemahkan keamanan nasional.",
+      "Semua pilihan ini. Lingkungan hidup merupakan objek yang harus diamankan sekaligus sumber risiko, meskipun hal ini dapat memiliki arti yang berbeda bagi orang yang berbeda. Sementara konsep keamanan diperdalam, konsep ini memiliki dimensi kritis dan praktis meskipun kegunaan konsep tersebut masih diperdebatkan."
+    ]
+  },
+  "Opsi kebijakan keamanan internal apa yang tersedia bagi para elite?|||Negara lemah telah mendapatkan dukungan internasional dan memulai proses reformasi demokratis untuk memperoleh legitimasi populer secara internal sekaligus memperkuat legitimasi internasionalnya secara eksternal.|||Para elite berupaya membangun politik identitas baru di mana kesadaran etnis berada di bawah ideologi yang berorientasi mitos rezim.|||Para elite menciptakan bujukan negatif bagi mereka yang tidak mendukung rezim. Redistribusi berarti penyangkalan struktur kekuasaan dalam bentuk “pencabutan hak elite” yang dapat mencakup pengalihan sumber daya, pelucutan senjata, dan penyangkalan akses ke rute aktivitas komersial.|||Tidak adanya kapasitas infrastruktural dan legitimasi sosial yang lebih luas, para elite negara lemah sering kali dipaksa untuk mengandalkan kekuatan yang bersifat memaksa. Namun, dilema utamanya adalah instrumen kekuasaan tersebut dapat menjadi ancaman terhadap rezim yang mengharuskan pelemahan pasukan bersenjata dengan sengaja.": {
+    "source": "test",
+    "index": 184,
+    "choices": [
+      "Para elite menciptakan bujukan negatif bagi mereka yang tidak mendukung rezim. Redistribusi berarti penyangkalan struktur kekuasaan dalam bentuk “pencabutan hak elite” yang dapat mencakup pengalihan sumber daya, pelucutan senjata, dan penyangkalan akses ke rute aktivitas komersial.",
+      "Tidak adanya kapasitas infrastruktural dan legitimasi sosial yang lebih luas, para elite negara lemah sering kali dipaksa untuk mengandalkan kekuatan yang bersifat memaksa. Namun, dilema utamanya adalah instrumen kekuasaan tersebut dapat menjadi ancaman terhadap rezim yang mengharuskan pelemahan pasukan bersenjata dengan sengaja.",
+      "Para elite berupaya membangun politik identitas baru di mana kesadaran etnis berada di bawah ideologi yang berorientasi mitos rezim.",
+      "Negara lemah telah mendapatkan dukungan internasional dan memulai proses reformasi demokratis untuk memperoleh legitimasi populer secara internal sekaligus memperkuat legitimasi internasionalnya secara eksternal."
+    ]
+  },
+  "Kecelakaan mobil fatal terjadi. Seorang pria menghentikan mobilnya dan mulai membantu orang. Setelah melihatnya berhenti, orang lain juga berhenti dan mulai membantu. Manakah dari teori berikut yang paling menjelaskan skenario tersebut?|||Bernilai tambah|||Konvergensi|||Norma yang muncul|||Penularan": {
+    "source": "test",
+    "index": 185,
+    "choices": [
+      "Konvergensi",
+      "Norma yang muncul",
+      "Penularan",
+      "Bernilai tambah"
+    ]
+  },
+  "Seorang sosiolog sedang melakukan penelitian tentang hubungan kekuasaan institusional di rumah sakit setempat. Sosiolog tersebut menjadi staf di rumah sakit selama beberapa minggu, mencatat data sebagai catatan lapangan. Metode penelitian ini disebut|||administrasi survei|||analisis data sekunder|||observasi partisipan|||percobaan": {
+    "source": "test",
+    "index": 186,
+    "choices": [
+      "percobaan",
+      "analisis data sekunder",
+      "observasi partisipan",
+      "administrasi survei"
+    ]
+  },
+  "Manakah dari berikut ini yang bukan merupakan ciri globalisasi?|||hilangnya jarak melalui teknologi komunikasi|||meningkatnya kesadaran terhadap dunia secara keseluruhan|||perluasan hubungan sosial melampaui batas-batas negara|||perluasan kekuasaan negara-bangsa": {
+    "source": "test",
+    "index": 187,
+    "choices": [
+      "meningkatnya kesadaran terhadap dunia secara keseluruhan",
+      "perluasan kekuasaan negara-bangsa",
+      "hilangnya jarak melalui teknologi komunikasi",
+      "perluasan hubungan sosial melampaui batas-batas negara"
+    ]
+  },
+  "Manakah dari berikut ini yang tidak diidentifikasi sebagai bentuk komunitas baru?|||desa-desa gay, yang terbentuk di bagian-bagian tertentu kota-kota besar|||komunitas etnis, berdasarkan kesamaan identitas dan pengalaman diskriminasi|||komunitas sosiologi, dibentuk oleh dosen-dosen yang tidak populer|||komunitas virtual yang hanya ada di dunia maya": {
+    "source": "test",
+    "index": 188,
+    "choices": [
+      "komunitas etnis, berdasarkan kesamaan identitas dan pengalaman diskriminasi",
+      "desa-desa gay, yang terbentuk di bagian-bagian tertentu kota-kota besar",
+      "komunitas sosiologi, dibentuk oleh dosen-dosen yang tidak populer",
+      "komunitas virtual yang hanya ada di dunia maya"
+    ]
+  },
+  "Manakah dari berikut ini yang bukan merupakan salah satu indikator deprivasi relatif menurut Townsend (1979)?|||kurangnya penggunaan eksklusif bak mandi atau pancuran|||membeli kurang dari dua puluh DVD pada tahun sebelumnya|||pergi tanpa libur seminggu pada tahun sebelumnya|||tinggal di perumahan dengan cacat struktural yang serius": {
+    "source": "test",
+    "index": 189,
+    "choices": [
+      "kurangnya penggunaan eksklusif bak mandi atau pancuran",
+      "tinggal di perumahan dengan cacat struktural yang serius",
+      "membeli kurang dari dua puluh DVD pada tahun sebelumnya",
+      "pergi tanpa libur seminggu pada tahun sebelumnya"
+    ]
+  },
+  "Manakah dari berikut ini yang merupakan dokumen pribadi dengan akses tertutup?|||buku putih' pemerintah|||buku rekening rumah tangga|||catatan medis rahasia|||daftar saham suatu bisnis": {
+    "source": "test",
+    "index": 190,
+    "choices": [
+      "buku putih' pemerintah",
+      "catatan medis rahasia",
+      "buku rekening rumah tangga",
+      "daftar saham suatu bisnis"
+    ]
+  },
+  "Apa yang cenderung menjadi dampak perdagangan minyak dan sumber daya alam lainnya terhadap negara-negara berkembang?|||Mendemokratisasi negara|||Mendorong stabilitas rezim|||Mengubah sifat investor|||Tidak memiliki efek nyata": {
+    "source": "test",
+    "index": 191,
+    "choices": [
+      "Mendemokratisasi negara",
+      "Tidak memiliki efek nyata",
+      "Mendorong stabilitas rezim",
+      "Mengubah sifat investor"
+    ]
+  },
+  "Organisasi antarpemerintah JARANG melakukan hal berikut?|||Memantau para pihak terkait|||Memberikan penegakan hukum yang kuat|||Mengurangi biaya transaksi untuk perjanjian|||Menyediakan forum untuk diskusi": {
+    "source": "test",
+    "index": 192,
+    "choices": [
+      "Memberikan penegakan hukum yang kuat",
+      "Memantau para pihak terkait",
+      "Menyediakan forum untuk diskusi",
+      "Mengurangi biaya transaksi untuk perjanjian"
+    ]
+  },
+  "Menurut kaum realis, apa perbedaan mendasar antara sistem internasional dan sistem domestik?|||Anarki|||Institusi|||Konflik bersenjata|||Tidak ada bahasa yang umum": {
+    "source": "test",
+    "index": 193,
+    "choices": [
+      "Konflik bersenjata",
+      "Anarki",
+      "Institusi",
+      "Tidak ada bahasa yang umum"
+    ]
+  },
+  "Politik birokrasi menunjukkan bahwa kita harus mengkhawatirkan hal-hal berikut sehubungan dengan senjata nuklir?|||Cara serangan nuklir diidentifikasi dan ditanggapi; pihak yang mengendalikan senjata|||Memiliki kemampuan untuk menghalangi negara bagian yang lebih kecil|||Memiliki kemampuan untuk menghalangi saingan yang paling kuat|||Politik birokrasi tidak memberikan informasi tentang proliferasi dan penggunaan nuklir": {
+    "source": "test",
+    "index": 194,
+    "choices": [
+      "Memiliki kemampuan untuk menghalangi saingan yang paling kuat",
+      "Memiliki kemampuan untuk menghalangi negara bagian yang lebih kecil",
+      "Cara serangan nuklir diidentifikasi dan ditanggapi; pihak yang mengendalikan senjata",
+      "Politik birokrasi tidak memberikan informasi tentang proliferasi dan penggunaan nuklir"
+    ]
+  },
+  "Apa saja lembaga utama dari tatanan ekonomi internasional liberal?\nI. GATT\nII. IMF\nIII. Bank Dunia\nIV. NATO|||Hanya IV|||I, II, III, dan IV|||I, II, dan III|||II dan III": {
+    "source": "test",
+    "index": 195,
+    "choices": [
+      "Hanya IV",
+      "II dan III",
+      "I, II, dan III",
+      "I, II, III, dan IV"
+    ]
+  },
+  "Apa karakteristik utama famili bunyavirus?|||Amplifikasi melalui infeksi midget, nyamuk, lalat pasir, kutu secara persisten|||Penyebaran kepada manusia melalui gigitan celurut dan tikus|||Rekombinasi genetik atau penguruutan ulang|||Secara dominan ditularkan oleh nyamuk": {
+    "source": "test",
+    "index": 196,
+    "choices": [
+      "Amplifikasi melalui infeksi midget, nyamuk, lalat pasir, kutu secara persisten",
+      "Secara dominan ditularkan oleh nyamuk",
+      "Rekombinasi genetik atau penguruutan ulang",
+      "Penyebaran kepada manusia melalui gigitan celurut dan tikus"
+    ]
+  },
+  "Apa hal yang peling penting untuk mengontrol penyakit yang disebabkan oleh norovirus?|||Karantina|||Obat antivirus baru|||Perhatian terhadap mencuci tangan dan higiene|||Vaksin norovirus": {
+    "source": "test",
+    "index": 197,
+    "choices": [
+      "Vaksin norovirus",
+      "Perhatian terhadap mencuci tangan dan higiene",
+      "Karantina",
+      "Obat antivirus baru"
+    ]
+  },
+  "Tujuan studi samar ganda atau masker ganda adalah untuk:|||Mendapatkan perbandingan dari subjek yang diobati dan subjek yang tidak diobati|||Menghindari bias pengamat dan subjek|||Menghindari bias pengamat dan variasi pengambilan sampel|||Mengurangi efek variasi pengambilan sampel": {
+    "source": "test",
+    "index": 198,
+    "choices": [
+      "Mendapatkan perbandingan dari subjek yang diobati dan subjek yang tidak diobati",
+      "Mengurangi efek variasi pengambilan sampel",
+      "Menghindari bias pengamat dan subjek",
+      "Menghindari bias pengamat dan variasi pengambilan sampel"
+    ]
+  },
+  "Pengacakan subjek studi dalam uji klinis paling berguna untuk mengontrol apa?|||Bias mengingat kembali|||Efek plasebo|||Ketidakpatuhan|||Modifikasi efek (interaksi)": {
+    "source": "test",
+    "index": 199,
+    "choices": [
+      "Efek plasebo",
+      "Bias mengingat kembali",
+      "Ketidakpatuhan",
+      "Modifikasi efek (interaksi)"
+    ]
+  }
+}
