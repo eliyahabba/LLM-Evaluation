@@ -1,6 +1,8 @@
 import hashlib
 import json
+import re
 from dataclasses import dataclass
+from difflib import get_close_matches
 from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
@@ -10,6 +12,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from src.experiments.experiment_preparation.dataset_scheme.conversions.RunOutputMerger import RunOutputMerger
+from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 from src.utils.Constants import Constants
 
 
@@ -178,7 +181,7 @@ class SchemaConverter:
         }
         if value not in mapping:
             raise ValueError(f"Unsupported quantization value: {value}")
-        return mapping[value]
+        return mapping[value].value
 
     def calculate_perplexity(self, logprobs: List) -> float:
         """Calculate perplexity from log probabilities."""
@@ -198,7 +201,7 @@ class SchemaConverter:
         prompt_section = self._build_prompt_section(task_data, recipe, logger=logger)
         instance_section = self._build_instance_section(row, task_data, recipe, probs)
         output_section = self._build_output_section(row, probs)
-        evaluation_section = self._build_evaluation_section(row)
+        evaluation_section = self._build_evaluation_section(task_data, row)
         schema = {
             "evaluation_id": evaluation_id,
             "model": model_section,
@@ -214,8 +217,33 @@ class SchemaConverter:
         """Parse configuration string to dictionary."""
         return dict(pair.split('=') for pair in config_string.split(','))
 
-    def _get_template(self, run_unitxt_recipe: dict, logger=None) -> str:
-        template_name = run_unitxt_recipe['template'].split('templates.huji_workshop.')[-1]
+    def get_prompt_paraphrasing(self, card_name: str):
+        """Get prompt paraphrasing from dataset config."""
+        # Get dataset name from card name (e.g., "cards.mmlu" -> "mmlu")
+        dataset = card_name.split("cards.")[1]
+
+        if "mmlu_pro" in dataset:
+            return DatasetConfigFactory.get_instruct_prompts("MMLU_PRO")
+        elif "mmlu" in dataset:
+            return DatasetConfigFactory.get_instruct_prompts("MMLU")
+        elif "ai2_arc" in dataset:
+            return DatasetConfigFactory.get_instruct_prompts("AI2_ARC")
+        elif "hellaswag" in dataset:
+            return DatasetConfigFactory.get_instruct_prompts("HellaSwag")
+        elif "openbook_qa" in dataset:
+            return DatasetConfigFactory.get_instruct_prompts("OpenBookQA")
+        elif "social_iqa" in dataset:
+            return DatasetConfigFactory.get_instruct_prompts("Social_IQa")
+        elif "race" in dataset:
+            return DatasetConfigFactory.get_instruct_prompts("Race")
+        elif "quality" in dataset:
+            return DatasetConfigFactory.get_instruct_prompts("QuALITY")
+        else:
+            raise ValueError(f"Dataset {dataset} not found in DatasetConfigFactory")
+
+    def _get_template(self, recipe: Dict, logger=None) -> Dict:
+        """Get template information from recipe."""
+        template_name = recipe['template'].split('templates.huji_workshop.')[-1]
         if template_name in self._template_cache:
             return self._template_cache[template_name]
 
@@ -226,8 +254,21 @@ class SchemaConverter:
         with open(template_path, 'r') as f:
             template_data = json.load(f)
 
-        self._template_cache[template_name] = template_data['input_format']
-        return template_data['input_format']
+        # Get both template text and name
+        template_text = template_data['input_format']
+        prompt_paraphrasing = self.get_prompt_paraphrasing(recipe['card'])
+
+        # Find matching prompt to get its name
+        for prompt in prompt_paraphrasing.get_all_prompts():
+            if prompt.text == template_text:
+                template_info = {
+                    "text": prompt.text,  # The actual instruction text
+                    "name": prompt.name  # The name/identifier of the instruction
+                }
+                self._template_cache[template_name] = template_info
+                return template_info
+
+        raise ValueError(f"Template {template_name} not found in catalog")
 
     def _build_model_section(self, row: pd.Series
                              ) -> Dict:
@@ -262,22 +303,27 @@ class SchemaConverter:
             }
         }
 
-    def _build_prompt_section(self, task_data: Dict, recipe: Dict,
-                              logger=None) -> Dict:
+    def _build_prompt_section(self, task_data: Dict, recipe: Dict, logger=None) -> Dict:
         """Build prompt configuration section of schema."""
         # Process demonstration examples
         enumerator, separator, choices_order = self.parse_template_params(recipe)
         demos = ([] if 'demos' not in task_data else
                  self.transform_demos(task_data['demos']))
+
+        template_info = self._get_template(recipe, logger)
+
         return {
             "prompt_class": "MultipleChoice",
-            "format": {
-                "template": self._get_template(recipe, logger),
+            "dimensions": {
+                "instruction_phrasing": {
+                    "text": template_info["text"],
+                    "name": template_info["name"]
+                },
                 "separator": separator,
                 "enumerator": enumerator,
                 "choices_order": choices_order,
                 "shots": int(recipe['num_demos']),
-                "demos": demos
+                "demonstrations": demos
             }
         }
 
@@ -312,7 +358,7 @@ class SchemaConverter:
             # add also the language in the second part of the string
             map_file_name = f"{map_file_name}.{recipe['card'].split('.')[2]}"
         current_dir = Path(__file__).parents[2]
-        map_file_path = current_dir / "experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.parquet"
+        map_file_path = current_dir / "dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.parquet"
         if map_file_name in self._index_map_cache:
             index_map = self._index_map_cache[map_file_name]
         else:
@@ -349,12 +395,17 @@ class SchemaConverter:
 
         hf_index, hf_split = self._get_guestion_index(index_map, task_data)
 
+        # Determine language from dataset name
+        dataset_name = recipe['card'].split("cards.")[1]
+        lang_match = re.match(r'(global_mmlu|global_mmlu_lite_cs|global_mmlu_lite_ca)\.(\w+)$', dataset_name)
+        language = lang_match.group(2).lower() if lang_match else "en"
+
         return {
             "task_type": "classification",
-            "raw_input": row['prompt'],
-            "language": "en",
+            "raw_input": row['prompt'][-1]['content'],
+            "language": language,  # Use detected language
             "sample_identifier": {
-                "dataset_name": recipe['card'].split("cards.")[1],
+                "dataset_name": dataset_name,
                 "hf_repo": hf_repo,
                 "hf_index": hf_index,
                 "hf_split": hf_split
@@ -396,25 +447,33 @@ class SchemaConverter:
         return {
             "response": row['generated_text'],
             "cumulative_logprob": row['cumulative_logprob'],
-            "generated_tokens_ids": row['generated_text_tokens_ids'].tolist(),
+            # "generated_tokens_ids": row['generated_text_tokens_ids'].tolist(),
             "generated_tokens_logprobs": generated_tokens_logprobs
         }
 
-    def _build_evaluation_section(self, row: pd.Series) -> Dict:
+    def get_close_matches_from_row(self, task_data, row_data: pd.Series) -> str:
+        choices = task_data['options']
+        generated_answer = row_data['generated_text']
+        ai_answer = generated_answer.strip().split("\n")
+        ai_answer = ai_answer[0].strip()
+        return get_close_matches(ai_answer, choices, n=1, cutoff=0.0)[0]
+
+    def _build_evaluation_section(self, task_data, row: pd.Series) -> Dict:
         """Build evaluation section of schema."""
+
         return {
             "ground_truth": row['references'][0],
             "evaluation_method": {
                 "method_name": "content_similarity",
-                "description": "Finds the most similar answer among the given choices by comparing the textual content"
+                "description": "Finds the most similar answer among the given choices by comparing the textual content",
+                "closest_answer": self.get_close_matches_from_row(task_data, row)
             },
             "score": row['scores']['score']
         }
 
     def convert_dataframe(self, df: pd.DataFrame, logger=None, probs=True) -> List[Dict]:
-        conversion_map = {'prompt': json.loads, 'references': eval, 'scores': eval, 'run_generation_args': json.loads,
-                          'run_model_args': json.loads, }
-
+        conversion_map = {'prompt': json.loads, 'references': eval, 'scores': eval,
+                          'run_generation_args': json.loads, 'run_model_args': json.loads}
         try:
             # Apply conversions in a vectorized manner
             for col, func in conversion_map.items():
