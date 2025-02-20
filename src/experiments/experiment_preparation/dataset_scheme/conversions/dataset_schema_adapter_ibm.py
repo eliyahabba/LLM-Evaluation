@@ -469,18 +469,16 @@ class SchemaConverter:
             self.logger.debug(f"Row choices: {row_choices_set}")
             
             # First find questions that match
-            if "question" not in row:
-                self.logger.error(f"Row data: {row}")
-                raise KeyError("Missing 'question' key in row data")
-            question_mask = df_map['question'] == row['question']
-            self.logger.debug(f"Question: {row['question']}")
+            question_key = 'question' if 'question' in row else 'context'
+            question_mask = df_map['question'] == row[question_key]
+            self.logger.debug(f"Question: {row['question_key']}")
             self.logger.debug(f"Number of matching questions: {question_mask.sum()}")
             choices_mask = df_map['choices'].apply(set).apply(lambda x: x == row_choices_set)
             matches = df_map[question_mask & choices_mask]
             self.logger.debug(f"Total matches found: {len(matches)}")
 
             if len(matches) == 0:
-                self.logger.warning(f"No matches found for question: {row['question']}")
+                self.logger.warning(f"No matches found for question: {row['question_key']}")
                 self.logger.warning(f"Sample of df_map:\n{df_map.head()}")
                 self.logger.warning("Attempting to find questions with different choices")
 
