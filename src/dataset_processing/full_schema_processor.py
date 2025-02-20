@@ -187,7 +187,54 @@ class FullSchemaProcessor(BaseProcessor):
                     }))
                 })
             })),
-            # ... rest of the schema
+            ('instance', pa.struct({
+                'task_type': pa.string(),
+                'raw_input': pa.string(),
+                'language': pa.string(),
+                'sample_identifier': pa.struct({
+                    'dataset_name': pa.string(),
+                    'hf_repo': pa.string(),
+                    'hf_index': pa.int64(),
+                    'hf_split': pa.string()
+                }),
+                'perplexity': pa.float64(),
+                'classification_fields': pa.struct({
+                    'question': pa.string(),
+                    'choices': pa.list_(pa.struct({
+                        'id': pa.string(),
+                        'text': pa.string()
+                    })),
+                    'ground_truth': pa.struct({
+                        'id': pa.string(),
+                        'text': pa.string()
+                    })
+                }),
+                'prompt_logprobs': pa.list_(pa.list_(pa.struct({
+                    'decoded_token': pa.string(),
+                    'logprob': pa.float64(),
+                    'rank': pa.int64(),
+                    'token_id': pa.int64()
+                })))
+            })),
+            ('output', pa.struct({
+                'response': pa.string(),
+                'cumulative_logprob': pa.float64(),
+                'generated_tokens_logprobs': pa.list_(pa.list_(pa.struct({
+                    'decoded_token': pa.string(),
+                    'logprob': pa.float64(),
+                    'rank': pa.int64(),
+                    'token_id': pa.int64()
+                })))
+            })),
+            ('evaluation', pa.struct({
+                'ground_truth': pa.string(),
+                'evaluation_method': pa.struct({
+                    'method_name': pa.string(),
+                    'description': pa.string(),
+                    'closest_answer': pa.string()
+                }),
+                'score': pa.float64()
+            }))
         ])
 
     def __del__(self):
