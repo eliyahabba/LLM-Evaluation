@@ -109,7 +109,7 @@ class FullSchemaProcessor(BaseProcessor):
                         self.logger.info(f"Written batch for {model}/{lang}/{dataset}")
 
                 num_of_batches += 1
-                if num_of_batches == ProcessingConstants.DEFAULT_NUM_BATCHES:
+                if ProcessingConstants.DEFAULT_NUM_BATCHES is not None and num_of_batches == ProcessingConstants.DEFAULT_NUM_BATCHES:
                     break
 
             # Close all writers
