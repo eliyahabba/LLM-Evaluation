@@ -19,6 +19,47 @@ config = Config()
 TOKEN = config.config_values.get("hf_access_token", "")
 
 
+def process_single_file_standalone(file_path: str, input_dir: str, output_dir: str, token: str) -> List[str]:
+    """Standalone function to process a single file that can be pickled and passed to ProcessPoolExecutor."""
+    try:
+        # Create processors for this specific process
+        full_schema_dir = Path(output_dir) / ProcessingConstants.FULL_SCHEMA_DIR_NAME
+        lean_schema_dir = Path(output_dir) / ProcessingConstants.LEAN_SCHEMA_DIR_NAME
+        
+        downloader = HFFileDownloader(
+            ProcessingConstants.SOURCE_REPO,
+            data_dir=input_dir,
+            token=token
+        )
+        
+        full_processor = FullSchemaProcessor(data_dir=str(full_schema_dir))
+        lean_processor = LeanSchemaProcessor(data_dir=str(lean_schema_dir))
+        
+        # Download and process file
+        local_path = downloader.download_file(file_path)
+        if local_path is None:
+            return []
+            
+        # Process full schema
+        full_schema_files = full_processor.process_file(local_path)
+        
+        # Process lean schema
+        lean_schema_files = []
+        for full_file in full_schema_files:
+            lean_schema_files.extend(lean_processor.process_file(Path(full_file)))
+            
+        # Mark as processed
+        downloader._mark_as_processed(local_path)
+        
+        return full_schema_files + lean_schema_files
+        
+    except Exception as e:
+        logging.error(f"Error processing {file_path}: {e}")
+        import traceback
+        logging.error(f"Traceback: {traceback.format_exc()}")
+        return []
+
+
 class UnifiedDatasetProcessor:
     def __init__(
             self,
@@ -32,6 +73,11 @@ class UnifiedDatasetProcessor:
     ):
         """Initialize the unified dataset processor."""
         self.logger = None
+        
+        # Save directories
+        self.input_dir = input_dir
+        self.output_dir = output_dir
+        self.token = token
 
         # Create directories
         input_dir_path = Path(input_dir)
@@ -104,7 +150,7 @@ class UnifiedDatasetProcessor:
         try:
             new_files = self.downloader.get_new_files()
             if not new_files:
-                self.downloader.logger.info("No new files to process")
+                self.logger.info("No new files to process")
                 return
 
             all_processed_files = []
@@ -113,7 +159,13 @@ class UnifiedDatasetProcessor:
             with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as executor:
                 # Submit each file to a separate process
                 futures = {
-                    executor.submit(self.process_single_file, file_path): file_path 
+                    executor.submit(
+                        process_single_file_standalone, 
+                        file_path,
+                        self.input_dir,
+                        self.output_dir,
+                        self.token
+                    ): file_path 
                     for file_path in new_files
                 }
                 
@@ -141,20 +193,6 @@ class UnifiedDatasetProcessor:
             self.logger.error(f"Traceback: {traceback.format_exc()}")
 
 
-def process_batch_files(file_batch):
-    processor = UnifiedDatasetProcessor(
-        source_repo=ProcessingConstants.SOURCE_REPO,
-        output_repo=ProcessingConstants.OUTPUT_REPO,
-        input_dir=ProcessingConstants.INPUT_DATA_DIR,
-        output_dir=ProcessingConstants.OUTPUT_DATA_DIR,
-        num_workers=ProcessingConstants.DEFAULT_NUM_WORKERS,
-        batch_size=ProcessingConstants.DEFAULT_BATCH_SIZE,
-        token=TOKEN
-    )
-    
-    # Process this batch of files
-    for file in file_batch:
-        processor.process_single_file(file)
 
 
 if __name__ == "__main__":
