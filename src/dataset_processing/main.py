@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List, Optional
 from multiprocessing import Process
 import numpy as np
+import os
 
 from config.get_config import Config
 from constants import ProcessingConstants
@@ -50,6 +51,9 @@ def process_single_file_standalone(file_path: str, input_dir: str, output_dir: s
             
         # Mark as processed
         downloader._mark_as_processed(local_path)
+        
+        # Log completion with process ID
+        logging.info(f"Process {os.getpid()} completed processing file: {file_path}")
         
         return full_schema_files + lean_schema_files
         
