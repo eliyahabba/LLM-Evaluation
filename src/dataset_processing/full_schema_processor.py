@@ -58,6 +58,9 @@ class FullSchemaProcessor(BaseProcessor):
             run_merger = RunOutputMerger(file_path, batch_size=self.batch_size)
             num_of_batches = 0
             
+            # Create schema once
+            schema = self._get_schema()
+            
             # Process batches using RunOutputMerger
             for batch_df in tqdm(run_merger.process_batches(), desc=f"Processing {file_path.name}"):
                 # Process and convert the batch
@@ -90,14 +93,14 @@ class FullSchemaProcessor(BaseProcessor):
                     group_df = group_df.drop(columns=['model_name', 'dataset_name', 'language'])
                     group_df = group_df.reset_index(drop=True)
                     
-                    # Convert DataFrame to PyArrow Table
-                    table = pa.Table.from_pandas(group_df, preserve_index=False)
+                    # Convert DataFrame to PyArrow Table using predefined schema
+                    table = pa.Table.from_pandas(group_df, schema=schema)
                     
                     with FileLock(lock_file):
                         if str(output_path) not in self.writers:
                             self.writers[str(output_path)] = pq.ParquetWriter(
                                 str(output_path), 
-                                table.schema,  # Use the schema from the table
+                                schema,  # Use the predefined schema
                                 version=ParquetConstants.VERSION,
                                 write_statistics=ParquetConstants.WRITE_STATISTICS
                             )
@@ -119,24 +122,114 @@ class FullSchemaProcessor(BaseProcessor):
 
         except Exception as e:
             self.logger.error(f"Error processing {file_path}: {e}")
-            # Clean up writers on error
-            for writer in self.writers.values():
-                try:
-                    writer.close()
-                except:
-                    pass
-            self.writers.clear()
             return []
 
     def _get_schema(self):
-        """Get schema from existing parquet file or first batch of data."""
-        try:
-            # Convert DataFrame to PyArrow Table without schema first
-            table = pa.Table.from_pandas(group_df, preserve_index=False)
-            return table.schema
-        except Exception as e:
-            self.logger.error(f"Error getting schema: {e}")
-            raise
+        """Create the full schema for parquet files."""
+        return pa.schema([
+            ('evaluation_id', pa.string()),
+            ('model', pa.struct({
+                'configuration': pa.struct({
+                    'architecture': pa.string(),
+                    'context_window': pa.int64(),
+                    'hf_path': pa.string(),
+                    'is_instruct': pa.bool_(),
+                    'parameters': pa.int64(),
+                    'revision': pa.null()
+                }),
+                'inference_settings': pa.struct({
+                    'generation_args': pa.struct({
+                        'max_tokens': pa.int64(),
+                        'stop_sequences': pa.list_(pa.null()),
+                        'temperature': pa.null(),
+                        'top_k': pa.int64(),
+                        'top_p': pa.null(),
+                        'use_vllm': pa.bool_()
+                    }),
+                    'quantization': pa.struct({
+                        'bit_precision': pa.string(),
+                        'method': pa.string()
+                    })
+                }),
+                'model_info': pa.struct({
+                    'family': pa.string(),
+                    'name': pa.string()
+                })
+            })),
+            ('prompt_config', pa.struct({
+                'dimensions': pa.struct({
+                    'choices_order': pa.struct({
+                        'description': pa.string(),
+                        'method': pa.string()
+                    }),
+                    'demonstrations': pa.list_(pa.struct({
+                        'topic': pa.string(),
+                        'question': pa.string(),
+                        'choices': pa.list_(pa.struct({
+                            'id': pa.string(),
+                            'text': pa.string()
+                        })),
+                        'answer': pa.int64()
+                    })),
+                    'enumerator': pa.string(),
+                    'instruction_phrasing': pa.struct({
+                        'name': pa.string(),
+                        'text': pa.string()
+                    }),
+                    'separator': pa.string(),
+                    'shots': pa.int64()
+                }),
+                'prompt_class': pa.string()
+            })),
+            ('instance', pa.struct({
+                'classification_fields': pa.struct({
+                    'choices': pa.list_(pa.struct({
+                        'id': pa.string(),
+                        'text': pa.string()
+                    })),
+                    'ground_truth': pa.struct({
+                        'id': pa.string(),
+                        'text': pa.string()
+                    }),
+                    'question': pa.string()
+                }),
+                'language': pa.string(),
+                'perplexity': pa.float64(),
+                'prompt_logprobs': pa.list_(pa.list_(pa.struct({
+                    'decoded_token': pa.string(),
+                    'logprob': pa.float64(),
+                    'rank': pa.int64(),
+                    'token_id': pa.int64()
+                }))),
+                'raw_input': pa.string(),
+                'sample_identifier': pa.struct({
+                    'dataset_name': pa.string(),
+                    'hf_index': pa.int64(),
+                    'hf_repo': pa.string(),
+                    'hf_split': pa.string()
+                }),
+                'task_type': pa.string()
+            })),
+            ('output', pa.struct({
+                'response': pa.string(),
+                'cumulative_logprob': pa.float64(),
+                'generated_tokens_logprobs': pa.list_(pa.list_(pa.struct({
+                    'decoded_token': pa.string(),
+                    'logprob': pa.float64(),
+                    'rank': pa.int64(),
+                    'token_id': pa.int64()
+                })))
+            })),
+            ('evaluation', pa.struct({
+                'ground_truth': pa.string(),
+                'evaluation_method': pa.struct({
+                    'method_name': pa.string(),
+                    'description': pa.string(),
+                    'closest_answer': pa.string()
+                }),
+                'score': pa.float64()
+            }))
+        ])
 
     def __del__(self):
         """Cleanup writers on object destruction."""
