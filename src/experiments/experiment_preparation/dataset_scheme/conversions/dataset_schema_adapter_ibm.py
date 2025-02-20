@@ -469,6 +469,9 @@ class SchemaConverter:
             self.logger.debug(f"Row choices: {row_choices_set}")
             
             # First find questions that match
+            if "question" not in row:
+                self.logger.error(f"Row data: {row}")
+                raise KeyError("Missing 'question' key in row data")
             question_mask = df_map['question'] == row['question']
             self.logger.debug(f"Question: {row['question']}")
             self.logger.debug(f"Number of matching questions: {question_mask.sum()}")
