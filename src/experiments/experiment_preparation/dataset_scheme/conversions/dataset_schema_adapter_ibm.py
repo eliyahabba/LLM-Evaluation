@@ -453,9 +453,14 @@ class SchemaConverter:
         """Find matching question and choices in the mapping DataFrame."""
         try:
             # Clean and normalize row choices
-            row_choices = [answer.split(". ")[1] for answer in row['options']]
-            row_choices_set = set(row_choices)  # Convert to set for comparison
-            self.logger.debug(f"Row choices: {row_choices}")
+            def clean_option(answer):
+                first_dot = answer.find('. ')
+                if first_dot != -1:
+                    return answer[first_dot + 2:]
+                return answer
+
+            row_choices_set = set(clean_option(answer) for answer in row['options'])
+            self.logger.debug(f"Row choices: {row_choices_set}")
             
             # First find questions that match
             question_mask = df_map['question'] == row['question']
