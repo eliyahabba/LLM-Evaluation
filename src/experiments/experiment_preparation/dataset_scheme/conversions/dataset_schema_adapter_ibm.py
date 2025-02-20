@@ -467,12 +467,28 @@ class SchemaConverter:
             
             matches = df_map[question_mask & choices_mask]
             self.logger.debug(f"Total matches found: {len(matches)}")
-            
+
             if len(matches) == 0:
                 self.logger.warning(f"No matches found for question: {row['question']}")
                 self.logger.warning(f"Sample of df_map:\n{df_map.head()}")
-                return -1  # This is where we return -1
-            
+                self.logger.debug("Attempting to find questions with different choices")
+
+                question_mask = df_map['question'] == row['question']
+                self.logger.debug(f"Questions with same text found: {question_mask.sum()}")
+
+                choices_in_df = df_map[question_mask]['choices'].apply(
+                    lambda x: str(sorted(x if isinstance(x, list) else x)))
+                self.logger.debug(f"All choices found for this question:\n{choices_in_df.tolist()}")
+
+                self.logger.debug(f"Original row choices: {row_choices}")
+                self.logger.debug("Comparing with existing choices in df_map:")
+                for i, df_row in df_map[question_mask].iterrows():
+                    self.logger.debug(f"Index {i} - choices: {df_row['choices']}")
+
+                self.logger.warning("No matching question-choices combination found, returning -1")
+                return -1
+
+
             match_data = matches.iloc[0]
             self.logger.debug(f"Match found - index: {match_data['index']}, source: {match_data['source']}")
             return match_data['index'], match_data['source']
