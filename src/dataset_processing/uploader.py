@@ -3,6 +3,7 @@ import pandas as pd
 from huggingface_hub import HfApi
 
 from base_processor import BaseProcessor
+from constants import ProcessingConstants
 
 
 class HFUploader(BaseProcessor):
@@ -21,6 +22,10 @@ class HFUploader(BaseProcessor):
         super().__init__(**kwargs)
         self.output_repo = output_repo
         self.hf_api = HfApi()
+        
+        # Set up temp directory
+        self.temp_dir = self.data_dir / ProcessingConstants.TEMP_DIR_NAME
+        self.temp_dir.mkdir(parents=True, exist_ok=True)
 
     def upload_dataframe(self, df: pd.DataFrame, name: str) -> bool:
         """
