@@ -390,13 +390,16 @@ class SchemaConverter:
         if map_file_name.startswith("global_mmlu"):
             # add also the language in the second part of the string
             map_file_name = f"{map_file_name}.{recipe['card'].split('.')[2]}"
+        
         current_dir = Path(__file__).parents[2]
-        map_file_path = current_dir / "dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.parquet"
-        if map_file_name in self._index_map_cache:
-            index_map = self._index_map_cache[map_file_name]
-        else:
-            index_map = pd.read_parquet(map_file_path)
-            self._index_map_cache[map_file_name] = index_map
+        json_path = current_dir / "dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
+        
+        # Load JSON lookup map if not already cached
+        if map_file_name not in self._index_map_cache:
+            with open(json_path, 'r') as f:
+                self._index_map_cache[map_file_name] = json.load(f)
+        
+        index_map = self._index_map_cache[map_file_name]
 
         hf_repo = f"cais/{recipe['card'].split('.')[1]}" if map_file_name == "mmlu" else f"Rowan/hellaswag" if map_file_name == "hellaswag" else f"allenai/{map_file_name}"
 
@@ -456,7 +459,7 @@ class SchemaConverter:
         }
 
     def _get_guestion_index(self, df_map, row):
-        """Find matching question and choices in the mapping DataFrame."""
+        """Find matching question and choices using string-based lookup."""
         try:
             # Clean and normalize row choices
             def clean_option(answer):
@@ -464,52 +467,31 @@ class SchemaConverter:
                 if first_dot != -1:
                     return answer[first_dot + 2:]
                 return answer
-
-            row_choices_set = set(clean_option(answer) for answer in row['options'])
-            self.logger.debug(f"Row choices: {row_choices_set}")
             
-            # First find questions that match
+            # Get question and clean choices
             question_key = 'question' if 'question' in row else 'context'
-            question_mask = df_map['question'] == row[question_key]
-            self.logger.debug(f"Question: {row[question_key]}")
-            self.logger.debug(f"Number of matching questions: {question_mask.sum()}")
-            choices_mask = df_map['choices'].apply(set).apply(lambda x: x == row_choices_set)
-            matches = df_map[question_mask & choices_mask]
-            self.logger.debug(f"Total matches found: {len(matches)}")
-
-            if len(matches) == 0:
-                self.logger.warning(f"No matches found for question: {row[question_key]}")
-                self.logger.warning(f"Sample of df_map:\n{df_map.head()}")
-                self.logger.warning("Attempting to find questions with different choices")
-
-                # Log all questions with matching text
-                question_matches = df_map[question_mask]
-                self.logger.warning(f"Questions with same text found: {len(question_matches)}")
-
-                # Log all choices for matching questions
-                for i, df_row in question_matches.iterrows():
-                    df_choices = df_row['choices']
-                    if isinstance(df_choices, np.ndarray):
-                        df_choices = df_choices.tolist()
-                    elif isinstance(df_choices, str):
-                        df_choices = df_choices.split(", ")
-                    df_choices_set = set(df_choices)
-                    self.logger.warning(f"Index {i} - choices in df: {sorted(df_choices_set)}")
-                    self.logger.warning(f"Row choices: {sorted(row_choices_set)}")
-                    self.logger.warning(f"Sets equal: {df_choices_set == row_choices_set}")
-                    self.logger.warning(f"Difference: {df_choices_set.symmetric_difference(row_choices_set)}")
-
-                self.logger.warning("No matching question-choices combination found, returning -1")
-                return -1, 'test'  # Default to 'test' split when no match found
-
-            match_data = matches.iloc[0]
-            self.logger.debug(f"Match found - index: {match_data['index']}, source: {match_data['source']}")
-            return match_data['index'], match_data['source']
-        
+            question = row[question_key]
+            choices = [clean_option(answer) for answer in row['options']]
+            
+            # Create lookup key in same format as stored
+            key = f"{question}|||{'|||'.join(sorted(choices))}"
+            
+            # Direct lookup in hash map
+            if key in df_map:  # df_map is already the loaded JSON data
+                metadata = df_map[key]
+                self.logger.debug(f"Match found - index: {metadata['index']}, source: {metadata['source']}")
+                return metadata['index'], metadata['source']
+            
+            # If no match found, log details for debugging
+            self.logger.warning(f"No match found for key: {key}")
+            self.logger.warning(f"Question: {question}")
+            self.logger.warning(f"Cleaned choices: {choices}")
+            
+            return -1, 'test'
+            
         except Exception as e:
             self.logger.error(f"Error in _get_guestion_index: {str(e)}")
             self.logger.error(f"Row data: {row}")
-            self.logger.error(f"DataFrame map shape: {df_map.shape}")
             import traceback
             self.logger.error(f"Traceback: {traceback.format_exc()}")
             raise
