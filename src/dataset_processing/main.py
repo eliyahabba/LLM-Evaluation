@@ -108,9 +108,9 @@ class UnifiedDatasetProcessor:
                 return
 
             # Use ProcessPoolExecutor for file batches
-            with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.NUM_PROCESSES) as process_executor:
+            with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as process_executor:
                 # Split files into batches
-                file_batches = np.array_split(new_files, ProcessingConstants.NUM_PROCESSES)
+                file_batches = np.array_split(new_files, ProcessingConstants.DEFAULT_NUM_WORKERS)
                 
                 # Submit each batch to a separate process
                 futures = []
