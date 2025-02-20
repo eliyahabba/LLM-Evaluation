@@ -26,7 +26,6 @@ class UnifiedDatasetProcessor:
             output_dir: str,  # Directory for processed files
             num_workers: int = ProcessingConstants.DEFAULT_NUM_WORKERS,
             batch_size: int = ProcessingConstants.DEFAULT_BATCH_SIZE,
-            temp_dir: Optional[str] = None,
             token: Optional[str] = None
     ):
         """Initialize the unified dataset processor."""
@@ -37,18 +36,16 @@ class UnifiedDatasetProcessor:
         output_dir_path = Path(output_dir)
         full_schema_dir = output_dir_path / ProcessingConstants.FULL_SCHEMA_DIR_NAME
         lean_schema_dir = output_dir_path / ProcessingConstants.LEAN_SCHEMA_DIR_NAME
-        temp_dir = output_dir_path / ProcessingConstants.TEMP_DIR_NAME
 
         # Create all directories
         input_dir_path.mkdir(parents=True, exist_ok=True)
         full_schema_dir.mkdir(parents=True, exist_ok=True)
         lean_schema_dir.mkdir(parents=True, exist_ok=True)
-        temp_dir.mkdir(parents=True, exist_ok=True)
 
+        # Common arguments for all processors
         common_args = {
             "num_workers": num_workers,
             "batch_size": batch_size,
-            "temp_dir": str(temp_dir),
             "token": token
         }
 
@@ -71,16 +68,16 @@ class UnifiedDatasetProcessor:
 
     def process_single_file(self, file_path: str) -> List[str]:
         """Process a single file through the entire pipeline."""
-        temp_path, final_path = self.downloader.download_file(file_path)
+        file_path = self.downloader.download_file(file_path)
 
-        if temp_path is None:
+        if file_path is None:
             return []
 
         try:
-            self.logger.info(f"Processing file: {temp_path}")
+            self.logger.info(f"Processing file: {file_path}")
 
             # Process full schema first
-            full_schema_files = self.full_processor.process_file(temp_path)
+            full_schema_files = self.full_processor.process_file(file_path)
 
             # Process lean schema from full schema files
             lean_schema_files = []
@@ -97,7 +94,7 @@ class UnifiedDatasetProcessor:
             return processed_files
 
         except Exception as e:
-            self.logger.error(f"Error processing {temp_path}: {e}")
+            self.logger.error(f"Error processing {file_path}: {e}")
             return []
 
     def process_all_files(self):
