@@ -1,58 +1,77 @@
 # uploader.py
-import pandas as pd
+from pathlib import Path
+from typing import Optional
+
 from huggingface_hub import HfApi
 
 from base_processor import BaseProcessor
 from constants import ProcessingConstants
+from config.get_config import Config
 
 
 class HFUploader(BaseProcessor):
     def __init__(
-            self,
-            output_repo: str,
-            **kwargs
+        self,
+        output_repo: str,
+        data_dir: str,
+        token: str = None,
+        batch_size: int = ProcessingConstants.DEFAULT_BATCH_SIZE
     ):
-        """
-        Initialize the HuggingFace uploader.
-
-        Args:
-            output_repo (str): HuggingFace repo ID for output files
-            **kwargs: Additional arguments passed to BaseProcessor
-        """
-        super().__init__(**kwargs)
+        """Initialize the HuggingFace uploader."""
+        super().__init__(data_dir=data_dir, token=token, batch_size=batch_size)
         self.output_repo = output_repo
-        self.hf_api = HfApi()
-        
-        # Set up temp directory
-        self.temp_dir = self.data_dir / ProcessingConstants.TEMP_DIR_NAME
-        self.temp_dir.mkdir(parents=True, exist_ok=True)
+        self.hf_api = HfApi(token=self.token)
 
-    def upload_dataframe(self, df: pd.DataFrame, name: str) -> bool:
-        """
-        Upload a DataFrame to HuggingFace as a parquet file.
-
-        Args:
-            df: DataFrame to upload
-            name: Name for the output file
-
-        Returns:
-            bool: True if upload was successful
-        """
+    def upload_file(self, file_path: Path) -> bool:
+        """Upload a single file to HuggingFace."""
         try:
-            temp_file = self.temp_dir / f"{name}.parquet"
-            df.to_parquet(temp_file, index=False)
-
+            self.logger.info(f"Uploading {file_path} to {self.output_repo}")
             self.hf_api.upload_file(
-                path_or_fileobj=str(temp_file),
-                path_in_repo=f"{name}.parquet",
+                path_or_fileobj=str(file_path),
+                path_in_repo=file_path.name,
                 repo_id=self.output_repo,
                 repo_type="dataset"
             )
-
-            # self.cleanup(temp_file)
-            self.logger.info(f"Successfully uploaded: {name}.parquet")
+            self.logger.info(f"Successfully uploaded {file_path}")
             return True
-
         except Exception as e:
-            self.logger.error(f"Error uploading {name}: {e}")
+            self.logger.error(f"Error uploading {file_path}: {e}")
             return False
+
+    def upload_directory(self, directory: Path) -> bool:
+        """Upload all files in a directory to HuggingFace."""
+        try:
+            success = True
+            for file_path in directory.glob(f"*{ProcessingConstants.PARQUET_EXTENSION}"):
+                if not self.upload_file(file_path):
+                    success = False
+            return success
+        except Exception as e:
+            self.logger.error(f"Error uploading directory {directory}: {e}")
+            return False
+
+
+def main():
+    """Main execution function for uploading processed files."""
+    config = Config()
+    token = config.config_values.get("hf_access_token", "")
+
+    uploader = HFUploader(
+        output_repo=ProcessingConstants.OUTPUT_REPO,
+        data_dir=ProcessingConstants.OUTPUT_DATA_DIR,
+        token=token
+    )
+
+    # Upload full schema files
+    full_schema_dir = Path(ProcessingConstants.OUTPUT_DATA_DIR) / ProcessingConstants.FULL_SCHEMA_DIR_NAME
+    if not uploader.upload_directory(full_schema_dir):
+        uploader.logger.error("Failed to upload full schema files")
+
+    # Upload lean schema files
+    lean_schema_dir = Path(ProcessingConstants.OUTPUT_DATA_DIR) / ProcessingConstants.LEAN_SCHEMA_DIR_NAME
+    if not uploader.upload_directory(lean_schema_dir):
+        uploader.logger.error("Failed to upload lean schema files")
+
+
+if __name__ == "__main__":
+    main()
