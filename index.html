@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOVE: Dataset Of Variation Evaluation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🕊️ DOVE: Dataset Of Variation Evaluation</h1>
+        
+        <div class="authors">
+            <p>
+                Eliya Habba, Ofir Arviv, Itay Itzhak, Yotam Perlitz, Elron Bandel, 
+                Leshem Choshen, Michal Shmueli-Scheuer, Gabriel Stanovsky
+            </p>
+            <p class="affiliations">
+                Hebrew University of Jerusalem
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Abstract</h2>
+            <p>
+                DOVE is a large-scale dataset for studying how Language Models (LLMs) respond to 
+                different ways of asking the same question. With over 300M model predictions, 
+                DOVE helps researchers understand and improve LLM evaluation. The dataset covers 
+                78 popular benchmarks and includes comprehensive prompt variations across 5 dimensions.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Key Features</h2>
+            <ul>
+                <li>Comprehensive prompt variations across 5 dimensions</li>
+                <li>Coverage of 78 popular benchmarks (MMLU, ARC, HellaSwag, etc.)</li>
+                <li>Multiple model families (Llama, OLMo, Mistral)</li>
+                <li>Zero-shot and few-shot evaluations</li>
+                <li>Full token probability logging</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Dataset Versions</h2>
+            <div class="version-card">
+                <h3>Full Version (4TB)</h3>
+                <ul>
+                    <li>Complete token-level probabilities</li>
+                    <li>Detailed few-shot examples</li>
+                    <li>Comprehensive model behavior analysis</li>
+                </ul>
+                <a href="https://huggingface.co/datasets/DOVevaluation/Dove-full" class="button">Download Full Version</a>
+            </div>
+
+            <div class="version-card">
+                <h3>Lite Version (200GB)</h3>
+                <ul>
+                    <li>Core prompt variations</li>
+                    <li>Model responses</li>
+                    <li>Evaluation scores</li>
+                </ul>
+                <a href="https://huggingface.co/datasets/DOVevaluation/Dove-lite" class="button">Download Lite Version</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Citation</h2>
+            <pre><code>@article{dove2024,
+    title={DOVE: A Large-Scale Multi-Dimensional Predictions Dataset Towards Meaningful LLM Evaluation},
+    author={Habba, Eliya and Arviv, Ofir and Itzhak, Itay and Perlitz, Yotam and Bandel, Elron 
+            and Choshen, Leshem and Shmueli-Scheuer, Michal and Stanovsky, Gabriel},
+    journal={arXiv preprint arXiv:XXXX.XXXXX},
+    year={2024}
+}</code></pre>
+        </div>
+
+        <footer>
+            <p>Licensed under the Computational Data License Agreement v2 (CDLAv2)</p>
+            <p><a href="https://cdla.dev/permissive-2.0/">View full license terms</a></p>
+        </footer>
+    </div>
+</body>
+</html> 
