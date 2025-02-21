@@ -26,8 +26,6 @@ def download_single_file(file_path: str, input_dir: str, token: str) -> bool:
         if local_path is None:
             return False
             
-        # Mark as processed and log success
-        downloader._mark_as_processed(local_path)
         logging.info(f"Process {os.getpid()} downloaded file: {file_path}")
         return True
         

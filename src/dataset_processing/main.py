@@ -36,31 +36,41 @@ def process_single_file_standalone(file_path: str, input_dir: str, output_dir: s
         full_processor = FullSchemaProcessor(data_dir=str(full_schema_dir))
         lean_processor = LeanSchemaProcessor(data_dir=str(lean_schema_dir))
         
-        # Download and process file
+        # Download file
         local_path = downloader.download_file(file_path)
         if local_path is None:
             return []
             
-        # Process full schema
-        full_schema_files = full_processor.process_file(local_path)
-        
-        # Process lean schema
-        lean_schema_files = []
-        for full_file in full_schema_files:
-            lean_schema_files.extend(lean_processor.process_file(Path(full_file)))
+        try:
+            # Process full schema
+            full_schema_files = full_processor.process_file(local_path)
+            if not full_schema_files:
+                logging.error(f"Full schema processing failed for {file_path}")
+                return []
             
-        # Mark as processed
-        downloader._mark_as_processed(local_path)
-        
-        # Log completion with process ID
-        logging.info(f"Process {os.getpid()} completed processing file: {file_path}")
-        
-        return full_schema_files + lean_schema_files
-        
+            # Process lean schema
+            lean_schema_files = []
+            for full_file in full_schema_files:
+                lean_files = lean_processor.process_file(Path(full_file))
+                if not lean_files:
+                    logging.error(f"Lean schema processing failed for {full_file}")
+                    return []
+                lean_schema_files.extend(lean_files)
+            
+            # Only mark as processed if all steps completed successfully
+            if full_schema_files and lean_schema_files:
+                downloader._mark_as_processed(local_path)
+                logging.info(f"Process {os.getpid()} completed processing file: {file_path}")
+                return full_schema_files + lean_schema_files
+            
+            return []
+            
+        except Exception as process_error:
+            logging.error(f"Processing error for {file_path}: {process_error}")
+            return []
+            
     except Exception as e:
-        logging.error(f"Error processing {file_path}: {e}")
-        import traceback
-        logging.error(f"Traceback: {traceback.format_exc()}")
+        logging.error(f"Error in process_single_file_standalone for {file_path}: {e}")
         return []
 
 
