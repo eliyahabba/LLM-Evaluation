@@ -1,11 +1,9 @@
 # main.py
 import concurrent.futures
 import logging
+import os
 from pathlib import Path
 from typing import List, Optional
-from multiprocessing import Process
-import numpy as np
-import os
 
 from config.get_config import Config
 from constants import ProcessingConstants
@@ -13,6 +11,7 @@ from deduplication_processor import DeduplicationProcessor
 from file_downloader import HFFileDownloader
 from full_schema_processor import FullSchemaProcessor
 from lean_schema_processor import LeanSchemaProcessor
+from processed_files_manager import ProcessedFilesManager
 from uploader import HFUploader
 
 config = Config()
@@ -26,28 +25,28 @@ def process_single_file_standalone(file_path: str, input_dir: str, output_dir: s
         # Create processors for this specific process
         full_schema_dir = Path(output_dir) / ProcessingConstants.FULL_SCHEMA_DIR_NAME
         lean_schema_dir = Path(output_dir) / ProcessingConstants.LEAN_SCHEMA_DIR_NAME
-        
+
         downloader = HFFileDownloader(
             ProcessingConstants.SOURCE_REPO,
             data_dir=input_dir,
             token=token
         )
-        
+
         full_processor = FullSchemaProcessor(data_dir=str(full_schema_dir))
         lean_processor = LeanSchemaProcessor(data_dir=str(lean_schema_dir))
-        
+
         # Download file
         local_path = downloader.download_file(file_path)
         if local_path is None:
             return []
-            
+
         try:
             # Process full schema
             full_schema_files = full_processor.process_file(local_path)
             if not full_schema_files:
                 logging.error(f"Full schema processing failed for {file_path}")
                 return []
-            
+
             # Process lean schema
             lean_schema_files = []
             for full_file in full_schema_files:
@@ -56,19 +55,20 @@ def process_single_file_standalone(file_path: str, input_dir: str, output_dir: s
                     logging.error(f"Lean schema processing failed for {full_file}")
                     return []
                 lean_schema_files.extend(lean_files)
-            
+
             # Only mark as processed if all steps completed successfully
             if full_schema_files and lean_schema_files:
-                downloader._mark_as_processed(local_path)
+                processed_files_manager = ProcessedFilesManager(input_dir)
+                processed_files_manager.mark_as_processed(local_path)
                 logging.info(f"Process {os.getpid()} completed processing file: {file_path}")
                 return full_schema_files + lean_schema_files
-            
+
             return []
-            
+
         except Exception as process_error:
             logging.error(f"Processing error for {file_path}: {process_error}")
             return []
-            
+
     except Exception as e:
         logging.error(f"Error in process_single_file_standalone for {file_path}: {e}")
         return []
@@ -87,7 +87,7 @@ class UnifiedDatasetProcessor:
     ):
         """Initialize the unified dataset processor."""
         self.logger = None
-        
+
         # Save directories
         self.input_dir = input_dir
         self.output_dir = output_dir
@@ -114,7 +114,7 @@ class UnifiedDatasetProcessor:
         try:
             # Downloader uses input directory
             self.downloader = HFFileDownloader(source_repo, data_dir=input_dir, **common_args)
-            
+
             # Processors use output directory
             self.full_processor = FullSchemaProcessor(data_dir=str(full_schema_dir), **common_args)
             self.lean_processor = LeanSchemaProcessor(data_dir=str(lean_schema_dir), **common_args)
@@ -168,21 +168,22 @@ class UnifiedDatasetProcessor:
                 return
 
             all_processed_files = []
-            
+
             # Process each file in a separate process
-            with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as executor:
+            with concurrent.futures.ProcessPoolExecutor(
+                    max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as executor:
                 # Submit each file to a separate process
                 futures = {
                     executor.submit(
-                        process_single_file_standalone, 
+                        process_single_file_standalone,
                         file_path,
                         self.input_dir,
                         self.output_dir,
                         self.token
-                    ): file_path 
+                    ): file_path
                     for file_path in new_files
                 }
-                
+
                 # Collect results as they complete
                 for future in concurrent.futures.as_completed(futures):
                     file_path = futures[future]
@@ -205,8 +206,6 @@ class UnifiedDatasetProcessor:
             self.logger.error(f"Error in process_all_files: {e}")
             import traceback
             self.logger.error(f"Traceback: {traceback.format_exc()}")
-
-
 
 
 if __name__ == "__main__":
