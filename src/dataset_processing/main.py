@@ -11,6 +11,7 @@ from deduplication_processor import DeduplicationProcessor
 from file_downloader import HFFileDownloader
 from full_schema_processor import FullSchemaProcessor
 from lean_schema_processor import LeanSchemaProcessor
+from logger_config import LoggerConfig
 from processed_files_manager import ProcessedFilesManager
 from uploader import HFUploader
 
@@ -22,6 +23,14 @@ TOKEN = config.config_values.get("hf_access_token", "")
 def process_single_file_standalone(file_path: str, input_dir: str, output_dir: str, token: str) -> List[str]:
     """Standalone function to process a single file that can be pickled and passed to ProcessPoolExecutor."""
     try:
+        # Setup logger for this process
+        log_dir = Path(output_dir) / ProcessingConstants.LOGS_DIR_NAME
+        logger = LoggerConfig.setup_logger(
+            "processor",
+            log_dir,
+            process_id=os.getpid()
+        )
+
         # Create processors for this specific process
         full_schema_dir = Path(output_dir) / ProcessingConstants.FULL_SCHEMA_DIR_NAME
         lean_schema_dir = Path(output_dir) / ProcessingConstants.LEAN_SCHEMA_DIR_NAME
@@ -44,7 +53,7 @@ def process_single_file_standalone(file_path: str, input_dir: str, output_dir: s
             # Process full schema
             full_schema_files = full_processor.process_file(local_path)
             if not full_schema_files:
-                logging.error(f"Full schema processing failed for {file_path}")
+                logger.error(f"Full schema processing failed for {file_path}")
                 return []
 
             # Process lean schema
@@ -52,7 +61,7 @@ def process_single_file_standalone(file_path: str, input_dir: str, output_dir: s
             for full_file in full_schema_files:
                 lean_files = lean_processor.process_file(Path(full_file))
                 if not lean_files:
-                    logging.error(f"Lean schema processing failed for {full_file}")
+                    logger.error(f"Lean schema processing failed for {full_file}")
                     return []
                 lean_schema_files.extend(lean_files)
 
@@ -60,17 +69,17 @@ def process_single_file_standalone(file_path: str, input_dir: str, output_dir: s
             if full_schema_files and lean_schema_files:
                 processed_files_manager = ProcessedFilesManager(input_dir)
                 processed_files_manager.mark_as_processed(local_path)
-                logging.info(f"Process {os.getpid()} completed processing file: {file_path}")
+                logger.info(f"Process {os.getpid()} completed processing file: {file_path}")
                 return full_schema_files + lean_schema_files
 
             return []
 
         except Exception as process_error:
-            logging.error(f"Processing error for {file_path}: {process_error}")
+            logger.error(f"Processing error for {file_path}: {process_error}")
             return []
 
     except Exception as e:
-        logging.error(f"Error in process_single_file_standalone for {file_path}: {e}")
+        logger.error(f"Error in process_single_file_standalone for {file_path}: {e}")
         return []
 
 

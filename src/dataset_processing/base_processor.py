@@ -1,98 +1,47 @@
 # base_processor.py
-import logging
-import shutil
-from datetime import datetime
 from pathlib import Path
-from typing import Optional
-import os
+
 from constants import ProcessingConstants
+from logger_config import LoggerConfig
 
 
 class BaseProcessor:
     def __init__(
             self,
             data_dir: str,
-            num_workers: int = ProcessingConstants.DEFAULT_NUM_WORKERS,
-            batch_size: int = ProcessingConstants.DEFAULT_BATCH_SIZE,
-            token: str = None
+            token: str = None,
+            batch_size: int = ProcessingConstants.DEFAULT_BATCH_SIZE
     ):
-        """Initialize the base processor."""
+        """
+        Initialize the base processor.
+        
+        Args:
+            data_dir: Directory for data files
+            token: HuggingFace token for API access
+            batch_size: Size of batches for processing
+        """
         self.data_dir = Path(data_dir)
-        self.num_workers = num_workers
-        self.batch_size = batch_size
         self.token = token
-        self.logger = None
+        self.batch_size = batch_size
 
         # Create data directory if it doesn't exist
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
-        # Set up logger after data_dir is created
-        self.setup_logger()
-
-    def setup_logger(self):
-        """Set up logging configuration."""
-        if self.logger is not None:
-            return
-
-        try:
-            self.logger = logging.getLogger(self.__class__.__name__)
-            self.logger.setLevel(logging.INFO)
-
-            # Remove any existing handlers
-            for handler in self.logger.handlers[:]:
-                self.logger.removeHandler(handler)
-
-            # Add handlers
-            log_file = self.data_dir / 'processing.log'
-
-            fh = logging.FileHandler(log_file)
-            fh.setLevel(logging.INFO)
-
-            ch = logging.StreamHandler()
-            ch.setLevel(logging.INFO)
-
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-            fh.setFormatter(formatter)
-            ch.setFormatter(formatter)
-
-            self.logger.addHandler(fh)
-            self.logger.addHandler(ch)
-            
-            self.logger.info(f"Logger initialized for {self.__class__.__name__}")
-            self.logger.info(f"Log file created at: {log_file}")
-            
-        except Exception as e:
-            # Fallback to basic console logging if file logging fails
-            logging.basicConfig(
-                level=logging.INFO,
-                format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            )
-            self.logger = logging.getLogger(self.__class__.__name__)
-            self.logger.error(f"Failed to set up file logging: {e}")
-
-    def cleanup_temp_dir(self, force: bool = False) -> bool:
-        """Clean up temporary directory."""
-        try:
-            if force:
-                for file in self.temp_dir.glob(f"*{ProcessingConstants.PARQUET_EXTENSION}"):
-                    file.unlink()
-                self.logger.info("Cleaned up temporary directory")
-            return True
-        except Exception as e:
-            self.logger.error(f"Error cleaning up temporary directory: {e}")
-            return False
+        # Setup logger
+        log_dir = self.data_dir / ProcessingConstants.LOGS_DIR_NAME
+        self.logger = LoggerConfig.setup_logger(
+            self.__class__.__name__,
+            log_dir
+        )
 
     def cleanup_file(self, file_path: Path, success: bool = True):
         """
-        Clean up a temporary file.
+        Clean up a file.
         
         Args:
             file_path: Path to the file to clean up
             success: If True, delete the file. If False, keep it for debugging.
         """
-        if not hasattr(self, 'logger'):
-            return
-            
         try:
             if file_path and file_path.exists():
                 if success:
