@@ -19,11 +19,11 @@ class FullSchemaProcessor(BaseProcessor):
     def __init__(self, **kwargs):
         """Initialize the data processor."""
         super().__init__(**kwargs)
-        
+
         # Initialize schema converter
         models_metadata_path = Path(ProcessingConstants.MODELS_METADATA_PATH)
         self.converter = SchemaConverter(models_metadata_path, logger=self.logger)
-        
+
         # Dictionary to store parquet writers
         self.writers = {}
 
@@ -32,13 +32,13 @@ class FullSchemaProcessor(BaseProcessor):
         try:
             self.logger.info(f"Starting conversion of DataFrame with shape: {df.shape}")
             self.logger.debug(f"DataFrame columns: {df.columns}")
-            
+
             # Convert batch at once instead of row by row
             converted_data = self.converter.convert_dataframe(df, probs=True, logger=self.logger)
             if not converted_data:
                 self.logger.warning("No data converted from batch")
                 return pd.DataFrame()
-            
+
             # Create DataFrame once
             return pd.DataFrame(converted_data)
         except Exception as e:
@@ -57,15 +57,15 @@ class FullSchemaProcessor(BaseProcessor):
             # Initialize RunOutputMerger for this file
             run_merger = RunOutputMerger(file_path, batch_size=self.batch_size)
             num_of_batches = 0
-            
+
             # Create schema once
             schema = self._get_schema()
-            
+
             # Process batches using RunOutputMerger
             for batch_df in tqdm(run_merger.process_batches(), desc=f"Processing {file_path.name}"):
                 # Process and convert the batch
                 converted_df = self.process_dataframe(batch_df)
-                
+
                 if converted_df.empty:
                     continue
 
@@ -85,29 +85,29 @@ class FullSchemaProcessor(BaseProcessor):
                     # Create directory structure
                     output_dir = self.data_dir / model / lang
                     output_dir.mkdir(parents=True, exist_ok=True)
-                    
+
                     output_path = output_dir / f"{dataset}{ProcessingConstants.PARQUET_EXTENSION}"
                     lock_file = output_dir / f"{dataset}{ProcessingConstants.LOCK_FILE_EXTENSION}"
-                    
+
                     # Remove grouping columns and reset index
                     group_df = group_df.drop(columns=['model_name', 'dataset_name', 'language'])
                     group_df = group_df.reset_index(drop=True)
-                    
+
                     # Convert DataFrame to PyArrow Table using predefined schema
                     table = pa.Table.from_pandas(group_df, schema=schema)
-                    
+
                     with FileLock(lock_file):
                         if str(output_path) not in self.writers:
                             self.writers[str(output_path)] = pq.ParquetWriter(
-                                str(output_path), 
+                                str(output_path),
                                 schema,  # Use the predefined schema
                                 version=ParquetConstants.VERSION,
                                 write_statistics=ParquetConstants.WRITE_STATISTICS
                             )
-                        
+
                         self.writers[str(output_path)].write_table(table)
                         processed_files.add(str(output_path))
-                        self.logger.info(f"Written batch for {model}/{lang}/{dataset}")
+                        # self.logger.info(f"Written batch for {model}/{lang}/{dataset}")
 
                 num_of_batches += 1
                 if ProcessingConstants.DEFAULT_NUM_BATCHES is not None and num_of_batches == ProcessingConstants.DEFAULT_NUM_BATCHES:
