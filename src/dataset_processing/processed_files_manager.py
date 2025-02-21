@@ -10,15 +10,16 @@ from logger_config import LoggerConfig
 class ProcessedFilesManager:
     """Manages the record of processed files."""
 
-    def __init__(self, data_dir: str):
+    def __init__(self, data_dir: str, record_file: str = ProcessingConstants.PROCESSED_FILES_RECORD):
         """
         Initialize the processed files manager.
-        
+
         Args:
             data_dir: Directory containing the processed files record
+            record_file: Name of the file to track processed files (default: processed_files.txt)
         """
         self.data_dir = Path(data_dir)
-        self.processed_files_path = self.data_dir / ProcessingConstants.PROCESSED_FILES_RECORD
+        self.processed_files_path = self.data_dir / record_file
 
         # Setup logger
         log_dir = self.data_dir / ProcessingConstants.LOGS_DIR_NAME
@@ -73,3 +74,37 @@ class ProcessedFilesManager:
     def get_unprocessed_files(self, all_files: list) -> list:
         """Get list of files that haven't been processed yet."""
         return [f for f in all_files if not self.is_processed(f)]
+
+    def remove_from_processed(self, file_path: Path) -> None:
+        """Remove a file from the processed files record."""
+        try:
+            lock_file = self.processed_files_path.with_suffix('.lock')
+
+            with FileLock(lock_file):
+                # Read current content
+                processed_files = set()
+                if self.processed_files_path.exists():
+                    with open(self.processed_files_path, 'r') as f:
+                        processed_files = {line.strip() for line in f}
+
+                # Remove file if exists
+                file_str = str(file_path)
+                if file_str in processed_files:
+                    processed_files.remove(file_str)
+
+                    # Write back updated content
+                    with open(self.processed_files_path, 'w') as f:
+                        for file in sorted(processed_files):
+                            f.write(f"{file}\n")
+                        f.flush()
+                        os.fsync(f.fileno())
+
+                    self.processed_files.discard(file_str)
+                    self.logger.info(f"Removed {file_path} from processed files record")
+                else:
+                    self.logger.debug(f"File {file_path} not found in processed files record")
+
+        except Exception as e:
+            self.logger.error(f"Error removing file from processed record: {e}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
