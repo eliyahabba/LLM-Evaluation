@@ -5,12 +5,22 @@ from base_processor import BaseProcessor
 from filelock import FileLock
 from typing import Set
 from constants import ProcessingConstants
+from logger_config import LoggerConfig
 
 
-class DeduplicationProcessor(BaseProcessor):
-    def __init__(self, **kwargs):
-        """Initialize the deduplication processor."""
-        super().__init__(**kwargs)
+class DeduplicationProcessor:
+    def __init__(self, data_dir: str):
+        """
+        Initialize the deduplication processor.
+        
+        Args:
+            data_dir: Directory containing files to deduplicate
+        """
+        self.data_dir = Path(data_dir)
+        
+        # Setup logger
+        log_dir = self.data_dir / ProcessingConstants.LOGS_DIR_NAME
+        self.logger = LoggerConfig.setup_logger("DeduplicationProcessor", log_dir)
         
         # Define deduplication columns for full schema
         self.full_schema_expressions = [
@@ -94,8 +104,6 @@ class DeduplicationProcessor(BaseProcessor):
 
                 except Exception as e:
                     self.logger.error(f"Error deduplicating {file_path}: {e}")
-                    if temp_file.exists():
-                        temp_file.unlink()
                     success = False
 
             return success
