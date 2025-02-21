@@ -30,7 +30,7 @@ class FullSchemaProcessor(BaseProcessor):
     def process_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
         """Process DataFrame using the schema converter more efficiently."""
         try:
-            self.logger.info(f"Starting conversion of DataFrame with shape: {df.shape}")
+            # self.logger.info(f"Starting conversion of DataFrame with shape: {df.shape}")
             self.logger.debug(f"DataFrame columns: {df.columns}")
 
             # Convert batch at once instead of row by row
