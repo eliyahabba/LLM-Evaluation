@@ -462,17 +462,18 @@ class SchemaConverter:
         """Find matching question and choices using string-based lookup."""
         try:
             # Clean and normalize row choices
-            def clean_option(answer):
-                first_dot = answer.find('. ')
-                if first_dot != -1:
-                    return answer[first_dot + 2:]
-                return answer
-            
+            # def clean_option(answer):
+            #     first_dot = answer.find('. ')
+            #     if first_dot != -1:
+            #         return answer[first_dot + 2:]
+            #     return answer
+            #
             # Get question and clean choices
+            # choices = [clean_option(answer) for answer in row['options']]
+
             question_key = 'question' if 'question' in row else 'context'
             question = row[question_key]
-            choices = [clean_option(answer) for answer in row['options']]
-            
+            choices = row['choices']
             # Create lookup key in same format as stored
             key = f"{question}|||{'|||'.join(sorted(choices))}"
             
