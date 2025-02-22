@@ -82,12 +82,11 @@ class FullSchemaProcessor(BaseProcessor):
 
                 # Group and write each model/dataset/language combination
                 for (model, dataset, lang), group_df in converted_df.groupby(['model_name', 'dataset_name', 'language']):
-                    # Create directory structure
-                    output_dir = self.data_dir / model / lang
+                    # Create directory structure - changed to separate by input file
+                    output_dir = self.data_dir / model / lang / dataset
                     output_dir.mkdir(parents=True, exist_ok=True)
 
-                    output_path = output_dir / f"{dataset}{ProcessingConstants.PARQUET_EXTENSION}"
-                    lock_file = output_dir / f"{dataset}{ProcessingConstants.LOCK_FILE_EXTENSION}"
+                    output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
 
                     # Remove grouping columns and reset index
                     group_df = group_df.drop(columns=['model_name', 'dataset_name', 'language'])
@@ -96,30 +95,17 @@ class FullSchemaProcessor(BaseProcessor):
                     # Convert DataFrame to PyArrow Table using predefined schema
                     table = pa.Table.from_pandas(group_df, schema=schema)
 
-                    with FileLock(lock_file):
-                        if str(output_path) not in self.writers:
-                            # Check if file exists
-                            if output_path.exists():
-                                # Append to existing file
-                                self.writers[str(output_path)] = pq.ParquetWriter(
-                                    str(output_path),
-                                    schema,
-                                    version=ParquetConstants.VERSION,
-                                    write_statistics=ParquetConstants.WRITE_STATISTICS,
-                                    append=True
-                                )
-                            else:
-                                # Create new file
-                                self.writers[str(output_path)] = pq.ParquetWriter(
-                                    str(output_path),
-                                    schema,
-                                    version=ParquetConstants.VERSION,
-                                    write_statistics=ParquetConstants.WRITE_STATISTICS
-                                )
+                    # Write to unique file for this process
+                    if str(output_path) not in self.writers:
+                        self.writers[str(output_path)] = pq.ParquetWriter(
+                            str(output_path),
+                            schema,
+                            version=ParquetConstants.VERSION,
+                            write_statistics=ParquetConstants.WRITE_STATISTICS
+                        )
 
-                        self.writers[str(output_path)].write_table(table)
-                        processed_files.add(str(output_path))
-                        # self.logger.info(f"Written batch for {model}/{lang}/{dataset}")
+                    self.writers[str(output_path)].write_table(table)
+                    processed_files.add(str(output_path))
 
                 num_of_batches += 1
                 if ProcessingConstants.DEFAULT_NUM_BATCHES is not None and num_of_batches == ProcessingConstants.DEFAULT_NUM_BATCHES:
