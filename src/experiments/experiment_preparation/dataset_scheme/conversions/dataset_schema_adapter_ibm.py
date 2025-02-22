@@ -213,11 +213,11 @@ class SchemaConverter:
                 if len(task_data) == 1:
                     task_data = task_data[list(task_data.keys())[0]]
 
-            
+
             recipe = self._parse_config_string(row['run_unitxt_recipe'])
             if logger:
                 logger.debug(f"Recipe: {recipe}")
-            
+
             combined_strings = row['run_id'] + row['id']
             evaluation_id = hashlib.sha256(combined_strings.encode()).hexdigest()
 
@@ -226,7 +226,7 @@ class SchemaConverter:
             instance_section = self._build_instance_section(row, task_data, recipe, probs)
             output_section = self._build_output_section(row, probs)
             evaluation_section = self._build_evaluation_section(task_data, row)
-            
+
             schema = {
                 "evaluation_id": evaluation_id,
                 "model": model_section,
@@ -237,7 +237,7 @@ class SchemaConverter:
             }
 
             return schema
-        
+
         except Exception as e:
             if logger:
                 logger.error(f"Error in convert_row: {str(e)}")
@@ -390,15 +390,15 @@ class SchemaConverter:
         if map_file_name.startswith("global_mmlu"):
             # add also the language in the second part of the string
             map_file_name = f"{map_file_name}.{recipe['card'].split('.')[2]}"
-        
+
         current_dir = Path(__file__).parents[2]
         json_path = current_dir / "dataset_scheme/conversions/hf_map_data/" / f"{map_file_name}_samples.json"
-        
+
         # Load JSON lookup map if not already cached
         if map_file_name not in self._index_map_cache:
             with open(json_path, 'r') as f:
                 self._index_map_cache[map_file_name] = json.load(f)
-        
+
         index_map = self._index_map_cache[map_file_name]
 
         hf_repo = f"cais/{recipe['card'].split('.')[1]}" if map_file_name == "mmlu" else f"Rowan/hellaswag" if map_file_name == "hellaswag" else f"allenai/{map_file_name}"
@@ -433,7 +433,7 @@ class SchemaConverter:
 
         # Determine language from dataset name
         dataset_name = recipe['card'].split("cards.")[1]
-        lang_match = re.match(r'(global_mmlu|global_mmlu_lite_cs|global_mmlu_lite_ca)\.(\w+)$', dataset_name)
+        lang_match = re.match(r'(global_mmlu|global_mmlu_lite_cs|global_mmlu_lite_ca)\.(\w{2})(?:\.|$)', dataset_name)
         language = lang_match.group(2).lower() if lang_match else "en"
 
         return {
@@ -476,20 +476,20 @@ class SchemaConverter:
             choices = row['choices']
             # Create lookup key in same format as stored
             key = f"{question}|||{'|||'.join(sorted(choices))}"
-            
+
             # Direct lookup in hash map
             if key in df_map:  # df_map is already the loaded JSON data
                 metadata = df_map[key]
                 self.logger.debug(f"Match found - index: {metadata['index']}, source: {metadata['source']}")
                 return metadata['index'], metadata['source']
-            
+
             # If no match found, log details for debugging
             self.logger.warning(f"No match found for key: {key}")
             self.logger.warning(f"Question: {question}")
             self.logger.warning(f"Choices: {choices}")
-            
+
             return -1, 'test'
-            
+
         except Exception as e:
             self.logger.error(f"Error in _get_guestion_index: {str(e)}")
             self.logger.error(f"Row data: {row}")
@@ -540,7 +540,7 @@ class SchemaConverter:
         try:
             if logger:
                 logger.debug(f"Starting DataFrame conversion with columns: {df.columns}")
-            
+
             # Apply conversions in a vectorized manner
             for col, func in conversion_map.items():
                 if col not in df.columns:
