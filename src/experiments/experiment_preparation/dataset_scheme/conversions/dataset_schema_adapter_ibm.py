@@ -486,7 +486,7 @@ class SchemaConverter:
             # If no match found, log details for debugging
             self.logger.warning(f"No match found for key: {key}")
             self.logger.warning(f"Question: {question}")
-            self.logger.warning(f"Cleaned choices: {choices}")
+            self.logger.warning(f"Choices: {choices}")
             
             return -1, 'test'
             
