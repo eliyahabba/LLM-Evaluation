@@ -187,7 +187,7 @@ class UnifiedDatasetProcessor:
     def process_full_schema_files(self):
         """Process all new files to full schema in parallel."""
         try:
-            new_files = self.downloader.get_new_files()
+            new_files = self.downloader.get_new_files()[:1]
             if not new_files:
                 self.logger.info("No new files to process")
                 return []
