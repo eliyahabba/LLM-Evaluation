@@ -69,13 +69,27 @@ class LeanSchemaProcessor(BaseProcessor):
             lock_file = output_dir / f"{dataset}{ProcessingConstants.LOCK_FILE_EXTENSION}"
             
             with FileLock(lock_file):
-                table = pa.Table.from_pandas(lean_df)
-                pq.write_table(
-                    table, 
-                    output_path,
-                    version=ParquetConstants.VERSION,
-                    write_statistics=ParquetConstants.WRITE_STATISTICS
-                )
+                if str(output_path) not in self.writers:
+                    # Check if file exists
+                    if output_path.exists():
+                        # Append to existing file
+                        self.writers[str(output_path)] = pq.ParquetWriter(
+                            str(output_path),
+                            lean_df.to_parquet(schema=lean_df.to_parquet().schema),
+                            version=ParquetConstants.VERSION,
+                            write_statistics=ParquetConstants.WRITE_STATISTICS,
+                            append=True  # Add append mode
+                        )
+                    else:
+                        # Create new file
+                        self.writers[str(output_path)] = pq.ParquetWriter(
+                            str(output_path),
+                            lean_df.to_parquet(schema=lean_df.to_parquet().schema),
+                            version=ParquetConstants.VERSION,
+                            write_statistics=ParquetConstants.WRITE_STATISTICS
+                        )
+
+                self.writers[str(output_path)].write_table(lean_df.to_parquet())
             
             return [str(output_path)]
 

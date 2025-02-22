@@ -98,12 +98,24 @@ class FullSchemaProcessor(BaseProcessor):
 
                     with FileLock(lock_file):
                         if str(output_path) not in self.writers:
-                            self.writers[str(output_path)] = pq.ParquetWriter(
-                                str(output_path),
-                                schema,  # Use the predefined schema
-                                version=ParquetConstants.VERSION,
-                                write_statistics=ParquetConstants.WRITE_STATISTICS
-                            )
+                            # Check if file exists
+                            if output_path.exists():
+                                # Append to existing file
+                                self.writers[str(output_path)] = pq.ParquetWriter(
+                                    str(output_path),
+                                    schema,
+                                    version=ParquetConstants.VERSION,
+                                    write_statistics=ParquetConstants.WRITE_STATISTICS,
+                                    append=True
+                                )
+                            else:
+                                # Create new file
+                                self.writers[str(output_path)] = pq.ParquetWriter(
+                                    str(output_path),
+                                    schema,
+                                    version=ParquetConstants.VERSION,
+                                    write_statistics=ParquetConstants.WRITE_STATISTICS
+                                )
 
                         self.writers[str(output_path)].write_table(table)
                         processed_files.add(str(output_path))

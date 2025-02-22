@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
+from src.dataset_processing.constants import SchemaConstants
 from src.experiments.experiment_preparation.dataset_scheme.conversions.RunOutputMerger import RunOutputMerger
 from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 from src.utils.Constants import Constants
@@ -212,7 +213,6 @@ class SchemaConverter:
                 # assert there is only 1 key
                 if len(task_data) == 1:
                     task_data = task_data[list(task_data.keys())[0]]
-
 
             recipe = self._parse_config_string(row['run_unitxt_recipe'])
             if logger:
@@ -434,10 +434,10 @@ class SchemaConverter:
         # Determine language from dataset name
         dataset_name = recipe['card'].split("cards.")[1]
         lang_match = re.match(r'(global_mmlu|global_mmlu_lite_cs|global_mmlu_lite_ca)\.(\w{2})(?:\.|$)', dataset_name)
-        language = lang_match.group(2).lower() if lang_match else "en"
+        language = lang_match.group(2).lower() if lang_match else SchemaConstants.DEFAULT_LANGUAGE
 
         return {
-            "task_type": "classification",
+            "task_type": SchemaConstants.DEFAULT_TASK_TYPE,
             "raw_input": row['prompt'][-1]['content'],
             "language": language,  # Use detected language
             "sample_identifier": {
