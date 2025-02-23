@@ -69,7 +69,7 @@ class FullSchemaProcessor(BaseProcessor):
                 if converted_df.empty:
                     continue
 
-                # Extract model, dataset and language
+                # Extract model, dataset, language and shots
                 converted_df['model_name'] = converted_df.apply(
                     lambda x: x['model']['model_info']['name'].split("/")[-1], axis=1
                 )
@@ -79,17 +79,22 @@ class FullSchemaProcessor(BaseProcessor):
                 converted_df['language'] = converted_df.apply(
                     lambda x: x['instance']['language'], axis=1
                 )
+                converted_df['shots'] = converted_df.apply(
+                    lambda x: x['prompt_config']['dimensions']['shots'], axis=1
+                )
 
-                # Group and write each model/dataset/language combination
-                for (model, dataset, lang), group_df in converted_df.groupby(['model_name', 'dataset_name', 'language']):
-                    # Create directory structure - changed to separate by input file
-                    output_dir = self.data_dir / model / lang / dataset
+                # Group and write each model/dataset/language/shots combination
+                for (model, dataset, lang, shots), group_df in converted_df.groupby(['model_name', 'dataset_name', 'language', 'shots']):
+                    # Create shots directory name
+                    shots_dir = f"{shots}_shot"
+                     # Create directory structure with shots
+                    output_dir = self.data_dir / model / lang / shots_dir / dataset
                     output_dir.mkdir(parents=True, exist_ok=True)
 
                     output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
 
                     # Remove grouping columns and reset index
-                    group_df = group_df.drop(columns=['model_name', 'dataset_name', 'language'])
+                    group_df = group_df.drop(columns=['model_name', 'dataset_name', 'language', 'shots'])
                     group_df = group_df.reset_index(drop=True)
 
                     # Convert DataFrame to PyArrow Table using predefined schema
