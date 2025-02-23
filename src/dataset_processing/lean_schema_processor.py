@@ -4,9 +4,9 @@ from typing import List
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-from filelock import FileLock
+
 from base_processor import BaseProcessor
-from constants import SchemaConstants, ParquetConstants, ProcessingConstants
+from constants import ParquetConstants, ProcessingConstants
 
 
 class LeanSchemaProcessor(BaseProcessor):
@@ -23,7 +23,7 @@ class LeanSchemaProcessor(BaseProcessor):
         prompt_config = pd.json_normalize(df['prompt_config'].tolist(), sep='_')
         output = pd.json_normalize(df['output'].tolist())
         evaluation = pd.json_normalize(df['evaluation'].tolist())
-        
+
         # Create lean DataFrame directly
         return pd.DataFrame({
             'evaluation_id': df['evaluation_id'],
@@ -46,53 +46,57 @@ class LeanSchemaProcessor(BaseProcessor):
         })
 
     def process_file(self, file_path: Path) -> List[str]:
-        """Process a full schema file into lean schema."""
-        try:
-            # Read full schema file
-            df = pd.read_parquet(file_path)
-            
-            # Create lean version
-            lean_df = self.create_lean_version(df)
-            
-            # Get model/lang/dataset from the file path
-            # Path structure is: full_schema_dir/model/lang/dataset.parquet
-            model = file_path.parent.parent.name
-            lang = file_path.parent.name
-            dataset = file_path.stem
-            
-            # Create output directory structure
-            output_dir = self.data_dir / model / lang
-            output_dir.mkdir(parents=True, exist_ok=True)
-            output_path = output_dir / f"{dataset}{ProcessingConstants.PARQUET_EXTENSION}"
-            
-            # Write file with locking
-            lock_file = output_dir / f"{dataset}{ProcessingConstants.LOCK_FILE_EXTENSION}"
-            
-            with FileLock(lock_file):
-                if str(output_path) not in self.writers:
-                    # Check if file exists
-                    if output_path.exists():
-                        # Append to existing file
-                        self.writers[str(output_path)] = pq.ParquetWriter(
-                            str(output_path),
-                            lean_df.to_parquet(schema=lean_df.to_parquet().schema),
-                            version=ParquetConstants.VERSION,
-                            write_statistics=ParquetConstants.WRITE_STATISTICS,
-                            append=True  # Add append mode
-                        )
-                    else:
-                        # Create new file
-                        self.writers[str(output_path)] = pq.ParquetWriter(
-                            str(output_path),
-                            lean_df.to_parquet(schema=lean_df.to_parquet().schema),
-                            version=ParquetConstants.VERSION,
-                            write_statistics=ParquetConstants.WRITE_STATISTICS
-                        )
+        """Process a single file and write results to model/dataset specific files."""
+        self.logger.info(f"Processing file: {file_path}")
+        processed_files = set()
 
-                self.writers[str(output_path)].write_table(lean_df.to_parquet())
-            
-            return [str(output_path)]
+        try:
+            # Read the full schema file
+            df = pd.read_parquet(file_path)
+            if df.empty:
+                return []
+
+            # Convert to lean schema
+            lean_df = self.create_lean_version(df)
+            if lean_df.empty:
+                return []
+
+            # Get model/lang/shots/dataset from the file path
+            # Path structure is: full_schema_dir/model/lang/shots/dataset.parquet
+            model = file_path.parent.parent.parent.parent.name
+            lang = file_path.parent.parent.parent.name
+            shots_dir = file_path.parent.parent.name  # e.g. "3_shot"
+            dataset = file_path.parent.name
+
+            # Create directory structure - maintain same structure as full schema
+            output_dir = self.data_dir / model / lang / shots_dir / dataset
+            output_dir.mkdir(parents=True, exist_ok=True)
+
+            output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
+
+            # Convert DataFrame to PyArrow Table
+            schema = lean_df.to_parquet().schema
+            table = pa.Table.from_pandas(lean_df, schema)
+
+            # Write to unique file for this process
+            if str(output_path) not in self.writers:
+                self.writers[str(output_path)] = pq.ParquetWriter(
+                    str(output_path),
+                    schema,
+                    version=ParquetConstants.VERSION,
+                    write_statistics=ParquetConstants.WRITE_STATISTICS
+                )
+
+            self.writers[str(output_path)].write_table(table)
+            processed_files.add(str(output_path))
+
+            # Close writer
+            if str(output_path) in self.writers:
+                self.writers[str(output_path)].close()
+                del self.writers[str(output_path)]
+
+            return list(processed_files)
 
         except Exception as e:
             self.logger.error(f"Error processing {file_path}: {e}")
-            return [] 
+            return []
