@@ -12,7 +12,7 @@ Official repository for the DOVE dataset containing 300M predictions across vari
     /> <a href="https://doveevaluation.github.io/" target="_blank">Code</a> |
     <img
         alt="arXiv"
-        src="https://commons.wikimedia.org/wiki/File:ArXiv_logo_2022.svg"
+        src="images/arxiv-logomark-small.svg"
         width="20"
         height="20"
         style="vertical-align: middle; margin-right: 4px; margin-left:4px;"
