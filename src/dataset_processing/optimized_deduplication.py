@@ -121,23 +121,20 @@ class OptimizedDeduplicationProcessor:
             filtered_count = filtered_lazy.select(pl.count()).collect().item()
             removed_by_filter = original_count - filtered_count
             self.logger.info(f"Removed {removed_by_filter:,} rows by filtering (shots=5 and correct_first/last)")
-            
-            # Get unique row indices
-            unique_indices = filtered_lazy.unique(
+
+            unique_indices_lazy = filtered_lazy.unique(
                 subset=self.dedup_keys,
                 maintain_order=True
-            ).select("_row_idx").collect()["_row_idx"].to_list()
-            
-            # Step 2: Filter full file to keep only unique rows
+            ).select("_row_idx")
+
             dedup_full_lazy = pl.scan_parquet(str(path)) \
                 .with_row_count("_row_idx") \
-                .filter(pl.col("_row_idx").is_in(unique_indices)) \
+                .join(unique_indices_lazy, on="_row_idx", how="inner") \
                 .drop("_row_idx")
-            
-            # Collect results and save
+
             df_dedup = dedup_full_lazy.collect()
             final_count = len(df_dedup)
-            
+
             # Log deduplication results
             duplicates_removed = filtered_count - final_count
             self.logger.info(f"Deduplication results for {path.name}:")
