@@ -1,13 +1,12 @@
 # main.py
 import concurrent.futures
+import logging
 import os
 from pathlib import Path
 from typing import List, Optional
-import logging
 
 from config.get_config import Config
 from constants import ProcessingConstants
-from deduplication_processor import DeduplicationProcessor
 from file_downloader import HFFileDownloader
 from full_schema_processor import FullSchemaProcessor
 from lean_schema_processor import LeanSchemaProcessor
@@ -25,6 +24,23 @@ def setup_process_logger(name: str, output_dir: str) -> logging.Logger:
     )
 
 
+import resource
+
+
+def set_file_limit(new_limit=5000):
+    soft_limit, hard_limit = resource.getrlimit(resource.RLIMIT_NOFILE)
+    if soft_limit < new_limit:
+        try:
+            resource.setrlimit(resource.RLIMIT_NOFILE, (new_limit, hard_limit))
+            print(f"Updated file limit from {soft_limit} to {new_limit}")
+        except Exception as e:
+            print(f"Failed to update file limit: {e}")
+
+
+def worker_initializer():
+    set_file_limit(4000)
+
+
 def process_files_in_parallel(
         processor_func,
         files_to_process: List[str],
@@ -35,12 +51,11 @@ def process_files_in_parallel(
     """Process files in parallel using the given processor function."""
     all_processed_files = []
 
-    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, initializer=worker_initializer) as executor:
         futures = {
             executor.submit(processor_func, file_path, **kwargs): file_path
             for file_path in files_to_process
         }
-
         for future in concurrent.futures.as_completed(futures):
             file_path = futures[future]
             try:
