@@ -1,47 +1,48 @@
 # deduplication_processor.py
 from pathlib import Path
-import polars as pl
-from base_processor import BaseProcessor
-from filelock import FileLock
 from typing import Set
+
+import polars as pl
+from filelock import FileLock
+
 from constants import ProcessingConstants
 from logger_config import LoggerConfig
 
 
 class DeduplicationProcessor:
-    def __init__(self, data_dir: str):
-        """
-        Initialize the deduplication processor.
-        
-        Args:
-            data_dir: Directory containing files to deduplicate
-        """
-        self.data_dir = Path(data_dir)
-        
+    def __init__(self, data_dir: Path, schema_type: str):
+        """Initialize the deduplication processor."""
+        self.data_dir = data_dir
+        self.schema_type = schema_type
+
         # Setup logger
         log_dir = self.data_dir / ProcessingConstants.LOGS_DIR_NAME
         self.logger = LoggerConfig.setup_logger("DeduplicationProcessor", log_dir)
-        
-        # Define deduplication columns for full schema
+
+        # Full schema deduplication expressions
         self.full_schema_expressions = [
-            pl.col('model').struct.field('model_info').struct.field('name').alias('_model_name'),
-            pl.col('instance').struct.field('task_type').alias('_task_type'),
-            pl.col('instance').struct.field('classification_fields').struct.field('question').alias('_question'),
-            pl.col('instance').struct.field('classification_fields').struct.field('choices').alias('_choices'),
-            pl.col('instance').struct.field('classification_fields').struct.field('ground_truth').alias('_ground_truth'),
-            pl.col('instance').struct.field('sample_identifier').struct.field('dataset_name').alias('_dataset_name')
-        ]
-        
-        self.full_schema_dedup_cols = [
-            '_model_name', '_task_type', '_question', '_choices', 
-            '_ground_truth', '_dataset_name'
-        ]
-        
-        # Define deduplication columns for lean schema
-        self.lean_schema_dedup_cols = [
-            'model', 'dataset', 'sample_index', 'question','shots','instruction_phrasing_name', 'separator', 'enumerator', 'choices_order'
+            pl.col('instance').struct.field('sample_identifier').struct.field('hf_index').alias('sample_index'),
+            pl.col('prompt_config').struct.field('dimensions').struct.field('shots').alias('shots'),
+            pl.col('prompt_config').struct.field('dimensions').struct.field('choices_order').struct.field(
+                'method').alias('choices_order_method'),
+            pl.col('prompt_config').struct.field('dimensions').struct.field('enumerator').alias('enumerator'),
+            pl.col('prompt_config').struct.field('dimensions').struct.field('separator').alias('separator'),
+            pl.col('prompt_config').struct.field('dimensions').struct.field('instruction_phrasing').struct.field(
+                'name').alias('instruction_phrasing_name'),
         ]
 
+        # Fields to check for duplicates in full schema
+        self.full_schema_dedup_cols = [
+            'sample_index', 'raw_input',
+            'shots', 'choices_order_method',
+            'enumerator', 'separator', 'instruction_phrasing_name',
+        ]
+
+        # Fields to check for duplicates in lean schema
+        self.lean_schema_dedup_cols = [
+            'sample_index', 'shots', 'choices_order',
+            'enumerator', 'separator', 'instruction_phrasing',
+        ]
 
     def deduplicate_files(self, file_paths: Set[str]) -> bool:
         """
@@ -73,16 +74,16 @@ class DeduplicationProcessor:
                         # Read the Parquet file
                         df = pl.read_parquet(str(path))
                         self.logger.info(f"Read {df.shape[0]} rows from {path}")
-                        
-                        # Determine if this is a full or lean schema file
-                        is_full_schema = 'model' in df.columns and isinstance(df['model'][0], dict)
-                        
+
+                        # Use schema type from initialization
+                        is_full_schema = self.schema_type == "full"
+
                         if is_full_schema:
                             # Full schema deduplication
                             df = df.with_row_count("_row_idx")
                             df_with_fields = df.with_columns(self.full_schema_expressions)
                             unique_indices = df_with_fields.unique(
-                                subset=self.full_schema_dedup_cols, 
+                                subset=self.full_schema_dedup_cols,
                                 maintain_order=True
                             ).get_column('_row_idx')
                             df_dedup = df.filter(pl.col('_row_idx').is_in(unique_indices))
