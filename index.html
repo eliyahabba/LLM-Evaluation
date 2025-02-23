@@ -49,7 +49,7 @@
             <div class="publication-links">
               <!-- Code link with GitHub icon -->
               <span class="link-block">
-                <a href="https://doveevaluation.github.io/" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <a href="https://github.com/NLPHUJI/DOVE" target="_blank" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="fab fa-github"></i>
                   </span>
@@ -67,7 +67,7 @@
               </span>
               <!-- Dataset link -->
               <span class="link-block">
-                <a href="https://huggingface.co/datasets/DOVevaluation/Dove" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <a href="https://huggingface.co/datasets/nlphuji/Dove" target="_blank" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">🤗</span>
                   <span>Dataset</span>
                 </a>
@@ -199,7 +199,7 @@ from pathlib import Path
 
 # Load a specific model/language/shots combination
 def load_dove_subset(model_name, language="en", shots=0):
-   base_path = f"DOVevaluation/Dove-full/{model_name}/{language}/shots_{shots}"
+   base_path = f"nlphuji/Dove/{model_name}/{language}/shots_{shots}"
    return load_dataset(base_path)
 
 # Examples
@@ -212,12 +212,21 @@ mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", sh
   <!-- Project Structure Section -->
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3">Project Structure</h2>
+      <h2 class="title is-3">Dataset Structure</h2>
       <div class="content">
-        <pre><code>model_name/
-   └── language/
-       └── shots_N/
-           └── data files</code></pre>
+        <pre><code>nlphuji/
+├── Dove/
+│   ├── model_name/                      # e.g., "Llama-3.2-1B-Instruct"
+│   │   ├── language/                    # e.g., "en", "fr"
+│   │   │   └── shots_N/                 # N = 0 for zero-shot, N > 0 for few-shot
+│   │   │       ├── mmlu.abstract_algebra.parquet
+│   │   │       ├── mmlu.world_religions.parquet
+│   │   │       ├── ai2_arc.arc_challenge.parquet
+│   │   │       ├── hellaswag.parquet
+│   │   │       └── other_benchmark_files.parquet
+│   └── other_models/
+└── Dove_Lite/
+    └── [similar structure with reduced data]</code></pre>
       </div>
     </div>
   </section>
