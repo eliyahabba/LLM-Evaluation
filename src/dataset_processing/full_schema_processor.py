@@ -52,6 +52,7 @@ class FullSchemaProcessor(BaseProcessor):
         """Process a single file and write results to model/dataset specific files."""
         self.logger.info(f"Processing file: {file_path}")
         processed_files = set()
+        created_files = set()  # Track all files created during processing
 
         try:
             # Initialize RunOutputMerger for this file
@@ -63,68 +64,84 @@ class FullSchemaProcessor(BaseProcessor):
 
             # Process batches using RunOutputMerger
             for batch_df in tqdm(run_merger.process_batches(), desc=f"Processing {file_path.name}"):
-                # Process and convert the batch
-                converted_df = self.process_dataframe(batch_df)
+                try:
+                    # Process and convert the batch
+                    converted_df = self.process_dataframe(batch_df)
 
-                if converted_df.empty:
-                    continue
+                    if converted_df.empty:
+                        continue
 
-                # Extract model, dataset, language and shots
-                converted_df['model_name'] = converted_df.apply(
-                    lambda x: x['model']['model_info']['name'].split("/")[-1], axis=1
-                )
-                converted_df['dataset_name'] = converted_df.apply(
-                    lambda x: x['instance']['sample_identifier']['dataset_name'], axis=1
-                )
-                converted_df['language'] = converted_df.apply(
-                    lambda x: x['instance']['language'], axis=1
-                )
-                converted_df['shots'] = converted_df.apply(
-                    lambda x: x['prompt_config']['dimensions']['shots'], axis=1
-                )
+                    # Extract model, dataset, language and shots
+                    converted_df['model_name'] = converted_df.apply(
+                        lambda x: x['model']['model_info']['name'].split("/")[-1], axis=1
+                    )
+                    converted_df['dataset_name'] = converted_df.apply(
+                        lambda x: x['instance']['sample_identifier']['dataset_name'], axis=1
+                    )
+                    converted_df['language'] = converted_df.apply(
+                        lambda x: x['instance']['language'], axis=1
+                    )
+                    converted_df['shots'] = converted_df.apply(
+                        lambda x: x['prompt_config']['dimensions']['shots'], axis=1
+                    )
 
-                # Group and write each model/dataset/language/shots combination
-                for (model, dataset, lang, shots), group_df in converted_df.groupby(['model_name', 'dataset_name', 'language', 'shots']):
-                    # Create shots directory name
-                    shots_dir = f"{shots}_shot"
-                     # Create directory structure with shots
-                    output_dir = self.data_dir / model / lang / shots_dir / dataset
-                    output_dir.mkdir(parents=True, exist_ok=True)
+                    # Group and write each model/dataset/language/shots combination
+                    for (model, dataset, lang, shots), group_df in converted_df.groupby(['model_name', 'dataset_name', 'language', 'shots']):
+                        # Create shots directory name
+                        shots_dir = f"{shots}_shot"
+                        # Create directory structure with shots
+                        output_dir = self.data_dir / model / lang / shots_dir / dataset
+                        output_dir.mkdir(parents=True, exist_ok=True)
 
-                    output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
+                        output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
+                        created_files.add(output_path)  # Track the file
 
-                    # Remove grouping columns and reset index
-                    group_df = group_df.drop(columns=['model_name', 'dataset_name', 'language', 'shots'])
-                    group_df = group_df.reset_index(drop=True)
+                        # Remove grouping columns and reset index
+                        group_df = group_df.drop(columns=['model_name', 'dataset_name', 'language', 'shots'])
+                        group_df = group_df.reset_index(drop=True)
 
-                    # Convert DataFrame to PyArrow Table using predefined schema
-                    table = pa.Table.from_pandas(group_df, schema=schema)
+                        # Convert DataFrame to PyArrow Table using predefined schema
+                        table = pa.Table.from_pandas(group_df, schema=schema)
 
-                    # Write to unique file for this process
-                    if str(output_path) not in self.writers:
-                        self.writers[str(output_path)] = pq.ParquetWriter(
-                            str(output_path),
-                            schema,
-                            version=ParquetConstants.VERSION,
-                            write_statistics=ParquetConstants.WRITE_STATISTICS
-                        )
+                        # Write to unique file for this process
+                        if str(output_path) not in self.writers:
+                            self.writers[str(output_path)] = pq.ParquetWriter(
+                                str(output_path),
+                                schema,
+                                version=ParquetConstants.VERSION,
+                                write_statistics=ParquetConstants.WRITE_STATISTICS
+                            )
 
-                    self.writers[str(output_path)].write_table(table)
-                    processed_files.add(str(output_path))
+                        self.writers[str(output_path)].write_table(table)
+                        processed_files.add(str(output_path))
 
-                num_of_batches += 1
-                if ProcessingConstants.DEFAULT_NUM_BATCHES is not None and num_of_batches == ProcessingConstants.DEFAULT_NUM_BATCHES:
-                    break
+                    num_of_batches += 1
+                    if ProcessingConstants.DEFAULT_NUM_BATCHES is not None and num_of_batches == ProcessingConstants.DEFAULT_NUM_BATCHES:
+                        break
 
-            # Close all writers
-            for key in list(self.writers.keys()):
-                self.writers[key].close()
-                del self.writers[key]
+                except Exception as batch_e:
+                    self.logger.error(f"Error processing batch in {file_path}: {batch_e}")
+                    import traceback
+                    self.logger.error(f"Batch error traceback: {traceback.format_exc()}")
+                    # Continue with next batch
 
-            return list(processed_files)
+            # Close all writers properly
+            self._close_writers()
+
+            if processed_files:
+                return list(processed_files)
+            else:
+                # If no files were successfully processed, clean up any partially created files
+                self._cleanup_failed_files(created_files)
+                return []
 
         except Exception as e:
             self.logger.error(f"Error processing {file_path}: {e}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            # Clean up on error
+            self._close_writers()
+            self._cleanup_failed_files(created_files)
             return []
 
     def _get_schema(self):
@@ -234,10 +251,26 @@ class FullSchemaProcessor(BaseProcessor):
             }))
         ])
 
-    def __del__(self):
-        """Cleanup writers on object destruction."""
-        for writer in self.writers.values():
+    def _close_writers(self):
+        """Safely close all writers."""
+        for key in list(self.writers.keys()):
             try:
-                writer.close()
-            except:
-                pass
+                self.writers[key].close()
+            except Exception as e:
+                self.logger.error(f"Error closing writer for {key}: {e}")
+            finally:
+                del self.writers[key]
+
+    def _cleanup_failed_files(self, file_paths: set):
+        """Clean up files created during failed processing."""
+        for file_path in file_paths:
+            try:
+                if file_path.exists():
+                    file_path.unlink()
+                    self.logger.info(f"Cleaned up failed file: {file_path}")
+            except Exception as e:
+                self.logger.error(f"Error cleaning up file {file_path}: {e}")
+
+    def __del__(self):
+        """Ensure writers are closed on object destruction."""
+        self._close_writers()
