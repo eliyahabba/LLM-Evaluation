@@ -1,84 +1,239 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DOVE: Dataset Of Variation Evaluation</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners -->
+  <meta name="description" content="Official repository for the DOVE dataset containing 300M predictions across various prompt variations for LLM evaluation." />
+  <meta property="og:title" content="DOVE: A Large-Scale Dataset for LLM Evaluation (v1.0)" />
+  <meta property="og:description" content="Official repository for the DOVE dataset containing 300M predictions across various prompt variations, enabling systematic study of LLM sensitivity." />
+  <meta property="og:url" content="https://doveevaluation.github.io/" />
+  <!-- Replace with your banner image -->
+  <meta property="og:image" content="static/image/dove_banner.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+  <meta name="twitter:title" content="DOVE: A Large-Scale Dataset for LLM Evaluation (v1.0)">
+  <meta name="twitter:description" content="Official repository for the DOVE dataset containing 300M predictions across various prompt variations for LLM evaluation.">
+  <!-- Replace with your Twitter banner image -->
+  <meta name="twitter:image" content="static/images/dove_twitter_banner.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="keywords" content="DOVE, LLM Evaluation, Dataset, prompt sensitivity, large-scale">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>DOVE: A Large-Scale Dataset for LLM Evaluation (v1.0)</title>
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>🕊️ DOVE: Dataset Of Variation Evaluation</h1>
-        
-        <div class="authors">
-            <p>
-                Eliya Habba, Ofir Arviv, Itay Itzhak, Yotam Perlitz, Elron Bandel, 
-                Leshem Choshen, Michal Shmueli-Scheuer, Gabriel Stanovsky
-            </p>
-            <p class="affiliations">
-                Hebrew University of Jerusalem
-            </p>
-        </div>
 
-        <div class="section">
-            <h2>Abstract</h2>
-            <p>
-                DOVE is a large-scale dataset for studying how Language Models (LLMs) respond to 
-                different ways of asking the same question. With over 300M model predictions, 
-                DOVE helps researchers understand and improve LLM evaluation. The dataset covers 
-                78 popular benchmarks and includes comprehensive prompt variations across 5 dimensions.
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">DOVE: A Large-Scale Dataset for LLM Evaluation (v1.0)</h1>
+            <p class="subtitle is-4">
+              Official repository for the DOVE dataset containing 300M predictions across various prompt variations, enabling systematic study of LLM sensitivity and meaningful evaluation.
             </p>
-        </div>
-
-        <div class="section">
-            <h2>Key Features</h2>
-            <ul>
-                <li>Comprehensive prompt variations across 5 dimensions</li>
-                <li>Coverage of 78 popular benchmarks (MMLU, ARC, HellaSwag, etc.)</li>
-                <li>Multiple model families (Llama, OLMo, Mistral)</li>
-                <li>Zero-shot and few-shot evaluations</li>
-                <li>Full token probability logging</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Dataset Versions</h2>
-            <div class="version-card">
-                <h3>Full Version (4TB)</h3>
-                <ul>
-                    <li>Complete token-level probabilities</li>
-                    <li>Detailed few-shot examples</li>
-                    <li>Comprehensive model behavior analysis</li>
-                </ul>
-                <a href="https://huggingface.co/datasets/DOVevaluation/Dove-full" class="button">Download Full Version</a>
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://doveevaluation.github.io/" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-code"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/DOVevaluation/Dove" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">🤗</span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="mailto:eliyahaba@gmail.com" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">📧</span>
+                  <span>Contact</span>
+                </a>
+              </span>
             </div>
-
-            <div class="version-card">
-                <h3>Lite Version (200GB)</h3>
-                <ul>
-                    <li>Core prompt variations</li>
-                    <li>Model responses</li>
-                    <li>Evaluation scores</li>
-                </ul>
-                <a href="https://huggingface.co/datasets/DOVevaluation/Dove-lite" class="button">Download Lite Version</a>
-            </div>
+          </div>
         </div>
-
-        <div class="section">
-            <h2>Citation</h2>
-            <pre><code>@article{dove2024,
-    title={DOVE: A Large-Scale Multi-Dimensional Predictions Dataset Towards Meaningful LLM Evaluation},
-    author={Habba, Eliya and Arviv, Ofir and Itzhak, Itay and Perlitz, Yotam and Bandel, Elron 
-            and Choshen, Leshem and Shmueli-Scheuer, Michal and Stanovsky, Gabriel},
-    journal={arXiv preprint arXiv:XXXX.XXXXX},
-    year={2024}
-}</code></pre>
-        </div>
-
-        <footer>
-            <p>Licensed under the Computational Data License Agreement v2 (CDLAv2)</p>
-            <p><a href="https://cdla.dev/permissive-2.0/">View full license terms</a></p>
-        </footer>
+      </div>
     </div>
+  </section>
+
+  <!-- Community Contributions Section -->
+  <section class="section">
+    <div class="container">
+      <h2 class="title is-3">Community Contributions Welcome! 🤝</h2>
+      <div class="content">
+        <p>We envision DOVE as a living, community-driven resource for LLM evaluation. There are two main paths for contribution:</p>
+        <h3 class="title is-4">Share Your Data 🗃️</h3>
+        <p>
+          We welcome data contributions that align with DOVE's core principles – studying prompt variations and model behavior. Your data doesn't need to contain all the fields defined in our schema format (see Table 3 in the paper), but should maintain systematic evaluation principles by including model predictions with variations in at least one dimension.
+        </p>
+        <p>Contributors who provide significant data will be invited to join as co-authors on the next version of both the paper and dataset.</p>
+        <h3 class="title is-4">Suggest Future Directions 💡</h3>
+        <p>
+          We're excited to hear your ideas about expanding DOVE. Whether it's exploring new domains, adding evaluation dimensions, incorporating different models and tasks, or any other innovative approaches – your input will help shape the future of LLM evaluation.
+        </p>
+        <p>To contribute data or make suggestions:</p>
+        <ul>
+          <li>Email: <a href="mailto:eliyahaba@gmail.com">eliyahaba@gmail.com</a></li>
+          <li>Visit our project page for contribution guidelines</li>
+          <li>Follow us on Hugging Face for updates</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">About DOVE</h2>
+      <div class="content">
+        <ul>
+          <li>300M model predictions across various evaluation benchmarks</li>
+          <li>Systematic variations across multiple prompt dimensions</li>
+          <li>Insights into model sensitivity and evaluation methodology</li>
+          <li>Efficient methods for prompt selection and evaluation</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Section -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Installation</h2>
+      <div class="content">
+        <pre><code># Clone the repository
+git clone git@github.com:DOVevaluation/DOVE.git
+cd DOVE
+
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Usage Section -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Usage</h2>
+      <div class="content">
+        <h3 class="title is-4">Basic Dataset Loading</h3>
+        <pre><code>from datasets import load_dataset
+from pathlib import Path
+
+# Load specific model/language/shots combination
+def load_dove_subset(model_name, language="en", shots=0):
+   base_path = f"DOVevaluation/Dove-full/{model_name}/{language}/shots_{shots}"
+   return load_dataset(base_path)
+
+# Examples
+llama_en_zero = load_dove_subset("Llama-3.2-1B-Instruct", language="en", shots=0)
+mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", shots=5)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Structure Section -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Project Structure</h2>
+      <div class="content">
+        <pre><code>model_name/
+   └── language/
+       └── shots_N/
+           └── data files</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hardware Requirements Section -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Hardware Requirements</h2>
+      <div class="content">
+        <ul>
+          <li><strong>Full Version:</strong> 4TB storage</li>
+          <li><strong>Lite Version:</strong> 200GB storage</li>
+          <li>Processing capabilities scale with analysis needs</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Citation Section -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Citation</h2>
+      <pre><code>@article{dove2024,
+ title={DOVE: A Large-Scale Multi-Dimensional Predictions Dataset Towards Meaningful LLM Evaluation},
+ author={Anonymous},
+ journal={arXiv preprint arXiv:XXXX.XXXXX},
+ year={2024}
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- License Section -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">License</h2>
+      <div class="content">
+        <p>
+          This dataset is licensed under the <strong>Computational Data License Agreement v2 (CDLAv2)</strong>. For full license terms, see:
+          <a href="https://cdla.dev/permissive-2.0/" target="_blank">https://cdla.dev/permissive-2.0/</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br>
+              This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
 </body>
-</html> 
+</html>
