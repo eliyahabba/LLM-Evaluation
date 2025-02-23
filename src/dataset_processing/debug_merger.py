@@ -168,7 +168,8 @@ class DebugDatasetMerger:
                 writer.close()
 
             # Clean up individual files and directory
-            shutil.rmtree(dataset_dir)
+            shutil.rmtree(dataset_dir, ignore_errors=True)
+
             self.logger.info(f"Cleaned up directory: {dataset_dir}")
 
             return merged_path
