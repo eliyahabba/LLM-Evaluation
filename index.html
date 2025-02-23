@@ -231,21 +231,56 @@ mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", sh
     </div>
   </section>
 
-  <!-- Hardware Requirements Section -->
+  <!-- Versions Section -->
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3">Hardware Requirements</h2>
-      <div class="content">
-        <ul>
-          <li><strong>Full Version:</strong> 4TB storage</li>
-          <li><strong>Lite Version:</strong> 200GB storage</li>
-          <li>Processing capabilities scale with analysis needs</li>
-        </ul>
+      <h2 class="title is-3">Versions 📦</h2>
+      <div class="columns is-centered">
+        <!-- Full Version Column -->
+        <div class="column">
+          <div class="box">
+            <h3 class="title is-4">Full Version (4TB)</h3>
+            <div class="content">
+              <ul>
+                <li>Complete token-level probabilities</li>
+                <li>Detailed few-shot examples</li>
+                <li>Comprehensive model behavior analysis</li>
+              </ul>
+              <div class="has-text-centered">
+                <a href="https://huggingface.co/datasets/nlphuji/Dove" class="button is-primary is-outlined mt-4">
+                  <span class="icon">🤗</span>
+                  <span>Download Full Version</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lite Version Column -->
+        <div class="column">
+          <div class="box">
+            <h3 class="title is-4">Lite Version (200GB)</h3>
+            <div class="content">
+              <ul>
+                <li>Core prompt variations</li>
+                <li>Model responses</li>
+                <li>Evaluation scores</li>
+                <li>Perfect for quick experimentation</li>
+              </ul>
+              <div class="has-text-centered">
+                <a href="https://huggingface.co/datasets/nlphuji/Dove_Lite" class="button is-primary is-outlined mt-4">
+                  <span class="icon">🤗</span>
+                  <span>Download Lite Version</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Citation Section -->
+    <!-- Citation Section -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">Citation</h2>
@@ -257,6 +292,7 @@ mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", sh
 }</code></pre>
     </div>
   </section>
+
 
   <!-- License Section -->
   <section class="section">
