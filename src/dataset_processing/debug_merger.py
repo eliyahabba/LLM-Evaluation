@@ -2,6 +2,7 @@ import shutil
 from pathlib import Path
 import pyarrow.parquet as pq
 import logging
+from tqdm import tqdm
 
 from constants import ProcessingConstants, ParquetConstants
 from deduplication_processor import DeduplicationProcessor
@@ -36,34 +37,34 @@ class DebugDatasetMerger:
     def debug_process(self):
         """Run debug processing pipeline for specific dataset."""
         try:
+            self.logger.info(f"Starting debug process for {DEBUG_CONFIG}")
+            self.logger.info(f"Source directory: {self.source_dir}")
+            self.logger.info(f"Debug directory: {self.debug_dir}")
+
             # 1. Create debug directory structure and copy relevant files
-            self._setup_debug_environment()
+            self.logger.info("Setting up debug environment...")
+            if not self._setup_debug_environment():
+                return
 
             # 2. Process the copied files
             debug_dataset_dir = self.debug_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME / \
                               DEBUG_CONFIG['model'] / DEBUG_CONFIG['language'] / \
                               DEBUG_CONFIG['shots'] / DEBUG_CONFIG['dataset']
 
-            if not debug_dataset_dir.exists():
-                self.logger.error(f"Debug dataset directory not found: {debug_dataset_dir}")
-                return
-
             # Count rows in copied files
             total_rows = 0
             file_counts = {}
-            for file in debug_dataset_dir.glob("*.parquet"):
+            self.logger.info("Counting rows in original files:")
+            for file in tqdm(debug_dataset_dir.glob("*.parquet"), desc="Counting files"):
                 pf = pq.ParquetFile(str(file))
                 rows = pf.metadata.num_rows
                 total_rows += rows
                 file_counts[file.name] = rows
-
-            self.logger.info("Original files row counts:")
-            for fname, count in file_counts.items():
-                self.logger.info(f"{fname}: {count} rows")
-            self.logger.info(f"Total rows before merge: {total_rows}")
+                self.logger.info(f"  {file.name}: {rows:,} rows")
+            self.logger.info(f"Total rows before merge: {total_rows:,}")
 
             # 3. Merge files
-            self.logger.info("Starting merge process...")
+            self.logger.info("\nStarting merge process...")
             merged_file = self._merge_dataset_files(
                 self.debug_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME / DEBUG_CONFIG['model'],
                 Path(DEBUG_CONFIG['language']),
@@ -74,22 +75,25 @@ class DebugDatasetMerger:
             # Count rows in merged file
             if merged_file and merged_file.exists():
                 merged_rows = pq.ParquetFile(str(merged_file)).metadata.num_rows
-                self.logger.info(f"Merged file rows: {merged_rows}")
+                self.logger.info(f"Merged file rows: {merged_rows:,}")
                 if merged_rows != total_rows:
                     self.logger.warning(
-                        f"Row count mismatch! Original: {total_rows}, Merged: {merged_rows}"
+                        f"Row count mismatch! Original: {total_rows:,}, Merged: {merged_rows:,}"
                     )
 
             # 4. Deduplicate
-            self.logger.info("Starting deduplication...")
+            self.logger.info("\nStarting deduplication...")
             deduplicator = OptimizedDeduplicationProcessor(self.debug_dir)
             deduplicator.deduplicate_files({str(merged_file)})
 
             # Count rows after deduplication
             if merged_file.exists():
                 final_rows = pq.ParquetFile(str(merged_file)).metadata.num_rows
-                self.logger.info(f"Rows after deduplication: {final_rows}")
-                self.logger.info(f"Removed {merged_rows - final_rows} duplicate rows")
+                self.logger.info(f"Final results:")
+                self.logger.info(f"  Original rows: {total_rows:,}")
+                self.logger.info(f"  After merge: {merged_rows:,}")
+                self.logger.info(f"  After deduplication: {final_rows:,}")
+                self.logger.info(f"  Duplicates removed: {merged_rows - final_rows:,}")
 
         except Exception as e:
             self.logger.error(f"Error in debug process: {e}")
