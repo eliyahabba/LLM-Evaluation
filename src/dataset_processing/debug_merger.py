@@ -168,9 +168,8 @@ class DebugDatasetMerger:
                 writer.close()
 
             # Clean up individual files and directory
-            for f in parquet_files:
-                f.unlink()
-            dataset_dir.rmdir()
+            shutil.rmtree(dataset_dir)
+            self.logger.info(f"Cleaned up directory: {dataset_dir}")
 
             return merged_path
 
