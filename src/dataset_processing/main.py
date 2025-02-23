@@ -181,7 +181,7 @@ class UnifiedDatasetProcessor:
             batch_size=batch_size
         )
 
-        self.deduplicator = DeduplicationProcessor(data_dir=output_dir)
+        # self.deduplicator = DeduplicationProcessor(data_dir=output_dir, schema_type="full")
         self.logger = self.downloader.logger
 
     def process_full_schema_files(self):
@@ -240,10 +240,10 @@ class UnifiedDatasetProcessor:
             )
 
             # Deduplicate results
-            if processed_files:
-                self.logger.info(f"Starting deduplication of {len(processed_files)} lean schema files")
-                if not self.deduplicator.deduplicate_files(set(processed_files)):
-                    self.logger.error("Deduplication failed")
+            # if processed_files:
+            #     self.logger.info(f"Starting deduplication of {len(processed_files)} lean schema files")
+            #     if not self.deduplicator.deduplicate_files(set(processed_files)):
+            #         self.logger.error("Deduplication failed")
 
             return processed_files
 

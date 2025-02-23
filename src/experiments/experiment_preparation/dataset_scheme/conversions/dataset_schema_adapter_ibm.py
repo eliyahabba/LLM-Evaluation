@@ -429,7 +429,7 @@ class SchemaConverter:
             hf_repo = None
         question_key = 'question' if 'question' in task_data else 'context'
 
-        hf_index, hf_split = self._get_guestion_index(index_map, task_data)
+        hf_index, hf_split = self._get_guestion_index(index_map, task_data, card)
 
         # Determine language from dataset name
         dataset_name = recipe['card'].split("cards.")[1]
@@ -458,22 +458,21 @@ class SchemaConverter:
             "prompt_logprobs": prompt_tokens_logprobs
         }
 
-    def _get_guestion_index(self, df_map, row):
+    def _get_guestion_index(self, df_map, row, card):
         """Find matching question and choices using string-based lookup."""
         try:
             # Clean and normalize row choices
-            # def clean_option(answer):
-            #     first_dot = answer.find('. ')
-            #     if first_dot != -1:
-            #         return answer[first_dot + 2:]
-            #     return answer
-            #
+            def clean_option(answer):
+                return answer.strip()
+
             # Get question and clean choices
             # choices = [clean_option(answer) for answer in row['options']]
 
             question_key = 'question' if 'question' in row else 'context'
             question = row[question_key]
             choices = row['choices']
+            if "quality" in card:
+                choices = [clean_option(answer) for answer in choices]
             # Create lookup key in same format as stored
             key = f"{question}|||{'|||'.join(sorted(choices))}"
 
