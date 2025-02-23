@@ -109,7 +109,7 @@ def process_full_schema_standalone(file_path: str, input_dir: str, output_dir: s
             record_file=ProcessingConstants.FULL_SCHEMA_FILES_RECORD
         )
         for full_file in full_schema_files:
-            full_schema_manager.mark_as_processed(Path(full_file))
+            full_schema_manager.mark_as_processed(Path(full_file), log_message=False)
 
         logger.info(f"Process {os.getpid()} completed full schema processing: {file_path}")
 
