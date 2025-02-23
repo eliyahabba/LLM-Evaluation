@@ -1,0 +1,171 @@
+import concurrent.futures
+from pathlib import Path
+
+import pyarrow.parquet as pq
+
+from constants import ProcessingConstants, ParquetConstants
+from deduplication_processor import DeduplicationProcessor
+from lean_schema_processor import LeanSchemaProcessor
+from logger_config import LoggerConfig
+from optimized_deduplication import OptimizedDeduplicationProcessor
+
+
+class DatasetMerger:
+    def __init__(
+            self,
+            data_dir: str,
+            num_workers: int = ProcessingConstants.DEFAULT_NUM_WORKERS
+    ):
+        self.data_dir = Path(data_dir)
+        self.num_workers = num_workers
+        self.logger = LoggerConfig.setup_logger("DatasetMerger", self.data_dir / ProcessingConstants.LOGS_DIR_NAME)
+
+    def process_all(self):
+        """Run the complete processing pipeline."""
+        try:
+            # 1. Merge full schema files
+            self.logger.info("Starting full schema files merge")
+            self.merge_full_schema_files()
+
+            # 2. Deduplicate merged full schema files
+            self.logger.info("Starting full schema deduplication")
+            self.deduplicate_full_schema()
+
+            # 3. Create lean schema from deduplicated files
+            self.logger.info("Starting lean schema creation")
+            self.create_lean_schema()
+
+        except Exception as e:
+            self.logger.error(f"Error in process_all: {e}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
+
+    def merge_full_schema_files(self):
+        """Merge all full schema files in parallel."""
+        try:
+            full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
+
+            # Collect all dataset directories that need merging
+            merge_tasks = []
+            for model_dir in full_schema_dir.glob("*"):
+                if not model_dir.is_dir():
+                    continue
+                for lang_dir in model_dir.glob("*"):
+                    if not lang_dir.is_dir():
+                        continue
+                    for shots_dir in lang_dir.glob("*"):
+                        if not shots_dir.is_dir():
+                            continue
+                        for dataset_dir in shots_dir.glob("*"):
+                            if not dataset_dir.is_dir() or dataset_dir.name.endswith('.parquet'):
+                                continue
+                            merge_tasks.append((model_dir, lang_dir, shots_dir, dataset_dir))
+
+            # Process merges in parallel
+            with concurrent.futures.ProcessPoolExecutor(max_workers=self.num_workers) as executor:
+                futures = {
+                    executor.submit(
+                        self._merge_dataset_files,
+                        model_dir,
+                        lang_dir,
+                        shots_dir,
+                        dataset_dir
+                    ): (model_dir.name, lang_dir.name, shots_dir.name, dataset_dir.name)
+                    for model_dir, lang_dir, shots_dir, dataset_dir in merge_tasks
+                }
+
+                for future in concurrent.futures.as_completed(futures):
+                    model, lang, shots, dataset = futures[future]
+                    try:
+                        future.result()
+                        self.logger.info(f"Merged files for {model}/{lang}/{shots}/{dataset}")
+                    except Exception as e:
+                        self.logger.error(f"Error merging {model}/{lang}/{shots}/{dataset}: {e}")
+
+        except Exception as e:
+            self.logger.error(f"Error in merge_full_schema_files: {e}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
+
+    @staticmethod
+    def _merge_dataset_files(model_dir: Path, lang_dir: Path, shots_dir: Path, dataset_dir: Path):
+        """Merge all files in a dataset directory into a single parquet file."""
+        try:
+            # Get all parquet files
+            parquet_files = list(dataset_dir.glob(f"*{ProcessingConstants.PARQUET_EXTENSION}"))
+            if not parquet_files:
+                return
+
+            # Create merged file path
+            merged_path = model_dir / lang_dir.name / shots_dir.name / f"{dataset_dir.name}.parquet"
+            merged_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Use row group merging for memory efficiency
+            writer = None
+            for input_file in parquet_files:
+                pf = pq.ParquetFile(str(input_file))
+                for rg in range(pf.num_row_groups):
+                    table = pf.read_row_group(rg)
+                    if writer is None:
+                        writer = pq.ParquetWriter(
+                            str(merged_path),
+                            table.schema,
+                            version=ParquetConstants.VERSION,
+                            write_statistics=ParquetConstants.WRITE_STATISTICS
+                        )
+                    writer.write_table(table)
+
+            if writer:
+                writer.close()
+
+            # Clean up individual files and directory
+            for f in parquet_files:
+                f.unlink()
+            dataset_dir.rmdir()
+
+        except Exception as e:
+            print(f"Error merging files in {dataset_dir}: {e}")
+            import traceback
+            print(f"Traceback: {traceback.format_exc()}")
+
+    def deduplicate_full_schema(self):
+        """Deduplicate merged full schema files using optimized processor."""
+        deduplicator = OptimizedDeduplicationProcessor(self.data_dir)
+        full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
+        parquet_files = list(full_schema_dir.glob("**/*.parquet"))
+        deduplicator.deduplicate_files(set(str(f) for f in parquet_files))
+
+    def deduplicate_lean_schema(self):
+        """Deduplicate lean schema files using standard processor."""
+        deduplicator = DeduplicationProcessor(self.data_dir, schema_type="lean")
+        lean_schema_dir = self.data_dir / ProcessingConstants.LEAN_SCHEMA_DIR_NAME
+        parquet_files = list(lean_schema_dir.glob("**/*.parquet"))
+        deduplicator.deduplicate_files(set(str(f) for f in parquet_files))
+
+    def create_lean_schema(self):
+        """Create lean schema from full schema files."""
+        processor = LeanSchemaProcessor(data_dir=str(self.data_dir))
+        full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
+        parquet_files = list(full_schema_dir.glob("**/*.parquet"))
+
+        with concurrent.futures.ProcessPoolExecutor(max_workers=self.num_workers) as executor:
+            futures = {
+                executor.submit(processor.process_file, f): f
+                for f in parquet_files
+            }
+
+            for future in concurrent.futures.as_completed(futures):
+                file_path = futures[future]
+                try:
+                    future.result()
+                    self.logger.info(f"Created lean schema for {file_path}")
+                except Exception as e:
+                    self.logger.error(f"Error creating lean schema for {file_path}: {e}")
+
+
+if __name__ == "__main__":
+    processor = DatasetMerger(
+        data_dir=ProcessingConstants.OUTPUT_DATA_DIR,
+        num_workers=ProcessingConstants.DEFAULT_NUM_WORKERS
+    )
+    processor.process_all()
