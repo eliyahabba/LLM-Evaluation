@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <!-- Meta tags for social media banners -->
   <meta name="description" content="DOVE: A Large-Scale Dataset for LLM Evaluation containing 300M predictions across various prompt variations." />
-  <meta property="og:title" content="🕊️ DOVE: A Large-Scale Dataset for LLM Evaluation (v1.0)" />
+  <meta property="og:title" content="🕊️ DOVE: A Large-Scale Multi-Dimensional Predictions Dataset Towards Meaningful LLM Evaluation (v1.0)" />
   <meta property="og:description" content="A dataset for studying LLM sensitivity and evaluation methodology with 300M model predictions across various prompt variations." />
   <meta property="og:url" content="https://doveevaluation.github.io/" />
   <!-- Replace with your banner image -->
@@ -46,9 +46,6 @@
         <div class="columns is-centered">
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title">🕊️ DOVE: A Large-Scale Dataset for LLM Evaluation (v1.0)</h1>
-            <p class="subtitle is-4">
-              300M predictions across various prompt variations to systematically study LLM sensitivity and evaluation methodology.
-            </p>
             <div class="publication-links">
               <!-- Code link with GitHub icon -->
               <span class="link-block">
@@ -111,10 +108,8 @@
                 <a href="https://gabrielstanovsky.github.io/" target="_blank">Gabriel Stanovsky</a><sup>1</sup>
               </span>
               <br>
-              <br>
               <span class="author-block">
-                <sup>1</sup>The Hebrew University of Jerusalem<br>
-                <sup>2</sup>IBM Research AI
+                <sup>1</sup>The Hebrew University of Jerusalem &nbsp;·&nbsp; <sup>2</sup>IBM Research AI
               </span>
             </div>
           </div>
@@ -127,12 +122,12 @@
   <section class="hero teaser">
     <div class="container is-max-desktop">
       <div class="hero-body">
-        <video poster="" id="tree" autoplay controls muted loop style="width: 100%; max-width: 400px; height: 300px; margin: 0 auto; display: block; object-fit: cover;">
+        <video poster="" id="tree" autoplay controls muted loop style="width: 100%; max-width: 400px; height: 250px; margin: 0 auto; display: block; object-fit: contain;">
           <!-- Your video here -->
           <source src="static/videos/dove.mov"
           type="video/mp4">
         </video>
-        <p class="has-text-centered" style="margin-top: 1rem; font-size: 0.9em;">
+        <p class="has-text-centered" style="margin-top: 1rem; font-size: 1.1em; font-weight: 400;">
           <strong>Building DOVE:</strong> To holistically explore LLM sensitivity, we sample prompts as a walk in the space of various <em>prompt dimensions</em> (rows, above).
         </p>
       </div>
@@ -174,33 +169,20 @@
   <!-- About Section -->
   <section class="section hero is-light">
     <div class="container is-max-desktop">
-      <h2 class="title is-3">About DOVE</h2>
+      <h2 class="title is-3">Abstract</h2>
       <div class="content">
-        <ul>
-          <li>300M model predictions across various evaluation benchmarks</li>
-          <li>Systematic variations across multiple prompt dimensions</li>
-          <li>Insights into model sensitivity and evaluation methodology</li>
-          <li>Efficient methods for prompt selection and evaluation</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Installation Section -->
-  <section class="section">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3">Installation</h2>
-      <div class="content">
-        <pre><code># Clone the repository
-git clone git@github.com:DOVevaluation/DOVE.git
-cd DOVE
-
-# Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt</code></pre>
+        <p>
+          Recent work found that LLMs are sensitive to a wide range of arbitrary prompt dimensions, including the type of delimiters, answer enumerators, instruction wording, and more. This throws into question popular single-prompt evaluation practices.
+        </p>
+        <p>
+          In this work, we present DOVE (Dataset Of Variation Evaluation), a large-scale dataset containing prompt perturbations of various evaluation benchmarks. In contrast to previous work, we examine LLM sensitivity from a holistic perspective, and assess the joint effects of perturbations along various dimensions, resulting in thousands of perturbations per instance. We evaluate several model families against DOVE, leading to several findings, including efficient methods for choosing well-performing prompts, observing that few-shot examples reduce sensitivity, and identifying instances which are inherently hard across all perturbations.
+        </p>
+        <p>
+          DOVE consists of more than 300M prompt perturbations and model outputs, which we make publicly available to spur a community-wide effort toward meaningful, robust, and efficient evaluation.
+        </p>
+        <p>
+          Browse the data: <a href="https://huggingface.co/datasets/DOVevaluation/Dove" target="_blank">https://huggingface.co/datasets/DOVevaluation/Dove</a>
+        </p>
       </div>
     </div>
   </section>
@@ -257,11 +239,11 @@ mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", sh
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">Citation</h2>
-      <pre><code>@article{dove2024,
+      <pre><code>@article{dove2025,
  title={DOVE: A Large-Scale Multi-Dimensional Predictions Dataset Towards Meaningful LLM Evaluation},
  author={Anonymous},
  journal={arXiv preprint arXiv:XXXX.XXXXX},
- year={2024}
+ year={2025}
 }</code></pre>
     </div>
   </section>
