@@ -34,8 +34,14 @@ class ProcessedFilesManager:
             return set(self.processed_files_path.read_text().splitlines())
         return set()
 
-    def mark_as_processed(self, file_path: Path) -> None:
-        """Mark a file as processed by adding it to the processed files record."""
+    def mark_as_processed(self, file_path: Path, log_message: bool = True) -> None:
+        """
+        Mark a file as processed by adding it to the processed files record.
+        
+        Args:
+            file_path: Path to the file to mark as processed
+            log_message: Whether to log a message about marking the file (default: True)
+        """
         try:
             lock_file = self.processed_files_path.with_suffix('.lock')
 
@@ -55,17 +61,21 @@ class ProcessedFilesManager:
                             f.flush()  # Force write to disk
                             os.fsync(f.fileno())  # Ensure it's written to disk
 
-                        self.logger.info(f"Marked {file_path} as processed")
+                        if log_message:
+                            self.logger.info(f"Marked {file_path} as processed")
                         self.processed_files.add(str(file_path))
                     else:
-                        self.logger.warning(f"File {file_path} not found or empty, not marking as processed")
+                        if log_message:
+                            self.logger.warning(f"File {file_path} not found or empty, not marking as processed")
                 else:
-                    self.logger.debug(f"File {file_path} already marked as processed")
+                    if log_message:
+                        self.logger.debug(f"File {file_path} already marked as processed")
 
         except Exception as e:
-            self.logger.error(f"Error marking file as processed: {e}")
-            import traceback
-            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            if log_message:
+                self.logger.error(f"Error marking file as processed: {e}")
+                import traceback
+                self.logger.error(f"Traceback: {traceback.format_exc()}")
 
     def is_processed(self, file_path: str) -> bool:
         """Check if a file has been processed."""
