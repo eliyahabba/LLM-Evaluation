@@ -25,9 +25,9 @@ class OptimizedDeduplicationProcessor:
             pl.col('prompt_config').struct.field('dimensions').struct.field('instruction_phrasing').struct.field('name').alias('instruction_phrasing_name')
         ]
         
-        # Define deduplication keys
+        # Define deduplication keys (removed )
         self.dedup_keys = [
-            'sample_index', 'raw_input', 'shots', 'choices_order_method',
+            'sample_index', 'shots', 'choices_order_method',
             'enumerator', 'separator', 'instruction_phrasing_name'
         ]
 
@@ -53,7 +53,9 @@ class OptimizedDeduplicationProcessor:
 
                     # Get original row count
                     original_count = pl.scan_parquet(str(path)).select(pl.count()).collect().item()
-                    
+                    # Read the entire file and then convert to lazy
+                    df_lazy = pl.read_parquet(str(path)).lazy().select(["instance", "prompt_config", "raw_input"])
+
                     # Perform deduplication
                     deduped_df = self._deduplicate_file(path)
                     
@@ -91,18 +93,37 @@ class OptimizedDeduplicationProcessor:
         temp_file = path.parent / f"{path.stem}_dedup.parquet"
         
         with FileLock(str(lock_file)):
-            # Step 1: Lazy read only necessary columns for deduplication
-            dedup_lazy = pl.scan_parquet(
-                str(path), 
-                columns=["instance", "prompt_config", "raw_input"]
-            ).with_row_count("_row_idx").select(
+            # Get original row count
+            original_count = pl.scan_parquet(str(path)).select(pl.count()).collect().item()
+            
+            # Step 1: Lazy read only necessary columns for deduplication and filtering
+            # dedup_lazy = pl.scan_parquet(
+            #     str(path),
+            #     columns=["instance", "prompt_config"]
+            # ).with_row_count("_row_idx")
+            dedup_lazy = pl.scan_parquet(str(path)).select(["instance", "prompt_config"]).with_row_count("_row_idx")
+
+            # Add columns for filtering and deduplication
+            dedup_lazy = dedup_lazy.select(
                 pl.col("_row_idx"),
-                *self.dedup_expressions,
-                pl.col("raw_input")
+                *self.dedup_expressions  # Remove raw_input from selection
             )
             
+            # Filter out unwanted rows
+            filtered_lazy = dedup_lazy.filter(
+                ~(
+                    (pl.col("shots") == 5) & 
+                    pl.col("choices_order_method").is_in(["correct_first", "correct_last"])
+                )
+            )
+            
+            # Count filtered rows
+            filtered_count = filtered_lazy.select(pl.count()).collect().item()
+            removed_by_filter = original_count - filtered_count
+            self.logger.info(f"Removed {removed_by_filter:,} rows by filtering (shots=5 and correct_first/last)")
+            
             # Get unique row indices
-            unique_indices = dedup_lazy.unique(
+            unique_indices = filtered_lazy.unique(
                 subset=self.dedup_keys,
                 maintain_order=True
             ).select("_row_idx").collect()["_row_idx"].to_list()
@@ -115,6 +136,19 @@ class OptimizedDeduplicationProcessor:
             
             # Collect results and save
             df_dedup = dedup_full_lazy.collect()
+            final_count = len(df_dedup)
+            
+            # Log deduplication results
+            duplicates_removed = filtered_count - final_count
+            self.logger.info(f"Deduplication results for {path.name}:")
+            self.logger.info(f"  Original rows: {original_count:,}")
+            self.logger.info(f"  After filtering: {filtered_count:,}")
+            self.logger.info(f"  After deduplication: {final_count:,}")
+            self.logger.info(f"  Rows removed by filtering: {removed_by_filter:,}")
+            self.logger.info(f"  Duplicates removed: {duplicates_removed:,}")
+            self.logger.info(f"  Total rows removed: {original_count - final_count:,}")
+            
+            # Save results
             df_dedup.write_parquet(str(temp_file))
             temp_file.replace(path)
             
