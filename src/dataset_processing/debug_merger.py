@@ -80,6 +80,9 @@ class DebugDatasetMerger:
                     self.logger.warning(
                         f"Row count mismatch! Original: {total_rows:,}, Merged: {merged_rows:,}"
                     )
+            else:
+                self.logger.error("Error merging files")
+                raise Exception("Error merging files")
 
             # 4. Deduplicate
             self.logger.info("\nStarting deduplication...")
