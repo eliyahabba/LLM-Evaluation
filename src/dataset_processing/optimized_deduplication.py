@@ -129,14 +129,14 @@ class OptimizedDeduplicationProcessor:
         # Add columns for filtering and deduplication
         dedup_lazy = dedup_lazy.select(
             pl.col("_row_idx"),
-            *self.dedup_expressions  # Remove raw_input from selection if קיימת
+            *self.dedup_expressions
         )
 
         # Filter out unwanted rows
         filtered_lazy = dedup_lazy.filter(
             ~(
-                    (pl.col("shots") == 5) &
-                    pl.col("choices_order_method").is_in(["correct_first", "correct_last"])
+                (pl.col("shots") == 5) &
+                pl.col("choices_order_method").is_in(["correct_first", "correct_last"])
             )
         )
 
@@ -163,7 +163,7 @@ class OptimizedDeduplicationProcessor:
         writer = None
         total_row_counter = 0
 
-        for rg in tqdm(range(pf.num_row_groups)):
+        for rg in tqdm(range(pf.num_row_groups), desc="Processing row groups"):
             table = pf.read_row_group(rg)
             num_rows = table.num_rows
 
@@ -184,22 +184,24 @@ class OptimizedDeduplicationProcessor:
                         writer = pq.ParquetWriter(str(temp_file), batch.schema)
                     writer.write_table(batch)
 
-            if writer is not None:
-                writer.close()
+        if writer is not None:
+            writer.close()
 
-            # Optionally, replace the original file with the deduplicated version
-            temp_file.replace(output_path)
-            #  unlink the merged file
-            # Load the deduplicated file into a Polars DataFrame and return
-            df_dedup = pl.read_parquet(str(merged_path))
-            final_count = len(df_dedup)
-            duplicates_removed = filtered_count - final_count
-            self.logger.info(f"Deduplication results for {merged_path.name}:")
-            self.logger.info(f"  Original rows: {original_count:,}")
-            self.logger.info(f"  After filtering: {filtered_count:,}")
-            self.logger.info(f"  After deduplication: {final_count:,}")
-            self.logger.info(f"  Rows removed by filtering: {removed_by_filter:,}")
-            self.logger.info(f"  Duplicates removed: {duplicates_removed:,}")
-            self.logger.info(f"  Total rows removed: {original_count - final_count:,}")
+        # Replace output file with deduplicated version
+        temp_file.replace(output_path)
+        
+        # Load and return the deduplicated DataFrame
+        df_dedup = pl.read_parquet(str(output_path))
+        final_count = len(df_dedup)
+        duplicates_removed = filtered_count - final_count
+        
+        # Log results only once
+        self.logger.info(f"Deduplication results:")
+        self.logger.info(f"  Original rows: {original_count:,}")
+        self.logger.info(f"  After filtering: {filtered_count:,}")
+        self.logger.info(f"  After deduplication: {final_count:,}")
+        self.logger.info(f"  Rows removed by filtering: {removed_by_filter:,}")
+        self.logger.info(f"  Duplicates removed: {duplicates_removed:,}")
+        self.logger.info(f"  Total rows removed: {original_count - final_count:,}")
 
-            return df_dedup
+        return df_dedup
