@@ -10,7 +10,7 @@ import polars as pl
 
 from base_processor import BaseProcessor
 from constants import ParquetConstants, ProcessingConstants
-from utils.logger_config import LoggerConfig
+from src.dataset_processing.logger_config import LoggerConfig
 
 
 class LeanSchemaProcessor(BaseProcessor):
