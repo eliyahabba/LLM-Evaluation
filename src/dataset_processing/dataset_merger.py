@@ -155,10 +155,18 @@ class DatasetMerger:
 
             if writer:
                 writer.close()
+            shutil.rmtree(dataset_dir, ignore_errors=True)
 
-            # Clean up individual files and directory
-            shutil.rmtree(dataset_dir, ignore_errors=True, onerror=None)
-            print(f"The files in the dataset directory are{os.listdir(dataset_dir)}")
+            # Check what remains.
+            remaining = os.listdir(dataset_dir)
+            print(f"The files in the dataset directory are {remaining}")
+
+            # If the only remaining file is the .nfs file, try to remove it manually.
+            for filename in remaining:
+                if filename.startswith('.nfs'):
+                    os.unlink(os.path.join(dataset_dir, filename))
+
+            # Now try removing the directory.
             os.rmdir(dataset_dir)
             self.logger.info(f"Cleaned up directory: {dataset_dir}")
 
