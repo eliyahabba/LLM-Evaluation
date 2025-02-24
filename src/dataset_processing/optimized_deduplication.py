@@ -135,7 +135,7 @@ class OptimizedDeduplicationProcessor:
             dedup_full_lazy = (
                 pl.scan_parquet(str(path))
                 .with_row_count("_row_idx")
-                .with_streaming()  # הפעלת מצב זרימה
+                .with_streaming()
                 .join(unique_indices_lazy_final, on="_row_idx", how="inner")
                 .drop("_row_idx")
             )
