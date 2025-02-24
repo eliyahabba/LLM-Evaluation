@@ -197,7 +197,7 @@
 <!-- Combined Info Box -->
    <div class="box mt-5">
      <p class="has-text-centered is-size-5 mb-4">Contributors who provide significant data will be invited as co-authors on the next version of both the paper and dataset.</p>
-     <p class="has-text-centered info-footer">Your data doesn't need to include every field in our <a href="https://arxiv.org/pdf/XXXX.XXXXX.pdf#page=20" class="has-text-info">Dataset Scheme</a>, but should demonstrate systematic evaluation by including model predictions with variations in at least one dimension (for example, without token log probabilities).</p>
+     <p class="has-text-centered info-footer">Your data doesn't need to include every field in our <a href="https://arxiv.org/pdf/XXXX.XXXXX.pdf#page=20" class="has-text-info">Dataset Scheme</a>, but should demonstrate systematic evaluation by including model predictions with variations in at least one dimension (for example, without model’s log probabilities).</p>
 
      <!-- Single Call-to-Action Button -->
      <div class="has-text-centered mt-5">
@@ -270,7 +270,7 @@ mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", sh
 │   │   │       └── other_benchmark_files.parquet
 │   └── other_models/
 └── Dove_Lite/
-    └── [similar structure with reduced data]</code></pre>
+    └── [same structure and examples with reduced metadata per instance]</code></pre>
       </div>
     </div>
   </section>
