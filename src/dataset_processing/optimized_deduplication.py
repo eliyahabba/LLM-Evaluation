@@ -190,10 +190,9 @@ class OptimizedDeduplicationProcessor:
             # Optionally, replace the original file with the deduplicated version
             temp_file.replace(output_path)
             #  unlink the merged file
-            merged_path.unlink()
-
             # Load the deduplicated file into a Polars DataFrame and return
             df_dedup = pl.read_parquet(str(merged_path))
+            merged_path.unlink()
             final_count = len(df_dedup)
             duplicates_removed = filtered_count - final_count
             self.logger.info(f"Deduplication results for {merged_path.name}:")
