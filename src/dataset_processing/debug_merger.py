@@ -13,8 +13,8 @@ from logger_config import LoggerConfig
 DEBUG_CONFIG = {
     'model': 'Mistral-7B-Instruct-v0.3',
     'language': 'en',
-    'dataset': 'mmlu.logical_fallacies',
-    'shots': '5_shot'
+    'dataset': 'mmlu.abstract_algebra',
+    'shots': '0_shot'
 }
 
 class DebugDatasetMerger:
