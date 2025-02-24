@@ -4,6 +4,7 @@ from pathlib import Path
 import time
 import shutil
 from typing import Optional
+import argparse
 
 import pyarrow.parquet as pq
 
@@ -24,26 +25,29 @@ class DatasetMerger:
         self.num_workers = num_workers
         self.logger = LoggerConfig.setup_logger("DatasetMerger", self.data_dir / ProcessingConstants.LOGS_DIR_NAME)
 
-    def process_all(self):
-        """Run the complete processing pipeline."""
+    def process_all(self, process_type: str = "all"):
+        """
+        Run the processing pipeline.
+        
+        Args:
+            process_type: Type of processing to run ("all", "merge", or "lean")
+        """
         try:
-            # 1. Merge full schema files
-            self.logger.info("Starting full schema files merge and deduplication")
-            start_time = time.time()
-            self.merge_full_schema_files()
-            merge_time = time.time() - start_time
-            self.logger.info(f"Full schema merge completed and deduplication in {merge_time:.2f} seconds")
+            if process_type in ["all", "merge"]:
+                # 1. Merge full schema files
+                self.logger.info("Starting full schema files merge and deduplication")
+                start_time = time.time()
+                self.merge_full_schema_files()
+                merge_time = time.time() - start_time
+                self.logger.info(f"Full schema merge completed and deduplication in {merge_time:.2f} seconds")
 
-            #
-            # # 2. Create lean schema from deduplicated files
-            # self.logger.info("\nStarting lean schema creation")
-            # start_time = time.time()
-            # self.create_lean_schema()
-            # lean_time = time.time() - start_time
-            # self.logger.info(f"Lean schema creation completed in {lean_time:.2f} seconds")
-            #
-            # total_time = merge_time + lean_time
-            # self.logger.info(f"\nTotal processing time: {total_time:.2f} seconds")
+            if process_type in ["all", "lean"]:
+                # 2. Create lean schema from deduplicated files
+                self.logger.info("\nStarting lean schema creation")
+                start_time = time.time()
+                self.create_lean_schema()
+                lean_time = time.time() - start_time
+                self.logger.info(f"Lean schema creation completed in {lean_time:.2f} seconds")
 
         except Exception as e:
             self.logger.error(f"Error in process_all: {e}")
@@ -174,8 +178,6 @@ class DatasetMerger:
             self.logger.error(f"Traceback: {traceback.format_exc()}")
             return None
 
-
-
     def deduplicate_lean_schema(self):
         """Deduplicate lean schema files using standard processor."""
         deduplicator = DeduplicationProcessor(self.data_dir, schema_type="lean")
@@ -184,11 +186,11 @@ class DatasetMerger:
         deduplicator.deduplicate_files(set(str(f) for f in parquet_files))
 
     def create_lean_schema(self):
-        """Create lean schema from full schema files."""
+        """Create lean schema from deduplicated full schema files."""
         try:
             full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
             
-            # Collect all non-merged parquet files
+            # Collect all deduplicated files (not merged files)
             parquet_files = []
             for model_dir in full_schema_dir.glob("*"):
                 if not model_dir.is_dir():
@@ -200,8 +202,7 @@ class DatasetMerger:
                         if not shots_dir.is_dir():
                             continue
                         for file in shots_dir.glob("*.parquet"):
-                            if not file.name.endswith('_merged.parquet'):
-                                parquet_files.append(file)
+                            parquet_files.append(file)
 
             if not parquet_files:
                 self.logger.info("No files to process for lean schema")
@@ -209,7 +210,7 @@ class DatasetMerger:
 
             self.logger.info(f"Found {len(parquet_files)} files to process for lean schema")
             
-            processor = LeanSchemaProcessor(data_dir=str(self.data_dir))
+            processor = LeanSchemaProcessor(data_dir=str(self.data_dir / ProcessingConstants.LEAN_SCHEMA_DIR_NAME))
             
             with concurrent.futures.ProcessPoolExecutor(max_workers=self.num_workers) as executor:
                 futures = {
@@ -220,11 +221,14 @@ class DatasetMerger:
                 for future in concurrent.futures.as_completed(futures):
                     file_path = futures[future]
                     try:
-                        future.result()
-                        self.logger.info(f"Created lean schema for {file_path}")
+                        result = future.result()
+                        if result:
+                            self.logger.info(f"Created lean schema for {file_path}")
+                        else:
+                            self.logger.error(f"Failed to create lean schema for {file_path}")
                     except Exception as e:
-                        self.logger.error(f"Error creating lean schema for {file_path}: {e}")
                         import traceback
+                        self.logger.error(f"Error creating lean schema for {file_path}: {e}")
                         self.logger.error(f"Traceback: {traceback.format_exc()}")
 
         except Exception as e:
@@ -234,8 +238,13 @@ class DatasetMerger:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--process-type', choices=['all', 'merge', 'lean'], default='all',
+                       help='Type of processing to run')
+    args = parser.parse_args()
+
     processor = DatasetMerger(
         data_dir=ProcessingConstants.OUTPUT_DATA_DIR,
         num_workers=ProcessingConstants.DEFAULT_NUM_WORKERS
     )
-    processor.process_all()
+    processor.process_all(args.process_type)
