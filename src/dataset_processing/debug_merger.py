@@ -89,15 +89,6 @@ class DebugDatasetMerger:
             deduplicator = OptimizedDeduplicationProcessor(self.debug_dir)
             deduplicator.deduplicate_files({merged_file})
 
-            # Count rows after deduplication
-            if merged_file.exists():
-                final_rows = pq.ParquetFile(str(merged_file)).metadata.num_rows
-                self.logger.info(f"Final results:")
-                self.logger.info(f"  Original rows: {total_rows:,}")
-                self.logger.info(f"  After merge: {merged_rows:,}")
-                self.logger.info(f"  After deduplication: {final_rows:,}")
-                self.logger.info(f"  Duplicates removed: {merged_rows - final_rows:,}")
-
         except Exception as e:
             self.logger.error(f"Error in debug process: {e}")
             import traceback
