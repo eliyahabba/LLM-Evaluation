@@ -2,6 +2,7 @@ import polars as pl
 from pathlib import Path
 from filelock import FileLock
 from tqdm import tqdm
+import os
 
 from logger_config import LoggerConfig
 from constants import ProcessingConstants
@@ -16,11 +17,7 @@ class OptimizedDeduplicationProcessor:
     def __init__(self, data_dir: Path):
         """Initialize the optimized deduplication processor."""
         self.data_dir = data_dir
-        self.logger = LoggerConfig.setup_logger(
-            "OptimizedDeduplicationProcessor",
-            self.data_dir / ProcessingConstants.LOGS_DIR_NAME
-        )
-
+        
         # Define deduplication expressions for nested fields
         self.dedup_expressions = [
             pl.col('instance').struct.field('sample_identifier').struct.field('hf_index').alias('sample_index'),
@@ -49,6 +46,13 @@ class OptimizedDeduplicationProcessor:
             bool: True if deduplication was successful
         """
         try:
+            # Create logger here, in the worker process
+            self.logger = LoggerConfig.setup_logger(
+                "OptimizedDeduplicationProcessor",
+                self.data_dir / ProcessingConstants.LOGS_DIR_NAME,
+                process_id=os.getpid()  # Add process ID to differentiate log files
+            )
+            
             for merged_file_path in merged_file_paths:
                 try:
                     self.logger.info(f"Deduplicating {merged_file_path}")
