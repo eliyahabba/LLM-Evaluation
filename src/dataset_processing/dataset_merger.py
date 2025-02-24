@@ -140,8 +140,10 @@ class DatasetMerger:
             merged_path.parent.mkdir(parents=True, exist_ok=True)
 
             writer = None
+            open_files = []
             for input_file in parquet_files:
                 pf = pq.ParquetFile(str(input_file))
+                open_files.append(pf)
                 for rg in range(pf.num_row_groups):
                     table = pf.read_row_group(rg)
                     if writer is None:
@@ -152,19 +154,16 @@ class DatasetMerger:
                             write_statistics=ParquetConstants.WRITE_STATISTICS
                         )
                     writer.write_table(table)
-
             if writer:
                 writer.close()
+            for pf in open_files:
+                pf.close()
             shutil.rmtree(dataset_dir, ignore_errors=True)
-
-            # Check what remains.
-            remaining = os.listdir(dataset_dir)
-            print(f"The files in the dataset directory are {remaining}")
-
+            if os.path.exists(dataset_dir):
+                self.logger.error(f"Failed to remove directory: {dataset_dir}")
+                self.logger.info(f"Failed2 to remove directory: {dataset_dir}")
+                os.rmdir(dataset_dir)
             # If the only remaining file is the .nfs file, try to remove it manually.
-            for filename in remaining:
-                if filename.startswith('.nfs'):
-                    os.unlink(os.path.join(dataset_dir, filename))
 
             # Now try removing the directory.
             os.rmdir(dataset_dir)
