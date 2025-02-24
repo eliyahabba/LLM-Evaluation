@@ -132,25 +132,23 @@ class OptimizedDeduplicationProcessor:
             self.logger.info(f"Get unique indices df shape: {unique_indices_df.shape[0]}")
             unique_indices_lazy_final = unique_indices_df.lazy()
             self.logger.info(f"Get unique indices lazy shape: {unique_indices_lazy_final.collect().shape[0]}")
-            dedup_full_lazy = (
-                pl.scan_parquet(str(path))
-                .with_row_count("_row_idx")
-                .with_streaming()
-                .join(unique_indices_lazy_final, on="_row_idx", how="inner")
-                .drop("_row_idx")
-            )
-            #
-            # dedup_full_lazy = pl.scan_parquet(str(path)) \
-            #     .with_row_count("_row_idx") \
-            #     .join(unique_indices_lazy_final, on="_row_idx", how="inner") \
-            #     .drop("_row_idx")
-            # dedup_full_lazy = pl.scan_parquet(str(path)) \
-            #     .with_row_count("_row_idx") \
-            #     .join(unique_indices_lazy, on="_row_idx", how="inner") \
-            #     .drop("_row_idx")
+            chunk_size = 1000
+            result_frames = []
 
-            self.logger.info(f"Get deduplicated rows: {dedup_full_lazy.collect().shape[0]}")
-            df_dedup = dedup_full_lazy.collect()
+            for start in range(0, original_count, chunk_size):
+                end = start + chunk_size
+                chunk_lazy = pl.scan_parquet(str(path)) \
+                    .with_row_count("_row_idx") \
+                    .filter((pl.col("_row_idx") >= start) & (pl.col("_row_idx") < end))
+
+                chunk_joined = chunk_lazy.join(unique_indices_lazy_final, on="_row_idx", how="inner")
+
+                result_frames.append(chunk_joined.collect())
+
+            df_dedup = pl.concat(result_frames).drop("_row_idx")
+
+            # self.logger.info(f"Get deduplicated rows: {dedup_full_lazy.collect().shape[0]}")
+            # df_dedup = dedup_full_lazy.collect()
             final_count = len(df_dedup)
 
             # Log deduplication results
