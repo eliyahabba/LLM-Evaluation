@@ -127,11 +127,14 @@ class OptimizedDeduplicationProcessor:
                 maintain_order=True
             ).select("_row_idx")
 
+            self.logger.info(f"Get unique indices: {unique_indices_lazy.collect().shape[0]}")
+
             dedup_full_lazy = pl.scan_parquet(str(path)) \
                 .with_row_count("_row_idx") \
                 .join(unique_indices_lazy, on="_row_idx", how="inner") \
                 .drop("_row_idx")
 
+            self.logger.info(f"Get deduplicated rows: {dedup_full_lazy.collect().shape[0]}")
             df_dedup = dedup_full_lazy.collect()
             final_count = len(df_dedup)
 
