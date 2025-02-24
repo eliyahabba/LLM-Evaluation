@@ -157,7 +157,7 @@ class DatasetMerger:
                 writer.close()
 
             # Clean up individual files and directory
-            shutil.rmtree(dataset_dir, ignore_errors=True)
+            shutil.rmtree(dataset_dir, ignore_errors=True, onerror=None)
             print(f"The files in the dataset directory are{os.listdir(dataset_dir)}")
             os.rmdir(dataset_dir)
             self.logger.info(f"Cleaned up directory: {dataset_dir}")
