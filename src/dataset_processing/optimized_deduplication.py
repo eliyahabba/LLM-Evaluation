@@ -1,6 +1,8 @@
 import polars as pl
 from pathlib import Path
 from filelock import FileLock
+from tqdm import tqdm
+
 from logger_config import LoggerConfig
 from constants import ProcessingConstants
 
@@ -135,7 +137,7 @@ class OptimizedDeduplicationProcessor:
             chunk_size = 1000
             result_frames = []
 
-            for start in range(0, original_count, chunk_size):
+            for start in tqdm(range(0, original_count, chunk_size)):
                 end = start + chunk_size
                 chunk_lazy = pl.scan_parquet(str(path)) \
                     .with_row_count("_row_idx") \
