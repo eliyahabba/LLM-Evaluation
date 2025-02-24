@@ -87,7 +87,7 @@ class DebugDatasetMerger:
             # 4. Deduplicate
             self.logger.info("\nStarting deduplication...")
             deduplicator = OptimizedDeduplicationProcessor(self.debug_dir)
-            deduplicator.deduplicate_files({str(merged_file)})
+            deduplicator.deduplicate_files({merged_file})
 
             # Count rows after deduplication
             if merged_file.exists():
