@@ -25,7 +25,7 @@ class DebugDatasetMerger:
     ):
         self.source_dir = data_dir
         # Create debug directory by appending '_debug' to the original path
-        self.debug_dir = Path(str(data_dir) + '_debug')
+        self.debug_dir = Path(str(data_dir))
         self.num_workers = num_workers
         
         # Setup logger
@@ -183,7 +183,7 @@ class DebugDatasetMerger:
 
 if __name__ == "__main__":
     debug_merger = DebugDatasetMerger(
-        data_dir=Path(ProcessingConstants.OUTPUT_DATA_DIR),
+        data_dir=Path(str(ProcessingConstants.OUTPUT_DATA_DIR) + '_debug'),
         num_workers=1  # Single worker for debugging
     )
     debug_merger.debug_process() 
