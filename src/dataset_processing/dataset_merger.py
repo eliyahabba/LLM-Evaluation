@@ -164,9 +164,6 @@ class DatasetMerger:
                 self.logger.info(f"Failed2 to remove directory: {dataset_dir}")
                 os.rmdir(dataset_dir)
             # If the only remaining file is the .nfs file, try to remove it manually.
-
-            # Now try removing the directory.
-            os.rmdir(dataset_dir)
             self.logger.info(f"Cleaned up directory: {dataset_dir}")
 
             return merged_path
