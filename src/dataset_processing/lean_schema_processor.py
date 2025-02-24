@@ -87,7 +87,6 @@ class LeanSchemaProcessor(BaseProcessor):
                     return []
 
                 # Get model/lang/shots/dataset from the file path
-                # Path structure is: full_schema_dir/model/lang/shots/dataset.parquet
                 lang = file_path.parent.parent.parent.name
                 shots_dir = file_path.parent.parent.name  # e.g. "3_shot"
 
@@ -97,15 +96,14 @@ class LeanSchemaProcessor(BaseProcessor):
 
                 output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
 
-                # Convert DataFrame to PyArrow Table
-                schema = lean_df.to_parquet().schema
-                table = pa.Table.from_pandas(lean_df, schema)
+                # Convert DataFrame to PyArrow Table directly
+                table = pa.Table.from_pandas(lean_df)
 
                 # Write to unique file for this process
                 if str(output_path) not in self.writers:
                     self.writers[str(output_path)] = pq.ParquetWriter(
                         str(output_path),
-                        schema,
+                        table.schema,  # Use schema from the table
                         version=ParquetConstants.VERSION,
                         write_statistics=ParquetConstants.WRITE_STATISTICS
                     )
