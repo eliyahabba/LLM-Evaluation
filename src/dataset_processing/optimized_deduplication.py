@@ -1,19 +1,21 @@
 import polars as pl
 from pathlib import Path
 from filelock import FileLock
-from tqdm import tqdm
-
 from logger_config import LoggerConfig
 from constants import ProcessingConstants
+import pyarrow as pa
+import pyarrow.parquet as pq
+import pyarrow.compute as pc
+
 
 class OptimizedDeduplicationProcessor:
     """Memory-efficient deduplication processor for large parquet files."""
-    
+
     def __init__(self, data_dir: Path):
         """Initialize the optimized deduplication processor."""
         self.data_dir = data_dir
         self.logger = LoggerConfig.setup_logger(
-            "OptimizedDeduplicationProcessor", 
+            "OptimizedDeduplicationProcessor",
             self.data_dir / ProcessingConstants.LOGS_DIR_NAME
         )
 
@@ -21,13 +23,14 @@ class OptimizedDeduplicationProcessor:
         self.dedup_expressions = [
             pl.col('instance').struct.field('sample_identifier').struct.field('hf_index').alias('sample_index'),
             pl.col('prompt_config').struct.field('dimensions').struct.field('shots').alias('shots'),
-            pl.col('prompt_config').struct.field('dimensions').struct.field('choices_order').struct.field('method').alias('choices_order_method'),
+            pl.col('prompt_config').struct.field('dimensions').struct.field('choices_order').struct.field(
+                'method').alias('choices_order_method'),
             pl.col('prompt_config').struct.field('dimensions').struct.field('enumerator').alias('enumerator'),
             pl.col('prompt_config').struct.field('dimensions').struct.field('separator').alias('separator'),
-            pl.col('prompt_config').struct.field('dimensions').struct.field('instruction_phrasing').struct.field('name').alias('instruction_phrasing_name')
+            pl.col('prompt_config').struct.field('dimensions').struct.field('instruction_phrasing').struct.field(
+                'name').alias('instruction_phrasing_name')
         ]
-        
-        # Define deduplication keys (removed )
+
         self.dedup_keys = [
             'sample_index', 'shots', 'choices_order_method',
             'enumerator', 'separator', 'instruction_phrasing_name'
@@ -35,11 +38,11 @@ class OptimizedDeduplicationProcessor:
 
     def deduplicate_files(self, file_paths: set) -> bool:
         """
-        Deduplicate data in parquet files using memory-efficient lazy evaluation.
-        
+        Deduplicate data in parquet files using memory-efficient processing.
+
         Args:
             file_paths: Set of file paths to deduplicate
-            
+
         Returns:
             bool: True if deduplication was successful
         """
@@ -48,20 +51,16 @@ class OptimizedDeduplicationProcessor:
                 try:
                     self.logger.info(f"Deduplicating {file_path}")
                     path = Path(file_path)
-                    
+
                     if not path.exists():
                         self.logger.warning(f"File not found: {file_path}")
                         continue
 
-                    # Get original row count
-                    original_count = pl.scan_parquet(str(path)).select(pl.count()).collect().item()
-                    # Read the entire file and then convert to lazy
-                    # df_lazy = pl.read_parquet(str(path)).lazy().select(["instance", "prompt_config", "raw_input"])
-
                     # Perform deduplication
                     deduped_df = self._deduplicate_file(path)
-                    
+
                     # Log results
+                    original_count = pl.scan_parquet(str(path)).select(pl.count()).collect().item()
                     duplicates_removed = original_count - len(deduped_df)
                     self.logger.info(
                         f"Deduplication results for {path.name}: "
@@ -83,77 +82,92 @@ class OptimizedDeduplicationProcessor:
 
     def _deduplicate_file(self, path: Path) -> pl.DataFrame:
         """
-        Deduplicate a single parquet file using lazy evaluation.
-        
+        Deduplicate a single parquet file using lazy evaluation for filtering
+        and PyArrow for batch writing to avoid high memory usage.
+
         Args:
             path: Path to the parquet file
-            
+
         Returns:
-            Deduplicated DataFrame
+            Deduplicated DataFrame (loaded after writing the deduplicated file)
         """
         lock_file = path.parent / f"{path.stem}.lock"
         temp_file = path.parent / f"{path.stem}_dedup.parquet"
-        
+
         with FileLock(str(lock_file)):
             # Get original row count
             original_count = pl.scan_parquet(str(path)).select(pl.count()).collect().item()
-            
+
             # Step 1: Lazy read only necessary columns for deduplication and filtering
-            # dedup_lazy = pl.scan_parquet(
-            #     str(path),
-            #     columns=["instance", "prompt_config"]
-            # ).with_row_count("_row_idx")
             dedup_lazy = pl.scan_parquet(str(path)).select(["instance", "prompt_config"]).with_row_count("_row_idx")
 
             # Add columns for filtering and deduplication
             dedup_lazy = dedup_lazy.select(
                 pl.col("_row_idx"),
-                *self.dedup_expressions  # Remove raw_input from selection
+                *self.dedup_expressions  # Remove raw_input from selection if קיימת
             )
-            
+
             # Filter out unwanted rows
             filtered_lazy = dedup_lazy.filter(
                 ~(
-                    (pl.col("shots") == 5) & 
-                    pl.col("choices_order_method").is_in(["correct_first", "correct_last"])
+                        (pl.col("shots") == 5) &
+                        pl.col("choices_order_method").is_in(["correct_first", "correct_last"])
                 )
             )
-            
+
             # Count filtered rows
             filtered_count = filtered_lazy.select(pl.count()).collect().item()
             removed_by_filter = original_count - filtered_count
             self.logger.info(f"Removed {removed_by_filter:,} rows by filtering (shots=5 and correct_first/last)")
 
+            # Step 2: Extract unique indices based on deduplication keys
             unique_indices_lazy = filtered_lazy.select(["_row_idx"] + self.dedup_keys).unique(
                 subset=self.dedup_keys,
                 maintain_order=True
             ).select("_row_idx")
-
-            self.logger.info(f"Get unique indices: {unique_indices_lazy.collect().shape[0]}")
             unique_indices_df = unique_indices_lazy.collect()
-            self.logger.info(f"Get unique indices df shape: {unique_indices_df.shape[0]}")
-            unique_indices_lazy_final = unique_indices_df.lazy()
-            self.logger.info(f"Get unique indices lazy shape: {unique_indices_lazy_final.collect().shape[0]}")
-            chunk_size = 1000
-            result_frames = []
+            self.logger.info(f"Unique indices count: {unique_indices_df.shape[0]}")
 
-            for start in tqdm(range(0, original_count, chunk_size)):
-                end = start + chunk_size
-                chunk_lazy = pl.scan_parquet(str(path)) \
-                    .with_row_count("_row_idx") \
-                    .filter((pl.col("_row_idx") >= start) & (pl.col("_row_idx") < end))
+            # Convert unique indices to a set for fast membership checking in PyArrow
+            unique_indices_set = set(unique_indices_df.to_pandas()['_row_idx'])
+            self.logger.info(f"Unique indices set length: {len(unique_indices_set)}")
 
-                chunk_joined = chunk_lazy.join(unique_indices_lazy_final, on="_row_idx", how="inner")
+            # Step 3: Process the original parquet file in batches using PyArrow
+            batch_size = 1000
+            pf = pq.ParquetFile(str(path))
+            writer = None
+            total_row_counter = 0
 
-                result_frames.append(chunk_joined.collect())
+            for rg in range(pf.num_row_groups):
+                table = pf.read_row_group(rg)
+                num_rows = table.num_rows
 
-            df_dedup = pl.concat(result_frames).drop("_row_idx")
+                row_indices = pa.array(range(total_row_counter, total_row_counter + num_rows))
+                table = table.append_column("_row_idx", row_indices)
+                total_row_counter += num_rows
 
-            # self.logger.info(f"Get deduplicated rows: {dedup_full_lazy.collect().shape[0]}")
-            # df_dedup = dedup_full_lazy.collect()
+                unique_indices_array = pa.array(list(unique_indices_set))
+                mask = pc.is_in(table["_row_idx"], value_set=unique_indices_array)
+                filtered_table = table.filter(mask)
+
+                num_filtered = filtered_table.num_rows
+                if num_filtered > 0:
+                    for start in range(0, num_filtered, batch_size):
+                        batch = filtered_table.slice(start, batch_size)
+                        batch = batch.drop(["_row_idx"])
+                        if writer is None:
+                            writer = pq.ParquetWriter(str(temp_file), batch.schema)
+                        writer.write_table(batch)
+
+            if writer is not None:
+                writer.close()
+
+            # Optionally, replace the original file with the deduplicated version
+            temp_file.replace(path)
+
+            # Load the deduplicated file into a Polars DataFrame and return
+            df_dedup = pl.read_parquet(str(path))
             final_count = len(df_dedup)
-
-            # Log deduplication results
             duplicates_removed = filtered_count - final_count
             self.logger.info(f"Deduplication results for {path.name}:")
             self.logger.info(f"  Original rows: {original_count:,}")
@@ -162,9 +176,5 @@ class OptimizedDeduplicationProcessor:
             self.logger.info(f"  Rows removed by filtering: {removed_by_filter:,}")
             self.logger.info(f"  Duplicates removed: {duplicates_removed:,}")
             self.logger.info(f"  Total rows removed: {original_count - final_count:,}")
-            
-            # Save results
-            df_dedup.write_parquet(str(temp_file))
-            temp_file.replace(path)
-            
-            return df_dedup 
+
+            return df_dedup
