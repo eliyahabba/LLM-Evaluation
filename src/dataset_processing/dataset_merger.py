@@ -27,27 +27,21 @@ class DatasetMerger:
         """Run the complete processing pipeline."""
         try:
             # 1. Merge full schema files
-            self.logger.info("Starting full schema files merge")
+            self.logger.info("Starting full schema files merge and deduplication")
             start_time = time.time()
             self.merge_full_schema_files()
             merge_time = time.time() - start_time
-            self.logger.info(f"Full schema merge completed in {merge_time:.2f} seconds")
+            self.logger.info(f"Full schema merge completed and deduplication in {merge_time:.2f} seconds")
 
-            # 2. Deduplicate merged full schema files
-            self.logger.info("\nStarting full schema deduplication")
-            start_time = time.time()
-            self.deduplicate_full_schema()
-            dedup_time = time.time() - start_time
-            self.logger.info(f"Deduplication completed in {dedup_time:.2f} seconds")
 
-            # 3. Create lean schema from deduplicated files
+            # 2. Create lean schema from deduplicated files
             self.logger.info("\nStarting lean schema creation")
             start_time = time.time()
             self.create_lean_schema()
             lean_time = time.time() - start_time
             self.logger.info(f"Lean schema creation completed in {lean_time:.2f} seconds")
 
-            total_time = merge_time + dedup_time + lean_time
+            total_time = merge_time + lean_time
             self.logger.info(f"\nTotal processing time: {total_time:.2f} seconds")
 
         except Exception as e:
