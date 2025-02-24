@@ -75,6 +75,8 @@ class OptimizedDeduplicationProcessor:
                         f"removed {duplicates_removed} duplicates, "
                         f"{len(deduped_df)} rows remaining"
                     )
+                    # delete the merged file
+                    merged_file_path.unlink()
 
                 except Exception as e:
                     self.logger.error(f"Error deduplicating {merged_file_path}: {e}")
