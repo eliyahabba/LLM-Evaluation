@@ -1,5 +1,8 @@
 import concurrent.futures
 from pathlib import Path
+import time
+import shutil
+from typing import Optional
 
 import pyarrow.parquet as pq
 
@@ -25,15 +28,27 @@ class DatasetMerger:
         try:
             # 1. Merge full schema files
             self.logger.info("Starting full schema files merge")
+            start_time = time.time()
             self.merge_full_schema_files()
+            merge_time = time.time() - start_time
+            self.logger.info(f"Full schema merge completed in {merge_time:.2f} seconds")
 
             # 2. Deduplicate merged full schema files
-            self.logger.info("Starting full schema deduplication")
+            self.logger.info("\nStarting full schema deduplication")
+            start_time = time.time()
             self.deduplicate_full_schema()
+            dedup_time = time.time() - start_time
+            self.logger.info(f"Deduplication completed in {dedup_time:.2f} seconds")
 
             # 3. Create lean schema from deduplicated files
-            self.logger.info("Starting lean schema creation")
+            self.logger.info("\nStarting lean schema creation")
+            start_time = time.time()
             self.create_lean_schema()
+            lean_time = time.time() - start_time
+            self.logger.info(f"Lean schema creation completed in {lean_time:.2f} seconds")
+
+            total_time = merge_time + dedup_time + lean_time
+            self.logger.info(f"\nTotal processing time: {total_time:.2f} seconds")
 
         except Exception as e:
             self.logger.error(f"Error in process_all: {e}")
@@ -41,7 +56,7 @@ class DatasetMerger:
             self.logger.error(f"Traceback: {traceback.format_exc()}")
 
     def merge_full_schema_files(self):
-        """Merge all full schema files in parallel."""
+        """Merge all full schema files in parallel and deduplicate each merged file."""
         try:
             full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
 
@@ -61,15 +76,25 @@ class DatasetMerger:
                                 continue
                             merge_tasks.append((model_dir, lang_dir, shots_dir, dataset_dir))
 
+            if not merge_tasks:
+                self.logger.info("No directories to merge")
+                return
+
+            self.logger.info(f"Found {len(merge_tasks)} directories to merge")
+
+            # Initialize deduplicator once
+            deduplicator = OptimizedDeduplicationProcessor(self.data_dir)
+
             # Process merges in parallel
             with concurrent.futures.ProcessPoolExecutor(max_workers=self.num_workers) as executor:
                 futures = {
                     executor.submit(
-                        self._merge_dataset_files,
+                        self._merge_and_deduplicate_dataset,
                         model_dir,
                         lang_dir,
                         shots_dir,
-                        dataset_dir
+                        dataset_dir,
+                        deduplicator
                     ): (model_dir.name, lang_dir.name, shots_dir.name, dataset_dir.name)
                     for model_dir, lang_dir, shots_dir, dataset_dir in merge_tasks
                 }
@@ -77,30 +102,48 @@ class DatasetMerger:
                 for future in concurrent.futures.as_completed(futures):
                     model, lang, shots, dataset = futures[future]
                     try:
-                        future.result()
-                        self.logger.info(f"Merged files for {model}/{lang}/{shots}/{dataset}")
+                        success = future.result()
+                        if success:
+                            self.logger.info(f"Successfully processed {model}/{lang}/{shots}/{dataset}")
+                        else:
+                            self.logger.error(f"Failed to process {model}/{lang}/{shots}/{dataset}")
                     except Exception as e:
-                        self.logger.error(f"Error merging {model}/{lang}/{shots}/{dataset}: {e}")
+                        self.logger.error(f"Error processing {model}/{lang}/{shots}/{dataset}: {e}")
 
         except Exception as e:
             self.logger.error(f"Error in merge_full_schema_files: {e}")
             import traceback
             self.logger.error(f"Traceback: {traceback.format_exc()}")
 
-    @staticmethod
-    def _merge_dataset_files(model_dir: Path, lang_dir: Path, shots_dir: Path, dataset_dir: Path):
+    def _merge_and_deduplicate_dataset(self, model_dir: Path, lang_dir: Path, shots_dir: Path, dataset_dir: Path, deduplicator: OptimizedDeduplicationProcessor) -> bool:
+        """Merge files in a dataset directory and then deduplicate the merged file."""
+        try:
+            # First merge the files
+            merged_path = self._merge_dataset_files(model_dir, lang_dir, shots_dir, dataset_dir)
+            if not merged_path:
+                return False
+
+            # Then deduplicate the merged file
+            success = deduplicator.deduplicate_files({merged_path})
+            return success
+
+        except Exception as e:
+            self.logger.error(f"Error in merge_and_deduplicate_dataset: {e}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            return False
+
+    def _merge_dataset_files(self, model_dir: Path, lang_dir: Path, shots_dir: Path, dataset_dir: Path) -> Optional[Path]:
         """Merge all files in a dataset directory into a single parquet file."""
         try:
-            # Get all parquet files
             parquet_files = list(dataset_dir.glob(f"*{ProcessingConstants.PARQUET_EXTENSION}"))
             if not parquet_files:
-                return
+                return None
 
-            # Create merged file path
-            merged_path = model_dir / lang_dir.name / shots_dir.name / f"{dataset_dir.name}.parquet"
+            # Add '_merged' suffix to the merged file
+            merged_path = model_dir / lang_dir.name / shots_dir.name / f"{dataset_dir.name}_merged.parquet"
             merged_path.parent.mkdir(parents=True, exist_ok=True)
 
-            # Use row group merging for memory efficiency
             writer = None
             for input_file in parquet_files:
                 pf = pq.ParquetFile(str(input_file))
@@ -119,21 +162,18 @@ class DatasetMerger:
                 writer.close()
 
             # Clean up individual files and directory
-            for f in parquet_files:
-                f.unlink()
-            dataset_dir.rmdir()
+            shutil.rmtree(dataset_dir, ignore_errors=True)
+            self.logger.info(f"Cleaned up directory: {dataset_dir}")
+
+            return merged_path
 
         except Exception as e:
-            print(f"Error merging files in {dataset_dir}: {e}")
+            self.logger.error(f"Error merging files in {dataset_dir}: {e}")
             import traceback
-            print(f"Traceback: {traceback.format_exc()}")
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            return None
 
-    def deduplicate_full_schema(self):
-        """Deduplicate merged full schema files using optimized processor."""
-        deduplicator = OptimizedDeduplicationProcessor(self.data_dir)
-        full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
-        parquet_files = list(full_schema_dir.glob("**/*.parquet"))
-        deduplicator.deduplicate_files(set(str(f) for f in parquet_files))
+
 
     def deduplicate_lean_schema(self):
         """Deduplicate lean schema files using standard processor."""
