@@ -147,7 +147,8 @@ class DebugDatasetMerger:
             if not parquet_files:
                 return None
 
-            merged_path = model_dir / lang_dir.name / shots_dir.name / f"{dataset_dir.name}.parquet"
+            # Add '_merged' suffix to the merged file
+            merged_path = model_dir / lang_dir.name / shots_dir.name / f"{dataset_dir.name}_merged.parquet"
             merged_path.parent.mkdir(parents=True, exist_ok=True)
 
             writer = None
