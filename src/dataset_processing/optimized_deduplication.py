@@ -54,7 +54,7 @@ class OptimizedDeduplicationProcessor:
                     # Get original row count
                     original_count = pl.scan_parquet(str(path)).select(pl.count()).collect().item()
                     # Read the entire file and then convert to lazy
-                    df_lazy = pl.read_parquet(str(path)).lazy().select(["instance", "prompt_config", "raw_input"])
+                    # df_lazy = pl.read_parquet(str(path)).lazy().select(["instance", "prompt_config", "raw_input"])
 
                     # Perform deduplication
                     deduped_df = self._deduplicate_file(path)
@@ -122,7 +122,7 @@ class OptimizedDeduplicationProcessor:
             removed_by_filter = original_count - filtered_count
             self.logger.info(f"Removed {removed_by_filter:,} rows by filtering (shots=5 and correct_first/last)")
 
-            unique_indices_lazy = filtered_lazy.unique(
+            unique_indices_lazy = filtered_lazy.select(["_row_idx"] + self.dedup_keys).unique(
                 subset=self.dedup_keys,
                 maintain_order=True
             ).select("_row_idx")
