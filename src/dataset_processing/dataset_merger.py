@@ -34,16 +34,16 @@ class DatasetMerger:
             merge_time = time.time() - start_time
             self.logger.info(f"Full schema merge completed and deduplication in {merge_time:.2f} seconds")
 
-
-            # 2. Create lean schema from deduplicated files
-            self.logger.info("\nStarting lean schema creation")
-            start_time = time.time()
-            self.create_lean_schema()
-            lean_time = time.time() - start_time
-            self.logger.info(f"Lean schema creation completed in {lean_time:.2f} seconds")
-
-            total_time = merge_time + lean_time
-            self.logger.info(f"\nTotal processing time: {total_time:.2f} seconds")
+            #
+            # # 2. Create lean schema from deduplicated files
+            # self.logger.info("\nStarting lean schema creation")
+            # start_time = time.time()
+            # self.create_lean_schema()
+            # lean_time = time.time() - start_time
+            # self.logger.info(f"Lean schema creation completed in {lean_time:.2f} seconds")
+            #
+            # total_time = merge_time + lean_time
+            # self.logger.info(f"\nTotal processing time: {total_time:.2f} seconds")
 
         except Exception as e:
             self.logger.error(f"Error in process_all: {e}")
@@ -224,6 +224,7 @@ class DatasetMerger:
                         self.logger.info(f"Created lean schema for {file_path}")
                     except Exception as e:
                         self.logger.error(f"Error creating lean schema for {file_path}: {e}")
+                        import traceback
                         self.logger.error(f"Traceback: {traceback.format_exc()}")
 
         except Exception as e:
