@@ -1,6 +1,8 @@
 import polars as pl
 from pathlib import Path
 from filelock import FileLock
+from tqdm import tqdm
+
 from logger_config import LoggerConfig
 from constants import ProcessingConstants
 import pyarrow as pa
@@ -138,7 +140,7 @@ class OptimizedDeduplicationProcessor:
             writer = None
             total_row_counter = 0
 
-            for rg in range(pf.num_row_groups):
+            for rg in tqdm(range(pf.num_row_groups)):
                 table = pf.read_row_group(rg)
                 num_rows = table.num_rows
 
