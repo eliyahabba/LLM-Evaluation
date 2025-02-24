@@ -128,11 +128,16 @@ class OptimizedDeduplicationProcessor:
             ).select("_row_idx")
 
             self.logger.info(f"Get unique indices: {unique_indices_lazy.collect().shape[0]}")
-
+            unique_indices_df = unique_indices_lazy.collect()
+            self.logger.info(f"Get unique indices df shape: {unique_indices_df.shape[0]}")
             dedup_full_lazy = pl.scan_parquet(str(path)) \
                 .with_row_count("_row_idx") \
-                .join(unique_indices_lazy, on="_row_idx", how="inner") \
+                .join(unique_indices_df, on="_row_idx", how="inner") \
                 .drop("_row_idx")
+            # dedup_full_lazy = pl.scan_parquet(str(path)) \
+            #     .with_row_count("_row_idx") \
+            #     .join(unique_indices_lazy, on="_row_idx", how="inner") \
+            #     .drop("_row_idx")
 
             self.logger.info(f"Get deduplicated rows: {dedup_full_lazy.collect().shape[0]}")
             df_dedup = dedup_full_lazy.collect()
