@@ -96,31 +96,29 @@ class OptimizedDeduplicationProcessor:
             Deduplicated DataFrame (loaded after writing the deduplicated file)
         """
 
-        # if output_path.exists():
-        #     self.logger.info(f"Output file {output_path} exists. Merging it with new data from {merged_path}.")
-        #     combined_file = merged_path.parent / f"{merged_path.stem}_combined.parquet"
-        #     writer = None
-        #     for file in [output_path, merged_path]:
-        #         pf = pq.ParquetFile(str(file))
-        #         total_row_counter = 0
-        #         for rg in range(pf.num_row_groups):
-        #             table = pf.read_row_group(rg)
-        #             num_rows = table.num_rows
-        #             row_indices = pa.array(range(total_row_counter, total_row_counter + num_rows))
-        #             table = table.append_column("_row_idx", row_indices)
-        #             total_row_counter += num_rows
-        #             if writer is None:
-        #                 writer = pq.ParquetWriter(str(combined_file), table.schema)
-        #             writer.write_table(table.drop(["_row_idx"]))
-        #     if writer is not None:
-        #         writer.close()
-        #     output_path.unlink()
-        #     merged_path = combined_file
+        if output_path.exists():
+            self.logger.info(f"Output file {output_path} exists. Merging it with new data from {merged_path}.")
+            combined_file = merged_path.parent / f"{merged_path.stem}_combined.parquet"
+            writer = None
+            for file in [output_path, merged_path]:
+                pf = pq.ParquetFile(str(file))
+                total_row_counter = 0
+                for rg in range(pf.num_row_groups):
+                    table = pf.read_row_group(rg)
+                    num_rows = table.num_rows
+                    row_indices = pa.array(range(total_row_counter, total_row_counter + num_rows))
+                    table = table.append_column("_row_idx", row_indices)
+                    total_row_counter += num_rows
+                    if writer is None:
+                        writer = pq.ParquetWriter(str(combined_file), table.schema)
+                    writer.write_table(table.drop(["_row_idx"]))
+            if writer is not None:
+                writer.close()
+            output_path.unlink()
+            merged_path.unlink()
+            merged_path = combined_file
 
         temp_file = merged_path.parent / f"{merged_path.stem}_dedup.parquet"
-        if output_path.exists():
-            # need to merge with the existing merged_path
-            raise ValueError(f"Output path already exists: {output_path}")
 
         # Get original row count
         original_count = pl.scan_parquet(str(merged_path)).select(pl.count()).collect().item()
