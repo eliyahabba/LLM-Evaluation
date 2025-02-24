@@ -185,23 +185,51 @@ class DatasetMerger:
 
     def create_lean_schema(self):
         """Create lean schema from full schema files."""
-        processor = LeanSchemaProcessor(data_dir=str(self.data_dir))
-        full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
-        parquet_files = list(full_schema_dir.glob("**/*.parquet"))
+        try:
+            full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
+            
+            # Collect all non-merged parquet files
+            parquet_files = []
+            for model_dir in full_schema_dir.glob("*"):
+                if not model_dir.is_dir():
+                    continue
+                for lang_dir in model_dir.glob("*"):
+                    if not lang_dir.is_dir():
+                        continue
+                    for shots_dir in lang_dir.glob("*"):
+                        if not shots_dir.is_dir():
+                            continue
+                        for file in shots_dir.glob("*.parquet"):
+                            if not file.name.endswith('_merged.parquet'):
+                                parquet_files.append(file)
 
-        with concurrent.futures.ProcessPoolExecutor(max_workers=self.num_workers) as executor:
-            futures = {
-                executor.submit(processor.process_file, f): f
-                for f in parquet_files
-            }
+            if not parquet_files:
+                self.logger.info("No files to process for lean schema")
+                return
 
-            for future in concurrent.futures.as_completed(futures):
-                file_path = futures[future]
-                try:
-                    future.result()
-                    self.logger.info(f"Created lean schema for {file_path}")
-                except Exception as e:
-                    self.logger.error(f"Error creating lean schema for {file_path}: {e}")
+            self.logger.info(f"Found {len(parquet_files)} files to process for lean schema")
+            
+            processor = LeanSchemaProcessor(data_dir=str(self.data_dir))
+            
+            with concurrent.futures.ProcessPoolExecutor(max_workers=self.num_workers) as executor:
+                futures = {
+                    executor.submit(processor.process_file, f): f
+                    for f in parquet_files
+                }
+
+                for future in concurrent.futures.as_completed(futures):
+                    file_path = futures[future]
+                    try:
+                        future.result()
+                        self.logger.info(f"Created lean schema for {file_path}")
+                    except Exception as e:
+                        self.logger.error(f"Error creating lean schema for {file_path}: {e}")
+                        self.logger.error(f"Traceback: {traceback.format_exc()}")
+
+        except Exception as e:
+            self.logger.error(f"Error in create_lean_schema: {e}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
 
 
 if __name__ == "__main__":

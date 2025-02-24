@@ -1,12 +1,16 @@
 from pathlib import Path
 from typing import List
+import os
+import traceback
 
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
+import polars as pl
 
 from base_processor import BaseProcessor
 from constants import ParquetConstants, ProcessingConstants
+from utils.logger_config import LoggerConfig
 
 
 class LeanSchemaProcessor(BaseProcessor):
@@ -47,56 +51,82 @@ class LeanSchemaProcessor(BaseProcessor):
 
     def process_file(self, file_path: Path) -> List[str]:
         """Process a single file and write results to model/dataset specific files."""
-        self.logger.info(f"Processing file: {file_path}")
-        processed_files = set()
-
         try:
-            # Read the full schema file
-            df = pd.read_parquet(file_path)
-            if df.empty:
-                return []
-
-            # Convert to lean schema
-            lean_df = self.create_lean_version(df)
-            if lean_df.empty:
-                return []
-
-            # Get model/lang/shots/dataset from the file path
-            # Path structure is: full_schema_dir/model/lang/shots/dataset.parquet
-            model = file_path.parent.parent.parent.parent.name
-            lang = file_path.parent.parent.parent.name
-            shots_dir = file_path.parent.parent.name  # e.g. "3_shot"
-            dataset = file_path.parent.name
-
-            # Create directory structure - maintain same structure as full schema
-            output_dir = self.data_dir / model / lang / shots_dir / dataset
-            output_dir.mkdir(parents=True, exist_ok=True)
-
-            output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
-
-            # Convert DataFrame to PyArrow Table
-            schema = lean_df.to_parquet().schema
-            table = pa.Table.from_pandas(lean_df, schema)
-
-            # Write to unique file for this process
-            if str(output_path) not in self.writers:
-                self.writers[str(output_path)] = pq.ParquetWriter(
-                    str(output_path),
-                    schema,
-                    version=ParquetConstants.VERSION,
-                    write_statistics=ParquetConstants.WRITE_STATISTICS
+            self.logger.info(f"Processing {file_path} for lean schema")
+            
+            # Create logger for this process
+            if not hasattr(self, 'logger'):
+                self.logger = LoggerConfig.setup_logger(
+                    "LeanSchemaProcessor",
+                    Path(self.data_dir) / ProcessingConstants.LOGS_DIR_NAME,
+                    process_id=os.getpid()
                 )
 
-            self.writers[str(output_path)].write_table(table)
-            processed_files.add(str(output_path))
+            # Read the parquet file
+            try:
+                df = pl.read_parquet(str(file_path))
+                self.logger.info(f"Successfully read {file_path} with {len(df):,} rows")
+            except Exception as e:
+                self.logger.error(f"Error reading parquet file {file_path}: {e}")
+                return []
 
-            # Close writer
-            if str(output_path) in self.writers:
-                self.writers[str(output_path)].close()
-                del self.writers[str(output_path)]
+            # Extract model and dataset info
+            try:
+                model_name = file_path.parent.parent.parent.name
+                dataset_name = file_path.stem.split('_')[0]  # Remove any suffixes
+                self.logger.info(f"Processing model: {model_name}, dataset: {dataset_name}")
+            except Exception as e:
+                self.logger.error(f"Error extracting model/dataset info from {file_path}: {e}")
+                return []
 
-            return list(processed_files)
+            # Process the data
+            try:
+                # Convert to lean schema
+                lean_df = self.create_lean_version(df.to_pandas())
+                if lean_df.empty:
+                    return []
+
+                # Get model/lang/shots/dataset from the file path
+                # Path structure is: full_schema_dir/model/lang/shots/dataset.parquet
+                lang = file_path.parent.parent.parent.name
+                shots_dir = file_path.parent.parent.name  # e.g. "3_shot"
+
+                # Create directory structure - maintain same structure as full schema
+                output_dir = self.data_dir / model_name / lang / shots_dir / dataset_name
+                output_dir.mkdir(parents=True, exist_ok=True)
+
+                output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
+
+                # Convert DataFrame to PyArrow Table
+                schema = lean_df.to_parquet().schema
+                table = pa.Table.from_pandas(lean_df, schema)
+
+                # Write to unique file for this process
+                if str(output_path) not in self.writers:
+                    self.writers[str(output_path)] = pq.ParquetWriter(
+                        str(output_path),
+                        schema,
+                        version=ParquetConstants.VERSION,
+                        write_statistics=ParquetConstants.WRITE_STATISTICS
+                    )
+
+                self.writers[str(output_path)].write_table(table)
+                processed_files = [str(output_path)]
+
+                # Close writer
+                if str(output_path) in self.writers:
+                    self.writers[str(output_path)].close()
+                    del self.writers[str(output_path)]
+
+                self.logger.info(f"Successfully processed data for {model_name}/{dataset_name}")
+                return processed_files
+
+            except Exception as e:
+                self.logger.error(f"Error processing data for {file_path}: {e}")
+                self.logger.error(f"Traceback: {traceback.format_exc()}")
+                return []
 
         except Exception as e:
-            self.logger.error(f"Error processing {file_path}: {e}")
+            self.logger.error(f"Unexpected error processing {file_path}: {e}")
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
             return []
