@@ -53,20 +53,26 @@ class DatasetUploader:
     def upload_all(self):
         """Upload both full and lean schema datasets."""
         try:
+            # Create a new logger for this process
+            logger = LoggerConfig.setup_logger(
+                "DatasetUploader",
+                self.data_dir / ProcessingConstants.LOGS_DIR_NAME,
+                process_id=os.getpid()
+            )
+
             # Upload full schema
-            self.logger.info("Starting full schema upload...")
+            logger.info("Starting full schema upload...")
             full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
             self._upload_schema_dir(full_schema_dir, ProcessingConstants.OUTPUT_REPO)
 
             # Upload lean schema
-            self.logger.info("\nStarting lean schema upload...")
+            logger.info("\nStarting lean schema upload...")
             lean_schema_dir = self.data_dir / ProcessingConstants.LEAN_SCHEMA_DIR_NAME
             self._upload_schema_dir(lean_schema_dir, ProcessingConstants.OUTPUT_REPO_LEAN)
 
         except Exception as e:
-            self.logger.error(f"Error in upload_all: {e}")
-            import traceback
-            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            logger.error(f"Error in upload_all: {e}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
 
     def _ensure_repo_exists(self, repo_name: str, logger=None):
         """Create repository if it doesn't exist."""
