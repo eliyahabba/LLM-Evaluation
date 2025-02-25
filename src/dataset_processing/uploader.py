@@ -68,29 +68,39 @@ class DatasetUploader:
             import traceback
             self.logger.error(f"Traceback: {traceback.format_exc()}")
 
-    def _ensure_repo_exists(self, repo_name: str):
+    def _ensure_repo_exists(self, repo_name: str, logger=None):
         """Create repository if it doesn't exist."""
         try:
+            if logger is None:
+                logger = self.logger
+            
             self.api.create_repo(
                 repo_id=repo_name,
                 repo_type="dataset",
                 private=False,
                 exist_ok=True
             )
-            self.logger.info(f"Ensured repository {repo_name} exists")
+            logger.info(f"Ensured repository {repo_name} exists")
         except Exception as e:
-            self.logger.error(f"Error creating repository {repo_name}: {e}")
+            logger.error(f"Error creating repository {repo_name}: {e}")
             raise
 
     def _upload_schema_dir(self, schema_dir: Path, repo_name: str):
         """Upload a schema directory to HuggingFace."""
         try:
+            # Create a new logger for this process
+            logger = LoggerConfig.setup_logger(
+                "DatasetUploader",
+                self.data_dir / ProcessingConstants.LOGS_DIR_NAME,
+                process_id=os.getpid()
+            )
+
             if not schema_dir.exists():
-                self.logger.warning(f"Directory not found: {schema_dir}")
+                logger.warning(f"Directory not found: {schema_dir}")
                 return
 
             # Ensure repository exists
-            self._ensure_repo_exists(repo_name)
+            self._ensure_repo_exists(repo_name, logger)
 
             # Get model directories (skip logs directory)
             model_dirs = [
@@ -99,7 +109,7 @@ class DatasetUploader:
             ]
             
             if not model_dirs:
-                self.logger.warning(f"No model directories found in {schema_dir}")
+                logger.warning(f"No model directories found in {schema_dir}")
                 return
 
             # Collect all upload tasks
@@ -114,7 +124,6 @@ class DatasetUploader:
                         for shots_dir in lang_dir.iterdir():
                             if not shots_dir.is_dir():
                                 continue
-                            # Add each file as a separate task
                             for file_path in shots_dir.glob("*.parquet"):
                                 upload_tasks.append(UploadTask(
                                     path=file_path,
@@ -123,7 +132,6 @@ class DatasetUploader:
                                     is_file=True
                                 ))
                     else:
-                        # Add each shots directory as a task
                         for shots_dir in lang_dir.iterdir():
                             if not shots_dir.is_dir():
                                 continue
@@ -134,7 +142,7 @@ class DatasetUploader:
                             ))
 
             total_tasks = len(upload_tasks)
-            self.logger.info(f"Found {total_tasks} items to upload")
+            logger.info(f"Found {total_tasks} items to upload")
 
             # Process uploads in parallel
             with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as executor:
@@ -154,21 +162,21 @@ class DatasetUploader:
                         success = future.result()
                         completed += 1
                         if success:
-                            self.logger.info(
+                            logger.info(
                                 f"Successfully uploaded {task.path.name} "
                                 f"({completed}/{total_tasks} completed)"
                             )
                         else:
-                            self.logger.error(f"Failed to upload {task.path.name}")
+                            logger.error(f"Failed to upload {task.path.name}")
                     except Exception as e:
-                        self.logger.error(f"Error uploading {task.path.name}: {e}")
-                        self.logger.error(f"Traceback: {traceback.format_exc()}")
+                        logger.error(f"Error uploading {task.path.name}: {e}")
+                        logger.error(f"Traceback: {traceback.format_exc()}")
 
-            self.logger.info(f"Completed uploading {completed}/{total_tasks} items")
+            logger.info(f"Completed uploading {completed}/{total_tasks} items")
 
         except Exception as e:
-            self.logger.error(f"Error uploading schema directory {schema_dir}: {e}")
-            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            logger.error(f"Error uploading schema directory {schema_dir}: {e}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
 
     def _process_upload_task(self, task: UploadTask) -> bool:
         """Process a single upload task."""
