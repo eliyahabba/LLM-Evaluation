@@ -88,11 +88,7 @@ class LeanSchemaProcessor(BaseProcessor):
                     try:
                         # Convert batch to pandas for processing
                         batch_df = batch
-                        # Check for duplicate indices
-                        duplicates = batch_df.index.duplicated()
-                        if duplicates.any():
-                            print("Duplicate index labels found:", batch_df.index[duplicates])
-
+                        batch_df = batch_df.reset_index(drop=True)
                         lean_df = self.create_lean_version(batch_df)
                         
                         if lean_df.empty:
