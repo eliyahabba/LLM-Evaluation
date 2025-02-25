@@ -292,9 +292,4 @@ if __name__ == "__main__":
     )
 
     # Choose which process to run
-    import sys
-
-    if len(sys.argv) > 1 and sys.argv[1] == "lean":
-        processor.process_lean_schema_files()
-    else:
-        processor.process_full_schema_files()
+    processor.process_full_schema_files()
