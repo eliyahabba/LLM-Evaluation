@@ -61,14 +61,6 @@ class LeanSchemaProcessor(BaseProcessor):
                     process_id=os.getpid()
                 )
 
-            # Read the parquet file
-            try:
-                df = pl.read_parquet(str(file_path))
-                self.logger.info(f"Successfully read {file_path} with {len(df):,} rows")
-            except Exception as e:
-                self.logger.error(f"Error reading parquet file {file_path}: {e}")
-                return []
-
             # Extract model and dataset info
             try:
                 model_name = file_path.parent.parent.parent.name
@@ -78,45 +70,55 @@ class LeanSchemaProcessor(BaseProcessor):
                 self.logger.error(f"Error extracting model/dataset info from {file_path}: {e}")
                 return []
 
-            # Process the data
+            # Process the data in batches
             try:
-                # Convert to lean schema
-                lean_df = self.create_lean_version(df.to_pandas())
-                if lean_df.empty:
-                    return []
-
-                # Get model/lang/shots/dataset from the file path
-                lang = file_path.parent.parent.parent.name
-                shots_dir = file_path.parent.parent.name  # e.g. "3_shot"
-
-                # Create directory structure - maintain same structure as full schema
-                output_dir = self.data_dir / model_name / lang / shots_dir / dataset_name
+                # Create output directory structure
+                lang = file_path.parents[1].name
+                shots_dir = file_path.parent.name
+                output_dir = self.data_dir / model_name / lang / shots_dir
                 output_dir.mkdir(parents=True, exist_ok=True)
-
                 output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
 
-                # Convert DataFrame to PyArrow Table directly
-                table = pa.Table.from_pandas(lean_df)
+                # Initialize writer
+                writer = None
+                processed_rows = 0
+                
+                # Read and process in batches
+                for batch in self._read_parquet_in_batches(file_path):
+                    try:
+                        # Convert batch to pandas for processing
+                        batch_df = batch
+                        lean_df = self.create_lean_version(batch_df)
+                        
+                        if lean_df.empty:
+                            continue
 
-                # Write to unique file for this process
-                if str(output_path) not in self.writers:
-                    self.writers[str(output_path)] = pq.ParquetWriter(
-                        str(output_path),
-                        table.schema,  # Use schema from the table
-                        version=ParquetConstants.VERSION,
-                        write_statistics=ParquetConstants.WRITE_STATISTICS
-                    )
+                        # Initialize writer with schema from first batch
+                        if writer is None:
+                            table = pa.Table.from_pandas(lean_df)
+                            writer = pq.ParquetWriter(
+                                str(output_path),
+                                table.schema,
+                                version=ParquetConstants.VERSION,
+                                write_statistics=ParquetConstants.WRITE_STATISTICS
+                            )
 
-                self.writers[str(output_path)].write_table(table)
-                processed_files = [str(output_path)]
+                        # Write batch
+                        table = pa.Table.from_pandas(lean_df)
+                        writer.write_table(table)
+                        processed_rows += len(lean_df)
+                        self.logger.info(f"Processed {processed_rows} rows so far...")
+
+                    except Exception as e:
+                        self.logger.error(f"Error processing batch: {e}")
+                        self.logger.error(f"Traceback: {traceback.format_exc()}")
+                        continue
 
                 # Close writer
-                if str(output_path) in self.writers:
-                    self.writers[str(output_path)].close()
-                    del self.writers[str(output_path)]
-
-                self.logger.info(f"Successfully processed data for {model_name}/{dataset_name}")
-                return processed_files
+                if writer:
+                    writer.close()
+                    return [str(output_path)]
+                return []
 
             except Exception as e:
                 self.logger.error(f"Error processing data for {file_path}: {e}")
@@ -127,3 +129,44 @@ class LeanSchemaProcessor(BaseProcessor):
             self.logger.error(f"Unexpected error processing {file_path}: {e}")
             self.logger.error(f"Traceback: {traceback.format_exc()}")
             return []
+
+    def _read_parquet_in_batches(self, file_path: Path):
+        """Read a parquet file in batches to conserve memory."""
+        try:
+            parquet_file = pq.ParquetFile(str(file_path))
+            num_row_groups = parquet_file.num_row_groups
+            
+            # Calculate rows per batch based on total rows and DEFAULT_BATCH_SIZE
+            total_rows = sum(parquet_file.metadata.row_group(i).num_rows for i in range(num_row_groups))
+            rows_per_batch = min(ProcessingConstants.DEFAULT_BATCH_SIZE, total_rows)
+            
+            self.logger.info(f"Processing {total_rows:,} rows in batches of {rows_per_batch:,}")
+            
+            current_row = 0
+            current_batch = []
+            
+            for row_group_idx in range(num_row_groups):
+                table = parquet_file.read_row_group(row_group_idx)
+                df = table.to_pandas()
+                
+                for _, row in df.iterrows():
+                    current_batch.append(row)
+                    current_row += 1
+                    
+                    if len(current_batch) >= rows_per_batch:
+                        yield pd.DataFrame(current_batch)
+                        current_batch = []
+                        
+            # Yield any remaining rows
+            if current_batch:
+                yield pd.DataFrame(current_batch)
+                
+        except Exception as e:
+            self.logger.error(f"Error reading parquet file in batches: {e}")
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+
+if __name__ == "__main__":
+    processor = LeanSchemaProcessor(data_dir="/Users/ehabba/Desktop/IBM_Results_Processed/lean_schema")
+    file_path = Path("/Users/ehabba/Desktop/IBM_Results_Processed/full_schema/Llama-3.2-1B-Instruct/en/shots_0/mmlu.logical_fallacies.parquet")
+    result = processor.process_file(file_path)
