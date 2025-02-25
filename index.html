@@ -34,10 +34,15 @@
     <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
     <link rel="stylesheet" href="static/css/index.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+      });
+    </script>
 
     <style>
         .highlight-word {
@@ -57,20 +62,7 @@
             color: #666;
         }
 
-        .token.number {
-            background: none !important;
-            border-radius: 0 !important;
-            padding: 0 !important;
-        }
 
-        .code-block pre {
-            padding: 1em;
-            overflow-x: auto;
-            margin: 0;
-            background: #282c34;
-            color: #abb2bf;
-            border-radius: 6px;
-        }
 
         .code-block .copy-button {
             position: absolute;
@@ -309,10 +301,9 @@
         <h2 class="title is-3">Usage</h2>
         <div class="content">
             <h3 class="title is-4">Basic Dataset Loading</h3>
-
-            <div class="code-block">
-                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
-                <pre><code class="language-python">
+<div class="code-block">
+  <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+  <pre><code class="language-python">
 from datasets import load_dataset
 from pathlib import Path
 
@@ -325,7 +316,7 @@ def load_dove_subset(model_name: str, language: str = "en", shots: int = 0):
 llama_en_zero = load_dove_subset("Llama-3.2-1B-Instruct", language="en", shots=0)
 mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", shots=5)
   </code></pre>
-            </div>
+</div>
         </div>
     </div>
 </section>
