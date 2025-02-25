@@ -34,7 +34,8 @@
     <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
     <link rel="stylesheet" href="static/css/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 
@@ -56,9 +57,10 @@
             color: #666;
         }
 
-        .code-block pre {
-            background: unset !important;
-            color: unset !important;
+        .token.number {
+            background: none !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
         }
 
         .code-block pre {
@@ -307,6 +309,7 @@
         <h2 class="title is-3">Usage</h2>
         <div class="content">
             <h3 class="title is-4">Basic Dataset Loading</h3>
+
             <div class="code-block">
                 <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
                 <pre><code class="language-python">
