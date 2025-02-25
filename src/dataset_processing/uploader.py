@@ -45,8 +45,12 @@ class DatasetUploader:
                 self.logger.warning(f"Directory not found: {schema_dir}")
                 return
 
-            # Get model directories
-            model_dirs = [d for d in schema_dir.iterdir() if d.is_dir()]
+            # Get model directories (skip logs directory)
+            model_dirs = [
+                d for d in schema_dir.iterdir() 
+                if d.is_dir() and d.name != ProcessingConstants.LOGS_DIR_NAME
+            ]
+            
             if not model_dirs:
                 self.logger.warning(f"No model directories found in {schema_dir}")
                 return
