@@ -1,6 +1,8 @@
 # uploader.py
 from pathlib import Path
 from typing import Optional
+from tqdm import tqdm
+import os
 
 from huggingface_hub import HfApi
 from logger_config import LoggerConfig
@@ -19,6 +21,15 @@ class DatasetUploader:
             "DatasetUploader",
             self.data_dir / ProcessingConstants.LOGS_DIR_NAME
         )
+
+    def _get_dir_size(self, dir_path: Path) -> float:
+        """Get directory size in GB."""
+        total_size = 0
+        for dirpath, _, filenames in os.walk(dir_path):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                total_size += os.path.getsize(fp)
+        return total_size / (1024 * 1024 * 1024)  # Convert to GB
 
     def upload_all(self):
         """Upload both full and lean schema datasets."""
@@ -55,27 +66,36 @@ class DatasetUploader:
                 self.logger.warning(f"No model directories found in {schema_dir}")
                 return
 
-            self.logger.info(f"Found {len(model_dirs)} model directories to upload")
+            total_size_gb = sum(self._get_dir_size(d) for d in model_dirs)
+            self.logger.info(f"Found {len(model_dirs)} model directories to upload (Total size: {total_size_gb:.2f}GB)")
 
-            # Upload each model directory
-            for model_dir in model_dirs:
+            # Upload each model directory with progress bar
+            for model_dir in tqdm(model_dirs, desc="Uploading model directories"):
                 try:
-                    self.logger.info(f"Uploading model directory: {model_dir.name}")
+                    dir_size_gb = self._get_dir_size(model_dir)
+                    self.logger.info(f"Starting upload of {model_dir.name} ({dir_size_gb:.2f}GB)")
+                    
+                    # Count files for progress reporting
+                    file_count = sum(1 for _ in model_dir.rglob('*') if _.is_file())
+                    self.logger.info(f"Found {file_count} files in {model_dir.name}")
+
                     self.api.upload_folder(
                         folder_path=str(model_dir),
                         repo_id=repo_name,
                         repo_type="dataset",
-                        path_in_repo=model_dir.name  # Upload to root of repo with model name
+                        path_in_repo=model_dir.name
                     )
-                    self.logger.info(f"Successfully uploaded {model_dir.name}")
+                    self.logger.info(f"Successfully uploaded {model_dir.name} ({dir_size_gb:.2f}GB)")
 
                 except Exception as e:
                     self.logger.error(f"Error uploading directory {model_dir.name}: {e}")
+                    self.logger.error(f"Traceback: {traceback.format_exc()}")
                     continue
+
+            self.logger.info(f"Completed uploading all directories (Total: {total_size_gb:.2f}GB)")
 
         except Exception as e:
             self.logger.error(f"Error uploading schema directory {schema_dir}: {e}")
-            import traceback
             self.logger.error(f"Traceback: {traceback.format_exc()}")
 
 
