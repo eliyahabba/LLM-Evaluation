@@ -6,7 +6,7 @@ import shutil
 from typing import Optional
 import argparse
 from tqdm import tqdm
-
+import traceback
 import pyarrow.parquet as pq
 
 from constants import ProcessingConstants, ParquetConstants
