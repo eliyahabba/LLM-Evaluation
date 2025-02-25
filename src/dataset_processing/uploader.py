@@ -16,7 +16,14 @@ class DatasetUploader:
     def __init__(self, data_dir: Path):
         """Initialize the dataset uploader."""
         self.data_dir = data_dir
-        self.api = HfApi()
+        
+        # Get HF token from config
+        config = Config()
+        self.token = config.config_values.get("hf_access_token")
+        if not self.token:
+            raise ValueError("HuggingFace access token not found in config")
+        
+        self.api = HfApi(token=self.token)
         self.logger = LoggerConfig.setup_logger(
             "DatasetUploader",
             self.data_dir / ProcessingConstants.LOGS_DIR_NAME
@@ -49,12 +56,29 @@ class DatasetUploader:
             import traceback
             self.logger.error(f"Traceback: {traceback.format_exc()}")
 
+    def _ensure_repo_exists(self, repo_name: str):
+        """Create repository if it doesn't exist."""
+        try:
+            self.api.create_repo(
+                repo_id=repo_name,
+                repo_type="dataset",
+                private=False,
+                exist_ok=True
+            )
+            self.logger.info(f"Ensured repository {repo_name} exists")
+        except Exception as e:
+            self.logger.error(f"Error creating repository {repo_name}: {e}")
+            raise
+
     def _upload_schema_dir(self, schema_dir: Path, repo_name: str):
         """Upload a schema directory to HuggingFace."""
         try:
             if not schema_dir.exists():
                 self.logger.warning(f"Directory not found: {schema_dir}")
                 return
+
+            # Ensure repository exists
+            self._ensure_repo_exists(repo_name)
 
             # Get model directories (skip logs directory)
             model_dirs = [
