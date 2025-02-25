@@ -173,6 +173,13 @@ class DatasetUploader:
     def _process_upload_task(self, task: UploadTask) -> bool:
         """Process a single upload task."""
         try:
+            # Create a new logger for this process
+            logger = LoggerConfig.setup_logger(
+                "DatasetUploader",
+                self.data_dir / ProcessingConstants.LOGS_DIR_NAME,
+                process_id=os.getpid()
+            )
+
             # Calculate size
             size_gb = (
                 os.path.getsize(task.path) if task.is_file
@@ -183,7 +190,7 @@ class DatasetUploader:
             repo_path = f"{task.model_name}/{task.path.parent.parent.name}/{task.path.parent.name}"
             
             if task.is_file:
-                self.logger.info(f"Uploading file: {task.path.name} ({size_gb:.2f}GB)")
+                logger.info(f"Uploading file: {task.path.name} ({size_gb:.2f}GB)")
                 self.api.upload_file(
                     path_or_fileobj=str(task.path),
                     path_in_repo=f"{repo_path}/{task.path.name}",
@@ -191,7 +198,7 @@ class DatasetUploader:
                     repo_type="dataset"
                 )
             else:
-                self.logger.info(f"Uploading directory: {task.path.name} ({size_gb:.2f}GB)")
+                logger.info(f"Uploading directory: {task.path.name} ({size_gb:.2f}GB)")
                 self.api.upload_folder(
                     folder_path=str(task.path),
                     repo_id=task.repo_name,
@@ -201,8 +208,8 @@ class DatasetUploader:
             return True
 
         except Exception as e:
-            self.logger.error(f"Error processing upload task for {task.path}: {e}")
-            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            logger.error(f"Error processing upload task for {task.path}: {e}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
             return False
 
 
