@@ -200,10 +200,13 @@ class DatasetUploader:
                 else self._get_dir_size(task.path)
             ) / (1024 * 1024 * 1024)
 
-            # Get repo path
-            repo_path = f"{task.model_name}/{task.path.parent.parent.name}/{task.path.parent.name}"
+            # Get repo path components
+            lang = task.path.parent.parent.name
+            shots = task.path.parent.name
             
             if task.is_file:
+                # For files: model/lang/shots/file.parquet
+                repo_path = f"{task.model_name}/{lang}/{shots}"
                 logger.info(f"Uploading file: {task.path.name} ({size_gb:.2f}GB)")
                 self.api.upload_file(
                     path_or_fileobj=str(task.path),
@@ -212,6 +215,8 @@ class DatasetUploader:
                     repo_type="dataset"
                 )
             else:
+                # For directories: model/lang/shots
+                repo_path = f"{task.model_name}/{lang}"
                 logger.info(f"Uploading directory: {task.path.name} ({size_gb:.2f}GB)")
                 self.api.upload_folder(
                     folder_path=str(task.path),
