@@ -149,7 +149,7 @@ class DatasetUploader:
                                 continue
                             upload_tasks.append(UploadTask(
                                 path=shots_dir,
-                                repo_path=f"{model_name}/{lang_name}",
+                                repo_path=f"{model_name}/{lang_name}/{shots_dir.name}",
                                 repo_name=repo_name
                             ))
             total_tasks = len(upload_tasks)
@@ -207,7 +207,7 @@ class DatasetUploader:
                       ) / (1024 * 1024 * 1024)
 
             if task.is_file:
-                logger.info(f"Uploading file: {task.path.name} ({size_gb:.2f}GB)")
+                logger.info(f"Uploading file: {task.path} ({size_gb:.2f}GB)")
                 self.api.upload_file(
                     path_or_fileobj=str(task.path),
                     path_in_repo=task.repo_path,
@@ -215,7 +215,7 @@ class DatasetUploader:
                     repo_type="dataset"
                 )
             else:
-                logger.info(f"Uploading directory: {task.path.name} ({size_gb:.2f}GB)")
+                logger.info(f"Uploading directory: {task.path} ({size_gb:.2f}GB)")
                 self.api.upload_folder(
                     folder_path=str(task.path),
                     repo_id=task.repo_name,
