@@ -72,9 +72,7 @@ class DatasetUploader:
             # Upload each model directory with progress bar
             for model_dir in tqdm(model_dirs, desc="Uploading model directories"):
                 try:
-                    dir_size_gb = self._get_dir_size(model_dir)
-                    self.logger.info(f"Starting upload of {model_dir.name} ({dir_size_gb:.2f}GB)")
-                    
+
                     # Count files for progress reporting
                     file_count = sum(1 for _ in model_dir.rglob('*') if _.is_file())
                     self.logger.info(f"Found {file_count} files in {model_dir.name}")
@@ -85,9 +83,10 @@ class DatasetUploader:
                         repo_type="dataset",
                         path_in_repo=model_dir.name
                     )
-                    self.logger.info(f"Successfully uploaded {model_dir.name} ({dir_size_gb:.2f}GB)")
+                    self.logger.info(f"Successfully uploaded {model_dir.name}")
 
                 except Exception as e:
+                    import traceback
                     self.logger.error(f"Error uploading directory {model_dir.name}: {e}")
                     self.logger.error(f"Traceback: {traceback.format_exc()}")
                     continue
