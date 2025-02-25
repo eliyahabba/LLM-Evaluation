@@ -45,6 +45,52 @@
     font-size: 0.9rem;
     color: #666;
   }
+  .code-container {
+    margin-bottom: 1.5rem;
+  }
+
+.code-header {
+  background-color: #777f8c; /* האפור שבחרנו */
+  color: #111111; /* צבע כהה מאוד, כמעט שחור */
+  padding: 8px 16px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-size: 14px;
+  font-weight: bold; /* מודגש */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+  .copy-button {
+    background-color: #ffffff; /* יותר בהיר */
+    color: #111111; /* לבן מלא */
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: bold; /* מודגש */
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .copy-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+        font-weight: bold; /* מודגש */
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .copy-button.copied {
+    background-color: #4cd964;
+    color: #ffffff;
+  }
+
+  .code-container pre {
+    margin-top: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
 </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
@@ -56,9 +102,72 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
 <script>
+  // קודם כל נפעיל את highlight.js על כל בלוקי הקוד
   document.addEventListener('DOMContentLoaded', (event) => {
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightElement(block);
+    });
+  });
+
+  // אחר כך נוסיף את המלבנים והכפתורים
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('pre code').forEach((codeBlock) => {
+      const languageClass = codeBlock.className.split(' ').find(cls => cls.startsWith('language-')) || '';
+      const language = languageClass.replace('language-', '');
+      
+      let displayLang = 'Code';
+      if (language === 'python') displayLang = 'Python';
+      else if (language === 'bash') displayLang = 'Bash';
+      else if (language === 'bibtex') displayLang = 'BibTeX';
+      
+      const codeContainer = document.createElement('div');
+      codeContainer.className = 'code-container';
+      
+      const codeHeader = document.createElement('div');
+      codeHeader.className = 'code-header';
+      
+      const langName = document.createElement('span');
+      langName.textContent = displayLang;
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.textContent = 'Copy';
+      
+      copyButton.addEventListener('click', () => {
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent;
+        textArea.style.position = 'absolute';
+        textArea.style.left = '-999999px';
+        
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+          copyButton.textContent = 'Copied!';
+          copyButton.classList.add('copied');
+          
+          setTimeout(() => {
+            copyButton.textContent = 'Copy';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy text: ', err);
+        }
+        
+        document.body.removeChild(textArea);
+      });
+      
+      codeHeader.appendChild(langName);
+      codeHeader.appendChild(copyButton);
+      
+      const preElement = codeBlock.parentNode;
+      const parent = preElement.parentNode;
+      
+      parent.insertBefore(codeContainer, preElement);
+      
+      codeContainer.appendChild(codeHeader);
+      codeContainer.appendChild(preElement);
     });
   });
 </script>
@@ -288,7 +397,7 @@ mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", sh
     <div class="container is-max-desktop">
       <h2 class="title is-3">Dataset Structure</h2>
       <div class="content">
-        <pre><code>nlphuji/
+        <pre><code class="language-bash">nlphuji/
 ├── Dove/
 │   ├── model_name/                      # e.g., "Llama-3.2-1B-Instruct"
 │   │   ├── language/                    # e.g., "en", "fr"
@@ -357,7 +466,7 @@ mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", sh
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">Citation</h2>
-      <pre><code>@article{dove2025,
+      <pre><code class="language-bibtex">@article{dove2025,
  title={DOVE: A Large-Scale Multi-Dimensional Predictions Dataset Towards Meaningful LLM Evaluation},
  author={Anonymous},
  journal={arXiv preprint arXiv:XXXX.XXXXX},
