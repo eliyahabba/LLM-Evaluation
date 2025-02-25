@@ -5,6 +5,7 @@ import time
 import shutil
 from typing import Optional
 import argparse
+from tqdm import tqdm
 
 import pyarrow.parquet as pq
 
@@ -190,7 +191,7 @@ class DatasetMerger:
         try:
             full_schema_dir = self.data_dir / ProcessingConstants.FULL_SCHEMA_DIR_NAME
             
-            # Collect all deduplicated files (not merged files)
+            # Collect all deduplicated files
             parquet_files = []
             for model_dir in full_schema_dir.glob("*"):
                 if not model_dir.is_dir():
@@ -212,29 +213,61 @@ class DatasetMerger:
             
             processor = LeanSchemaProcessor(data_dir=str(self.data_dir / ProcessingConstants.LEAN_SCHEMA_DIR_NAME))
             
+            # Process files in parallel with better error handling
             with concurrent.futures.ProcessPoolExecutor(max_workers=self.num_workers) as executor:
                 futures = {
-                    executor.submit(processor.process_file, f): f
+                    executor.submit(self._process_lean_file_safely, processor, f): f
                     for f in parquet_files
                 }
 
-                for future in concurrent.futures.as_completed(futures):
+                completed = 0
+                failed = 0
+                total = len(futures)
+
+                for future in tqdm(
+                    concurrent.futures.as_completed(futures),
+                    total=total,
+                    desc="Processing files"
+                ):
                     file_path = futures[future]
                     try:
                         result = future.result()
                         if result:
-                            self.logger.info(f"Created lean schema for {file_path}")
+                            completed += 1
+                            self.logger.info(
+                                f"Successfully processed {file_path.name} "
+                                f"({completed}/{total} completed, {failed} failed)"
+                            )
                         else:
-                            self.logger.error(f"Failed to create lean schema for {file_path}")
+                            failed += 1
+                            self.logger.error(
+                                f"Failed to process {file_path.name} "
+                                f"({completed}/{total} completed, {failed} failed)"
+                            )
                     except Exception as e:
-                        import traceback
-                        self.logger.error(f"Error creating lean schema for {file_path}: {e}")
+                        failed += 1
+                        self.logger.error(f"Error processing {file_path.name}: {e}")
                         self.logger.error(f"Traceback: {traceback.format_exc()}")
+
+                self.logger.info(
+                    f"Lean schema creation completed: "
+                    f"{completed} successful, {failed} failed, {total} total"
+                )
 
         except Exception as e:
             self.logger.error(f"Error in create_lean_schema: {e}")
-            import traceback
             self.logger.error(f"Traceback: {traceback.format_exc()}")
+
+    def _process_lean_file_safely(self, processor: LeanSchemaProcessor, file_path: Path) -> bool:
+        """Safely process a single file for lean schema creation."""
+        try:
+            result = processor.process_file(file_path)
+            return bool(result)  # Return True if we got any processed files
+        except Exception as e:
+            # Log error but don't raise - let the process continue
+            self.logger.error(f"Error processing file {file_path}: {e}")
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            return False
 
 
 if __name__ == "__main__":
