@@ -93,25 +93,23 @@ class DatasetUploader:
             total_size_gb = sum(self._get_dir_size(d) for d in model_dirs)
             self.logger.info(f"Found {len(model_dirs)} model directories to upload (Total size: {total_size_gb:.2f}GB)")
 
-            # Upload each model directory with progress bar
-            for model_dir in tqdm(model_dirs, desc="Uploading model directories"):
+            # Process each model directory
+            for model_dir in tqdm(model_dirs, desc="Processing model directories"):
                 try:
+                    # For each language directory in the model
+                    for lang_dir in model_dir.iterdir():
+                        if not lang_dir.is_dir():
+                            continue
 
-                    # Count files for progress reporting
-                    file_count = sum(1 for _ in model_dir.rglob('*') if _.is_file())
-                    self.logger.info(f"Found {file_count} files in {model_dir.name}")
-
-                    self.api.upload_folder(
-                        folder_path=str(model_dir),
-                        repo_id=repo_name,
-                        repo_type="dataset",
-                        path_in_repo=model_dir.name
-                    )
-                    self.logger.info(f"Successfully uploaded {model_dir.name}")
+                        # Special handling for English
+                        if lang_dir.name == "en":
+                            self._upload_english_dir(lang_dir, model_dir.name, repo_name)
+                        else:
+                            # For other languages, upload each shots directory
+                            self._upload_language_dir(lang_dir, model_dir.name, repo_name)
 
                 except Exception as e:
-                    import traceback
-                    self.logger.error(f"Error uploading directory {model_dir.name}: {e}")
+                    self.logger.error(f"Error processing model directory {model_dir.name}: {e}")
                     self.logger.error(f"Traceback: {traceback.format_exc()}")
                     continue
 
@@ -120,6 +118,68 @@ class DatasetUploader:
         except Exception as e:
             self.logger.error(f"Error uploading schema directory {schema_dir}: {e}")
             self.logger.error(f"Traceback: {traceback.format_exc()}")
+
+    def _upload_english_dir(self, lang_dir: Path, model_name: str, repo_name: str):
+        """Upload English files individually within each shots directory."""
+        try:
+            # For each shots directory
+            for shots_dir in lang_dir.iterdir():
+                if not shots_dir.is_dir():
+                    continue
+
+                # Upload each file in the shots directory separately
+                for file_path in shots_dir.glob("*.parquet"):
+                    try:
+                        file_size_gb = os.path.getsize(file_path) / (1024 * 1024 * 1024)
+                        self.logger.info(f"Uploading file: {file_path.name} ({file_size_gb:.2f}GB)")
+
+                        # Maintain the same directory structure in the repo
+                        repo_path = f"{model_name}/{lang_dir.name}/{shots_dir.name}"
+                        
+                        self.api.upload_file(
+                            path_or_fileobj=str(file_path),
+                            path_in_repo=f"{repo_path}/{file_path.name}",
+                            repo_id=repo_name,
+                            repo_type="dataset"
+                        )
+                        self.logger.info(f"Successfully uploaded {file_path.name}")
+
+                    except Exception as e:
+                        self.logger.error(f"Error uploading file {file_path}: {e}")
+                        continue
+
+        except Exception as e:
+            self.logger.error(f"Error processing English directory: {e}")
+
+    def _upload_language_dir(self, lang_dir: Path, model_name: str, repo_name: str):
+        """Upload each shots directory for non-English languages."""
+        try:
+            # For each shots directory
+            for shots_dir in lang_dir.iterdir():
+                if not shots_dir.is_dir():
+                    continue
+
+                try:
+                    dir_size_gb = self._get_dir_size(shots_dir)
+                    self.logger.info(f"Uploading directory: {shots_dir.name} ({dir_size_gb:.2f}GB)")
+
+                    # Maintain the same directory structure in the repo
+                    repo_path = f"{model_name}/{lang_dir.name}/{shots_dir.name}"
+                    
+                    self.api.upload_folder(
+                        folder_path=str(shots_dir),
+                        repo_id=repo_name,
+                        repo_type="dataset",
+                        path_in_repo=repo_path
+                    )
+                    self.logger.info(f"Successfully uploaded {shots_dir.name}")
+
+                except Exception as e:
+                    self.logger.error(f"Error uploading shots directory {shots_dir}: {e}")
+                    continue
+
+        except Exception as e:
+            self.logger.error(f"Error processing language directory {lang_dir.name}: {e}")
 
 
 if __name__ == "__main__":
