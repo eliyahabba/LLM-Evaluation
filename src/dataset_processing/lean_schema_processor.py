@@ -79,17 +79,21 @@ class LeanSchemaProcessor(BaseProcessor):
                 output_dir.mkdir(parents=True, exist_ok=True)
                 output_path = output_dir / f"{file_path.stem}{ProcessingConstants.PARQUET_EXTENSION}"
 
-                # Initialize writer
+                # Initialize writer and counters
                 writer = None
                 processed_rows = 0
+
+                # Count total rows in input file
+                parquet_file = pq.ParquetFile(str(file_path))
+                total_input_rows = sum(parquet_file.metadata.row_group(i).num_rows 
+                                     for i in range(parquet_file.num_row_groups))
                 
                 # Read and process in batches
                 for batch in self._read_parquet_in_batches(file_path):
                     try:
                         # Convert batch to pandas for processing
-                        batch_df = batch
-                        batch_df = batch_df.reset_index(drop=True)
-                        lean_df = self.create_lean_version(batch_df)
+                        batch = batch.reset_index(drop=True)
+                        lean_df = self.create_lean_version(batch)
                         
                         if lean_df.empty:
                             continue
@@ -108,16 +112,21 @@ class LeanSchemaProcessor(BaseProcessor):
                         table = pa.Table.from_pandas(lean_df)
                         writer.write_table(table)
                         processed_rows += len(lean_df)
-                        self.logger.info(f"Processed {processed_rows} rows so far...")
 
                     except Exception as e:
                         self.logger.error(f"Error processing batch: {e}")
                         self.logger.error(f"Traceback: {traceback.format_exc()}")
                         continue
 
-                # Close writer
+                # Close writer and log statistics
                 if writer:
                     writer.close()
+                    self.logger.info(
+                        f"Completed processing {file_path.name}:\n"
+                        f"  - Original rows: {total_input_rows:,}\n"
+                        f"  - Lean schema rows: {processed_rows:,}\n"
+                        f"  - Reduction: {((total_input_rows - processed_rows) / total_input_rows * 100):.2f}%"
+                    )
                     return [str(output_path)]
                 return []
 
