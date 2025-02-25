@@ -1,17 +1,19 @@
 # main.py
 import concurrent.futures
-import logging
 import os
 from pathlib import Path
 from typing import List, Optional
+import logging
 
 from config.get_config import Config
 from constants import ProcessingConstants
+from deduplication_processor import DeduplicationProcessor
 from file_downloader import HFFileDownloader
 from full_schema_processor import FullSchemaProcessor
 from lean_schema_processor import LeanSchemaProcessor
 from logger_config import LoggerConfig
 from processed_files_manager import ProcessedFilesManager
+
 
 
 def setup_process_logger(name: str, output_dir: str) -> logging.Logger:
@@ -102,7 +104,7 @@ def process_full_schema_standalone(file_path: str, input_dir: str, output_dir: s
 
         # Mark both the original file and full schema files as processed
         input_files_manager = ProcessedFilesManager(input_dir)
-        input_files_manager.mark_as_processed(local_path)
+        input_files_manager.mark_as_processed(local_path, log_message=True)
 
         full_schema_manager = ProcessedFilesManager(
             data_dir=output_dir,
@@ -220,51 +222,59 @@ class UnifiedDatasetProcessor:
         except Exception as e:
             self.logger.error(f"Error in process_full_schema_files: {e}")
             return []
-
-    def process_lean_schema_files(self):
-        """Process all unprocessed full schema files to lean schema in parallel."""
-        try:
-            # Get files to process
-            full_schema_manager = ProcessedFilesManager(
-                data_dir=self.output_dir,
-                record_file=ProcessingConstants.FULL_SCHEMA_FILES_RECORD
-            )
-
-            full_schema_dir = Path(self.output_dir) / ProcessingConstants.FULL_SCHEMA_DIR_NAME
-            all_full_schema_files = list(full_schema_dir.glob(f"*{ProcessingConstants.PARQUET_EXTENSION}"))
-
-            files_to_process = [
-                str(f) for f in all_full_schema_files
-                if full_schema_manager.is_processed(str(f))
-            ]
-
-            if not files_to_process:
-                self.logger.info("No full schema files to process")
-                return []
-
-            self.logger.info(f"Found {len(files_to_process)} full schema files to process")
-
-            # Process files
-            processed_files = process_files_in_parallel(
-                process_lean_schema_standalone,
-                files_to_process,
-                self.num_workers,
-                self.logger,
-                output_dir=self.output_dir,
-                token=self.token
-            )
-
-            # Deduplicate results
-            # if processed_files:
-            #     self.logger.info(f"Starting deduplication of {len(processed_files)} lean schema files")
-            #     if not self.deduplicator.deduplicate_files(set(processed_files)):
-            #         self.logger.error("Deduplication failed")
-
-            return processed_files
-
-        except Exception as e:
-            self.logger.error(f"Error in process_lean_schema_files: {e}")
-            return []
+    #
+    # def process_lean_schema_files(self):
+    #     """Process all unprocessed full schema files to lean schema in parallel."""
+    #     try:
+    #         # Get files to process
+    #         full_schema_manager = ProcessedFilesManager(
+    #             data_dir=self.output_dir,
+    #             record_file=ProcessingConstants.FULL_SCHEMA_FILES_RECORD
+    #         )
+    #
+    #         full_schema_dir = Path(self.output_dir) / ProcessingConstants.FULL_SCHEMA_DIR_NAME
+    #         all_full_schema_files = list(full_schema_dir.glob(f"*{ProcessingConstants.PARQUET_EXTENSION}"))
+    #
+    #         files_to_process = [
+    #             str(f) for f in all_full_schema_files
+    #             if full_schema_manager.is_processed(str(f))
+    #         ]
+    #
+    #         if not files_to_process:
+    #             self.logger.info("No full schema files to process")
+    #             return []
+    #
+    #         self.logger.info(f"Found {len(files_to_process)} full schema files to process")
+    #
+    #         # Process files
+    #         processed_files = process_files_in_parallel(
+    #             process_lean_schema_standalone,
+    #             files_to_process,
+    #             self.num_workers,
+    #             self.logger,
+    #             output_dir=self.output_dir,
+    #             token=self.token
+    #         )
+    #
+    #         if processed_files:
+    #             # First merge the files
+    #             self.logger.info("Starting merge of lean schema files")
+    #             merger = ParquetMergeProcessor(
+    #                 data_dir=Path(self.output_dir) / ProcessingConstants.LEAN_SCHEMA_DIR_NAME,
+    #                 num_workers=self.num_workers
+    #             )
+    #             merger.merge_model_files()
+    #
+    #             # Then deduplicate the merged files
+    #             self.logger.info(f"Starting deduplication of lean schema files")
+    #             if not self.deduplicator.deduplicate_files(set(processed_files)):
+    #                 self.logger.error("Deduplication failed")
+    #
+    #         return processed_files
+    #
+    #     except Exception as e:
+    #         self.logger.error(f"Error in process_lean_schema_files: {e}")
+    #         return []
 
 
 if __name__ == "__main__":
