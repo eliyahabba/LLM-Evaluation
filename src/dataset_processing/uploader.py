@@ -1,24 +1,25 @@
 # uploader.py
-import traceback
-from pathlib import Path
-from typing import Optional, List
-from tqdm import tqdm
-import os
 import concurrent.futures
+import os
+import traceback
 from dataclasses import dataclass
+from pathlib import Path
+from typing import List
 
 from huggingface_hub import HfApi
-from logger_config import LoggerConfig
-from constants import ProcessingConstants
+from tqdm import tqdm
+
 from config.get_config import Config
+from constants import ProcessingConstants
+from logger_config import LoggerConfig
 
 
 @dataclass
 class UploadTask:
     """Represents a single upload task."""
-    path: Path
-    model_name: str
-    repo_name: str
+    path: Path  # Local path to file/directory to upload
+    repo_path: str  # Target path in the repo
+    repo_name: str  # Repository name
     is_file: bool = False  # True for individual files, False for directories
 
 
@@ -28,13 +29,13 @@ class DatasetUploader:
     def __init__(self, data_dir: Path):
         """Initialize the dataset uploader."""
         self.data_dir = data_dir
-        
+
         # Get HF token from config
         config = Config()
         self.token = config.config_values.get("hf_access_token")
         if not self.token:
             raise ValueError("HuggingFace access token not found in config")
-        
+
         self.api = HfApi(token=self.token)
         self.logger = LoggerConfig.setup_logger(
             "DatasetUploader",
@@ -79,7 +80,7 @@ class DatasetUploader:
         try:
             if logger is None:
                 logger = self.logger
-            
+
             self.api.create_repo(
                 repo_id=repo_name,
                 repo_type="dataset",
@@ -110,10 +111,10 @@ class DatasetUploader:
 
             # Get model directories (skip logs directory)
             model_dirs = [
-                d for d in schema_dir.iterdir() 
+                d for d in schema_dir.iterdir()
                 if d.is_dir() and d.name != ProcessingConstants.LOGS_DIR_NAME
             ]
-            
+
             if not model_dirs:
                 logger.warning(f"No model directories found in {schema_dir}")
                 return
@@ -125,15 +126,20 @@ class DatasetUploader:
                     if not lang_dir.is_dir():
                         continue
 
+                    # Get relative path components
+                    model_name = model_dir.name
+                    lang_name = lang_dir.name
+
                     # Special handling for English
                     if lang_dir.name == "en":
                         for shots_dir in lang_dir.iterdir():
                             if not shots_dir.is_dir():
                                 continue
+                            shots_name = shots_dir.name
                             for file_path in shots_dir.glob("*.parquet"):
                                 upload_tasks.append(UploadTask(
                                     path=file_path,
-                                    model_name=model_dir.name,
+                                    repo_path=f"{model_name}/{lang_name}/{shots_name}/{file_path.name}",
                                     repo_name=repo_name,
                                     is_file=True
                                 ))
@@ -143,15 +149,15 @@ class DatasetUploader:
                                 continue
                             upload_tasks.append(UploadTask(
                                 path=shots_dir,
-                                model_name=model_dir.name,
+                                repo_path=f"{model_name}/{lang_name}",
                                 repo_name=repo_name
                             ))
-
             total_tasks = len(upload_tasks)
             logger.info(f"Found {total_tasks} items to upload")
 
             # Process uploads in parallel
-            with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as executor:
+            with concurrent.futures.ProcessPoolExecutor(
+                    max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as executor:
                 futures = {
                     executor.submit(self._process_upload_task, task): task
                     for task in upload_tasks
@@ -159,9 +165,9 @@ class DatasetUploader:
 
                 completed = 0
                 for future in tqdm(
-                    concurrent.futures.as_completed(futures),
-                    total=len(futures),
-                    desc="Uploading files/directories"
+                        concurrent.futures.as_completed(futures),
+                        total=len(futures),
+                        desc="Uploading files/directories"
                 ):
                     task = futures[future]
                     try:
@@ -196,33 +202,25 @@ class DatasetUploader:
 
             # Calculate size
             size_gb = (
-                os.path.getsize(task.path) if task.is_file
-                else self._get_dir_size(task.path)
-            ) / (1024 * 1024 * 1024)
+                          os.path.getsize(task.path) if task.is_file
+                          else self._get_dir_size(task.path)
+                      ) / (1024 * 1024 * 1024)
 
-            # Get repo path components
-            lang = task.path.parent.parent.name
-            shots = task.path.parent.name
-            
             if task.is_file:
-                # For files: model/lang/shots/file.parquet
-                repo_path = f"{task.model_name}/{lang}/{shots}"
                 logger.info(f"Uploading file: {task.path.name} ({size_gb:.2f}GB)")
                 self.api.upload_file(
                     path_or_fileobj=str(task.path),
-                    path_in_repo=f"{repo_path}/{task.path.name}",
+                    path_in_repo=task.repo_path,
                     repo_id=task.repo_name,
                     repo_type="dataset"
                 )
             else:
-                # For directories: model/lang/shots
-                repo_path = f"{task.model_name}/{lang}"
                 logger.info(f"Uploading directory: {task.path.name} ({size_gb:.2f}GB)")
                 self.api.upload_folder(
                     folder_path=str(task.path),
                     repo_id=task.repo_name,
                     repo_type="dataset",
-                    path_in_repo=repo_path
+                    path_in_repo=task.repo_path
                 )
             return True
 
@@ -234,13 +232,14 @@ class DatasetUploader:
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--schema-type', choices=['all', 'full', 'lean'], default='all',
-                       help='Which schema to upload')
+                        help='Which schema to upload')
     args = parser.parse_args()
 
     uploader = DatasetUploader(Path(ProcessingConstants.OUTPUT_DATA_DIR))
-    
+
     if args.schema_type == 'all':
         uploader.upload_all()
     elif args.schema_type == 'full':
