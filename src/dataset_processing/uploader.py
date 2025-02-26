@@ -156,8 +156,10 @@ class DatasetUploader:
             logger.info(f"Found {total_tasks} items to upload")
 
             # Process uploads in parallel
-            with concurrent.futures.ProcessPoolExecutor(
-                    max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as executor:
+            successful_uploads = []
+            failed_uploads = []
+            
+            with concurrent.futures.ProcessPoolExecutor(max_workers=ProcessingConstants.DEFAULT_NUM_WORKERS) as executor:
                 futures = {
                     executor.submit(self._process_upload_task, task): task
                     for task in upload_tasks
@@ -165,26 +167,45 @@ class DatasetUploader:
 
                 completed = 0
                 for future in tqdm(
-                        concurrent.futures.as_completed(futures),
-                        total=len(futures),
-                        desc="Uploading files/directories"
+                    concurrent.futures.as_completed(futures),
+                    total=len(futures),
+                    desc="Uploading files/directories"
                 ):
                     task = futures[future]
                     try:
                         success = future.result()
                         completed += 1
                         if success:
+                            successful_uploads.append(task.repo_path)
                             logger.info(
                                 f"Successfully uploaded {task.path.name} "
                                 f"({completed}/{total_tasks} completed)"
                             )
                         else:
+                            failed_uploads.append(task.repo_path)
                             logger.error(f"Failed to upload {task.path.name}")
                     except Exception as e:
+                        failed_uploads.append(task.repo_path)
                         logger.error(f"Error uploading {task.path.name}: {e}")
                         logger.error(f"Traceback: {traceback.format_exc()}")
 
-            logger.info(f"Completed uploading {completed}/{total_tasks} items")
+                # Log summary of uploads
+                logger.info("\nUpload Summary:")
+                logger.info(f"Total files attempted: {total_tasks}")
+                logger.info(f"Successfully uploaded: {len(successful_uploads)}")
+                logger.info(f"Failed uploads: {len(failed_uploads)}")
+                
+                if successful_uploads:
+                    logger.info("\nSuccessfully uploaded files:")
+                    for path in sorted(successful_uploads):
+                        logger.info(f"  ✓ {path}")
+                    
+                if failed_uploads:
+                    logger.error("\nFailed uploads:")
+                    for path in sorted(failed_uploads):
+                        logger.error(f"  ✗ {path}")
+
+            return completed
 
         except Exception as e:
             logger.error(f"Error uploading schema directory {schema_dir}: {e}")
