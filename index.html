@@ -91,6 +91,33 @@
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
   }
+
+  /* סגנון מיוחד למבנה הקבצים */
+  .language-tree {
+    line-height: 1.5;
+  }
+
+  /* צבע לתיקיות */
+  .language-tree .hljs-directory {
+    color: #4a90e2 !important;  /* כחול */
+    font-weight: bold;
+  }
+
+  /* צבע לקבצי parquet */
+  .language-tree .hljs-file {
+    color: #4cd964 !important;  /* ירוק */
+  }
+
+  /* צבע לסימני העץ */
+  .language-tree .hljs-tree {
+    color: #f39c12 !important;  /* כתום */
+  }
+
+  /* צבע להערות */
+  .language-tree .hljs-note {
+    color: #8a8a8a !important;  /* אפור */
+    font-style: italic;
+  }
 </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
@@ -102,6 +129,31 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
 <script>
+  // הגדרת שפה מותאמת אישית עבור עץ תיקיות
+  hljs.registerLanguage('tree', function(hljs) {
+    return {
+      name: 'Directory Tree',
+      contains: [
+        {
+          className: 'tree',
+          begin: /[├│└─]+/
+        },
+        {
+          className: 'directory',
+          begin: /[\w.-]+\//
+        },
+        {
+          className: 'file',
+          begin: /[\w.-]+\.parquet/
+        },
+        {
+          className: 'note',
+          begin: /#.*/
+        }
+      ]
+    };
+  });
+
   // קודם כל נפעיל את highlight.js על כל בלוקי הקוד
   document.addEventListener('DOMContentLoaded', (event) => {
     document.querySelectorAll('pre code').forEach((block) => {
@@ -114,39 +166,62 @@
     document.querySelectorAll('pre code').forEach((codeBlock) => {
       const languageClass = codeBlock.className.split(' ').find(cls => cls.startsWith('language-')) || '';
       const language = languageClass.replace('language-', '');
-      
+
       let displayLang = 'Code';
       if (language === 'python') displayLang = 'Python';
       else if (language === 'bash') displayLang = 'Bash';
       else if (language === 'bibtex') displayLang = 'BibTeX';
-      
+      else if (language === 'tree') {
+        displayLang = 'Dataset Structure';
+        // לא מוסיף כפתור העתקה לעץ התיקיות
+        const codeContainer = document.createElement('div');
+        codeContainer.className = 'code-container';
+
+        const codeHeader = document.createElement('div');
+        codeHeader.className = 'code-header';
+
+        const langName = document.createElement('span');
+        langName.textContent = displayLang;
+
+        codeHeader.appendChild(langName);
+
+        const preElement = codeBlock.parentNode;
+        const parent = preElement.parentNode;
+
+        parent.insertBefore(codeContainer, preElement);
+
+        codeContainer.appendChild(codeHeader);
+        codeContainer.appendChild(preElement);
+        return;
+      }
+
       const codeContainer = document.createElement('div');
       codeContainer.className = 'code-container';
-      
+
       const codeHeader = document.createElement('div');
       codeHeader.className = 'code-header';
-      
+
       const langName = document.createElement('span');
       langName.textContent = displayLang;
-      
+
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
       copyButton.textContent = 'Copy';
-      
+
       copyButton.addEventListener('click', () => {
         const textArea = document.createElement('textarea');
         textArea.value = codeBlock.textContent;
         textArea.style.position = 'absolute';
         textArea.style.left = '-999999px';
-        
+
         document.body.appendChild(textArea);
         textArea.select();
-        
+
         try {
           document.execCommand('copy');
           copyButton.textContent = 'Copied!';
           copyButton.classList.add('copied');
-          
+
           setTimeout(() => {
             copyButton.textContent = 'Copy';
             copyButton.classList.remove('copied');
@@ -154,18 +229,18 @@
         } catch (err) {
           console.error('Failed to copy text: ', err);
         }
-        
+
         document.body.removeChild(textArea);
       });
-      
+
       codeHeader.appendChild(langName);
       codeHeader.appendChild(copyButton);
-      
+
       const preElement = codeBlock.parentNode;
       const parent = preElement.parentNode;
-      
+
       parent.insertBefore(codeContainer, preElement);
-      
+
       codeContainer.appendChild(codeHeader);
       codeContainer.appendChild(preElement);
     });
@@ -393,23 +468,27 @@ mistral_fr_five = load_dove_subset("Mistral-7B-Instruct-v0.3", language="fr", sh
   </section>
 
   <!-- Project Structure Section -->
-  <section class="section">
+  <section class="section" style="padding-top: 0;">
     <div class="container is-max-desktop">
-      <h2 class="title is-3">Dataset Structure</h2>
       <div class="content">
-        <pre><code class="language-bash">nlphuji/
-├── Dove/
-│   ├── model_name/                      # e.g., "Llama-3.2-1B-Instruct"
-│   │   ├── language/                    # e.g., "en", "fr"
-│   │   │   └── shots_N/                 # N = 0 for zero-shot, N > 0 for few-shot
-│   │   │       ├── mmlu.abstract_algebra.parquet
-│   │   │       ├── mmlu.world_religions.parquet
-│   │   │       ├── ai2_arc.arc_challenge.parquet
-│   │   │       ├── hellaswag.parquet
-│   │   │       └── other_benchmark_files.parquet
-│   └── other_models/
-└── Dove_Lite/
-    └── [same structure and examples with reduced metadata per instance]</code></pre>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Dataset Structure</span>
+          </div>
+          <pre style="background-color: #282c34; padding: 1em; border-radius: 6px; line-height: 1.5; font-family: 'Courier New', monospace; margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important;"><span style="color: #f39c12;">nlphuji/
+├── </span><span style="color: #9b59b6; font-weight: bold;">Dove/</span><span style="color: #f39c12;">
+│   ├── </span><span style="color: #4a90e2; font-weight: bold;">model_name/</span><span style="color: #8a8a8a; font-style: italic;"> # e.g., "Llama-3.2-1B-Instruct"</span><span style="color: #f39c12;">
+│   │   ├── </span><span style="color: #4a90e2; font-weight: bold;">language/</span><span style="color: #8a8a8a; font-style: italic;"> # e.g., "en", "fr"</span><span style="color: #f39c12;">
+│   │   │   └── </span><span style="color: #4a90e2; font-weight: bold;">shots_N/</span><span style="color: #8a8a8a; font-style: italic;"> # N = 0 for zero-shot, N > 0 for few-shot</span><span style="color: #f39c12;">
+│   │   │       ├── </span><span style="color: #4cd964;">mmlu.abstract_algebra.parquet</span><span style="color: #f39c12;">
+│   │   │       ├── </span><span style="color: #4cd964;">mmlu.world_religions.parquet</span><span style="color: #f39c12;">
+│   │   │       ├── </span><span style="color: #4cd964;">ai2_arc.arc_challenge.parquet</span><span style="color: #f39c12;">
+│   │   │       ├── </span><span style="color: #4cd964;">hellaswag.parquet</span><span style="color: #f39c12;">
+│   │   │       └── </span><span style="color: #4cd964;">other_benchmark_files.parquet</span><span style="color: #f39c12;">
+│   └── </span><span style="color: #4a90e2; font-weight: bold;">other_models/</span><span style="color: #f39c12;">
+└── </span><span style="color: #e74c3c; font-weight: bold;">Dove_Lite/</span><span style="color: #f39c12;">
+    └── </span><span style="color: #e74c3c;">[same structure and examples with reduced metadata per instance]</span></pre>
+        </div>
       </div>
     </div>
   </section>
