@@ -121,6 +121,18 @@ class LeanSchemaProcessor(BaseProcessor):
                 # Close writer and log statistics
                 if writer:
                     writer.close()
+                    
+                    # Log row count differences
+                    rows_diff = total_input_rows - processed_rows
+                    if rows_diff != 0:
+                        self.logger.warning(
+                            f"Row count mismatch in {file_path.name}:\n"
+                            f"  - Original rows: {total_input_rows:,}\n"
+                            f"  - Lean schema rows: {processed_rows:,}\n"
+                            f"  - Missing/extra rows: {abs(rows_diff):,}\n"
+                            f"  - Difference percentage: {(abs(rows_diff) / total_input_rows * 100):.2f}%"
+                        )
+                    
                     self.logger.info(
                         f"Completed processing {file_path.name}:\n"
                         f"  - Original rows: {total_input_rows:,}\n"

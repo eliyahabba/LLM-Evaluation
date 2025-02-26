@@ -194,7 +194,7 @@ class DatasetMerger:
             # Collect all deduplicated files
             parquet_files = []
             for model_dir in full_schema_dir.glob("*"):
-                if not model_dir.is_dir():
+                if not model_dir.is_dir() or model_dir.name == ProcessingConstants.LOGS_DIR_NAME:
                     continue
                 for lang_dir in model_dir.glob("*"):
                     if not lang_dir.is_dir():
