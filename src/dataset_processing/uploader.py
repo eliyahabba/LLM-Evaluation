@@ -2,6 +2,7 @@
 import concurrent.futures
 import os
 import traceback
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List
@@ -223,27 +224,51 @@ class DatasetUploader:
 
             # Calculate size
             size_gb = (
-                          os.path.getsize(task.path) if task.is_file
-                          else self._get_dir_size(task.path)
-                      ) / (1024 * 1024 * 1024)
+                os.path.getsize(task.path) if task.is_file
+                else self._get_dir_size(task.path)
+            ) / (1024 * 1024 * 1024)
 
-            if task.is_file:
-                logger.info(f"Uploading file: {task.path} ({size_gb:.2f}GB)")
-                self.api.upload_file(
-                    path_or_fileobj=str(task.path),
-                    path_in_repo=task.repo_path,
-                    repo_id=task.repo_name,
-                    repo_type="dataset"
-                )
-            else:
-                logger.info(f"Uploading directory: {task.path} ({size_gb:.2f}GB)")
-                self.api.upload_folder(
-                    folder_path=str(task.path),
-                    repo_id=task.repo_name,
-                    repo_type="dataset",
-                    path_in_repo=task.repo_path
-                )
-            return True
+            max_retries = 3
+            retry_delay = 60  # seconds
+            rate_limit_delay = 3600  # 1 hour in seconds
+
+            for attempt in range(max_retries):
+                try:
+                    if task.is_file:
+                        logger.info(f"Uploading file: {task.path} ({size_gb:.2f}GB)")
+                        self.api.upload_file(
+                            path_or_fileobj=str(task.path),
+                            path_in_repo=task.repo_path,
+                            repo_id=task.repo_name,
+                            repo_type="dataset"
+                        )
+                    else:
+                        logger.info(f"Uploading directory: {task.path} ({size_gb:.2f}GB)")
+                        self.api.upload_folder(
+                            folder_path=str(task.path),
+                            repo_id=task.repo_name,
+                            repo_type="dataset",
+                            path_in_repo=task.repo_path
+                        )
+                    
+                    # Add delay between uploads to avoid rate limiting
+                    time.sleep(1)  # 1 second delay between uploads
+                    return True
+
+                except Exception as e:
+                    if "rate-limited" in str(e).lower():
+                        if attempt < max_retries - 1:
+                            logger.warning(f"Rate limited. Waiting {rate_limit_delay/3600:.1f} hours before retry {attempt + 1}/{max_retries}")
+                            time.sleep(rate_limit_delay)
+                        else:
+                            logger.error(f"Failed after {max_retries} rate limit retries")
+                            raise
+                    else:
+                        if attempt < max_retries - 1:
+                            logger.warning(f"Upload failed. Retrying in {retry_delay} seconds ({attempt + 1}/{max_retries})")
+                            time.sleep(retry_delay)
+                        else:
+                            raise
 
         except Exception as e:
             logger.error(f"Error processing upload task for {task.path}: {e}")

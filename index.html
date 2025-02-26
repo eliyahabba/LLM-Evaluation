@@ -328,23 +328,81 @@
     </div>
   </section>
 
-  <!-- Teaser video-->
-  <section class="hero teaser">
-    <div class="container is-max-desktop">
-      <div class="hero-body">
-        <video poster="" id="tree" autoplay controls muted loop style="width: 100%; max-width: 330px; margin: 0 auto; display: block;">
+<!-- Teaser video-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="video-container" style="position: relative; width: 100%; max-width: 330px; margin: 0 auto;">
+        <video poster="" id="tree" autoplay controls muted style="width: 100%; display: block;">
           <!-- Your video here -->
-          <source src="static/videos/dove.mov"
-          type="video/mp4">
+          <source src="static/videos/dove.mov" type="video/mp4">
         </video>
-        <p class="has-text-centered" style="margin-top: 1rem; font-size: 1.1em; font-weight: 400;">
-          <strong>Building DOVE:</strong> To holistically explore LLM sensitivity,<br>
-          we sample prompts as a walk in the space of various <em>prompt dimensions</em> (rows, above).
-        </p>
       </div>
+      <p class="has-text-centered" style="margin-top: 1rem; font-size: 1.1em; font-weight: 400;">
+        <strong>Building DOVE:</strong> To holistically explore LLM sensitivity,<br>
+        we sample prompts as a walk in the space of various <em>prompt dimensions</em> (rows, above).
+      </p>
     </div>
-  </section>
-  <!-- End teaser video -->
+  </div>
+</section>
+
+<style>
+  /* הסתרת שורת הבקרה כשהסרטון לא בפוקוס */
+  video::-webkit-media-controls-panel {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  /* הצגת שורת הבקרה כשהעכבר מעל הסרטון */
+  .video-container:hover video::-webkit-media-controls-panel {
+    opacity: 1;
+  }
+
+  /* להבטיח שהתמונה האחרונה של הסרטון מוצגת בגודל מלא */
+  video {
+    object-fit: contain;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const video = document.getElementById('tree');
+    let playCount = 0;
+    let autoPlayMode = true;
+
+    // מאזין לאירוע סיום הסרטון
+    video.addEventListener('ended', function() {
+      if (autoPlayMode) {
+        playCount++;
+        if (playCount < 2) {
+          // אם הגענו לפחות מ-2 חזרות, נפעיל את הסרטון שוב
+          video.play();
+        } else {
+          // אם הגענו ל-2 חזרות, נעצור על התמונה האחרונה
+          // נעבור לסוף הסרטון במקרה שאנחנו לא שם
+          video.currentTime = video.duration - 0.1;
+          // משתמשים בפונקציה זו כדי להבטיח שהתמונה האחרונה מוצגת
+          setTimeout(function() {
+            video.pause();
+          }, 100);
+          autoPlayMode = false;
+        }
+      }
+    });
+
+    // מאזין ללחיצה על כפתור פליי
+    video.addEventListener('play', function() {
+      // אם הסרטון הופעל ידנית אחרי שהסתיים פעמיים
+      if (!autoPlayMode) {
+        // איפוס מונה ההפעלות והפעלת הסרטון מההתחלה
+        playCount = 0;
+        video.currentTime = 0;
+        autoPlayMode = true;
+      }
+    });
+  });
+</script>
+<!-- End teaser video -->
 <section class="section" style="background-color: #f5f5f5;">
   <div class="container is-max-desktop">
     <!-- Main Call to Action -->
