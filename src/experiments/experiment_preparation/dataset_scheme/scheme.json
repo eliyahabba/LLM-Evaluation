@@ -66,7 +66,7 @@
                 "inference_settings": {
                     "type": "object",
                     "description": "Runtime settings and parameters for model inference - controls how the model generates outputs and performs during execution",
-                    "required": ["quantization", "generation_args"],
+                    "required": ["quantization"],
                     "properties": {
                         "quantization": {
                             "type": "object",
@@ -125,139 +125,75 @@
         "prompt_config": {
             "type": "object",
             "description": "Configuration of the prompt template and formatting",
-            "required": ["prompt_class", "format"],
+            "required": ["prompt_class", "dimensions"],
             "properties": {
                 "prompt_class": {
                     "type": "string",
                     "description": "Type of prompt template and its formatting requirements",
                     "enum": ["MultipleChoice", "OpenEnded", "Completion"]
                 },
-                "format": {
+                "dimensions": {
                     "type": "object",
-                    "description": "Format-specific configuration",
-                    "oneOf": [
-                        {
+                    "description": "Format-specific configuration dimensions",
+                    "required": ["choices_order", "enumerator", "instruction_phrasing", "separator", "shots"],
+                    "properties": {
+                        "choices_order": {
                             "type": "object",
-                            "required": ["template", "separator", "enumerator", "choices_order", "shots"],
+                            "required": ["method", "description"],
                             "properties": {
-                                "template": {
+                                "method": {
                                     "type": "string",
-                                    "description": "Base template format with placeholders for topic, question, choices, and answer"
+                                    "description": "The method to use for ordering choices"
                                 },
-                                "separator": {
+                                "description": {
                                     "type": "string",
-                                    "description": "Character(s) used to separate multiple choice options",
-                                    "enum": ["\\s", "\n", ", ", "; ", " | ", " OR ", " or "]
-                                },
-                                "enumerator": {
-                                    "type": "string",
-                                    "description": "Style of enumeration for multiple choice options",
-                                    "enum": ["capitals", "lowercase", "numbers", "roman", "keyboard", "greek"]
-                                },
-                                "choices_order": {
-                                    "type": "object",
-                                    "required": ["method", "description"],
-                                    "properties": {
-                                        "method": {
-                                            "type": "string",
-                                            "description": "The method to use for ordering choices",
-                                            "examples": [
-                                                {
-                                                    "method": "random",
-                                                    "description": "Randomly shuffles all choices"
-                                                },
-                                                {
-                                                    "method": "none",
-                                                    "description": "Preserves the original order of choices as provided"
-                                                },
-                                                {
-                                                    "method": "shortest_to_longest",
-                                                    "description": "Orders choices by length, from shortest to longest text"
-                                                },
-                                                {
-                                                    "method": "longest_to_shortest",
-                                                    "description": "Orders choices by length, from longest to shortest text"
-                                                },
-                                                {
-                                                    "method": "correct_first",
-                                                    "description": "Places the correct answer as the first choice"
-                                                },
-                                                {
-                                                    "method": "correct_last",
-                                                    "description": "Places the correct answer as the last choice"
-                                                },
-                                                {
-                                                    "method": "alphabetical",
-                                                    "description": "Orders choices alphabetically (A to Z)"
-                                                },
-                                                {
-                                                    "method": "reverse_alphabetical",
-                                                    "description": "Orders choices in reverse alphabetical order (Z to A)"
-                                                }
-                                            ]
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "description": "Detailed explanation of the ordering method"
-                                        }
-                                    }
-                                },
-                                "shots": {
-                                    "type": "integer",
-                                    "description": "Number of examples provided in the prompt",
-                                    "minimum": 0,
-                                    "maximum": 10
-                                },
-                                "demos": {
-                                    "type": ["array", "null"],
-                                    "description": "Array of demonstration examples used in few-shot prompting",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "topic": {
-                                                "type": "string",
-                                                "description": "Topic of the demonstration example"
-                                            },
-                                            "question": {
-                                                "type": "string",
-                                                "description": "Question text"
-                                            },
-                                            "choices": {
-                                                "type": "array",
-                                                "description": "Array of all multiple choice options",
-                                                "items": {
-                                                    "type": "object",
-                                                    "required": ["id", "text"],
-                                                    "properties": {
-                                                        "id": {
-                                                            "type": "string",
-                                                            "description": "Choice identifier (e.g., 'A', '1', etc.)"
-                                                        },
-                                                        "text": {
-                                                            "type": "string",
-                                                            "description": "Choice text"
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            "answer": {
-                                                "type": "integer",
-                                                "description": "Index of correct answer"
-                                            }
-                                        },
-                                        "required": ["topic", "question", "choices", "answer"]
-                                    }
+                                    "description": "Detailed explanation of the ordering method"
                                 }
                             }
+                        },
+                        "demonstrations": {
+                            "type": "array",
+                            "description": "Array of demonstration examples used in few-shot prompting",
+                            "default": []
+                        },
+                        "enumerator": {
+                            "type": "string",
+                            "description": "Style of enumeration for multiple choice options",
+                            "enum": ["capitals", "lowercase", "numbers", "roman", "keyboard", "greek"]
+                        },
+                        "instruction_phrasing": {
+                            "type": "object",
+                            "required": ["name", "text"],
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Name of the instruction template"
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "description": "Template text with placeholders for question and choices (or more)"
+                                }
+                            }
+                        },
+                        "separator": {
+                            "type": "string",
+                            "description": "Character(s) used to separate multiple choice options",
+                            "enum": ["\\s", "\n", ", ", "; ", " | ", " OR ", " or "]
+                        },
+                        "shots": {
+                            "type": "integer",
+                            "description": "Number of examples provided in the prompt",
+                            "minimum": 0,
+                            "maximum": 10
                         }
-                    ]
+                    }
                 }
             }
         },
         "instance": {
             "type": "object",
             "description": "Specific instance and its metadata",
-            "required": ["task_type", "raw_input", "language", "sample_identifier", "perplexity"],
+            "required": ["task_type", "raw_input", "language", "sample_identifier"],
             "additionalProperties": true,
             "properties": {
                 "task_type": {
@@ -338,10 +274,6 @@
                     "items": {
                         "type": "integer"
                     }
-                },
-                "perplexity": {
-                    "type": ["number", "null"],
-                    "description": "Perplexity score measuring the complexity of the input text"
                 },
                 "classification_fields": {
                     "type": "object",
@@ -436,7 +368,7 @@
         "output": {
             "type": "object",
             "description": "Model's response and associated probability metrics",
-            "required": ["response", "generated_tokens_ids", "generated_tokens_logprobs"],
+            "required": ["response"],
             "properties": {
                 "response": {
                     "type": "string",
@@ -445,13 +377,6 @@
                 "cumulative_logprob": {
                     "type": ["number", "null"],
                     "description": "Cumulative log probability of the generated sequence from VLLM"
-                },
-                "generated_tokens_ids": {
-                    "type": ["array", "null"],
-                    "description": "Array of token IDs for the model's response",
-                    "items": {
-                        "type": "integer"
-                    }
                 },
                 "generated_tokens_logprobs": {
                     "additionalProperties": false,
@@ -487,10 +412,6 @@
                             }
                         ]
                     }
-                },
-                "max_prob": {
-                    "type": "string",
-                    "description": "The answer choice that received the highest probability among the specific answer options available in the sample (e.g., if the choices are A, B, C, we only compare probabilities between these three labels in the model's first token prediction)."
                 }
             }
         },
