@@ -9,7 +9,7 @@ import pandas as pd
 from datasets import load_dataset, disable_caching
 from filelock import FileLock
 from tqdm import tqdm
-
+data_type = "old"
 # Model configuration
 MODELS = [
     'OLMoE-1B-7B-0924-Instruct',
@@ -70,18 +70,36 @@ def get_all_datasets() -> List[str]:
 disable_caching()
 
 # Load a specific model/language/shots benchmark
-def load_benchmark(repo_id, model_name, language="en", shots=0, benchmark_file="mmlu.global_facts.parquet"):
-    file_path = f"{model_name}/{language}/{shots}_shot/{benchmark_file}"
+def load_benchmark(repo_id, model_name, language="en", shots=0, benchmark_file="mmlu.global_facts.parquet", data_type="old"):
+    if data_type=="old":
+        file_path = f"{model_name}/shots_{shots}/{language}/{benchmark_file}"
+    else:
+        file_path = f"{model_name}//{language}/{shots}_shot/{benchmark_file}"
     return load_dataset(repo_id, data_files=file_path, split="train", cache_dir=None,    download_mode="force_redownload")
 
 
 # Examples
 # Example 1: Loading from Dove_Lite repository
-def process_configuration(dataset: str) -> Optional[Dict[str, Any]]:
+def get_dataset(model, shot, dataset, data_type):
+    repo1 = "nlphuji/Dove_Lite"
+    repo2 = "eliyahabba/llm-evaluation-analysis-split-folders"
+    if data_type=="old":
+        repo = repo2
+        lang = "english"
+    elif data_type=="new":
+        repo = repo1
+        lang = "en"
+    else:
+        raise ValueError("Invalid data type")
+    df = load_benchmark(repo, model, lang, shot, f"{dataset}.parquet",data_type)
+    return df
+
+
+def process_configuration(dataset: str, data_type) -> Optional[Dict[str, Any]]:
     """Process all models for a single dataset."""
     results = []
-    output_file = "dataset_sizes.csv"
-    lock_file = "dataset_sizes.csv.lock"
+    output_file = f"{data_type}_dataset_sizes.csv"
+    lock_file = f"{data_type}_dataset_sizes.csv.lock"
     
     # Create file lock
     lock = FileLock(lock_file)
@@ -122,7 +140,7 @@ def process_configuration(dataset: str) -> Optional[Dict[str, Any]]:
             
             # If not found in existing data, process it
             try:
-                df = load_benchmark("nlphuji/Dove_Lite", model, "en", shot, f"{dataset}.parquet")
+                df = get_dataset(model, shot, dataset, data_type)
                 num_examples = len(df)
                 
                 results.append({
@@ -191,7 +209,7 @@ def process_with_error_handling(dataset: str) -> Optional[Dict[str, Any]]:
         None if successful, error dict if failed
     """
     try:
-        return process_configuration(dataset)
+        return process_configuration(dataset,data_type)
     except Exception as e:
         return log_error(e, dataset)
 
@@ -216,9 +234,9 @@ def run_configuration_analysis(num_processes: int = 1) -> None:
             ))
 
 
-def print_failed_configurations():
+def print_failed_configurations(data_type):
     """Print all configurations that failed to process."""
-    output_file = "dataset_sizes.csv"
+    output_file = f"{data_type}_dataset_sizes.csv"
     
     if not os.path.exists(output_file):
         print("No results file found")
@@ -247,5 +265,5 @@ def print_failed_configurations():
 
 
 if __name__ == "__main__":
-    run_configuration_analysis(num_processes=16)
-    print_failed_configurations()
+    run_configuration_analysis(num_processes=1)
+    print_failed_configurations(data_type)
