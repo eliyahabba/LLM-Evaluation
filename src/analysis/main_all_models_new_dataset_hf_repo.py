@@ -280,5 +280,5 @@ def print_failed_configurations(data_type):
 
 
 if __name__ == "__main__":
-    run_configuration_analysis(num_processes=16)
+    run_configuration_analysis(num_processes=50)
     print_failed_configurations(data_type)
