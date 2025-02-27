@@ -4,6 +4,14 @@ import traceback
 from datetime import datetime
 from multiprocessing import Pool, Manager
 from typing import List, Dict, Any, Optional
+from huggingface_hub import login
+from config.get_config import Config
+
+config = Config()
+token = config.config_values.get("hf_access_token")
+
+login(token=token)
+
 
 import pandas as pd
 from datasets import load_dataset, disable_caching
