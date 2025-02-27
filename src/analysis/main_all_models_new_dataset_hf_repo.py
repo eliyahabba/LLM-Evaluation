@@ -86,12 +86,23 @@ def get_dataset(model, shot, dataset, data_type):
     if data_type=="old":
         repo = repo2
         lang = "english"
+        cols = ['sample_index', 'model', 'dataset', 'template', 'separator', 'enumerator', 'choices_order', 'shots']
+        df = load_benchmark(repo, model, lang, shot, f"{dataset}.parquet",data_type)
+        df = dataset.to_pandas()
+        df = df.drop_duplicates(subset=cols)
+        df = df[
+                    (df["shots"] == 0) |
+                    (~df.choices_order.isin(["correct_first", "correct_last"]))
+                    ]
+
+
     elif data_type=="new":
         repo = repo1
         lang = "en"
+        df = load_benchmark(repo, model, lang, shot, f"{dataset}.parquet", data_type)
     else:
         raise ValueError("Invalid data type")
-    df = load_benchmark(repo, model, lang, shot, f"{dataset}.parquet",data_type)
+
     return df
 
 
@@ -100,33 +111,33 @@ def process_configuration(dataset: str, data_type) -> Optional[Dict[str, Any]]:
     results = []
     output_file = f"{data_type}_dataset_sizes.csv"
     lock_file = f"{data_type}_dataset_sizes.csv.lock"
-    
+
     # Create file lock
     lock = FileLock(lock_file)
-    
+
     # Load existing data if file exists
     existing_data = None
     with lock:
         if os.path.exists(output_file):
             existing_data = pd.read_csv(output_file)
-    
+
     total_configs = len(MODELS) * 2  # 2 shots per model
     processed = 0
-    
+
     print(f"\nProcessing dataset: {dataset}")
     print(f"Total configurations for this dataset: {total_configs}")
-    
+
     # Process each model
     for model in MODELS:
         for shot in [0, 5]:
             processed += 1
             print(f"Progress: {processed}/{total_configs} - Processing {model} with {shot} shots", end='\r')
-            
+
             # Check if we already have this configuration
             if existing_data is not None:
                 existing_row = existing_data[
-                    (existing_data['model'] == model) & 
-                    (existing_data['dataset'] == dataset) & 
+                    (existing_data['model'] == model) &
+                    (existing_data['dataset'] == dataset) &
                     (existing_data['shots'] == shot)
                 ]
                 if len(existing_row) > 0:
@@ -137,12 +148,12 @@ def process_configuration(dataset: str, data_type) -> Optional[Dict[str, Any]]:
                         'num_examples': existing_row.iloc[0]['num_examples']
                     })
                     continue
-            
+
             # If not found in existing data, process it
             try:
                 df = get_dataset(model, shot, dataset, data_type)
                 num_examples = len(df)
-                
+
                 results.append({
                     'model': model,
                     'dataset': dataset,
@@ -158,9 +169,9 @@ def process_configuration(dataset: str, data_type) -> Optional[Dict[str, Any]]:
                     'num_examples': 0,
                     'error': str(e)
                 })
-    
+
     print(f"\nCompleted dataset: {dataset}")
-    
+
     # Convert results to DataFrame and save
     if results:  # Only save if we have new results
         results_df = pd.DataFrame(results)
@@ -169,7 +180,7 @@ def process_configuration(dataset: str, data_type) -> Optional[Dict[str, Any]]:
                 results_df.to_csv(output_file, mode='a', header=False, index=False)
             else:
                 results_df.to_csv(output_file, index=False)
-    
+
     return None
 
 
@@ -218,11 +229,11 @@ def run_configuration_analysis(num_processes: int = 1) -> None:
     """Run parallel analysis of datasets across all models."""
     datasets = get_all_datasets()
     total_datasets = len(datasets)
-    
+
     print(f"Starting analysis with {num_processes} processes")
     print(f"Total datasets to process: {total_datasets}")
     print(f"Total configurations to process: {total_datasets * len(MODELS) * 2}")
-    
+
     # Run parallel processing with progress bar
     with Manager() as manager:
         with Pool(processes=num_processes) as pool:
@@ -237,20 +248,20 @@ def run_configuration_analysis(num_processes: int = 1) -> None:
 def print_failed_configurations(data_type):
     """Print all configurations that failed to process."""
     output_file = f"{data_type}_dataset_sizes.csv"
-    
+
     if not os.path.exists(output_file):
         print("No results file found")
         return
-        
+
     df = pd.read_csv(output_file)
-    
+
     # Filter for failed configurations (where num_examples is 0)
     failed_configs = df[df['num_examples'] == 0]
-    
+
     if len(failed_configs) == 0:
         print("No failed configurations found")
         return
-        
+
     print("\nFailed Configurations:")
     print("=" * 80)
     for _, row in failed_configs.iterrows():
@@ -260,7 +271,7 @@ def print_failed_configurations(data_type):
         if 'error' in row:
             print(f"Error: {row['error']}")
         print("-" * 80)
-    
+
     print(f"\nTotal failed configurations: {len(failed_configs)}")
 
 
