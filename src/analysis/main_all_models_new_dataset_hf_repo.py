@@ -88,7 +88,7 @@ def get_dataset(model, shot, dataset, data_type):
         lang = "english"
         cols = ['sample_index', 'model', 'dataset', 'template', 'separator', 'enumerator', 'choices_order', 'shots']
         df = load_benchmark(repo, model, lang, shot, f"{dataset}.parquet",data_type)
-        df = dataset.to_pandas()
+        df = df.to_pandas()
         df = df.drop_duplicates(subset=cols)
         df = df[
                     (df["shots"] == 0) |
