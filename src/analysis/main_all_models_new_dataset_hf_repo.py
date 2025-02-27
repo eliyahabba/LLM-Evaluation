@@ -4,13 +4,9 @@ import traceback
 from datetime import datetime
 from multiprocessing import Pool, Manager
 from typing import List, Dict, Any, Optional
-from huggingface_hub import login
-from config.get_config import Config
 
-config = Config()
-token = config.config_values.get("hf_access_token")
 
-login(token=token)
+
 
 
 import pandas as pd
@@ -284,5 +280,5 @@ def print_failed_configurations(data_type):
 
 
 if __name__ == "__main__":
-    run_configuration_analysis(num_processes=50)
+    run_configuration_analysis(num_processes=16)
     print_failed_configurations(data_type)
