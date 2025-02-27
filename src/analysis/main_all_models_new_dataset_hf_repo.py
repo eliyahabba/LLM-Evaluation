@@ -70,8 +70,6 @@ def get_all_datasets() -> List[str]:
     return datasets
 
 
-# Disable caching globally
-disable_caching()
 
 # Load a specific model/language/shots benchmark
 def load_benchmark(repo_id, model_name, language="en", shots=0, benchmark_file="mmlu.global_facts.parquet", data_type="old"):
