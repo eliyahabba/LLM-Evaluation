@@ -1,7 +1,6 @@
 from dataclasses import dataclass, fields
 
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.Instruction import \
-    Instruction
+from src.experiments.experiment_preparation.InstructionPhrasings.Instruction import Instruction
 
 
 @dataclass(frozen=True)
