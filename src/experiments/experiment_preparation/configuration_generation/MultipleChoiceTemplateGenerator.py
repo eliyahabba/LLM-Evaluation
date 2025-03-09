@@ -9,11 +9,11 @@ from unitxt.templates import MultipleChoiceTemplate
 from unitxt.templates import Template
 
 from src.experiments.data_loading.CatalogManager import CatalogManager
+from src.experiments.experiment_preparation.configuration_generation.DatasetConfigFactory import DatasetConfigFactory
+from src.experiments.experiment_preparation.configuration_generation.InputTemplatesConfigs.MultipleChoiceTemplateConfig import \
+    MultipleChoiceTemplateConfigFactory
 from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.experiments.experiment_preparation.configuration_generation.TemplateGenerator import TemplateGenerator
-from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
-from src.experiments.experiment_preparation.datasets_configurations.InputTemplatesConfigs.MultipleChoiceTemplateConfig import \
-    MultipleChoiceTemplateConfigFactory
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants

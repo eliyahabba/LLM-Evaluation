@@ -6,9 +6,9 @@ import pandas as pd
 from tqdm import tqdm
 from unitxt.templates import Template
 
-from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
-from src.experiments.experiment_preparation.datasets_configurations.InputTemplatesConfigs.InputFormatTemplateConfig import \
+from src.experiments.experiment_preparation.configuration_generation.InputTemplatesConfigs.InputFormatTemplateConfig import \
     InputFormatTemplateConfig
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants

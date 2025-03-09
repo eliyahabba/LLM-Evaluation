@@ -1,13 +1,13 @@
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.AI2ARCPrompts import AI2ARCPrompts
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.BasicMCPrompts import BasicMCPrompts
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.HellaSwagPrompts import \
+from src.experiments.experiment_preparation.InstructionPhrasings.AI2ARCPrompts import AI2ARCPrompts
+from src.experiments.experiment_preparation.InstructionPhrasings.BasicMCPrompts import BasicMCPrompts
+from src.experiments.experiment_preparation.InstructionPhrasings.HellaSwagPrompts import \
     HellaSwagPrompts
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.MMLUPrompts import MMLUPrompts
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.OpenBookQAPrompts import \
+from src.experiments.experiment_preparation.InstructionPhrasings.MMLUPrompts import MMLUPrompts
+from src.experiments.experiment_preparation.InstructionPhrasings.OpenBookQAPrompts import \
     OpenBookQAPrompts
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.QuALITYPrompts import QuALITYPrompts
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.RacePrompts import RacePrompts
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.SocialQaPrompts import \
+from src.experiments.experiment_preparation.InstructionPhrasings.QuALITYPrompts import QuALITYPrompts
+from src.experiments.experiment_preparation.InstructionPhrasings.RacePrompts import RacePrompts
+from src.experiments.experiment_preparation.InstructionPhrasings.SocialQaPrompts import \
     SocialQaPrompts
 
 
