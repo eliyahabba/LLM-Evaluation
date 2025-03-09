@@ -1,9 +1,8 @@
 import argparse
 from pathlib import Path
 
-from unitxt import add_to_catalog
-from unitxt import get_from_catalog
-from unitxt.templates import MultipleChoiceTemplate, Template
+from unitxt import add_to_catalog, get_from_catalog
+from unitxt.templates import Template
 
 from src.utils.Constants import Constants
 
@@ -11,38 +10,34 @@ TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 
 class CatalogManager:
-    """
-    Class to save datasets to the Unitxt local catalog.
-    """
+    """Manages saving and loading templates to/from the Unitxt local catalog."""
 
     def __init__(self, catalog_path: Path) -> None:
-        """
-        Initializes the DatasetSaver with the path to the local catalog.
-        @param catalog_path: The path to the local catalog.
+        """Initialize catalog manager.
 
-        @return: None
+        Args:
+            catalog_path: Path to the local catalog directory
         """
         self.catalog_path = catalog_path
 
     def save_to_catalog(self, template: Template, name: str) -> None:
-        """
-        Saves the provided dataset to the local catalog.
+        """Save template to local catalog.
 
-        @param template: The Unitxt template for the dataset format.
-        @param name: The desired name for the dataset in the catalog.
-
-        @return: None
+        Args:
+            template: Template instance to save
+            name: Name to save the template under
         """
         add_to_catalog(template, name, catalog_path=str(self.catalog_path), overwrite=True)
         print(f"Dataset saved successfully to local catalog: {self.catalog_path}")
 
     def load_from_catalog(self, name: str) -> Template:
-        """
-        Loads the dataset from the local catalog.
+        """Load template from local catalog.
 
-        @param name: The name of the dataset in the local catalog.
+        Args:
+            name: Name of template to load
 
-        @return: The dataset from the local catalog.
+        Returns:
+            Template instance from catalog
         """
         return get_from_catalog(name, catalog_path=str(self.catalog_path))
 
