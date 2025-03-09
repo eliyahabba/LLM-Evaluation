@@ -5,7 +5,7 @@ from typing import List, Dict, Any
 random.seed(42)
 
 
-class ConfigParams:
+class TemplateVariationDimensions:
     """Configuration parameters for template generation."""
 
     GREEK_CHARS = "αβγδεζηθικ"
@@ -29,7 +29,7 @@ class ConfigParams:
                                     "place_correct_choice_position": -1},
     }
 
-    override_options = {
+    template_dimensions = {
         "enumerator": ["capitals", "lowercase", "numbers", "roman", KEYBOARD_CHARS, GREEK_CHARS],
         "choices_separator": ["\\s", "\n", ", ", "; ", " | ", " OR ", " or "],
         "shuffle_choices": list(SHUFFLE_CHOICES_COMBINATIONS.keys()),
@@ -48,12 +48,12 @@ class ConfigParams:
 
     @classmethod
     def get_options(cls) -> Dict[str, List]:
-        """Get all template override options.
+        """Get all template dimension options.
 
         Returns:
-            Dictionary of parameter names to their possible values
+            Dictionary of dimension names to their possible values
         """
-        return cls.override_options
+        return cls.template_dimensions
 
     @classmethod
     def format_value(cls, value: Any) -> str:
@@ -117,7 +117,7 @@ class ConfigParams:
         Returns:
             Dictionary of shuffle configuration parameters
         """
-        return ConfigParams.SHUFFLE_CHOICES_COMBINATIONS[shuffle_choices_name]
+        return TemplateVariationDimensions.SHUFFLE_CHOICES_COMBINATIONS[shuffle_choices_name]
 
     @staticmethod
     def to_camel_case(snake_str: str) -> str:

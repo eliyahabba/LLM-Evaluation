@@ -9,7 +9,7 @@ from unitxt.templates import MultipleChoiceTemplate
 from unitxt.templates import Template
 
 from src.experiments.data_loading.CatalogManager import CatalogManager
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.experiments.experiment_preparation.configuration_generation.TemplateGenerator import TemplateGenerator
 from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 from src.experiments.experiment_preparation.datasets_configurations.InputTemplatesConfigs.MultipleChoiceTemplateConfig import \
@@ -54,7 +54,7 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
         metadata_df['choices_separator'] = metadata_df['choices_separator'].replace('\n', '\\n')
         
         metadata_df['enumerator'] = metadata_df['enumerator'].astype(str)
-        metadata_df.replace({"enumerator": ConfigParams.ENUM_CHARS}, inplace=True)
+        metadata_df.replace({"enumerator": TemplateVariationDimensions.ENUM_CHARS}, inplace=True)
         
         metadata_df.to_csv(TemplatesGeneratorConstants.TEMPLATES_METADATA_PATH)
 
@@ -65,12 +65,12 @@ if __name__ == "__main__":
     dataset_names_to_configs = DatasetConfigFactory.get_all_instruct_prompts()
 
     for dataset_name, datasetConfig in dataset_names_to_configs.items():
-        override_options = deepcopy(ConfigParams.override_options)
-        prompts_instruct_data = datasetConfig.get_all_prompts()
+        override_options = deepcopy(TemplateVariationDimensions.template_dimensions)
+        instruction_phrasing_data = datasetConfig.get_instruction_phrasings()
         
-        for prompts_instruct in prompts_instruct_data:
-            instruct_folder_name = prompts_instruct.name
-            input_format = prompts_instruct.text
+        for instruction_phrasing in instruction_phrasing_data:
+            instruct_folder_name = instruction_phrasing.name
+            input_format = instruction_phrasing.text
             try:
                 print(colored(f"Creating templates for {dataset_name}", "blue"))
                 generator = MultipleChoiceTemplateGenerator(datasetConfig, override_options, input_format)

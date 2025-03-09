@@ -292,7 +292,7 @@ class SchemaConverter:
         prompt_paraphrasing = self.get_prompt_paraphrasing(recipe['card'])
 
         # Find matching prompt to get its name
-        for prompt in prompt_paraphrasing.get_all_prompts():
+        for prompt in prompt_paraphrasing.get_instruction_phrasings():
             if prompt.text == template_text:
                 template_info = {
                     "text": prompt.text,  # The actual instruction text

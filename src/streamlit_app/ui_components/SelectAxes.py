@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -10,7 +10,7 @@ ExperimentConstants = Constants.ExperimentConstants
 
 class SelectAxes:
     def __init__(self):
-        self.override_options = ConfigParams.override_options
+        self.override_options = TemplateVariationDimensions.override_options
         if 'selected_best_value_axes' not in st.session_state:
             st.session_state['selected_best_value_axes'] = list(self.override_options.keys())
         if 'selected_average_value_axes' not in st.session_state:

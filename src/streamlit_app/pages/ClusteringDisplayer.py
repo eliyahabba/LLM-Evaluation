@@ -7,7 +7,7 @@ import streamlit as st
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.streamlit_app.ui_components.PlotClustering import PlotClustering
 from src.streamlit_app.ui_components.ResultsLoader import ResultsLoader
 from src.utils.Constants import Constants
@@ -19,7 +19,7 @@ ClusteringConstants = Constants.ClusteringConstants
 
 class ClusteringDisplayer:
     def __init__(self):
-        self.override_options = ConfigParams.override_options
+        self.override_options = TemplateVariationDimensions.override_options
         self.dataset = None
         self.dataset_file_name = None
 
@@ -92,7 +92,7 @@ class ClusteringDisplayer:
         @return: None
         """
         # select the cluster column
-        cluster_columns = [col for col in data.columns if (col not in ConfigParams.override_options.keys())]
+        cluster_columns = [col for col in data.columns if (col not in TemplateVariationDimensions.override_options.keys())]
         # convert all the cluster columns to int (all the Not Nan values are integers)
         data[cluster_columns] = data[cluster_columns].astype(int)
         k_cluster = st.selectbox("Select the cluster column", cluster_columns)

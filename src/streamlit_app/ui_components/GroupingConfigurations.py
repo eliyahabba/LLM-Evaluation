@@ -10,7 +10,7 @@ from src.utils.ModelDatasetRunner import ModelDatasetRunner
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.streamlit_app.ui_components.ChooseBestCombination import ChooseBestCombination
 from src.streamlit_app.ui_components.AnalysisDisplay import AnalysisDisplay
 from src.utils.Constants import Constants
@@ -52,7 +52,7 @@ class GroupingConfigurations:
         for i in range(10):
             choose_best_combination = ChooseBestCombination(dataset_file_name, performance_summary_path,
                                                             selected_best_value_axes=list(
-                                                                ConfigParams.override_options.keys()))
+                                                                TemplateVariationDimensions.override_options.keys()))
             grouped_metadata_df, best_row = choose_best_combination.choose_best_combination(
                 exclude_templates=exclude_templates)
             perform_analysis = AnalysisDisplay(comparison_matrix_path, grouped_metadata_df, best_row,

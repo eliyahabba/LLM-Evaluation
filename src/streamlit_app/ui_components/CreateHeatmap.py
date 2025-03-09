@@ -5,7 +5,7 @@ import seaborn as sns
 import streamlit as st
 from matplotlib import pyplot as plt
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -19,7 +19,7 @@ class CreateHeatmap:
 
     def create_axis_option(self):
         st.markdown("## Heatmap of the accuracy of the templates")
-        override_options = ConfigParams.override_options
+        override_options = TemplateVariationDimensions.override_options
         # choose every time 2 params from the override_options to be the axis's
         # in the heatmap, and detemine the value of the other params
         config_options = list(override_options.keys())

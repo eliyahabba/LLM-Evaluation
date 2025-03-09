@@ -241,7 +241,7 @@ class Converter:
         self._template_cache[template_name] = template_data['input_format']
         prompt_paraphrasing = self.get_prompt_paraphrasing(run_unitxt_recipe['card'])
         input_format = template_data['input_format']
-        for prompt in prompt_paraphrasing.get_all_prompts():
+        for prompt in prompt_paraphrasing.get_instruction_phrasings():
             if prompt.text == input_format:
                 return prompt.name
         raise ValueError(f"Template {template_name} not found in catalog")

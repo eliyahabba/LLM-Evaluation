@@ -3,7 +3,7 @@ from typing import Tuple
 
 import pandas as pd
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.utils.Constants import Constants
 
 TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
@@ -72,7 +72,7 @@ class ChooseBestCombination:
         @param metadata_df: the metadata dataframe
         @return: the best row with the best values for each axis (the accuracy is NaN)
         """
-        axes = list(metadata_df.columns.tolist() & ConfigParams.override_options.keys())
+        axes = list(metadata_df.columns.tolist() & TemplateVariationDimensions.override_options.keys())
         best_values = {}
         for axis in axes:
             avg_values = metadata_df.groupby(axis)[ResultConstants.ACCURACY_COLUMN].mean()

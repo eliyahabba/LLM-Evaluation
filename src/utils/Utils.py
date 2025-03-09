@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 from config.get_config import Config
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.utils.Constants import Constants
 
 ExperimentConstants = Constants.ExperimentConstants
@@ -50,7 +50,7 @@ class Utils:
         template = templates_metadata.loc[f"template_{template_num}"]
         # convert template to dictionary
         template_dict = template.to_dict()
-        template_name = ConfigParams.generate_template_name(template_dict)
+        template_name = TemplateVariationDimensions.generate_template_name(template_dict)
         return template_name
 
     @staticmethod

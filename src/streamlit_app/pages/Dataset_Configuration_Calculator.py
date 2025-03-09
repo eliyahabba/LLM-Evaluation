@@ -3,7 +3,7 @@ import json
 
 import streamlit as st
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.experiments.experiment_preparation.datasets_configurations.DatasetConfigFactory import DatasetConfigFactory
 
 
@@ -80,7 +80,7 @@ def main():
     st.set_page_config(page_title="Dataset Configuration Calculator", layout="wide")
     if "prompt_variations" not in st.session_state:
         from copy import deepcopy
-        st.session_state.prompt_variations = deepcopy(ConfigParams.override_options)
+        st.session_state.prompt_variations = deepcopy(TemplateVariationDimensions.override_options)
         st.session_state.prompt_variations['choices_separator'] = [item.replace(" ", "\\s") if item == " " else item for
                                                                    item in st.session_state.prompt_variations[
                                                                        'choices_separator']]
@@ -234,7 +234,7 @@ def main():
         for tab, dataset in zip(tabs, selected_datasets):
             with tab:
                 if dataset in prompt_phrases:
-                    prompts = prompt_phrases[dataset].get_all_prompts()
+                    prompts = prompt_phrases[dataset].get_instruction_phrasings()
 
                     # Format prompts for display
                     formatted_prompts = {

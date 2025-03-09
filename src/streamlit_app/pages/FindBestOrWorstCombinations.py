@@ -6,7 +6,7 @@ import streamlit as st
 file_path = Path(__file__).parents[3]
 sys.path.append(str(file_path))
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.utils.Constants import Constants
 from src.streamlit_app.ui_components.FindCombinations import FindCombinations
 
@@ -26,6 +26,6 @@ if __name__ == "__main__":
     # Use BestOrWorst class to get the value of the selected option
     best_combinations_displayer = FindCombinations(
         best_or_worst,
-        ConfigParams.override_options
+        TemplateVariationDimensions.override_options
     )
     best_combinations_displayer.evaluate()

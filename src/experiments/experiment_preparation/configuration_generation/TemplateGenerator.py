@@ -6,7 +6,7 @@ import pandas as pd
 from tqdm import tqdm
 from unitxt.templates import Template
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.experiments.experiment_preparation.datasets_configurations.InputTemplatesConfigs.InputFormatTemplateConfig import \
     InputFormatTemplateConfig
 from src.utils.Constants import Constants
@@ -37,7 +37,7 @@ class TemplateGenerator:
         for options in tqdm(product(*self.override_options.values())):
             override_args = dict(zip(self.override_options.keys(), options))
             # create a name for the template
-            template_name = ConfigParams.generate_template_name(override_args)
+            template_name = TemplateVariationDimensions.generate_template_name(override_args)
             override_args['input_format'] = self.input_format
             template = self.create_template(**override_args)
             templates[template_name] = template

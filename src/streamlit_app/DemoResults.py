@@ -7,7 +7,7 @@ import streamlit as st
 file_path = Path(__file__).parents[2]
 sys.path.append(str(file_path))
 from src.streamlit_app.ui_components.SelectAxes import SelectAxes
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.streamlit_app.ui_components.ChooseBestCombination import ChooseBestCombination
 from src.streamlit_app.ui_components.CreateHeatmap import CreateHeatmap
 from src.streamlit_app.ui_components.AnalysisDisplay import AnalysisDisplay
@@ -55,7 +55,7 @@ class VisualizeResults:
 
     def display_possible_templates_args(self):
         with st.expander("Possible template arguments"):
-            override_options = ConfigParams.override_options
+            override_options = TemplateVariationDimensions.override_options
             color_palette = ["#FF5733", "#3366FF", "#FF33E9", "#4CAF50"]  # Soft green color added
 
             for i, (k, v) in enumerate(override_options.items()):

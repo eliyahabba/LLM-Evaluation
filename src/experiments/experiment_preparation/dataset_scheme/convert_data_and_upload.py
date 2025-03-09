@@ -11,7 +11,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 from config.get_config import Config
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.experiments.experiment_preparation.dataset_scheme.conversions.JSON_schema_validator import validate_json_data
 from src.experiments.experiment_preparation.dataset_scheme.conversions.dataset_schema_adapter_huji import \
     convert_dataset
@@ -213,7 +213,7 @@ def convert_to_scheme(items: list[Path], config_params, file_lock, logger: loggi
     logger.info(f"Successfully processed and uploaded {file_name}")
 
 
-def rename_files_parallel(file_mapping: list[Path], config_params: ConfigParams,
+def rename_files_parallel(file_mapping: list[Path], config_params: TemplateVariationDimensions,
                           logger: logging.Logger) -> None:
     num_processes = max(1, cpu_count() - 1)
     num_processes = max(1, 8)
@@ -241,7 +241,7 @@ def main():
     experiment_dir = "/cs/labs/gabis/eliyahabba/results_with_good_names/"
     if not os.path.exists(experiment_dir):
         experiment_dir = "/Users/ehabba/PycharmProjects/LLM-Evaluation/results"
-    config_params = ConfigParams()
+    config_params = TemplateVariationDimensions()
 
     # Initialize tracker
 

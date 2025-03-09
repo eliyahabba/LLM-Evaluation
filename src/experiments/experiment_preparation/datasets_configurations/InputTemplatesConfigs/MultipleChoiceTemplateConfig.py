@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 
-from src.experiments.experiment_preparation.configuration_generation.ConfigParams import ConfigParams
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 from src.experiments.experiment_preparation.datasets_configurations.InputTemplatesConfigs.InputFormatTemplateConfig import \
     InputFormatTemplateConfig
 
@@ -51,4 +51,4 @@ class MultipleChoiceTemplateConfigFactory:
     @staticmethod
     def _get_shuffle_choices_config(shuffle_choices: str) -> Dict[str, Any]:
         """Get shuffle choices configuration."""
-        return ConfigParams.get_shuffle_choices_argument(shuffle_choices)
+        return TemplateVariationDimensions.get_shuffle_choices_argument(shuffle_choices)

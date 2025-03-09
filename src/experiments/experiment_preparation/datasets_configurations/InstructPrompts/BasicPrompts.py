@@ -6,7 +6,7 @@ from src.experiments.experiment_preparation.datasets_configurations.InstructProm
 
 @dataclass(frozen=True)
 class BasicPrompts:
-    def get_all_prompts(self):
+    def get_instruction_phrasings(self):
         return [
             getattr(self, field.name)
             for field in fields(self)
