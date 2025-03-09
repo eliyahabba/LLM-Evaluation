@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.experiments.experiment_preparation.InstructionPhrasings.BasicMCPrompts import BasicMCPrompts
+from src.experiments.experiment_preparation.InstructionPhrasings.BasicPrompts import BasicPrompts
 from src.experiments.experiment_preparation.InstructionPhrasings.Instruction import Instruction
 
 

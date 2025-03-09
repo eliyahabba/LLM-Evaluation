@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 
 from unitxt import add_to_catalog, get_from_catalog
-from unitxt.templates import Template
+from unitxt.templates import Template, MultipleChoiceTemplate
 
 from src.utils.Constants import Constants
 

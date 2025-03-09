@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 
-from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
-from src.experiments.experiment_preparation.datasets_configurations.InputTemplatesConfigs.InputFormatTemplateConfig import \
+from src.experiments.experiment_preparation.configuration_generation.InputTemplatesConfigs.InputFormatTemplateConfig import \
     InputFormatTemplateConfig
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
 
 
 @dataclass
