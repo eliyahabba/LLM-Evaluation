@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.experiments.experiment_preparation.datasets_configurations.InstructPrompts.BasicMCPrompts import BasicMCPrompts
+from src.experiments.experiment_preparation.InstructionPhrasings.BasicMCPrompts import BasicMCPrompts
 
 
 @dataclass(frozen=True)
