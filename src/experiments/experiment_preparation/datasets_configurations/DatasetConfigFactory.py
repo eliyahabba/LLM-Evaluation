@@ -14,6 +14,11 @@ from src.experiments.experiment_preparation.datasets_configurations.InstructProm
 class DatasetConfigFactory:
     @staticmethod
     def get_all_instruct_prompts():
+        """Get instruction prompts for all supported datasets.
+
+        Returns:
+            Dictionary mapping dataset names to their prompt configurations
+        """
         dataset_instruct_prompts = {
             'AI2_ARC': AI2ARCPrompts(),
             'HellaSwag': HellaSwagPrompts(),
@@ -29,6 +34,14 @@ class DatasetConfigFactory:
 
     @staticmethod
     def get_instruct_prompts(dataset_name):
+        """Get instruction prompts for a specific dataset.
+
+        Args:
+            dataset_name: Name of the dataset
+
+        Returns:
+            Prompt configuration for the dataset, or BasicMCPrompts if not found
+        """
         dataset_instruct_prompts = {
             'AI2_ARC': AI2ARCPrompts(),
             'HellaSwag': HellaSwagPrompts(),

@@ -16,21 +16,22 @@ TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
 
 class TemplateGenerator:
     def __init__(self, input_config: InputFormatTemplateConfig, override_options: dict, input_format: str):
-        """
-        Initializes the TemplateGenerator with base arguments and override options.
+        """Initialize the template generator.
 
-        @param base_args: A dictionary containing base arguments for the template.
-        @param override_options: A dictionary containing override options for the template.
+        Args:
+            input_config: Configuration for input format template
+            override_options: Dictionary of parameter options to override
+            input_format: Format string for the input template
         """
         self.input_config = input_config
         self.override_options = override_options
         self.input_format = input_format
 
     def create_templates(self) -> Dict[str, Template]:
-        """
-        Creates a list of MultipleChoiceTemplate instances with different parameters.
+        """Create templates with all combinations of override parameters.
 
-        @return: A list of the created templates.
+        Returns:
+            Dict mapping template names to Template instances
         """
         templates = {}
         for options in tqdm(product(*self.override_options.values())):
@@ -46,12 +47,14 @@ class TemplateGenerator:
 
     @staticmethod
     def create_metadata_from_templates(templates: List[Template], params: dict) -> pd.DataFrame:
-        """
-        Creates a DataFrame containing the templates and their parameters.
+        """Create metadata DataFrame from templates.
 
-        @param templates: A list of templates.
-        @param params: A dictionary containing the parameters of the templates.
-        @return: pd.DataFrame: A DataFrame containing the templates and their parameters.
+        Args:
+            templates: List of template instances
+            params: Dictionary of template parameters
+        
+        Returns:
+            DataFrame containing template metadata
         """
         # create a df that contains the templates and their parameter
 
