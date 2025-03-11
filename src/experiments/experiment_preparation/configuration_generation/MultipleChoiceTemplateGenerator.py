@@ -56,7 +56,6 @@ class MultipleChoiceTemplateGenerator(TemplateGenerator):
         metadata_df['enumerator'] = metadata_df['enumerator'].astype(str)
         metadata_df.replace({"enumerator": TemplateVariationDimensions.ENUM_CHARS}, inplace=True)
         
-        metadata_df.to_csv(TemplatesGeneratorConstants.TEMPLATES_METADATA_PATH)
 
 
 if __name__ == "__main__":

@@ -8,10 +8,8 @@ from unitxt.templates import Template
 
 from src.experiments.experiment_preparation.configuration_generation.InputTemplatesConfigs.InputFormatTemplateConfig import \
     InputFormatTemplateConfig
-from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import TemplateVariationDimensions
-from src.utils.Constants import Constants
-
-TemplatesGeneratorConstants = Constants.TemplatesGeneratorConstants
+from src.experiments.experiment_preparation.configuration_generation.TemplateVariationDimensions import \
+    TemplateVariationDimensions
 
 
 class TemplateGenerator:
