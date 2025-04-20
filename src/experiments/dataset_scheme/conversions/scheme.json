@@ -129,7 +129,7 @@
             "properties": {
                 "prompt_class": {
                     "type": "string",
-                    "description": "Type of prompt template and its formatting requirements",
+                    "description": "Type of task and its formatting requirements",
                     "enum": ["MultipleChoice", "OpenEnded", "Completion"]
                 },
                 "dimensions": {
@@ -247,7 +247,7 @@
                 "sample_identifier": {
                     "type": "object",
                     "description": "Metadata to help identify and match the sample to the dataset",
-                    "required": ["dataset_name", "split"],
+                    "required": ["dataset_name", "hf_repo", "hf_split", "hf_index"],
                     "properties": {
                         "dataset_name": {
                             "type": "string",
@@ -266,13 +266,6 @@
                             "type": "integer",
                             "description": "Index in the HuggingFace dataset"
                         }
-                    }
-                },
-                "token_ids": {
-                    "type": ["array", "null"],
-                    "description": "Array of token IDs representing the tokenized prompt",
-                    "items": {
-                        "type": "integer"
                     }
                 },
                 "classification_fields": {
