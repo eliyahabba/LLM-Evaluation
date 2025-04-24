@@ -20,3 +20,5 @@ habba/PycharmProjects/LLM-Evaluation/src/analysis/app/results_local/Shots_0/meta
 /src/ConfigurationOptimizer/data/
 /src/ConfigurationOptimizer/output/
 /src/analysis/paper/zere_shot_comparsion/results*
+/src/download_helm/converted_data_paerqut/
+/src/download_helm/converted_data/
