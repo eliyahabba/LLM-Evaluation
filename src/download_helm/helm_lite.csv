@@ -1,0 +1,2 @@
+,Run,Model,Groups,Adapter method,Subject / Task
+0,"commonsense:dataset=openbookqa,method=multiple_choice_joint,model=01-ai_yi-34b",01-ai/yi-34b,openbookqa,multiple_choice_joint,-

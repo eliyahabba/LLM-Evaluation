@@ -54,7 +54,7 @@ def download_helm_lite(start_version="v1.0.0", save_base_dir="helm/lite", overwr
             found = False
 
             # Create directory for this task
-            save_dir = f"{save_base_dir}/{task}"
+            save_dir = f"/Users/ehabba/PycharmProjects/LLM-Evaluation/src/download_helm/downloads"
             os.makedirs(save_dir, exist_ok=True)
             save_path = f"{save_dir}/{file_type}.json"
 
