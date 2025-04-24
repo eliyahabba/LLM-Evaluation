@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 def save_to_csv(data, filename, num_of_samples=None):
     """Saves the data to both JSON (for fast lookup) and CSV/Parquet (for compatibility)."""
-    path = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/experiment_preparation/dataset_scheme/conversions/hf_map_data/"
+    path = "/Users/ehabba/PycharmProjects/LLM-Evaluation/src/experiments/dataset_scheme/conversions/hf_map_data/"
     base_filename = path + filename.replace('.parquet', '').replace('.csv', '')
 
     # Save as JSON for fast lookup - no need for conversion since keys are strings
@@ -118,6 +118,14 @@ def get_mmlu():
     questions = ds['test']['question']
     choices = ds['test']['choices']
     test = create_question_metadata(questions, choices, 'test', dataname='mmlu')
+
+    train_questions = ds['dev']['question']
+    train_choices = ds['dev']['choices']
+    test.update(create_question_metadata(train_questions, train_choices, 'train', dataname='mmlu'))
+
+    validation_questions = ds['validation']['question']
+    validation_choices = ds['validation']['choices']
+    test.update(create_question_metadata(validation_questions, validation_choices, 'validation', dataname='mmlu'))
     return test
 
 
