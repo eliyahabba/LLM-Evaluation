@@ -6,7 +6,7 @@ import pyarrow.compute as pc
 from datasets import load_dataset
 from huggingface_hub import HfApi
 
-repo_name = "eliyahabba/llm-evaluation-analysis-split"
+repo_name = "nlphuji/DOVE_Lite"
 
 
 class DataLoader:
@@ -20,7 +20,7 @@ class DataLoader:
             batch_size (int): Number of samples per batch.
         """
         self.dataset = None
-        self.dataset_name = dataset_name
+        self.repo_name = dataset_name
         self.split = split
         self.batch_size = batch_size
 
@@ -37,12 +37,12 @@ class DataLoader:
         #                                  dataset=datasets, template=template, separator=separator,
         #                                  enumerator=enumerator,
         #                                  choices_order=choices_order)
-        clean_df = self.remove_duplicates(self.dataset.to_pandas())
-        clean_df = clean_df.drop(['quantization', 'closest_answer'], axis=1)
+        # clean_df = self.remove_duplicates(self.dataset.to_pandas())
+        # clean_df = clean_df.drop(['quantization', 'closest_answer'], axis=1)
         load_time = time.time()
         print(f"The size of the data after removing duplicates is: {len(clean_df)}")
         print(f"Data loading completed in {load_time - start_time:.2f} seconds")
-        return clean_df
+        return self.dataset.to_pandas()
 
     def load_data_with_filter(self, max_samples=None, drop=True, model_name=None, shots=None, datasets=None):
         """
@@ -53,7 +53,7 @@ class DataLoader:
 
         api = HfApi()
         all_files = api.list_repo_files(
-            repo_id="eliyahabba/llm-evaluation-analysis-split",
+            repo_id="nlphuji/DOVE_Lite",
             repo_type="dataset",
         )
         existing_files = [file for file in all_files if file.endswith('.parquet')]
@@ -73,10 +73,10 @@ class DataLoader:
         if len(existing_files) > 0:
             if self.dataset is None:
                 # split = split_with_filter
-                self.dataset = load_dataset(self.dataset_name, data_files=existing_files, split=self.split,
+                self.dataset = load_dataset(self.repo_name, data_files=existing_files, split=self.split,
                                             cache_dir=None)
             else:
-                self.dataset = load_dataset(self.dataset_name, split=self.split)
+                self.dataset = load_dataset(self.repo_name, split=self.split)
         print("The size of the data after filtering is: ", len(self.dataset))
         if drop:
             self.dataset = self.dataset.remove_columns(['cumulative_logprob', 'generated_text', 'ground_truth'])
