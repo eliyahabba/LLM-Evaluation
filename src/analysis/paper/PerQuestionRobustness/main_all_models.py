@@ -8,8 +8,8 @@ from typing import List, Dict, Any, Optional
 import pandas as pd
 from tqdm import tqdm
 
-from src.PerQuestionRobustness.PromptQuestionAnalyzer import PromptQuestionAnalyzer
 from src.analysis.create_plots.DataLoader import DataLoader
+from src.analysis.create_plots.PromptQuestionAnalyzer import PromptQuestionAnalyzer
 
 # Model configuration
 MODELS = [
@@ -84,11 +84,6 @@ def process_configuration(dataset: str) -> Optional[Dict[str, Any]]:
             datasets=[dataset],
             max_samples=None
         )
-
-        df = df[
-            (df["shots"] == 0) |
-            (~df.choices_order.isin(["correct_first", "correct_last"]))
-            ]
 
         if df.empty:
             return None
