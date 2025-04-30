@@ -22,3 +22,8 @@ habba/PycharmProjects/LLM-Evaluation/src/analysis/app/results_local/Shots_0/meta
 /src/analysis/paper/zere_shot_comparsion/results*
 /src/download_helm/converted_data_paerqut/
 /src/download_helm/converted_data/
+/src/analysis/paper/PerQuestionRobustness/dimension_sampling_results
+/src/analysis/paper/PerQuestionRobustness/overlap_results
+/src/analysis/paper/PerQuestionRobustness/data
+/.env
+/src/ImproveRobustness/data/
