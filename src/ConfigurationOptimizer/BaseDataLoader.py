@@ -6,9 +6,16 @@ from typing import Optional
 import pandas as pd
 import pyarrow.compute as pc
 from datasets import load_dataset
-from huggingface_hub import HfApi
+
+from config.get_config import Config
 
 repo_name = "nlphuji/DOVE_Lite"
+from huggingface_hub import HfApi, login
+
+config = Config()
+TOKEN = config.config_values.get("hf_access_token_dove", "")
+# First, authenticate with your Hugging Face token
+login(token=TOKEN)
 
 
 class BaseDataLoader:
