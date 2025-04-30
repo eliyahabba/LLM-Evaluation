@@ -27,9 +27,9 @@ class ExperimentConfig:
     BASE_DIR = Path(__file__).resolve().parent
     
     # Data paths
-    RAW_DATA_DIR = Path("/Users/ehabba/PycharmProjects/LLM-Evaluation/src/ConfigurationOptimizer/data")  # Source of raw data files
     DATA_DIR = BASE_DIR / "data"  # Directory for processed data files
-    
+    RAW_DATA_DIR = DATA_DIR  / "raw_data"  # Directory for raw data files
+
     # Output paths
     OUTPUT_DIR = BASE_DIR / "results"
     PLOTS_DIR = OUTPUT_DIR / "plots"
