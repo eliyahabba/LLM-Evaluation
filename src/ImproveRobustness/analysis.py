@@ -23,7 +23,7 @@ def load_evaluation_results(results_file=None):
     }
 
     if results_file is None:
-        results_file = ExperimentConfig.OUTPUT_DIR / "evaluation_results.txt"
+        results_file = ExperimentConfig.RESULTS_DIR / "evaluation_results.txt"
 
     if not results_file.exists():
         print(f"Results file not found at {results_file}")
@@ -210,7 +210,7 @@ def generate_summary_table(output_dir=None, data_dir=None):
         data_dir = ExperimentConfig.DATA_DIR
     
     if output_dir is None:
-        output_dir = ExperimentConfig.OUTPUT_DIR
+        output_dir = ExperimentConfig.RESULTS_DIR
         
     try:
         train_data = pd.read_parquet(data_dir / "train_data.parquet")
@@ -264,7 +264,7 @@ def run_analysis(output_dir=None, plots_dir=None):
     """Run the complete analysis pipeline."""
     # Use ExperimentConfig defaults if not provided
     if output_dir is None:
-        output_dir = ExperimentConfig.OUTPUT_DIR
+        output_dir = ExperimentConfig.RESULTS_DIR
     if plots_dir is None:
         plots_dir = ExperimentConfig.PLOTS_DIR
     
@@ -298,7 +298,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Analyze results of prompt dimension robustness experiment")
     
     # Path parameters
-    parser.add_argument("--output_dir", type=str, default=str(ExperimentConfig.OUTPUT_DIR), 
+    parser.add_argument("--output_dir", type=str, default=str(ExperimentConfig.RESULTS_DIR),
                         help="Directory containing evaluation results")
     parser.add_argument("--plots_dir", type=str, default=None,
                         help="Directory to save plots (defaults to OUTPUT_DIR/plots)")

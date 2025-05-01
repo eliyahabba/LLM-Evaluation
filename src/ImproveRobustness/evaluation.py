@@ -112,7 +112,7 @@ class ModelEvaluator:
         """
         # Set output directory
         if output_dir is None:
-            output_dir = ExperimentConfig.OUTPUT_DIR / "evaluations"
+            output_dir = ExperimentConfig.RESULTS_DIR / "evaluations"
         else:
             output_dir = Path(output_dir)
 

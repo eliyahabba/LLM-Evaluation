@@ -31,9 +31,9 @@ class ExperimentConfig:
     RAW_DATA_DIR = DATA_DIR  / "raw_data"  # Directory for raw data files
 
     # Output paths
-    OUTPUT_DIR = BASE_DIR / "results"
-    PLOTS_DIR = OUTPUT_DIR / "plots"
-    MODELS_DIR = OUTPUT_DIR / "models"
+    RESULTS_DIR = BASE_DIR / "results"
+    PLOTS_DIR = RESULTS_DIR / "plots"
+    MODELS_DIR = RESULTS_DIR / "models"
 
     # Experiment setup
     MODEL_NAME = "meta-llama/Llama-3.2-3B-Instruct"

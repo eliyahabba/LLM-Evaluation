@@ -45,7 +45,7 @@ class Trainer:
 
         # Set default output directory if not provided
         if output_dir is None:
-            self.output_dir = ExperimentConfig.OUTPUT_DIR
+            self.output_dir = ExperimentConfig.RESULTS_DIR
         else:
             self.output_dir = Path(output_dir)
 
@@ -544,7 +544,7 @@ if __name__ == "__main__":
                         help="Path to evaluation data in parquet format")
 
     # Optional parameters
-    parser.add_argument("--output_dir", type=str, default=str(ExperimentConfig.OUTPUT_DIR),
+    parser.add_argument("--output_dir", type=str, default=str(ExperimentConfig.RESULTS_DIR),
                         help="Directory to save results")
     parser.add_argument("--access_token", type=str, default=ExperimentConfig.ACCESS_TOKEN,
                         help="HuggingFace access token")

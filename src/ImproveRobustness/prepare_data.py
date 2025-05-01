@@ -16,31 +16,31 @@ def setup_directories(output_dir=None):
     """Create necessary directories for the experiment."""
     if output_dir is None:
         # Use default output directory and data directory from config
-        ExperimentConfig.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        ExperimentConfig.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         ExperimentConfig.DATA_DIR.mkdir(parents=True, exist_ok=True)
         ExperimentConfig.PLOTS_DIR.mkdir(parents=True, exist_ok=True)
         ExperimentConfig.MODELS_DIR.mkdir(parents=True, exist_ok=True)
         return ExperimentConfig.DATA_DIR
-    
+
     # If custom output_dir is provided, create similar structure there
     # but still use the same relative paths as defined in config
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Extract directory names from the config
     data_dir_name = ExperimentConfig.DATA_DIR.name
-    plots_dir_name = ExperimentConfig.PLOTS_DIR.name 
+    plots_dir_name = ExperimentConfig.PLOTS_DIR.name
     models_dir_name = ExperimentConfig.MODELS_DIR.name
-    
+
     # Create directories with the same naming convention
     data_dir = output_dir / data_dir_name
     plots_dir = output_dir / plots_dir_name
     models_dir = output_dir / models_dir_name
-    
+
     # Create the directories
     data_dir.mkdir(exist_ok=True)
     plots_dir.mkdir(exist_ok=True)
     models_dir.mkdir(exist_ok=True)
-    
+
     return data_dir
 
 
@@ -76,7 +76,7 @@ def prepare_data(
     Prepare training and testing datasets by:
     1. Including only selected dimension values in training
     2. Creating a balanced dataset across different datasets
-    
+
     Args:
         model_name (str): Name of the model to use
         target_dimension (str): Target dimension to test robustness for
@@ -88,7 +88,7 @@ def prepare_data(
         output_dir (Path): Directory to save outputs
         seed (int): Random seed for reproducibility
         force_rebuild (bool): Force rebuild of datasets even if they already exist
-    
+
     Returns:
         tuple: Paths to the prepared training and testing data files
     """
@@ -130,58 +130,58 @@ def prepare_data(
         f for f in model_files
         if "_".join(f.stem.split("_")[1:]) in all_normalized_datasets
     ]
-    
+
     if not model_files:
         print(f"Warning: No files found for model {model_name}")
         print(f"Available files: {[f.name for f in files]}")
         raise ValueError(f"No data files found for model {model_name} and specified datasets")
 
     all_dfs = []
-    
+
     # Load all data files
     for file_path in tqdm(model_files, desc="Loading datasets"):
         df = pd.read_parquet(file_path)
         dataset_name = df['dataset'].iloc[0] if 'dataset' in df.columns else str(file_path.stem).split('_', 1)[1]
-        
+
         # Add normalized dataset name for easier filtering
         df['normalized_dataset'] = normalize_dataset_name(dataset_name)
         all_dfs.append(df)
-    
+
     if not all_dfs:
         raise ValueError("No data loaded from the specified files")
-    
+
     # Combine all data
     all_data = pd.concat(all_dfs)
     print(f"Total data loaded: {len(all_data)} examples")
-    
+
     # Check if target dimension exists in the data
     if target_dimension not in all_data.columns:
         raise ValueError(f"Target dimension '{target_dimension}' not found in data. Available columns: {all_data.columns.tolist()}")
-    
+
     # Split into training and test datasets
     train_data = all_data[all_data['normalized_dataset'].isin(normalized_training_datasets)]
     test_data = all_data[all_data['normalized_dataset'].isin(normalized_test_datasets)]
-    
+
     print(f"Initial training data: {len(train_data)} examples")
     print(f"Initial test data: {len(test_data)} examples")
-    
+
     # For training data: only include examples with the selected dimension values
     train_data = train_data[train_data[target_dimension].isin(training_dimension_values)]
-    
+
     # For test data: keep all dimension values to test generalization
     # (both seen and unseen values)
-    
+
     # Shuffle the data
     train_data = train_data.sample(frac=1, random_state=seed)
     test_data = test_data.sample(frac=1, random_state=seed)
-    
+
     print(f"Final training data: {len(train_data)} examples")
     print(f"Final test data: {len(test_data)} examples")
-    
+
     # Check if we have enough data
     if len(train_data) == 0:
         raise ValueError("No training data found with the specified criteria")
-    
+
     if len(test_data) == 0:
         raise ValueError("No test data found with the specified criteria")
 
@@ -230,14 +230,14 @@ def save_dataset_statistics(train_data, test_data, target_dimension, processed_d
         'split': ['train'] * len(stats['train_datasets']) + ['test'] * len(stats['test_datasets']),
         'count': list(stats['train_datasets'].values()) + list(stats['test_datasets'].values())
     }).to_csv(stats_dir / "dataset_counts.csv", index=False)
-    
+
     # Save detailed statistics about dimension values per dataset
     train_stats = train_data.groupby(['dataset', target_dimension]).size().reset_index(name='count')
     test_stats = test_data.groupby(['dataset', target_dimension]).size().reset_index(name='count')
-    
+
     train_stats['split'] = 'train'
     test_stats['split'] = 'test'
-    
+
     pd.concat([train_stats, test_stats]).to_csv(
         stats_dir / "dimension_values_by_dataset.csv", index=False
     )
@@ -248,11 +248,11 @@ def save_dataset_statistics(train_data, test_data, target_dimension, processed_d
 def load_data(data_dir=None):
     """
     Load the prepared training and testing datasets.
-    
+
     Args:
         data_dir (Path, optional): Directory containing processed data.
             If None, uses ExperimentConfig.DATA_DIR
-    
+
     Returns:
         tuple: DataFrames containing training and testing data
     """
@@ -297,7 +297,7 @@ def parse_args():
                         help="Datasets to use for testing")
 
     # Path parameters
-    parser.add_argument("--output_dir", type=str, default=str(ExperimentConfig.OUTPUT_DIR),
+    parser.add_argument("--output_dir", type=str, default=str(ExperimentConfig.DATA_DIR),
                         help="Directory to save outputs")
     parser.add_argument("--data_dir", type=str, default=str(ExperimentConfig.RAW_DATA_DIR),
                         help="Directory containing input data")

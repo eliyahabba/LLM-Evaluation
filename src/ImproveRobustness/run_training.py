@@ -29,7 +29,7 @@ def main():
         model_name=ExperimentConfig.MODEL_NAME,
         train_data_path=train_data_path,
         eval_data_path=test_data_path,
-        output_dir=ExperimentConfig.OUTPUT_DIR,
+        output_dir=ExperimentConfig.RESULTS_DIR,
         access_token=ExperimentConfig.ACCESS_TOKEN,
         quant_config_type=ExperimentConfig.QUANT_CONFIG_TYPE,
         use_lora=ExperimentConfig.USE_LORA,
