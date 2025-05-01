@@ -18,28 +18,28 @@ def setup_directories(output_dir=None):
         # Use default output directory and data directory from config
         ExperimentConfig.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         ExperimentConfig.DATA_DIR.mkdir(parents=True, exist_ok=True)
+        ExperimentConfig.RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
         ExperimentConfig.PLOTS_DIR.mkdir(parents=True, exist_ok=True)
         ExperimentConfig.MODELS_DIR.mkdir(parents=True, exist_ok=True)
         return ExperimentConfig.DATA_DIR
 
-    # If custom output_dir is provided, create similar structure there
-    # but still use the same relative paths as defined in config
+    # If custom output_dir is provided, create a parallel directory structure
+    output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-
-    # Extract directory names from the config
-    data_dir_name = ExperimentConfig.DATA_DIR.name
-    plots_dir_name = ExperimentConfig.PLOTS_DIR.name
-    models_dir_name = ExperimentConfig.MODELS_DIR.name
-
-    # Create directories with the same naming convention
-    data_dir = output_dir / data_dir_name
-    plots_dir = output_dir / plots_dir_name
-    models_dir = output_dir / models_dir_name
-
-    # Create the directories
-    data_dir.mkdir(exist_ok=True)
-    plots_dir.mkdir(exist_ok=True)
-    models_dir.mkdir(exist_ok=True)
+    
+    # Create data directory and raw_data subdirectory
+    data_dir = output_dir
+    raw_data_dir = data_dir / ExperimentConfig.RAW_DATA_DIR.name
+    raw_data_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Create results directory with plots and models subdirectories
+    results_dir = output_dir.parent / ExperimentConfig.RESULTS_DIR.name
+    results_dir.mkdir(parents=True, exist_ok=True)
+    
+    plots_dir = results_dir / ExperimentConfig.PLOTS_DIR.name
+    models_dir = results_dir / ExperimentConfig.MODELS_DIR.name
+    plots_dir.mkdir(parents=True, exist_ok=True)
+    models_dir.mkdir(parents=True, exist_ok=True)
 
     return data_dir
 
@@ -84,8 +84,8 @@ def prepare_data(
         excluded_dimension_values (list): Dimension values to exclude from training
         training_datasets (list): Datasets to use for training
         test_datasets (list): Datasets to use for testing
-        data_dir (Path, optional): Directory containing input data. If None, uses ExperimentConfig.RAW_DATA_DIR
-        output_dir (Path): Directory to save outputs
+        data_dir (Path, optional): Directory containing raw input data. If None, uses ExperimentConfig.RAW_DATA_DIR
+        output_dir (Path): Directory to save processed outputs. If None, uses ExperimentConfig.DATA_DIR
         seed (int): Random seed for reproducibility
         force_rebuild (bool): Force rebuild of datasets even if they already exist
 
@@ -98,7 +98,7 @@ def prepare_data(
     random.seed(seed)
     np.random.seed(seed)
 
-    # Create directories
+    # Create directories and get the processed data directory
     processed_data_dir = setup_directories(output_dir)
 
     # Check if processed data already exists
@@ -109,10 +109,19 @@ def prepare_data(
         print(f"Using existing processed data from {processed_data_dir}")
         return train_data_path, test_data_path
 
-    # Use RAW_DATA_DIR if data_dir is not provided
+    # Use RAW_DATA_DIR if data_dir is not provided for raw input data
     if data_dir is None:
         data_dir = ExperimentConfig.RAW_DATA_DIR
+    else:
+        # Ensure data_dir is a Path object
+        data_dir = Path(data_dir)
+        # If raw_data is not in the path, look for it in a subdirectory
+        if not str(data_dir).endswith("raw_data"):
+            raw_data_subdir = data_dir / "raw_data"
+            if raw_data_subdir.exists():
+                data_dir = raw_data_subdir
 
+    print(f"Using raw data from: {data_dir}")
     print("Processing raw data...")
     model_datasets, files = list_available_files(data_dir)
 
@@ -298,9 +307,9 @@ def parse_args():
 
     # Path parameters
     parser.add_argument("--output_dir", type=str, default=str(ExperimentConfig.DATA_DIR),
-                        help="Directory to save outputs")
+                        help="Directory to save processed data (defaults to ExperimentConfig.DATA_DIR)")
     parser.add_argument("--data_dir", type=str, default=str(ExperimentConfig.RAW_DATA_DIR),
-                        help="Directory containing input data")
+                        help="Directory containing raw input data (defaults to ExperimentConfig.RAW_DATA_DIR)")
 
     # Other parameters
     parser.add_argument("--seed", type=int, default=ExperimentConfig.SEED,
@@ -327,6 +336,8 @@ def main():
     print(f"Excluded dimension values: {args.excluded_dimension_values}")
     print(f"Training datasets: {args.training_datasets}")
     print(f"Test datasets: {args.test_datasets}")
+    print(f"Raw data directory: {data_dir}")
+    print(f"Output directory: {output_dir}")
 
     prepare_data(
         model_name=args.model_name,
