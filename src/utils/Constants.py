@@ -134,7 +134,8 @@ class Constants:
         BEST_COMBINATIONS = "best_combinations"
         CLUSTERING_RESULTS = "clustering_results"
         GROUPED_LEADERBOARD = "grouped_leaderboard"
-
+        ANNOTATIONS_DIR = Path("annotations")
+        ANNOTATIONS_FILE = "annotations_examples.json"
         ACCURACY_COLUMN = "accuracy"
         CHOOSE_ACROSS_AXES = True
         NOT_CHOOSE_ACROSS_AXES = False
