@@ -351,7 +351,7 @@ class Trainer:
             if training_args.report_to == "wandb" and self._is_wandb_available():
                 try:
                     wandb.init(
-                        project="dimension-robustness",
+                        project="ImproveRobustness",
                         id=f"{id_prompt_name}_gpu{gpu_id}",
                         config={
                             "learning_rate": training_args.learning_rate,
@@ -398,6 +398,14 @@ class Trainer:
                     wandb.finish()
                 except:
                     pass
+
+            # Evaluate on validation set
+            eval_results = trainer.evaluate()
+            print("Eval results:", eval_results)
+
+            # Log metrics to wandb
+            if training_args.report_to == "wandb" and self._is_wandb_available():
+                wandb.log(eval_results)
 
         # Evaluate after fine-tuning if requested
         if eval_after_finetuning:
