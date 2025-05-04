@@ -218,9 +218,9 @@ class Trainer:
         # Convert to text-only dataset
         return Dataset.from_dict({"text": chat_data["text"]})
 
-    def run_pipeline(self, 
-                    eval_before_finetuning=ExperimentConfig.EVAL_BEFORE_FINETUNING, 
-                    do_finetuning=ExperimentConfig.DO_FINETUNING, 
+    def run_pipeline(self,
+                    eval_before_finetuning=ExperimentConfig.EVAL_BEFORE_FINETUNING,
+                    do_finetuning=ExperimentConfig.DO_FINETUNING,
                     eval_after_finetuning=ExperimentConfig.EVAL_AFTER_FINETUNING):
         """Run the complete training pipeline."""
         # Set up training parameters
@@ -330,7 +330,7 @@ class Trainer:
                 group_by_length=True,
                 lr_scheduler_type=ExperimentConfig.LR_SCHEDULER_TYPE,
                 eval_steps=ExperimentConfig.LOGGING_STEPS,
-                evaluation_strategy="steps",
+                eval_strategy="steps",
                 per_device_eval_batch_size=ExperimentConfig.PER_DEVICE_EVAL_BATCH_SIZE,
                 save_total_limit=ExperimentConfig.SAVE_TOTAL_LIMIT,
                 report_to="wandb" if self._is_wandb_available() else "none"
@@ -363,8 +363,8 @@ class Trainer:
                 train_dataset=train_dataset,
                 eval_dataset=val_dataset,
                 peft_config=peft_config,
-                tokenizer=tokenizer,
-                args=training_args
+                args=training_args,
+                optim="adamw_torch"
             )
 
             # Clean GPU cache
@@ -513,12 +513,12 @@ class Trainer:
                     "input": item["text"],
                     "prediction": response.strip()
                 })
-                
+
                 # Clean up memory for CUDA tensors
                 del inputs, outputs
                 if torch.cuda.is_available():
                     torch.cuda.empty_cache()
-            
+
             except Exception as e:
                 print(f"Error generating prediction for example {i}: {e}")
                 predictions.append({
@@ -536,10 +536,10 @@ if __name__ == "__main__":
     # Parameters for data paths - make optional with defaults from config
     parser.add_argument("--model_name", type=str, default=ExperimentConfig.MODEL_NAME,
                         help="Name of the model to fine-tune")
-    parser.add_argument("--train_data_path", type=str, 
+    parser.add_argument("--train_data_path", type=str,
                         default=str(ExperimentConfig.DATA_DIR / "train_data.parquet"),
                         help="Path to training data in parquet format")
-    parser.add_argument("--eval_data_path", type=str, 
+    parser.add_argument("--eval_data_path", type=str,
                         default=str(ExperimentConfig.DATA_DIR / "test_data.parquet"),
                         help="Path to evaluation data in parquet format")
 
@@ -566,7 +566,7 @@ if __name__ == "__main__":
     # Validate that data files exist before creating trainer
     train_path = Path(args.train_data_path)
     eval_path = Path(args.eval_data_path)
-    
+
     if not train_path.exists():
         raise FileNotFoundError(f"Training data file not found: {train_path}")
     if not eval_path.exists():
