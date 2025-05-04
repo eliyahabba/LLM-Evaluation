@@ -384,8 +384,14 @@ class Trainer:
             if torch.cuda.is_available():
                 trainer.model = trainer.model.to(f"cuda:{gpu_id}")
 
-            # Train the model
+            print(f"Starting training for model: {self.model_name}")
+            print(f"Training data: {self.train_data_path}")
+            print(f"Validation data: {self.eval_data_path}")
+            print(f"Output directory: {model_output_path}")
+
+            print("Training started...")
             trainer.train()
+            print("Training finished.")
 
             # Save the model
             trainer.model.save_pretrained(model_output_path)
@@ -400,8 +406,9 @@ class Trainer:
                     pass
 
             # Evaluate on validation set
+            print("Evaluating on validation set...")
             eval_results = trainer.evaluate()
-            print("Eval results:", eval_results)
+            print("Evaluation finished.")
 
             # Log metrics to wandb
             if training_args.report_to == "wandb" and self._is_wandb_available():
