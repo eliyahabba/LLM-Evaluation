@@ -56,6 +56,14 @@ class Trainer:
         if self.access_token:
             login(token=self.access_token)
 
+        # Load HF token from env if not provided
+        if not access_token:
+            access_token = os.environ.get("HF_ACCESS_TOKEN")
+        self.access_token = access_token
+
+        if self.access_token:
+            login(token=self.access_token)
+
     def _load_tokenizer(self):
         """Load tokenizer for the specified model."""
         print(f"Loading tokenizer for {self.model_name}")
