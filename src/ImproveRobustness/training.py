@@ -60,7 +60,7 @@ class Trainer:
         if not access_token:
             access_token = os.environ.get("HF_ACCESS_TOKEN")
         self.access_token = access_token
-
+        print(f"Using HuggingFace access token: {self.access_token}")
         if self.access_token:
             login(token=self.access_token)
 
