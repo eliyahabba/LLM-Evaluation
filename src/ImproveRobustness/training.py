@@ -6,6 +6,7 @@ import pandas as pd
 import torch
 import wandb
 from datasets import Dataset
+from dotenv import load_dotenv
 from huggingface_hub import login
 from peft import LoraConfig, AutoPeftModelForCausalLM
 from transformers import (
@@ -17,6 +18,8 @@ from transformers import (
 from trl import SFTTrainer
 
 from src.ImproveRobustness.config import ExperimentConfig
+
+load_dotenv()
 
 
 class Trainer:
@@ -227,9 +230,9 @@ class Trainer:
         return Dataset.from_dict({"text": chat_data["text"]})
 
     def run_pipeline(self,
-                    eval_before_finetuning=ExperimentConfig.EVAL_BEFORE_FINETUNING,
-                    do_finetuning=ExperimentConfig.DO_FINETUNING,
-                    eval_after_finetuning=ExperimentConfig.EVAL_AFTER_FINETUNING):
+                     eval_before_finetuning=ExperimentConfig.EVAL_BEFORE_FINETUNING,
+                     do_finetuning=ExperimentConfig.DO_FINETUNING,
+                     eval_after_finetuning=ExperimentConfig.EVAL_AFTER_FINETUNING):
         """Run the complete training pipeline."""
         # Set up training parameters
         learning_rate = ExperimentConfig.LEARNING_RATE
@@ -556,13 +559,15 @@ if __name__ == "__main__":
                         help="Directory to save results")
     parser.add_argument("--access_token", type=str, default=ExperimentConfig.ACCESS_TOKEN,
                         help="HuggingFace access token")
-    parser.add_argument("--quant_config_type", type=str, choices=[None, "4bit", "8bit"], default=ExperimentConfig.QUANT_CONFIG_TYPE,
+    parser.add_argument("--quant_config_type", type=str, choices=[None, "4bit", "8bit"],
+                        default=ExperimentConfig.QUANT_CONFIG_TYPE,
                         help="Quantization configuration type")
     parser.add_argument("--use_lora", action="store_true", default=ExperimentConfig.USE_LORA,
                         help="Whether to use LoRA for fine-tuning")
     parser.add_argument("--target_dimension", type=str, default=ExperimentConfig.TARGET_DIMENSION,
                         help="Target dimension to test robustness for")
-    parser.add_argument("--eval_before_finetuning", action="store_true", default=ExperimentConfig.EVAL_BEFORE_FINETUNING,
+    parser.add_argument("--eval_before_finetuning", action="store_true",
+                        default=ExperimentConfig.EVAL_BEFORE_FINETUNING,
                         help="Evaluate model before fine-tuning")
     parser.add_argument("--do_finetuning", action="store_true", default=ExperimentConfig.DO_FINETUNING,
                         help="Perform fine-tuning")
