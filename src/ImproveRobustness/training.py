@@ -375,7 +375,6 @@ class Trainer:
                 eval_dataset=val_dataset,
                 peft_config=peft_config,
                 args=training_args,
-                optim="adamw_torch"
             )
 
             # Clean GPU cache
