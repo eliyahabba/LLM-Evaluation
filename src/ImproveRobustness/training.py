@@ -418,6 +418,43 @@ class Trainer:
             if torch.cuda.is_available():
                 trainer.model = trainer.model.to(f"cuda:{gpu_id}")
 
+            # Display sample training data
+            print(f"\n{Fore.GREEN}{'='*30} SAMPLE TRAINING DATA {'='*30}")
+            print(f"{Fore.GREEN}Showing {min(5, len(train_dataset))} examples from the training dataset")
+            print(f"{Fore.GREEN}{'='*80}\n")
+            
+            sample_size = min(5, len(train_dataset))
+            for i, example in enumerate(train_dataset[:sample_size]):
+                print(f"{Fore.CYAN}{'='*20} Training Example {i+1}/{sample_size} {'='*20}")
+                
+                # Extract input and response parts if possible
+                text = example["text"]
+                
+                # Try to separate input and output based on common patterns
+                # This is a simplified approach - may need adjustment for different tokenizers/templates
+                if '<|assistant|>' in text:
+                    # Some common template markers
+                    parts = text.split('<|assistant|>', 1)
+                    user_input = parts[0].replace('<|user|>', '')
+                    expected_output = '<|assistant|>' + parts[1] if len(parts) > 1 else ''
+                elif '\n' in text:
+                    # Simple newline separation
+                    parts = text.split('\n', 1)
+                    user_input = parts[0]
+                    expected_output = parts[1] if len(parts) > 1 else ''
+                else:
+                    # Can't separate, show as is
+                    user_input = text
+                    expected_output = "(Cannot identify expected output)"
+                
+                print(f"{Fore.BLUE}USER INPUT:")
+                print(f"{Fore.WHITE}{user_input.strip()[:500]}{'...' if len(user_input) > 500 else ''}")
+                
+                print(f"\n{Fore.MAGENTA}EXPECTED OUTPUT:")
+                print(f"{Fore.WHITE}{expected_output.strip()[:500]}{'...' if len(expected_output) > 500 else ''}")
+                
+                print(f"{Fore.CYAN}{'='*70}\n")
+            
             print(f"{Fore.GREEN}Starting training for model: {self.model_name}{Style.RESET_ALL}")
             print(f"{Fore.CYAN}Training data: {self.train_data_path}")
             print(f"{Fore.CYAN}Validation data: {self.eval_data_path}")
