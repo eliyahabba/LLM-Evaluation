@@ -352,11 +352,11 @@ class Trainer:
                 eval_strategy="steps",
                 per_device_eval_batch_size=ExperimentConfig.PER_DEVICE_EVAL_BATCH_SIZE,
                 save_total_limit=ExperimentConfig.SAVE_TOTAL_LIMIT,
-                report_to="wandb" if self._is_wandb_available() else "none"
+                report_to="wandb"
             )
 
             # Initialize wandb if needed and available
-            if training_args.report_to == "wandb" and self._is_wandb_available():
+            if self._is_wandb_available():
                 try:
                     wandb.init(
                         project="ImproveRobustness",
@@ -392,7 +392,6 @@ class Trainer:
                     
                 except Exception as e:
                     print(f"{Fore.YELLOW}Warning: Failed to initialize wandb: {e}")
-                    training_args.report_to = "none"
 
             # Initialize trainer
             trainer = SFTTrainer(
@@ -425,7 +424,7 @@ class Trainer:
             print(f"{Fore.MAGENTA}Model saved to {model_output_path}")
 
             # Finish wandb run
-            if training_args.report_to == "wandb" and self._is_wandb_available():
+            if self._is_wandb_available():
                 try:
                     wandb.finish()
                 except:
@@ -438,7 +437,7 @@ class Trainer:
             print(f"{Fore.CYAN}Eval results: {eval_results}")
 
             # Log metrics to wandb with prefix to distinguish from training metrics
-            if training_args.report_to == "wandb" and self._is_wandb_available():
+            if self._is_wandb_available():
                 # Add prefix to evaluation metrics to distinguish them from training metrics
                 prefixed_eval_results = {f"eval/{k}": v for k, v in eval_results.items()}
                 
