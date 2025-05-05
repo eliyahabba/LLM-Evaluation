@@ -66,13 +66,13 @@ class Trainer:
         if not access_token:
             access_token = os.environ.get("HF_ACCESS_TOKEN")
         self.access_token = access_token
-        print(f"Using HuggingFace access token: {self.access_token}")
+        print(f"{Fore.BLUE}Using HuggingFace access token: {self.access_token}")
         if self.access_token:
             login(token=self.access_token)
 
     def _load_tokenizer(self):
         """Load tokenizer for the specified model."""
-        print(f"Loading tokenizer for {self.model_name}")
+        print(f"{Fore.BLUE}Loading tokenizer for {self.model_name}")
         tokenizer = AutoTokenizer.from_pretrained(self.model_name, trust_remote_code=True)
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.padding_side = "right"
@@ -246,7 +246,7 @@ class Trainer:
         bit_info = f"{self.quant_config_type}-bit" if self.quant_config_type else "None-bit"
         base_id = f"{current_time}_{self.model_name.split('/')[-1]}--{bit_info}--lr-{learning_rate}--log_steps-{logging_steps}"
         id_prompt_name = self.create_versioned_id(base_id)
-        print("Run ID:", id_prompt_name)
+        print(f"{Fore.GREEN}Run ID: {id_prompt_name}")
 
         # Define paths
         model_output_path = self.models_output_dir / id_prompt_name
@@ -255,7 +255,7 @@ class Trainer:
         tokenizer = self._load_tokenizer()
 
         # Prepare datasets
-        print("Preparing datasets...")
+        print(f"{Fore.GREEN}Preparing datasets...")
         train_dataset_raw = self.prepare_dataset(self.train_data_path,
                                                  start_idx=0,
                                                  end_idx=25,
@@ -277,6 +277,11 @@ class Trainer:
         train_dataset = self.create_chat_dataset(train_dataset_raw, tokenizer)
         test_dataset = self.create_chat_dataset(test_dataset_raw, tokenizer, include_completion=False)
         val_dataset = self.create_chat_dataset(val_dataset_raw, tokenizer)
+
+        # Print dataset sizes
+        print(f"{Fore.CYAN}Train set size: {len(train_dataset)}")
+        print(f"{Fore.CYAN}Test set size: {len(test_dataset)}")
+        print(f"{Fore.CYAN}Validation set size: {len(val_dataset)}")
 
         # For evaluation before fine-tuning
         train_subset_raw = self.prepare_dataset(self.train_data_path, limit=10, include_completion=False)
@@ -368,7 +373,7 @@ class Trainer:
                         },
                     )
                 except Exception as e:
-                    print(f"Warning: Failed to initialize wandb: {e}")
+                    print(f"{Fore.YELLOW}Warning: Failed to initialize wandb: {e}")
                     training_args.report_to = "none"
 
             # Initialize trainer
@@ -392,14 +397,14 @@ class Trainer:
             print(f"{Fore.CYAN}Validation data: {self.eval_data_path}")
             print(f"{Fore.CYAN}Output directory: {model_output_path}")
 
-            print("Training started...")
+            print(f"{Fore.GREEN}Training started...")
             trainer.train()
-            print("Training finished.")
+            print(f"{Fore.MAGENTA}Training finished.")
 
             # Save the model
             trainer.model.save_pretrained(model_output_path)
             trainer.tokenizer.save_pretrained(model_output_path)
-            print("Finished training")
+            print(f"{Fore.MAGENTA}Model saved to {model_output_path}")
 
             # Finish wandb run
             if training_args.report_to == "wandb" and self._is_wandb_available():
@@ -409,9 +414,10 @@ class Trainer:
                     pass
 
             # Evaluate on validation set
-            print("Evaluating on validation set...")
+            print(f"{Fore.GREEN}Evaluating on validation set...")
             eval_results = trainer.evaluate()
-            print("Evaluation finished.")
+            print(f"{Fore.MAGENTA}Evaluation finished.")
+            print(f"{Fore.CYAN}Eval results: {eval_results}")
 
             # Log metrics to wandb
             if training_args.report_to == "wandb" and self._is_wandb_available():
@@ -430,9 +436,6 @@ class Trainer:
                 train_subset=train_subset
             )
 
-        print(f"Train set size: {len(train_dataset)}")
-        print(f"Test set size: {len(test_dataset)}")
-
         return model_output_path
 
     def _is_wandb_available(self):
@@ -440,19 +443,19 @@ class Trainer:
         try:
             import wandb
             if wandb.api.api_key is None:
-                print("Warning: wandb is installed but not logged in. Run 'wandb login' first.")
+                print(f"{Fore.YELLOW}Warning: wandb is installed but not logged in. Run 'wandb login' first.")
                 return False
             return True
         except ImportError:
-            print("Warning: wandb not installed. Install with 'pip install wandb' for experiment tracking.")
+            print(f"{Fore.YELLOW}Warning: wandb not installed. Install with 'pip install wandb' for experiment tracking.")
             return False
         except Exception as e:
-            print(f"Warning: Error checking wandb availability: {e}")
+            print(f"{Fore.YELLOW}Warning: Error checking wandb availability: {e}")
             return False
 
     def _eval_before_finetuning(self, model, tokenizer, test_dataset, output_path):
         """Evaluate model before fine-tuning."""
-        print("Evaluating model before fine-tuning...")
+        print(f"{Fore.GREEN}Evaluating model before fine-tuning...")
         results_dir = self.output_dir / "evaluations"
         results_dir.mkdir(exist_ok=True, parents=True)
 
@@ -463,11 +466,11 @@ class Trainer:
         # Save predictions
         test_results_path = results_dir / f"{output_path.name}_results_before_finetuning.csv"
         predictions.to_csv(test_results_path, index=False)
-        print(f"Pre-training evaluation saved to {test_results_path}")
+        print(f"{Fore.MAGENTA}Pre-training evaluation saved to {test_results_path}")
 
     def _eval_after_finetuning(self, model_path, tokenizer, test_dataset, train_subset):
         """Evaluate model after fine-tuning."""
-        print("Evaluating model after fine-tuning...")
+        print(f"{Fore.GREEN}Evaluating model after fine-tuning...")
         results_dir = self.output_dir / "evaluations"
         results_dir.mkdir(exist_ok=True, parents=True)
 
@@ -484,7 +487,7 @@ class Trainer:
         train_results_path = results_dir / f"{model_path.name}_train_results_after_finetuning.csv"
         train_predictions.to_csv(train_results_path, index=False)
 
-        print(f"Post-training evaluation saved to {results_dir}")
+        print(f"{Fore.MAGENTA}Post-training evaluation saved to {results_dir}")
 
     def _load_finetuned_model(self, model_path):
         """Load the fine-tuned model."""
@@ -520,7 +523,7 @@ class Trainer:
                 # Handle very long inputs by truncating if needed
                 max_length = tokenizer.model_max_length
                 if inputs["input_ids"].shape[1] > max_length:
-                    print(f"Warning: Input {i} exceeds max length, truncating")
+                    print(f"{Fore.YELLOW}Warning: Input {i} exceeds max length, truncating")
                     inputs["input_ids"] = inputs["input_ids"][:, :max_length]
                     if "attention_mask" in inputs:
                         inputs["attention_mask"] = inputs["attention_mask"][:, :max_length]
@@ -556,7 +559,7 @@ class Trainer:
                     torch.cuda.empty_cache()
 
             except Exception as e:
-                print(f"Error generating prediction for example {i}: {e}")
+                print(f"{Fore.RED}Error generating prediction for example {i}: {e}")
                 predictions.append({
                     "index": i,
                     "input": item["text"],
@@ -606,12 +609,15 @@ if __name__ == "__main__":
     eval_path = Path(args.eval_data_path)
 
     if not train_path.exists():
+        print(f"{Fore.RED}Error: Training data file not found: {train_path}")
         raise FileNotFoundError(f"Training data file not found: {train_path}")
     if not eval_path.exists():
+        print(f"{Fore.RED}Error: Testing data file not found: {eval_path}")
         raise FileNotFoundError(f"Testing data file not found: {eval_path}")
-
+    
     # Set random seed for reproducibility
     ExperimentConfig.set_seed()
+    print(f"{Fore.GREEN}Starting training pipeline with seed: {ExperimentConfig.SEED}")
 
     # Create trainer
     trainer = Trainer(
