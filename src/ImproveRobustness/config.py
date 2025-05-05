@@ -68,7 +68,7 @@ class ExperimentConfig:
     # Training parameters
     BATCH_SIZE = 4
     LEARNING_RATE = 2e-5
-    NUM_TRAIN_EPOCHS = 3
+    NUM_TRAIN_EPOCHS = 10
     WARMUP_RATIO = 0.1
     WEIGHT_DECAY = 0.01
     GRADIENT_ACCUMULATION_STEPS = 4

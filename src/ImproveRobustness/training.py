@@ -258,7 +258,7 @@ class Trainer:
         print(f"{Fore.GREEN}Preparing datasets...")
         train_dataset_raw = self.prepare_dataset(self.train_data_path,
                                                  start_idx=0,
-                                                 end_idx=25,
+                                                 end_idx=100,
                                                  include_completion=True
                                                  )
         test_dataset_raw = self.prepare_dataset(
