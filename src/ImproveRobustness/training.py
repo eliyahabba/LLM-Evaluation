@@ -16,11 +16,14 @@ from transformers import (
     BitsAndBytesConfig
 )
 from trl import SFTTrainer
+from colorama import init, Fore, Style
 
 from src.ImproveRobustness.config import ExperimentConfig
 
 load_dotenv()
 
+# Initialize colorama
+init(autoreset=True)  # This will auto-reset colors after each print
 
 class Trainer:
     def __init__(
@@ -384,10 +387,10 @@ class Trainer:
             if torch.cuda.is_available():
                 trainer.model = trainer.model.to(f"cuda:{gpu_id}")
 
-            print(f"Starting training for model: {self.model_name}")
-            print(f"Training data: {self.train_data_path}")
-            print(f"Validation data: {self.eval_data_path}")
-            print(f"Output directory: {model_output_path}")
+            print(f"{Fore.GREEN}Starting training for model: {self.model_name}{Style.RESET_ALL}")
+            print(f"{Fore.CYAN}Training data: {self.train_data_path}")
+            print(f"{Fore.CYAN}Validation data: {self.eval_data_path}")
+            print(f"{Fore.CYAN}Output directory: {model_output_path}")
 
             print("Training started...")
             trainer.train()
@@ -426,6 +429,9 @@ class Trainer:
                 test_dataset=test_dataset,
                 train_subset=train_subset
             )
+
+        print(f"Train set size: {len(train_dataset)}")
+        print(f"Test set size: {len(test_dataset)}")
 
         return model_output_path
 
