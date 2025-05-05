@@ -424,34 +424,54 @@ class Trainer:
             print(f"{Fore.GREEN}{'='*80}\n")
             
             sample_size = min(5, len(train_dataset))
-            for i, example in enumerate(train_dataset[:sample_size]):
+            for i in range(sample_size):
                 print(f"{Fore.CYAN}{'='*20} Training Example {i+1}/{sample_size} {'='*20}")
                 
-                # Extract input and response parts if possible
-                text = example["text"]
+                # Get the text safely from the dataset
+                try:
+                    # Different datasets might have different structures
+                    if hasattr(train_dataset[i], '__getitem__') and 'text' in train_dataset[i]:
+                        # If example is a dict-like with 'text' key
+                        text = train_dataset[i]['text']
+                    elif isinstance(train_dataset[i], dict) and 'text' in train_dataset[i]:
+                        # If example is a dict with 'text' key
+                        text = train_dataset[i]['text']
+                    elif isinstance(train_dataset[i], str):
+                        # If example is directly a string
+                        text = train_dataset[i]
+                    elif hasattr(train_dataset[i], 'text'):
+                        # If example has a text attribute
+                        text = train_dataset[i].text
+                    else:
+                        # Try to get the first item if it's some other structure
+                        text = str(train_dataset[i])
+                        
+                    # Try to separate input and output based on common patterns
+                    # This is a simplified approach - may need adjustment for different tokenizers/templates
+                    if '<|assistant|>' in text:
+                        # Some common template markers
+                        parts = text.split('<|assistant|>', 1)
+                        user_input = parts[0].replace('<|user|>', '')
+                        expected_output = '<|assistant|>' + parts[1] if len(parts) > 1 else ''
+                    elif '\n' in text:
+                        # Simple newline separation
+                        parts = text.split('\n', 1)
+                        user_input = parts[0]
+                        expected_output = parts[1] if len(parts) > 1 else ''
+                    else:
+                        # Can't separate, show as is
+                        user_input = text
+                        expected_output = "(Cannot identify expected output)"
+                    
+                    print(f"{Fore.BLUE}USER INPUT:")
+                    print(f"{Fore.WHITE}{user_input.strip()[:500]}{'...' if len(user_input) > 500 else ''}")
+                    
+                    print(f"\n{Fore.MAGENTA}EXPECTED OUTPUT:")
+                    print(f"{Fore.WHITE}{expected_output.strip()[:500]}{'...' if len(expected_output) > 500 else ''}")
                 
-                # Try to separate input and output based on common patterns
-                # This is a simplified approach - may need adjustment for different tokenizers/templates
-                if '<|assistant|>' in text:
-                    # Some common template markers
-                    parts = text.split('<|assistant|>', 1)
-                    user_input = parts[0].replace('<|user|>', '')
-                    expected_output = '<|assistant|>' + parts[1] if len(parts) > 1 else ''
-                elif '\n' in text:
-                    # Simple newline separation
-                    parts = text.split('\n', 1)
-                    user_input = parts[0]
-                    expected_output = parts[1] if len(parts) > 1 else ''
-                else:
-                    # Can't separate, show as is
-                    user_input = text
-                    expected_output = "(Cannot identify expected output)"
-                
-                print(f"{Fore.BLUE}USER INPUT:")
-                print(f"{Fore.WHITE}{user_input.strip()[:500]}{'...' if len(user_input) > 500 else ''}")
-                
-                print(f"\n{Fore.MAGENTA}EXPECTED OUTPUT:")
-                print(f"{Fore.WHITE}{expected_output.strip()[:500]}{'...' if len(expected_output) > 500 else ''}")
+                except Exception as e:
+                    print(f"{Fore.RED}Error displaying example {i}: {str(e)}")
+                    print(f"{Fore.YELLOW}Raw example data: {str(train_dataset[i])[:100]}...")
                 
                 print(f"{Fore.CYAN}{'='*70}\n")
             
