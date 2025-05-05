@@ -358,8 +358,12 @@ class Trainer:
             # Initialize wandb if needed and available
             if self._is_wandb_available():
                 try:
-                    wandb.init(
-                        project="ImproveRobustness",
+                    # Define wandb project name
+                    wandb_project = "ImproveRobustness"
+                    
+                    # Initialize wandb
+                    wandb_run = wandb.init(
+                        project=wandb_project,
                         id=f"{id_prompt_name}_gpu{gpu_id}",
                         config={
                             "learning_rate": training_args.learning_rate,
@@ -385,6 +389,11 @@ class Trainer:
                             "run_id": id_prompt_name
                         },
                     )
+                    
+                    # Print wandb information
+                    print(f"{Fore.BLUE}WandB Project: {wandb_project}")
+                    print(f"{Fore.BLUE}WandB Run ID: {wandb_run.id}")
+                    print(f"{Fore.BLUE}WandB URL: {wandb_run.get_url()}")
                     
                     # Log dataset samples for reference
                     train_examples = train_dataset[:3]["text"] if len(train_dataset) >= 3 else train_dataset["text"]
