@@ -508,7 +508,10 @@ class Trainer:
 
     def _eval_after_finetuning(self, model_path, tokenizer, test_dataset, train_subset):
         """Evaluate model after fine-tuning."""
-        print(f"{Fore.GREEN}Evaluating model after fine-tuning...")
+        print(f"\n{Fore.GREEN}{'*'*30} STARTING POST-TRAINING EVALUATION {'*'*30}")
+        print(f"{Fore.GREEN}Evaluating model: {model_path}")
+        print(f"{Fore.GREEN}{'*'*80}\n")
+        
         results_dir = self.output_dir / "evaluations"
         results_dir.mkdir(exist_ok=True, parents=True)
 
@@ -516,17 +519,26 @@ class Trainer:
         model = self._load_finetuned_model(model_path)
 
         # Evaluate on test set
+        print(f"{Fore.GREEN}{'#'*30} EVALUATING ON TEST SET {'#'*30}")
         test_predictions = self._generate_predictions(model, tokenizer, test_dataset)
         test_results_path = results_dir / f"{model_path.name}_results_after_finetuning.csv"
         test_predictions.to_csv(test_results_path, index=False)
+        print(f"{Fore.MAGENTA}Test set evaluation saved to: {test_results_path}")
 
         # Evaluate on training subset
+        print(f"{Fore.GREEN}{'#'*30} EVALUATING ON TRAINING SUBSET {'#'*30}")
         train_predictions = self._generate_predictions(model, tokenizer, train_subset)
         train_results_path = results_dir / f"{model_path.name}_train_results_after_finetuning.csv"
         train_predictions.to_csv(train_results_path, index=False)
+        print(f"{Fore.MAGENTA}Training subset evaluation saved to: {train_results_path}")
 
-        print(f"{Fore.MAGENTA}Post-training evaluation saved to {results_dir}")
-        
+        # Print summary of evaluation
+        print(f"\n{Fore.GREEN}{'*'*30} EVALUATION SUMMARY {'*'*30}")
+        print(f"{Fore.CYAN}Total test examples evaluated: {len(test_predictions)}")
+        print(f"{Fore.CYAN}Total training examples evaluated: {len(train_predictions)}")
+        print(f"{Fore.CYAN}Results saved to: {results_dir}")
+        print(f"{Fore.GREEN}{'*'*80}\n")
+
         # Log post-training evaluation to wandb if available
         if self._is_wandb_available():
             try:
@@ -578,6 +590,10 @@ class Trainer:
         model.eval()
         predictions = []
 
+        print(f"\n{Fore.GREEN}{'='*80}")
+        print(f"{Fore.GREEN}Generating predictions for {len(dataset)} examples...")
+        print(f"{Fore.GREEN}{'='*80}\n")
+
         batch_size = 1  # Process one example at a time to manage memory
         for i, item in enumerate(dataset):
             try:
@@ -610,11 +626,20 @@ class Trainer:
                 # Get the response only (remove the prompt)
                 response = generated_text[len(item["text"]):]
 
+                # Add to predictions
                 predictions.append({
                     "index": i,
                     "input": item["text"],
                     "prediction": response.strip()
                 })
+
+                # Print the example and prediction with nice formatting
+                print(f"{Fore.CYAN}{'='*40} Example {i+1}/{len(dataset)} {'='*40}")
+                print(f"{Fore.BLUE}INPUT:")
+                print(f"{Fore.WHITE}{item['text'][:500]}{'...' if len(item['text']) > 500 else ''}")
+                print(f"\n{Fore.MAGENTA}MODEL OUTPUT:")
+                print(f"{Fore.WHITE}{response.strip()}")
+                print(f"{Fore.CYAN}{'='*90}\n")
 
                 # Clean up memory for CUDA tensors
                 del inputs, outputs
