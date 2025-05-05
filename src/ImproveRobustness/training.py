@@ -516,8 +516,7 @@ class Trainer:
         for i, item in enumerate(dataset):
             try:
                 # The input should already be in the correct format from create_chat_dataset
-                inputs = tokenizer(item["text"], return_tensors="pt").to(model.device)
-
+                inputs = tokenizer(item["text"], return_tensors="pt", padding=True).to(model.device)
                 # Handle very long inputs by truncating if needed
                 max_length = tokenizer.model_max_length
                 if inputs["input_ids"].shape[1] > max_length:
@@ -529,6 +528,9 @@ class Trainer:
                 with torch.no_grad():
                     outputs = model.generate(
                         inputs["input_ids"],
+                        attention_mask=inputs["attention_mask"],  # Pass attention mask
+
+                        pad_token_id=tokenizer.pad_token_id,
                         max_new_tokens=ExperimentConfig.MAX_NEW_TOKENS,
                         do_sample=ExperimentConfig.DO_SAMPLE
                     )
