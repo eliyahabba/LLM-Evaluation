@@ -433,11 +433,7 @@ class Trainer:
             print(f"{Fore.MAGENTA}Model saved to {model_output_path}")
 
             # Finish wandb run
-            if self._is_wandb_available():
-                try:
-                    wandb.finish()
-                except:
-                    pass
+
 
             # Evaluate on validation set
             print(f"{Fore.GREEN}Evaluating on validation set...")
@@ -473,7 +469,11 @@ class Trainer:
                 test_dataset=test_dataset,
                 train_subset=train_subset
             )
-
+        if self._is_wandb_available():
+            try:
+                wandb.finish()
+            except:
+                pass
         return model_output_path
 
     def _is_wandb_available(self):
