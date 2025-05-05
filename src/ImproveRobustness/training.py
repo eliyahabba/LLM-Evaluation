@@ -366,12 +366,30 @@ class Trainer:
                             "epochs": training_args.num_train_epochs,
                             "logging_steps": training_args.logging_steps,
                             "per_device_train_batch_size": training_args.per_device_train_batch_size,
+                            "per_device_eval_batch_size": training_args.per_device_eval_batch_size,
+                            "gradient_accumulation_steps": training_args.gradient_accumulation_steps,
+                            "weight_decay": training_args.weight_decay,
+                            "warmup_ratio": training_args.warmup_ratio,
+                            "lr_scheduler_type": training_args.lr_scheduler_type,
+                            "optim": training_args.optim,
+                            "model_name": self.model_name,
+                            "peft_method": "LoRA" if self.use_lora else "None",
+                            "quantization": self.quant_config_type if self.quant_config_type else "None",
                             "gpu_id": gpu_id,
                             "dimension": self.target_dimension,
                             "training_values": self.training_dimension_values,
-                            "excluded_values": self.excluded_dimension_values
+                            "excluded_values": self.excluded_dimension_values,
+                            "train_dataset_size": len(train_dataset),
+                            "eval_dataset_size": len(val_dataset),
+                            "test_dataset_size": len(test_dataset),
+                            "run_id": id_prompt_name
                         },
                     )
+                    
+                    # Log dataset samples for reference
+                    train_examples = train_dataset[:3]["text"] if len(train_dataset) >= 3 else train_dataset["text"]
+                    wandb.log({"train_examples": wandb.Table(data=[[ex] for ex in train_examples], columns=["text"])})
+                    
                 except Exception as e:
                     print(f"{Fore.YELLOW}Warning: Failed to initialize wandb: {e}")
                     training_args.report_to = "none"
@@ -419,9 +437,21 @@ class Trainer:
             print(f"{Fore.MAGENTA}Evaluation finished.")
             print(f"{Fore.CYAN}Eval results: {eval_results}")
 
-            # Log metrics to wandb
+            # Log metrics to wandb with prefix to distinguish from training metrics
             if training_args.report_to == "wandb" and self._is_wandb_available():
-                wandb.log(eval_results)
+                # Add prefix to evaluation metrics to distinguish them from training metrics
+                prefixed_eval_results = {f"eval/{k}": v for k, v in eval_results.items()}
+                
+                # Add some extra useful metrics
+                prefixed_eval_results.update({
+                    "train/epoch": trainer.state.epoch,
+                    "train/total_steps": trainer.state.global_step,
+                    "train/learning_rate": trainer.state.learning_rate if hasattr(trainer.state, "learning_rate") else learning_rate,
+                    "eval/timestamp": pd.Timestamp.now().isoformat(),
+                })
+                
+                # Log the metrics
+                wandb.log(prefixed_eval_results)
 
         # Evaluate after fine-tuning if requested
         if eval_after_finetuning:
@@ -488,6 +518,31 @@ class Trainer:
         train_predictions.to_csv(train_results_path, index=False)
 
         print(f"{Fore.MAGENTA}Post-training evaluation saved to {results_dir}")
+        
+        # Log post-training evaluation to wandb if available
+        if self._is_wandb_available():
+            try:
+                # Calculate some basic metrics (this is simplified - you may want to add more)
+                metrics = {
+                    "final_eval/test_samples": len(test_predictions),
+                    "final_eval/train_samples": len(train_predictions),
+                    "final_eval/model_path": str(model_path),
+                }
+                
+                # Log a sample of predictions
+                test_table_data = []
+                for i, row in test_predictions.head(5).iterrows():
+                    test_table_data.append([row["input"], row["prediction"]])
+                
+                wandb.log({
+                    **metrics,
+                    "final_eval/test_predictions": wandb.Table(
+                        data=test_table_data,
+                        columns=["input", "prediction"]
+                    )
+                })
+            except Exception as e:
+                print(f"{Fore.YELLOW}Warning: Failed to log post-training evaluation to wandb: {e}")
 
     def _load_finetuned_model(self, model_path):
         """Load the fine-tuned model."""
