@@ -528,11 +528,14 @@ class Trainer:
                 with torch.no_grad():
                     outputs = model.generate(
                         inputs["input_ids"],
-                        attention_mask=inputs["attention_mask"],  # Pass attention mask
-
+                        attention_mask=inputs["attention_mask"],
                         pad_token_id=tokenizer.pad_token_id,
                         max_new_tokens=ExperimentConfig.MAX_NEW_TOKENS,
-                        do_sample=ExperimentConfig.DO_SAMPLE
+                        do_sample=ExperimentConfig.DO_SAMPLE,
+                        # Explicitly set these to None to prevent warnings
+                        temperature=None,
+                        top_p=None,
+                        top_k=None
                     )
 
                 # Decode generated text
