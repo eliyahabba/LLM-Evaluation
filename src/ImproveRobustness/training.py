@@ -5,6 +5,7 @@ from pathlib import Path
 import pandas as pd
 import torch
 import wandb
+from colorama import init, Fore, Style
 from datasets import Dataset
 from dotenv import load_dotenv
 from huggingface_hub import login
@@ -16,7 +17,6 @@ from transformers import (
     BitsAndBytesConfig
 )
 from trl import SFTTrainer
-from colorama import init, Fore, Style
 
 from src.ImproveRobustness.config import ExperimentConfig
 
@@ -220,10 +220,36 @@ class Trainer:
                 )
             else:
                 if include_completion and "ground_truth" in example:
-                    chat_str = f"{prompt}\\n{example['ground_truth']}"
+                    chat_str = f"{prompt}{example['ground_truth']}"
                 else:
                     chat_str = prompt
                     # Return a dict to update the 'text' column
+            return {"text": chat_str}
+
+        # Apply formatting
+        chat_data = dataset.map(format_chat)
+
+        # Convert to text-only dataset
+        return Dataset.from_dict({"text": chat_data["text"]})
+    def create_chat_dataset(self, dataset, tokenizer, include_completion=True):
+        """Convert dataset to chat format using tokenizer's chat template."""
+
+        def format_chat(example):
+            # The prompt is already in the raw_input field
+            prompt = example["raw_input"]
+
+            messages = [{"role": "user", "content": prompt}]
+
+            # Add completion if needed
+            if include_completion and "ground_truth" in example:
+                messages.append({"role": "assistant", "content": example["ground_truth"]})
+
+            # Check if tokenizer supports chat templates
+            if include_completion and "ground_truth" in example:
+                chat_str = f"### {prompt}\n{example['ground_truth']}"
+            else:
+                chat_str = prompt
+                # Return a dict to update the 'text' column
             return {"text": chat_str}
 
         # Apply formatting
@@ -360,7 +386,7 @@ class Trainer:
                 try:
                     # Define wandb project name
                     wandb_project = "ImproveRobustness"
-                    
+
                     # Initialize wandb
                     wandb_run = wandb.init(
                         project=wandb_project,
@@ -389,22 +415,23 @@ class Trainer:
                             "run_id": id_prompt_name
                         },
                     )
-                    
+
                     # Print wandb information
                     print(f"{Fore.BLUE}WandB Project: {wandb_project}")
                     print(f"{Fore.BLUE}WandB Run ID: {wandb_run.id}")
                     print(f"{Fore.BLUE}WandB URL: {wandb_run.get_url()}")
-                    
+
                     # Log dataset samples for reference
                     train_examples = train_dataset[:3]["text"] if len(train_dataset) >= 3 else train_dataset["text"]
                     wandb.log({"train_examples": wandb.Table(data=[[ex] for ex in train_examples], columns=["text"])})
-                    
+
                 except Exception as e:
                     print(f"{Fore.YELLOW}Warning: Failed to initialize wandb: {e}")
 
             # Initialize trainer
             trainer = SFTTrainer(
                 model=model,
+                processing_class=tokenizer,
                 train_dataset=train_dataset,
                 eval_dataset=val_dataset,
                 peft_config=peft_config,
@@ -422,59 +449,7 @@ class Trainer:
             print(f"\n{Fore.GREEN}{'='*30} SAMPLE TRAINING DATA {'='*30}")
             print(f"{Fore.GREEN}Showing {min(5, len(train_dataset))} examples from the training dataset")
             print(f"{Fore.GREEN}{'='*80}\n")
-            
-            sample_size = min(5, len(train_dataset))
-            for i in range(sample_size):
-                print(f"{Fore.CYAN}{'='*20} Training Example {i+1}/{sample_size} {'='*20}")
-                
-                # Get the text safely from the dataset
-                try:
-                    # Different datasets might have different structures
-                    if hasattr(train_dataset[i], '__getitem__') and 'text' in train_dataset[i]:
-                        # If example is a dict-like with 'text' key
-                        text = train_dataset[i]['text']
-                    elif isinstance(train_dataset[i], dict) and 'text' in train_dataset[i]:
-                        # If example is a dict with 'text' key
-                        text = train_dataset[i]['text']
-                    elif isinstance(train_dataset[i], str):
-                        # If example is directly a string
-                        text = train_dataset[i]
-                    elif hasattr(train_dataset[i], 'text'):
-                        # If example has a text attribute
-                        text = train_dataset[i].text
-                    else:
-                        # Try to get the first item if it's some other structure
-                        text = str(train_dataset[i])
-                        
-                    # Try to separate input and output based on common patterns
-                    # This is a simplified approach - may need adjustment for different tokenizers/templates
-                    if '<|assistant|>' in text:
-                        # Some common template markers
-                        parts = text.split('<|assistant|>', 1)
-                        user_input = parts[0].replace('<|user|>', '')
-                        expected_output = '<|assistant|>' + parts[1] if len(parts) > 1 else ''
-                    elif '\n' in text:
-                        # Simple newline separation
-                        parts = text.split('\n', 1)
-                        user_input = parts[0]
-                        expected_output = parts[1] if len(parts) > 1 else ''
-                    else:
-                        # Can't separate, show as is
-                        user_input = text
-                        expected_output = "(Cannot identify expected output)"
-                    
-                    print(f"{Fore.BLUE}USER INPUT:")
-                    print(f"{Fore.WHITE}{user_input.strip()[:500]}{'...' if len(user_input) > 500 else ''}")
-                    
-                    print(f"\n{Fore.MAGENTA}EXPECTED OUTPUT:")
-                    print(f"{Fore.WHITE}{expected_output.strip()[:500]}{'...' if len(expected_output) > 500 else ''}")
-                
-                except Exception as e:
-                    print(f"{Fore.RED}Error displaying example {i}: {str(e)}")
-                    print(f"{Fore.YELLOW}Raw example data: {str(train_dataset[i])[:100]}...")
-                
-                print(f"{Fore.CYAN}{'='*70}\n")
-            
+
             print(f"{Fore.GREEN}Starting training for model: {self.model_name}{Style.RESET_ALL}")
             print(f"{Fore.CYAN}Training data: {self.train_data_path}")
             print(f"{Fore.CYAN}Validation data: {self.eval_data_path}")
@@ -502,7 +477,7 @@ class Trainer:
             if self._is_wandb_available():
                 # Add prefix to evaluation metrics to distinguish them from training metrics
                 prefixed_eval_results = {f"eval/{k}": v for k, v in eval_results.items()}
-                
+
                 # Add some extra useful metrics
                 prefixed_eval_results.update({
                     "train/epoch": trainer.state.epoch,
@@ -510,7 +485,7 @@ class Trainer:
                     "train/learning_rate": trainer.state.learning_rate if hasattr(trainer.state, "learning_rate") else learning_rate,
                     "eval/timestamp": pd.Timestamp.now().isoformat(),
                 })
-                
+
                 # Log the metrics
                 wandb.log(prefixed_eval_results)
 
@@ -568,7 +543,7 @@ class Trainer:
         print(f"\n{Fore.GREEN}{'*'*30} STARTING POST-TRAINING EVALUATION {'*'*30}")
         print(f"{Fore.GREEN}Evaluating model: {model_path}")
         print(f"{Fore.GREEN}{'*'*80}\n")
-        
+
         results_dir = self.output_dir / "evaluations"
         results_dir.mkdir(exist_ok=True, parents=True)
 
@@ -605,12 +580,12 @@ class Trainer:
                     "final_eval/train_samples": len(train_predictions),
                     "final_eval/model_path": str(model_path),
                 }
-                
+
                 # Log a sample of predictions
                 test_table_data = []
                 for i, row in test_predictions.head(5).iterrows():
                     test_table_data.append([row["input"], row["prediction"]])
-                
+
                 wandb.log({
                     **metrics,
                     "final_eval/test_predictions": wandb.Table(
@@ -759,7 +734,7 @@ if __name__ == "__main__":
     if not eval_path.exists():
         print(f"{Fore.RED}Error: Testing data file not found: {eval_path}")
         raise FileNotFoundError(f"Testing data file not found: {eval_path}")
-    
+
     # Set random seed for reproducibility
     ExperimentConfig.set_seed()
     print(f"{Fore.GREEN}Starting training pipeline with seed: {ExperimentConfig.SEED}")
