@@ -231,32 +231,32 @@ class Trainer:
 
         # Convert to text-only dataset
         return Dataset.from_dict({"text": chat_data["text"]})
-    def create_chat_dataset(self, dataset, tokenizer, include_completion=True):
-        """Convert dataset to chat format using tokenizer's chat template."""
-
-        def format_chat(example):
-            # The prompt is already in the raw_input field
-            prompt = example["raw_input"]
-
-            messages = [{"role": "user", "content": prompt}]
-
-            # Add completion if needed
-            if include_completion and "ground_truth" in example:
-                messages.append({"role": "assistant", "content": example["ground_truth"]})
-
-            # Check if tokenizer supports chat templates
-            if include_completion and "ground_truth" in example:
-                chat_str = f"### {prompt}\n{example['ground_truth']}"
-            else:
-                chat_str = prompt
-                # Return a dict to update the 'text' column
-            return {"text": chat_str}
-
-        # Apply formatting
-        chat_data = dataset.map(format_chat)
-
-        # Convert to text-only dataset
-        return Dataset.from_dict({"text": chat_data["text"]})
+    # def create_chat_dataset(self, dataset, tokenizer, include_completion=True):
+    #     """Convert dataset to chat format using tokenizer's chat template."""
+    #
+    #     def format_chat(example):
+    #         # The prompt is already in the raw_input field
+    #         prompt = example["raw_input"]
+    #
+    #         messages = [{"role": "user", "content": prompt}]
+    #
+    #         # Add completion if needed
+    #         if include_completion and "ground_truth" in example:
+    #             messages.append({"role": "assistant", "content": example["ground_truth"]})
+    #
+    #         # Check if tokenizer supports chat templates
+    #         if include_completion and "ground_truth" in example:
+    #             chat_str = f"### {prompt}\n{example['ground_truth']}"
+    #         else:
+    #             chat_str = prompt
+    #             # Return a dict to update the 'text' column
+    #         return {"text": chat_str}
+    #
+    #     # Apply formatting
+    #     chat_data = dataset.map(format_chat)
+    #
+    #     # Convert to text-only dataset
+    #     return Dataset.from_dict({"text": chat_data["text"]})
 
     def run_pipeline(self,
                      eval_before_finetuning=ExperimentConfig.EVAL_BEFORE_FINETUNING,
