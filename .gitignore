@@ -4,6 +4,7 @@
 **/__pycache__/
 **/logs/
 **/slurm*
+**/wandb*
 **/processing_log_*
 **/.DS_Store
 /src/experiments/experiment_preparation/dataset_scheme/old/
@@ -22,6 +23,7 @@ habba/PycharmProjects/LLM-Evaluation/src/analysis/app/results_local/Shots_0/meta
 /src/analysis/paper/zere_shot_comparsion/results*
 /src/download_helm/converted_data_paerqut/
 /src/download_helm/converted_data/
+/src/download_helm/converted_data_paerqut_lite_version
 /src/analysis/paper/PerQuestionRobustness/dimension_sampling_results
 /src/analysis/paper/PerQuestionRobustness/overlap_results
 /src/analysis/paper/PerQuestionRobustness/data
