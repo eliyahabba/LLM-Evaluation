@@ -17,7 +17,7 @@ absolute_path=$(readlink -f $dir)
 # print the full (not relative) path of the dir variable
 echo "current dir is set to: $absolute_path"
 cd $dir
-
+source "/cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate"
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch
