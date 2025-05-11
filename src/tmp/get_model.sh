@@ -2,7 +2,7 @@
 
 #SBATCH --mem=10g
 #SBATCH --time=2:0:0
-#SBATCH --gres=gpu:a6000:1
+#SBATCH --gres=gpu:cortex-01:1
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
 #SBATCH --exclude=cortex-03,cortex-04,cortex-05,cortex-06,cortex-07,cortex-08
