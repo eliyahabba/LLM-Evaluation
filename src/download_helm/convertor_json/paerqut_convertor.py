@@ -215,7 +215,7 @@ def process_json_file(args):
             # Create directory structure
             model_dir = output_path / model_name
             lang_dir = model_dir / language
-            shots_dir = lang_dir / f"shots_{shots}"
+            shots_dir = lang_dir / f"{shots}_shots"
             shots_dir.mkdir(parents=True, exist_ok=True)
 
             # Determine output filename
