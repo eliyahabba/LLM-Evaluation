@@ -5,16 +5,19 @@ class ProcessingConstants:
     """Constants for data processing configuration."""
     
     # Processing batch sizes and limits
-    DEFAULT_BATCH_SIZE = 10
-    DEFAULT_NUM_WORKERS = 1
-    DEFAULT_NUM_BATCHES = 10
+    DEFAULT_BATCH_SIZE = 1000
+    DEFAULT_NUM_WORKERS =28 
+    DEFAULT_NUM_BATCHES = None
     
     # Directory structure
     TEMP_DIR_NAME = "temp"
+    LOGS_DIR_NAME = "logs"
+
     FULL_SCHEMA_DIR_NAME = "full_schema"
     LEAN_SCHEMA_DIR_NAME = "lean_schema"
     PROCESSED_FILES_RECORD = "processed_files.txt"
-    
+    FULL_SCHEMA_FILES_RECORD = "full_schema_files.txt"
+
     # File paths
     INPUT_DATA_DIR = "/Users/ehabba/Desktop/IBM_Results"
     INPUT_DATA_DIR = "/cs/snapless/gabis/eliyahabba/ibm_results_data_full"  # For HF downloads
@@ -30,7 +33,8 @@ class ProcessingConstants:
     # HuggingFace repositories
     SOURCE_REPO = "OfirArviv/HujiCollabOutput"
     OUTPUT_REPO = "eliyahabba/HujiCollabOutput"
-    LOGS_DIR_NAME = "logs"
+    OUTPUT_REPO = "DOVevaluation/DOVE"
+    OUTPUT_REPO_LEAN = "DOVevaluation/DOVE_Lite"
 
 class DatasetRepos:
     """Repository mappings for different datasets."""
