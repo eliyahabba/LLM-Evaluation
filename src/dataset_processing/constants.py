@@ -30,7 +30,7 @@ class ProcessingConstants:
     # HuggingFace repositories
     SOURCE_REPO = "OfirArviv/HujiCollabOutput"
     OUTPUT_REPO = "eliyahabba/HujiCollabOutput"
-
+    LOGS_DIR_NAME = "logs"
 
 class DatasetRepos:
     """Repository mappings for different datasets."""
