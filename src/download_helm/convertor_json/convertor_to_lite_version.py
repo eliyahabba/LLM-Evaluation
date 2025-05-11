@@ -1,8 +1,6 @@
 import os
 import json
 import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
 import argparse
 from pathlib import Path
 import re
@@ -26,11 +24,10 @@ def setup_logger():
     return logging.getLogger(__name__)
 
 
-# Extract info and other functions are the same as before
-
 def extract_info_from_item(item):
-    """Extract model name, dataset, and shots from a single JSON item."""
-    # Same as original function
+    """
+    Extract model name, dataset, and shots from a single JSON item.
+    """
     info = {}
 
     # Extract model information
@@ -132,27 +129,6 @@ def clean_model_name(model_name):
     return re.sub(r'[^\w\-]', '_', model_name)
 
 
-def fix_special_characters(item):
-    """
-    Recursively fix special character representations in dictionaries and lists.
-    Specifically, convert '\\n' to actual newline character '\n'
-    """
-    if isinstance(item, dict):
-        for key, value in item.items():
-            if isinstance(value, str):
-                # Fix escaped newlines in strings
-                if value == '\\n':
-                    item[key] = '\n'
-            elif isinstance(value, (dict, list)):
-                # Recursively fix nested structures
-                item[key] = fix_special_characters(value)
-        return item
-    elif isinstance(item, list):
-        return [fix_special_characters(element) for element in item]
-    else:
-        return item
-
-
 def process_json_file(args):
     """Process a single JSON file - for parallel processing"""
     json_file, output_path = args
@@ -174,19 +150,8 @@ def process_json_file(args):
 
         # Process each group separately
         for shots, items in grouped_content.items():
-            # Fix special characters in all items
-            fixed_items = [fix_special_characters(item.copy()) for item in items]
-
-            # Specific fix for separator values
-            for item in fixed_items:
-                if 'prompt_config' in item and 'dimensions' in item['prompt_config'] and 'separator' in \
-                        item['prompt_config']['dimensions']:
-                    sep = item['prompt_config']['dimensions']['separator']
-                    if sep == '\\n':
-                        item['prompt_config']['dimensions']['separator'] = '\n'
-
             # Extract common info from the first item
-            file_info = extract_info_from_item(fixed_items[0])
+            file_info = extract_info_from_item(items[0])
 
             if 'model' not in file_info or 'dataset' not in file_info:
                 logger.warning(f"Missing model or dataset information in {json_file}. Trying to extract from filename.")
@@ -223,16 +188,16 @@ def process_json_file(args):
 
             # Check for subject-specific datasets
             subject = None
-            if dataset == 'mmlu' and 'instance' in fixed_items[0] and 'sample_identifier' in fixed_items[0]['instance']:
+            if dataset == 'mmlu' and 'instance' in items[0] and 'sample_identifier' in items[0]['instance']:
                 # Try to extract MMLU subject from additional metadata
-                if 'full_input' in fixed_items[0]['instance'].get('classification_fields', {}):
-                    full_input = fixed_items[0]['instance']['classification_fields']['full_input']
+                if 'full_input' in items[0]['instance'].get('classification_fields', {}):
+                    full_input = items[0]['instance']['classification_fields']['full_input']
                     if isinstance(full_input, str) and 'subject=' in full_input:
                         subject = full_input.split('subject=')[1].split(',')[0]
 
                 # If subject not found, check if it's in the repo name
-                if not subject and 'hf_repo' in fixed_items[0]['instance']['sample_identifier']:
-                    repo = fixed_items[0]['instance']['sample_identifier']['hf_repo']
+                if not subject and 'hf_repo' in items[0]['instance']['sample_identifier']:
+                    repo = items[0]['instance']['sample_identifier']['hf_repo']
                     if 'mmlu/' in repo:
                         subject = repo.split('mmlu/')[1].split('/')[0]
 
@@ -246,52 +211,92 @@ def process_json_file(args):
             # Create a new list to hold restructured data
             restructured_items = []
 
+            # For each item, reorganize to keep nested structure
+            for item in items:
+                # Create a new dictionary with top-level keys
+                new_item = {}
+
+                # For each top-level key, serialize the nested structure as JSON
+                for key, value in item.items():
+                    if isinstance(value, (dict, list)):
+                        # Store complex types as serialized JSON strings
+                        new_item[key] = json.dumps(value)
+                    else:
+                        # Store simple types as is
+                        new_item[key] = value
+
+                restructured_items.append(new_item)
+
+            # Create DataFrame from restructured items
+            df = pd.DataFrame(restructured_items)
+
+            # Write to Parquet
+            if task:
+                output_file = shots_dir / f"{dataset}.{task}.parquet"
+            else:
+                output_file = shots_dir / f"{dataset}.parquet"
+
+            # Convert to parquet with pyarrow engine
             try:
-                # First, create the output file path
-                if task:
-                    output_file = shots_dir / f"{dataset}.{task}.parquet"
-                else:
-                    output_file = shots_dir / f"{dataset}.parquet"
-
-                # Convert directly to pandas DataFrame
-                df = pd.DataFrame(fixed_items)
-
-                # Save to parquet with PyArrow engine
-                df.to_parquet(str(output_file), engine='pyarrow')
-
-                logger.info(f"Successfully converted to {output_file} (shots={shots}, items={len(fixed_items)})")
+                df.to_parquet(str(output_file), index=False, engine='pyarrow')
+                logger.info(f"Successfully converted to {output_file} (shots={shots}, items={len(items)})")
                 results.append(str(output_file))
-
             except Exception as e:
-                logger.error(f"Error saving parquet file: {e}")
+                logger.error(f"Error saving parquet file {output_file}: {e}")
 
-                # Try alternate method using PyArrow directly
+                # Try to debug the dataframe
+                logger.debug(f"DataFrame columns: {df.columns.tolist()}")
+                logger.debug(f"DataFrame shape: {df.shape}")
+
+                # Try to save as CSV as a fallback
                 try:
-                    # Convert DataFrame to PyArrow Table
-                    table = pa.Table.from_pandas(df)
-
-                    # Write using PyArrow directly
-                    pq.write_table(table, str(output_file))
-
-                    logger.info(f"Successfully saved using direct PyArrow: {output_file}")
-                    results.append(str(output_file))
-                except Exception as pa_err:
-                    logger.error(f"PyArrow direct save also failed: {pa_err}")
-
-                    # Last resort: try CSV
-                    try:
-                        csv_file = output_file.with_suffix('.csv')
-                        df.to_csv(str(csv_file), index=False)
-                        logger.info(f"Saved as CSV instead: {csv_file}")
-                        results.append(str(csv_file))
-                    except Exception as csv_err:
-                        logger.error(f"Also failed to save as CSV: {csv_err}")
+                    csv_file = output_file.with_suffix('.csv')
+                    df.to_csv(str(csv_file), index=False)
+                    logger.info(f"Saved as CSV instead: {csv_file}")
+                    results.append(str(csv_file))
+                except Exception as csv_err:
+                    logger.error(f"Also failed to save as CSV: {csv_err}")
 
         return results
 
     except Exception as e:
         logger.error(f"Error processing {json_file}: {e}")
         return None
+
+
+def read_parquet_and_restore_json(parquet_file):
+    """
+    Read a Parquet file and restore the nested JSON structure for complex fields.
+
+    Args:
+        parquet_file: Path to the Parquet file
+
+    Returns:
+        List of dictionaries with restored nested structure
+    """
+    # Read the Parquet file
+    df = pd.read_parquet(parquet_file)
+
+    # Restore nested structure
+    restored_items = []
+
+    for _, row in df.iterrows():
+        restored_item = {}
+
+        for col, value in row.items():
+            if isinstance(value, str) and (value.startswith('{') or value.startswith('[')):
+                try:
+                    # Try to parse JSON string back to object
+                    restored_item[col] = json.loads(value)
+                except json.JSONDecodeError:
+                    # If not valid JSON, keep as is
+                    restored_item[col] = value
+            else:
+                restored_item[col] = value
+
+        restored_items.append(restored_item)
+
+    return restored_items
 
 
 def convert_json_to_parquet(input_dir, output_dir, num_workers=None):
@@ -303,6 +308,10 @@ def convert_json_to_parquet(input_dir, output_dir, num_workers=None):
     │   ├── language/
     │   │   └── shots_N/
     │   │       ├── benchmark.task.parquet
+
+    The nested structure of the JSON is preserved by serializing nested objects
+    as JSON strings. Use read_parquet_and_restore_json() to restore the
+    original nested structure when reading the Parquet files.
     """
     logger = setup_logger()
 
@@ -340,76 +349,23 @@ def convert_json_to_parquet(input_dir, output_dir, num_workers=None):
 
 
 if __name__ == "__main__":
-    input_data = r'/Users/ehabba/PycharmProjects/LLM-Evaluation/src/download_helm/converted_data'
-    output_data = r'/Users/ehabba/PycharmProjects/LLM-Evaluation/src/download_helm/converted_data_paerqut'
-
+    INPOUT_DIR = r"/Users/ehabba/PycharmProjects/LLM-Evaluation/src/download_helm/converted_data_paerqut"
+    OUTPUT_DIR = r"/Users/ehabba/PycharmProjects/LLM-Evaluation/src/download_helm/converted_data_paerqut_lite_version"
     parser = argparse.ArgumentParser(description="Convert JSON files to Parquet in structured directories")
-    parser.add_argument("--input-dir", help="Directory containing JSON files", default=input_data)
-    parser.add_argument("--output-dir", help="Output directory for Parquet files", default=output_data)
+    parser.add_argument("--input-dir", help="Directory containing JSON files", default=INPOUT_DIR)
+    parser.add_argument("--output-dir", help="Output directory for Parquet files",default=OUTPUT_DIR)
     parser.add_argument("--workers", type=int, default=None,
                         help="Number of worker processes (default: use sequential processing)")
-    parser.add_argument("--test", help="Run a test to verify dictionary storage and newline handling",
-                        action="store_true")
+    parser.add_argument("--read", help="Read a parquet file and restore the JSON structure")
 
     args = parser.parse_args()
 
-    if args.test:
-        # Test script to verify dictionaries and newlines are handled correctly
-        print("Running test for dictionary storage and newline handling...")
-
-        # Create test data with dictionary containing newline
-        test_data = [
-            {
-                'id': 1,
-                'prompt_config': {
-                    'dimensions': {
-                        'separator': '\n',  # Actual newline character
-                        'shots': 0
-                    }
-                }
-            },
-            {
-                'id': 2,
-                'prompt_config': {
-                    'dimensions': {
-                        'separator': '\\n',  # Escaped newline as string
-                        'shots': 1
-                    }
-                }
-            }
-        ]
-
-        # Fix the data (should convert '\\n' to '\n')
-        fixed_data = [fix_special_characters(item.copy()) for item in test_data]
-
-        print("Original data:")
-        print(f"Item 1 separator: {repr(test_data[0]['prompt_config']['dimensions']['separator'])}")
-        print(f"Item 2 separator: {repr(test_data[1]['prompt_config']['dimensions']['separator'])}")
-
-        print("\nAfter fixing:")
-        print(f"Item 1 separator: {repr(fixed_data[0]['prompt_config']['dimensions']['separator'])}")
-        print(f"Item 2 separator: {repr(fixed_data[1]['prompt_config']['dimensions']['separator'])}")
-
-        # Convert to DataFrame
-        df = pd.DataFrame(fixed_data)
-
-        # Save to temporary parquet
-        temp_parquet = "test_newlines.parquet"
-        df.to_parquet(temp_parquet, engine='pyarrow')
-
-        # Read back
-        df_read = pd.read_parquet(temp_parquet)
-
-        print("\nAfter reading from parquet:")
-        print(f"Item 1 separator: {repr(df_read['prompt_config'].iloc[0]['dimensions']['separator'])}")
-        print(f"Item 2 separator: {repr(df_read['prompt_config'].iloc[1]['dimensions']['separator'])}")
-
-        # Cleanup
-        import os
-
-        if os.path.exists(temp_parquet):
-            os.remove(temp_parquet)
-
+    if args.read:
+        # If --read option is used, read the parquet file and restore the JSON structure
+        restored_items = read_parquet_and_restore_json(args.read)
+        print(f"Read {len(restored_items)} items from {args.read}")
+        print("First item sample (restored nested structure):")
+        print(json.dumps(restored_items[0], indent=2))
     else:
-        # Run normal conversion
+        # Normal conversion process
         convert_json_to_parquet(args.input_dir, args.output_dir, args.workers)
