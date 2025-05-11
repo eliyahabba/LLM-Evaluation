@@ -17,7 +17,14 @@ absolute_path=$(readlink -f $dir)
 # print the full (not relative) path of the dir variable
 echo "current dir is set to: $absolute_path"
 cd $dir
+
+PROJECT_DIR="/cs/snapless/gabis/eliyahabba/LLM-Evaluation/src/tmp/"
+cd $PROJECT_DIR
+echo "Current directory: $(pwd)"
+
 source "/cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate"
+echo "Virtual environment activated"
+
 sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
 module load cuda
 module load torch
