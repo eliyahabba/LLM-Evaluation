@@ -1,32 +1,40 @@
 #!/bin/bash
 
-#SBATCH --mem=200g
-#SBATCH --time=2:0:0
+#SBATCH --job-name=llama3-quantized
+#SBATCH --mem=32g
+#SBATCH --time=5:0:0
 #SBATCH --mail-user=eliya.habba@mail.huji.ac.il
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
-#SBATCH --job-name=calculate_perplexity
+#SBATCH --gres=gpu:a40:1
+#SBATCH --cpus-per-task=4
 #SBATCH --killable
+#SBATCH --requeue
 
+# Set Hugging Face cache directory
 export HF_HOME=/cs/snapless/gabis/gabis/shared/huggingface/
 
-# Now HF_HOME is available to use in this script
-
-#dir="/Users/ehabba/PycharmProjects/LLM-Evaluation/src/tmp/"
-#absolute_path=$(readlink -f $dir)
-# print the full (not relative) path of the dir variable
-#echo "current dir is set to: $absolute_path"
-#cd $dir
-
+# Set project directory
 PROJECT_DIR="/cs/labs/gabis/eliyahabba/LLM-Evaluation/src/tmp/"
 cd $PROJECT_DIR
 echo "Current directory: $(pwd)"
 
-#source "/cs/snapless/gabis/eliyahabba/venvs/LLM-Evaluation/bin/activate"
-#echo "Virtual environment activated"
-
-sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
+# Load modules
 module load cuda
 module load torch
-echo ${SLURM_ARRAY_TASK_ID}
+
+# Print job info
+echo "Job ID: $SLURM_JOB_ID"
+echo "Node: $SLURMD_NODENAME"
+echo "Task ID (for array jobs): ${SLURM_ARRAY_TASK_ID}"
+
+# Allow running of unverified code
 export UNITXT_ALLOW_UNVERIFIED_CODE="True"
-CUDA_LAUNCH_BLOCKING=1 python get_model.py
+export CUDA_LAUNCH_BLOCKING=1
+
+# Run the Python script
+echo "Starting model loading and testing..."
+python get_model.py
+
+# Print resource usage at the end
+echo "Job resource usage:"
+sacct -j $SLURM_JOB_ID --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
