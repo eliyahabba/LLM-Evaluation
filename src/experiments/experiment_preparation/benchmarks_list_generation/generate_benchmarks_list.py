@@ -2326,9 +2326,9 @@ MMLU_PARTIAL_SUBJECTS = [
     "formal_logic",
     "business_ethics",
     "clinical_knowledge",
-    "global_facts",
-    "sociology",
-    "econometrics",
+    # "global_facts",
+    # "sociology",
+    # "econometrics",
     "high_school_geography",
     "public_relations",
     "professional_psychology"
