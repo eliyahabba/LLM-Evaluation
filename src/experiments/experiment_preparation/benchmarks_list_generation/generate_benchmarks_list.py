@@ -2578,9 +2578,3 @@ get_single_runs_args_list = get_basic_benchmark_function(
 #         'meta-llama/Llama-3.2-3B-Instruct',
 #         'mistralai/Mistral-7B-Instruct-v0.3',
 #     ]
-# new_models_to_evaluate = ['meta-llama/Llama-3.2-70B-Instruct',
-# 'nvidia/Mistral-NeMo-12B-Instruct'
-# 'Qwen/Qwen2.5-1.5B-Instruct'
-# 'Qwen/Qwen2.5-7B-Instruct'
-#
-# ]
