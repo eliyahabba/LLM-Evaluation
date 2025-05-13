@@ -22,6 +22,12 @@ class PromptOptions:
         "alphabeticalSortReverse": {"shuffle_choices": False, "sort_choices_alphabetically": True,
                                     "sort_choices_by_length": False, "reverse_choices": True,
                                     "place_correct_choice_position": None},
+        "placeCorrectChoiceFirst": {"shuffle_choices": False, "sort_choices_alphabetically": False,
+                                    "sort_choices_by_length": False, "reverse_choices": False,
+                                    "place_correct_choice_position": 0},
+        "placeCorrectChoiceFourth": {"shuffle_choices": False, "sort_choices_alphabetically": False,
+                                      "sort_choices_by_length": False, "reverse_choices": False,
+                                      "place_correct_choice_position": -1},
     }
 
     override_options = {
@@ -208,9 +214,6 @@ def create_experiments_json():
     return experiments_config
 
 
-def load_experiments_config():
-    with open('experiments_config.json', 'r', encoding='utf-8') as f:
-        return json.load(f)
 
 
 if __name__ == "__main__":
