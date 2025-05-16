@@ -1,0 +1,25 @@
+{
+  "id": "007",
+  "template_name": "math_helpful_assistant",
+  "instruction": "As a helpful Artificial Intelligence Assistant, please answer the following question.\n",
+  "input_format": "{problem}\n",
+  "target_prefix": "",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 5
+  },
+  "examples_seed": 6155,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "gsm8k",
+  "id_original": "007",
+  "descriptive_name": "math_helpful_assistant_no_transform_fewshot5_seed5_exseed6155"
+}

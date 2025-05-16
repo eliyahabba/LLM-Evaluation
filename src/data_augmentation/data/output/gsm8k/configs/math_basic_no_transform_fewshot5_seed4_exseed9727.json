@@ -1,0 +1,25 @@
+{
+  "id": "075",
+  "template_name": "math_basic",
+  "instruction": "",
+  "input_format": "{problem}",
+  "target_prefix": "Solution: ",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 4
+  },
+  "examples_seed": 9727,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "gsm8k",
+  "id_original": "075",
+  "descriptive_name": "math_basic_no_transform_fewshot5_seed4_exseed9727"
+}

@@ -1,0 +1,16 @@
+{
+  "Llama-3.3-70B": {
+    "accuracy": {
+      "math_multiline_no_transform_fewshot5_seed6_exseed4258": 0.926,
+      "math_polite_request_no_transform_fewshot5_seed5_exseed9201": 0.932,
+      "math_final_answer_no_transform_fewshot5_seed8_exseed4770": 0.934,
+      "math_helpful_assistant_no_transform_fewshot5_seed1_exseed2049": 0.926,
+      "math_final_answer_please_no_transform_fewshot5_seed5_exseed8517": 0.94,
+      "math_basic_no_transform_fewshot5_seed7_exseed1117": 0.938,
+      "math_plural_request_no_transform_fewshot5_seed1_exseed8397": 0.92,
+      "math_polite_request_no_transform_fewshot5_seed4_exseed9797": 0.94,
+      "math_standard_no_transform_fewshot5_seed4_exseed9317": 0.93,
+      "math_standard_no_transform_fewshot5_seed9_exseed6107": 0.936
+    }
+  }
+}

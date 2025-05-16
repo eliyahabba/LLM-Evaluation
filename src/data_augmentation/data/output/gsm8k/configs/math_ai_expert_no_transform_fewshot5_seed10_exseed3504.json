@@ -1,0 +1,25 @@
+{
+  "id": "028",
+  "template_name": "math_ai_expert",
+  "instruction": "As an AI expert in math, could you help me to answer the problem below:\n\n",
+  "input_format": "{problem}\n",
+  "target_prefix": "Solution:\n",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 10
+  },
+  "examples_seed": 3504,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "gsm8k",
+  "id_original": "028",
+  "descriptive_name": "math_ai_expert_no_transform_fewshot5_seed10_exseed3504"
+}

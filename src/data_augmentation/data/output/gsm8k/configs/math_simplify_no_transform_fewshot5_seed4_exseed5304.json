@@ -1,0 +1,25 @@
+{
+  "id": "017",
+  "template_name": "math_simplify",
+  "instruction": "Given a mathematics problem, determine the answer. Simplify your answer as much as possible.\n\n",
+  "input_format": "Problem: {problem}",
+  "target_prefix": "Answer: ",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 4
+  },
+  "examples_seed": 5304,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "gsm8k",
+  "id_original": "017",
+  "descriptive_name": "math_simplify_no_transform_fewshot5_seed4_exseed5304"
+}

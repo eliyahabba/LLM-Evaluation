@@ -1,0 +1,25 @@
+{
+  "id": "099",
+  "template_name": "math_expert_solver",
+  "instruction": "You are a very helpful mathematical problem solver. Please provide a solution to the following questions: ",
+  "input_format": "{problem}",
+  "target_prefix": "\n",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 3
+  },
+  "examples_seed": 4608,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "gsm8k",
+  "id_original": "099",
+  "descriptive_name": "math_expert_solver_no_transform_fewshot5_seed3_exseed4608"
+}

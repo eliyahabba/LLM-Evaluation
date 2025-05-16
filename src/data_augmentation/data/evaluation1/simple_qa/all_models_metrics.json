@@ -1,0 +1,16 @@
+{
+  "Llama-3.3-70B": {
+    "avg_f1": {
+      "detailed_response_no_transform_fewshot5_seed2_exseed3621": 0.23780255878161125,
+      "assistant_qa_no_transform_fewshot5_seed7_exseed9479": 0.22122569747348558,
+      "detailed_response_no_transform_fewshot5_seed3_exseed1319": 0.21968221460614173,
+      "assistant_qa_no_transform_fewshot5_seed8_exseed7118": 0.2515981701546708,
+      "instruction_qa_no_transform_fewshot5_seed2_exseed2084": 0.23030630367576463,
+      "formal_qa_no_transform_fewshot5_seed1_exseed8433": 0.22875816181197595,
+      "detailed_response_no_transform_fewshot5_seed7_exseed7932": 0.2442236548117456,
+      "multiline_qa_no_transform_fewshot5_seed5_exseed2133": 0.2575762952103032,
+      "minimal_qa_no_transform_fewshot5_seed10_exseed3591": 0.2254392742662861,
+      "instructed_multiline_qa_no_transform_fewshot5_seed3_exseed6038": 0.2367515381993397
+    }
+  }
+}

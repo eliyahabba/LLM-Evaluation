@@ -1,0 +1,25 @@
+{
+  "id": "067",
+  "template_name": "polite_qa",
+  "instruction": "Could you please answer this question?\n\n",
+  "input_format": "{question}\n",
+  "target_prefix": "Answer: ",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 1
+  },
+  "examples_seed": 2290,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "simple_qa",
+  "id_original": "067",
+  "descriptive_name": "polite_qa_no_transform_fewshot5_seed1_exseed2290"
+}

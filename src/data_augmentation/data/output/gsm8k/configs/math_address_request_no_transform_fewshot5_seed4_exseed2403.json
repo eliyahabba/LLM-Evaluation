@@ -1,0 +1,25 @@
+{
+  "id": "072",
+  "template_name": "math_address_request",
+  "instruction": "Please address the following problems:\n",
+  "input_format": "{problem}",
+  "target_prefix": "",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 4
+  },
+  "examples_seed": 2403,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "gsm8k",
+  "id_original": "072",
+  "descriptive_name": "math_address_request_no_transform_fewshot5_seed4_exseed2403"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "058",
+  "template_name": "math_help_address",
+  "instruction": "Please help me to address the following question:\n",
+  "input_format": "{problem}\n",
+  "target_prefix": "Include your answer in the line after \"Final Answer:\"",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 8
+  },
+  "examples_seed": 3646,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "gsm8k",
+  "id_original": "058",
+  "descriptive_name": "math_help_address_no_transform_fewshot5_seed8_exseed3646"
+}

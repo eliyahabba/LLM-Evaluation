@@ -1,0 +1,25 @@
+{
+  "id": "015",
+  "template_name": "detailed_response",
+  "instruction": "Below is a question for you to answer. Please provide a detailed response.\n\n",
+  "input_format": "{question}",
+  "target_prefix": "",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 6
+  },
+  "examples_seed": 7543,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "simple_qa",
+  "id_original": "015",
+  "descriptive_name": "detailed_response_no_transform_fewshot5_seed6_exseed7543"
+}

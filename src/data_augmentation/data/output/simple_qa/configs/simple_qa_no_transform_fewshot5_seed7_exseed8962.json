@@ -1,0 +1,25 @@
+{
+  "id": "069",
+  "template_name": "simple_qa",
+  "instruction": "Answer the question.\n\n",
+  "input_format": "Question: {question}",
+  "target_prefix": "Answer: ",
+  "text_transformations": {
+    "technique": "no_transform",
+    "parameters": {
+      "disable_transformations": true
+    }
+  },
+  "few_shot": {
+    "count": 5,
+    "random_seed": 7
+  },
+  "examples_seed": 8962,
+  "num_examples": {
+    "simple_qa": 1000,
+    "gsm8k": 500
+  },
+  "dataset": "simple_qa",
+  "id_original": "069",
+  "descriptive_name": "simple_qa_no_transform_fewshot5_seed7_exseed8962"
+}
