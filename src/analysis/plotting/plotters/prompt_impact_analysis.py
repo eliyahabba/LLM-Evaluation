@@ -4,13 +4,13 @@ Improved Prompt Elements Impact Analyzer
 
 Analyzes the impact of different prompt elements on model performance.
 This script creates detailed plots showing how various prompt components 
-(templates, enumerators, separators, choice ordering) affect model accuracy.
+(instruction_phrasings, enumerators, separators, choice ordering) affect model accuracy.
 """
 
 import argparse
 import os
 from pathlib import Path
-from typing import List
+from typing import List, Optional, Dict, Tuple
 
 import matplotlib
 
@@ -33,13 +33,13 @@ from src.analysis.plotting.utils.config import get_cache_directory
 class PromptImpactAnalyzer:
     """
     Analyzes the impact of different prompt elements on model performance.
-    
+
     This class creates visualization plots showing how various prompt components
     affect model accuracy across different datasets. It generates separate graphs
     for each dataset and model combination.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the analyzer with consistent plot styling and element mappings."""
         # Style settings from config file
         plt.rcParams['font.family'] = PLOT_STYLE['font_family']
@@ -52,7 +52,7 @@ class PromptImpactAnalyzer:
                        '#bcbd22', '#17becf', '#aec7e8', '#ffbb78', '#98df8a']
 
         # Template name mapping (from original file)
-        self.template_mapping = {
+        self.instruction_phrasing_mapping = {
             # From BasicMCPrompts.py
             'MultipleChoiceTemplatesInstructionsWithTopic': 'mmlu_paper',
             'MultipleChoiceTemplatesInstructionsWithoutTopic': 'mmlu_paper_without_topic_original',
@@ -112,13 +112,22 @@ class PromptImpactAnalyzer:
             "greek": "α,β,γ,δ"
         }
 
+        # Factor display names
+        self.factor_display_names = {
+            "instruction_phrasing": "Instruction Phrasing",
+            "enumerator": "Enumerator",
+            "separator": "Choice Separator",
+            "choices_order": "Choice Order",
+            "shots": "Number of Demonstrations"
+        }
+
     def _preprocess_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Preprocess data to adapt to expected format.
-        
+
         Args:
             df: Raw DataFrame from data manager
-            
+
         Returns:
             Processed DataFrame with renamed columns and mapped values
         """
@@ -126,7 +135,7 @@ class PromptImpactAnalyzer:
 
         # Change column names to format expected by original analyzer
         column_mapping = {
-            'dimensions_4: instruction_phrasing_text': 'template',
+            'dimensions_4: instruction_phrasing_text': 'instruction_phrasing',
             'dimensions_1: enumerator': 'enumerator',
             'dimensions_2: separator': 'separator',
             'dimensions_3: choices_order': 'choices_order'
@@ -142,9 +151,10 @@ class PromptImpactAnalyzer:
         # Fix separators
         processed_df['separator'] = processed_df['separator'].str.replace('\n', '\\n')
 
-        # Map templates
-        processed_df['template'] = processed_df['template'].map(self.template_mapping).fillna(
-            processed_df['template'])
+        # Map instruction_phrasings
+        processed_df['instruction_phrasing'] = processed_df['instruction_phrasing'].map(
+            self.instruction_phrasing_mapping).fillna(
+            processed_df['instruction_phrasing'])
 
         # Map enumerators
         processed_df['enumerator'] = processed_df['enumerator'].map(self.enumerator_mapping).fillna(
@@ -152,19 +162,216 @@ class PromptImpactAnalyzer:
 
         return processed_df
 
+    def _calculate_factor_widths(self, model_data: pd.DataFrame, factors: List[str]) -> List[float]:
+        """Calculate appropriate width for each factor based on number of values."""
+        factor_widths = []
+        for factor in factors:
+            factor_data = model_data.dropna(subset=[factor])
+            if not factor_data.empty:
+                num_values = len(factor_data[factor].unique())
+                # Template usually has many values, so give it extra width
+                if factor == 'instruction_phrasing':
+                    factor_widths.append(max(6, num_values * 0.8))
+                else:
+                    factor_widths.append(max(4, num_values * 0.6))
+            else:
+                factor_widths.append(4)  # Default width
+        return factor_widths
+
+    def _get_label_settings(self, factor: str, num_values: int) -> Tuple[int, int, str]:
+        """Get label font size, rotation, and alignment based on factor type."""
+        if factor == 'instruction_phrasing':
+            # Always rotate instruction_phrasing labels due to long text
+            label_fontsize = 8 if num_values > 6 else 9
+            label_rotation = 45
+            ha_alignment = 'right'
+        elif factor == 'choices_order':
+            # Always rotate choices_order labels due to long text
+            label_fontsize = 9
+            label_rotation = 45
+            ha_alignment = 'right'
+        else:
+            # Other factors (enumerator, separator) - no rotation needed
+            label_fontsize = 10
+            label_rotation = 0
+            ha_alignment = 'center'
+        return label_fontsize, label_rotation, ha_alignment
+
+    def _shorten_labels(self, factor_values: List[str], factor: str) -> List[str]:
+        """Shorten labels if they are too long."""
+        short_labels = []
+        for val in factor_values:
+            if factor == 'instruction_phrasing':
+                # For instruction_phrasing, shorten more to save space
+                if len(str(val)) > 12:
+                    short_labels.append(str(val)[:9] + '...')
+                else:
+                    short_labels.append(str(val))
+            elif len(str(val)) > 15:
+                short_labels.append(str(val)[:12] + '...')
+            else:
+                short_labels.append(str(val))
+        return short_labels
+
+    def _plot_factor(self, ax, factor: str, model_data: pd.DataFrame, idx: int) -> None:
+        """Plot a single factor on the given axis."""
+        ax.set_facecolor('white')
+
+        # Remove frames
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['left'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+
+        # Filter data for this factor
+        factor_data = model_data.dropna(subset=[factor])
+
+        if factor_data.empty:
+            ax.text(0.5, 0.5, f'No data for {factor}', ha='center', va='center', transform=ax.transAxes)
+            return
+
+        # Calculate statistics
+        stats = factor_data.groupby(factor)['accuracy'].agg([
+            'mean', 'std', 'count'
+        ]).reset_index()
+        stats['mean'] = stats['mean'] * 100  # Convert to percentages
+
+        # Sort by average (high to low)
+        stats = stats.sort_values('mean', ascending=False)
+
+        factor_values = stats[factor].tolist()
+
+        if not factor_values:
+            ax.text(0.5, 0.5, f'No values for {factor}', ha='center', va='center', transform=ax.transAxes)
+            return
+
+        # Fixed color mapping
+        color_map = {value: self.colors[i % len(self.colors)] for i, value in enumerate(factor_values)}
+
+        # Adjust bar width based on number of values
+        num_values = len(factor_values)
+        if factor == 'instruction_phrasing' and num_values > 6:
+            bar_width = 0.4
+            text_offset = 0.8
+        else:
+            bar_width = 0.6
+            text_offset = 0.5
+
+        # Create bars
+        x = np.arange(len(factor_values))
+        bars = ax.bar(x, stats['mean'],
+                      color=[color_map[val] for val in factor_values],
+                      alpha=0.7, width=bar_width)
+
+        # Display numerical values on bars
+        for i, (bar, value) in enumerate(zip(bars, stats['mean'])):
+            height = bar.get_height()
+
+            # For instruction_phrasing with many values, use smaller font size
+            if factor == 'instruction_phrasing' and num_values > 6:
+                font_size = 9
+                rotation = 0
+            else:
+                font_size = 11
+                rotation = 0
+
+            ax.text(bar.get_x() + bar.get_width() / 2., height + text_offset,
+                    f'{value:.1f}',
+                    ha='center', va='bottom', fontsize=font_size,
+                    fontweight='bold', rotation=rotation)
+
+        # Graph styling
+        factor_title = self.factor_display_names.get(factor, factor.replace('_', ' ').title())
+        ax.set_title(factor_title, fontsize=14, fontfamily='DejaVu Serif')
+
+        # X-axis labels
+        ax.set_xticks(x)
+        short_labels = self._shorten_labels(factor_values, factor)
+        label_fontsize, label_rotation, ha_alignment = self._get_label_settings(factor, num_values)
+        ax.set_xticklabels(short_labels, rotation=label_rotation, ha=ha_alignment, fontsize=label_fontsize)
+
+        if idx == 0:
+            ax.set_ylabel('Accuracy (%)', fontsize=12, fontfamily='DejaVu Serif')
+
+        # Adjust Y boundaries for rotated text
+        if factor in ['instruction_phrasing', 'choices_order']:
+            max_mean = max(stats['mean']) if len(stats['mean']) > 0 else 0
+            ax.set_ylim(0, min(100, max_mean * 1.15))
+        else:
+            max_mean = max(stats['mean']) if len(stats['mean']) > 0 else 0
+            ax.set_ylim(0, min(100, max_mean * 1.1))
+
+        ax.grid(True, axis='y', linestyle='--', alpha=0.3)
+        ax.set_axisbelow(True)
+
+    def _create_model_plot(
+            self,
+            model: str,
+            model_data: pd.DataFrame,
+            dataset_name: str,
+            available_factors: List[str],
+            title_suffix: str,
+            filename: str,
+            output_dir: str
+    ) -> None:
+        """Create a single plot for a model with the given factors."""
+        # Calculate axis width based on number of values in each factor
+        factor_widths = self._calculate_factor_widths(model_data, available_factors)
+        total_width = sum(factor_widths)
+
+        fig, axes = plt.subplots(1, len(available_factors), figsize=(total_width, 6))
+
+        # White background
+        fig.patch.set_facecolor('white')
+        fig.patch.set_alpha(1.0)
+
+        if len(available_factors) == 1:
+            axes = [axes]
+
+        # Plot each factor
+        for idx, (factor, ax) in enumerate(zip(available_factors, axes)):
+            self._plot_factor(ax, factor, model_data, idx)
+
+        # General title for model
+        model_display_name = get_model_display_name(model).replace('\n', ' ')
+        formatted_dataset_name = format_dataset_name(dataset_name)
+        fig.suptitle(f'{formatted_dataset_name} - {model_display_name}\n{title_suffix}',
+                     fontsize=16, fontfamily='DejaVu Serif', y=0.95)
+
+        # Create hierarchical folder: model/dataset
+        model_short_name = model.split('/')[-1]
+        safe_dataset_name = dataset_name.replace('.', '_').replace('/', '_')
+        model_dataset_output_dir = f'{output_dir}/{model_short_name}/{safe_dataset_name}'
+        Path(model_dataset_output_dir).mkdir(parents=True, exist_ok=True)
+
+        plt.tight_layout()
+
+        # Save in hierarchical folder
+        plt.savefig(f'{model_dataset_output_dir}/{filename}.png',
+                    dpi=PLOT_STYLE.get('save_dpi', PLOT_STYLE['figure_dpi']),
+                    bbox_inches=PLOT_STYLE['bbox_inches'],
+                    transparent=PLOT_STYLE['transparent'],
+                    facecolor=PLOT_STYLE['facecolor'])
+        plt.savefig(f'{model_dataset_output_dir}/{filename}.pdf',
+                    bbox_inches=PLOT_STYLE['bbox_inches'],
+                    transparent=PLOT_STYLE['transparent'],
+                    facecolor=PLOT_STYLE['facecolor'])
+
+        plt.close()
+
     def create_analysis_plots(
             self,
             data: pd.DataFrame,
             dataset_name: str,
             models: List[str],
-            factors: List[str] = None,
+            factors: Optional[List[str]] = None,
             shots: int = 0,
             output_dir: str = "plots",
             force_overwrite: bool = False
-    ):
+    ) -> None:
         """
         Create prompt elements analysis for one dataset - separate graph for each model.
-        
+
         Args:
             data: DataFrame containing evaluation results
             dataset_name: Name of the dataset to analyze
@@ -175,7 +382,7 @@ class PromptImpactAnalyzer:
             force_overwrite: Whether to overwrite existing files
         """
         if factors is None:
-            factors = ["template", "enumerator", "separator", "choices_order"]
+            factors = ["instruction_phrasing", "enumerator", "separator", "choices_order"]
 
         # Filter data for specific dataset and shots
         dataset_data = data[
@@ -215,21 +422,15 @@ class PromptImpactAnalyzer:
         print(f"   Will create separate plot for each model")
 
         shots_text = "Zero-shot" if shots == 0 else f"{shots}-shot"
-        formatted_dataset_name = format_dataset_name(dataset_name)
 
         # Create separate graph for each model
         for model in models_with_data:
             # Check if file already exists for this model
             model_short_name = model.split('/')[-1]
-            model_output_dir = f'{output_dir}/{model_short_name}'
             safe_dataset_name = dataset_name.replace('.', '_').replace('/', '_')
             filename = f"accuracy_marginalization_{shots}shot"
 
-            # Create model and dataset directory
-            dataset_output_dir = f'{model_output_dir}/{safe_dataset_name}'
-            Path(dataset_output_dir).mkdir(parents=True, exist_ok=True)
-
-            output_png = f'{dataset_output_dir}/{filename}.png'
+            output_png = f'{output_dir}/{model_short_name}/{safe_dataset_name}/{filename}.png'
 
             if not force_overwrite and os.path.exists(output_png):
                 print(f"⏭️  Skipping {model_short_name}/{dataset_name} ({shots}shot) - file already exists")
@@ -243,98 +444,38 @@ class PromptImpactAnalyzer:
                 print(f"⚠️  No processed data for model {model_short} - skipping")
                 continue
 
-            # Set up the plot
-            n_factors = len(available_factors)
-            fig, axes = plt.subplots(2, 2, figsize=(16, 12))
-            axes = axes.flatten()
+            # Create plot
+            self._create_model_plot(
+                model=model,
+                model_data=model_data,
+                dataset_name=dataset_name,
+                available_factors=available_factors,
+                title_suffix=f"Prompt Elements Impact ({shots_text})",
+                filename=filename,
+                output_dir=output_dir
+            )
 
-            # White background
-            fig.patch.set_facecolor('white')
-            fig.patch.set_alpha(1.0)
+            model_display_name = get_model_display_name(model).replace('\n', ' ')
+            print(f"✅ Created prompt elements analysis for {model_display_name} on {dataset_name} ({shots_text})")
 
-            for i, factor in enumerate(available_factors):
-                ax = axes[i]
-                ax.set_facecolor('white')
-
-                # Group by factor and calculate mean and std
-                factor_groups = model_data.groupby(factor)['accuracy'].agg(['mean', 'std', 'count']).reset_index()
-                factor_groups = factor_groups.sort_values('mean', ascending=False)
-
-                # Prepare data for plotting
-                factor_values = factor_groups[factor].values
-                means = factor_groups['mean'].values * 100  # Convert to percentage
-                stds = factor_groups['std'].values * 100
-                counts = factor_groups['count'].values
-
-                # Replace NaN std with 0
-                stds = np.nan_to_num(stds)
-
-                # Create bar plot
-                bars = ax.bar(range(len(factor_values)), means,
-                              yerr=stds, capsize=5, alpha=0.7,
-                              color=self.colors[i % len(self.colors)])
-
-                # Add value labels on bars
-                for j, (bar, mean_val, count) in enumerate(zip(bars, means, counts)):
-                    height = bar.get_height()
-                    ax.text(bar.get_x() + bar.get_width() / 2., height + stds[j] + 0.5,
-                            f'{mean_val:.1f}%\n(n={count})',
-                            ha='center', va='bottom', fontsize=10, fontweight='bold')
-
-                # Customize the subplot
-                ax.set_xlabel(factor.replace('_', ' ').title(), fontsize=14, fontweight='bold')
-                ax.set_ylabel('Accuracy (%)', fontsize=12)
-                ax.set_title(f'{factor.replace("_", " ").title()} Impact', fontsize=16, fontweight='bold')
-
-                # Set x-axis labels
-                ax.set_xticks(range(len(factor_values)))
-                ax.set_xticklabels([str(v) for v in factor_values], rotation=45, ha='right')
-
-                # Set y-axis limits
-                ax.set_ylim(0, min(100, max(means + stds) * 1.1))
-
-                # Add grid
-                ax.grid(True, alpha=0.3, axis='y')
-
-            # Hide unused subplots
-            for i in range(n_factors, 4):
-                axes[i].set_visible(False)
-
-            # Main title
-            main_title = f'{formatted_dataset_name} - {get_model_display_name(model)} ({shots_text})'
-            fig.suptitle(main_title, fontsize=20, fontweight='bold', y=0.98)
-
-            plt.tight_layout()
-
-            # Save the plot
-            plt.savefig(output_png,
-                        dpi=PLOT_STYLE['figure_dpi'],
-                        bbox_inches=PLOT_STYLE['bbox_inches'],
-                        transparent=PLOT_STYLE['transparent'],
-                        facecolor=PLOT_STYLE['facecolor'])
-            plt.savefig(f'{dataset_output_dir}/{filename}.svg',
-                        bbox_inches=PLOT_STYLE['bbox_inches'],
-                        transparent=PLOT_STYLE['transparent'],
-                        facecolor=PLOT_STYLE['facecolor'])
-
-            plt.close()
-            print(f"✅ Created prompt elements plot for {model_short_name}/{dataset_name} ({shots}shot)")
+        print(
+            f"✅ Completed prompt elements analysis for {dataset_name} ({shots_text}) - created {len(models_with_data)} model-specific plots")
 
     def create_combined_analysis(
             self,
             data: pd.DataFrame,
             dataset_name: str,
             models: List[str],
-            factors: List[str] = None,
+            factors: Optional[List[str]] = None,
             output_dir: str = "plots",
             force_overwrite: bool = False
-    ):
+    ) -> None:
         """
         Create combined prompt elements analysis (0-shot and 5-shot together) for one dataset.
-        
+
         This creates a comprehensive analysis that includes shots as an additional dimension,
         showing how prompt elements interact with few-shot learning.
-        
+
         Args:
             data: DataFrame containing evaluation results
             dataset_name: Name of the dataset to analyze
@@ -344,7 +485,7 @@ class PromptImpactAnalyzer:
             force_overwrite: Whether to overwrite existing files
         """
         if factors is None:
-            factors = ["template", "enumerator", "separator", "choices_order", "shots"]
+            factors = ["instruction_phrasing", "enumerator", "separator", "choices_order", "shots"]
 
         # Filter data for specific dataset (all shots)
         dataset_data = data[data['dataset'] == dataset_name].copy()
@@ -382,26 +523,19 @@ class PromptImpactAnalyzer:
         print(f"📊 Creating COMBINED prompt elements analysis for {dataset_name} with {len(models_with_data)} models")
         print(f"   Factors: {available_factors}")
 
-        formatted_dataset_name = format_dataset_name(dataset_name)
-
         # Create separate combined graph for each model
         for model in models_with_data:
             model_short_name = model.split('/')[-1]
-            model_output_dir = f'{output_dir}/{model_short_name}'
             safe_dataset_name = dataset_name.replace('.', '_').replace('/', '_')
             filename = f"accuracy_marginalization_combined"
 
-            # Create model and dataset directory
-            dataset_output_dir = f'{model_output_dir}/{safe_dataset_name}'
-            Path(dataset_output_dir).mkdir(parents=True, exist_ok=True)
-
-            output_png = f'{dataset_output_dir}/{filename}.png'
+            output_png = f'{output_dir}/{model_short_name}/{safe_dataset_name}/{filename}.png'
 
             if not force_overwrite and os.path.exists(output_png):
                 print(f"⏭️  Skipping {model_short_name}/{dataset_name} (combined) - file already exists")
                 continue
 
-            # Filter data for this specific model  
+            # Filter data for this specific model
             model_short = model.split('/')[-1].replace('Meta-', '')
             model_data = processed_data[processed_data['model_name'] == model_short]
 
@@ -409,96 +543,25 @@ class PromptImpactAnalyzer:
                 print(f"⚠️  No processed data for model {model_short} - skipping combined")
                 continue
 
-            # Determine subplot layout based on number of factors
-            n_factors = len(available_factors)
-            if n_factors <= 4:
-                nrows, ncols = 2, 2
-            elif n_factors <= 6:
-                nrows, ncols = 2, 3
-            else:
-                nrows, ncols = 3, 3
+            # Create plot
+            self._create_model_plot(
+                model=model,
+                model_data=model_data,
+                dataset_name=dataset_name,
+                available_factors=available_factors,
+                title_suffix="Prompt Elements Impact",
+                filename=filename,
+                output_dir=output_dir
+            )
 
-            fig, axes = plt.subplots(nrows, ncols, figsize=(6 * ncols, 6 * nrows))
-            if n_factors == 1:
-                axes = [axes]
-            else:
-                axes = axes.flatten()
+            model_display_name = get_model_display_name(model).replace('\n', ' ')
+            print(f"✅ Created COMBINED prompt elements analysis for {model_display_name} on {dataset_name}")
 
-            # White background
-            fig.patch.set_facecolor('white')
-            fig.patch.set_alpha(1.0)
-
-            for i, factor in enumerate(available_factors):
-                ax = axes[i]
-                ax.set_facecolor('white')
-
-                # Group by factor and calculate mean and std
-                factor_groups = model_data.groupby(factor)['accuracy'].agg(['mean', 'std', 'count']).reset_index()
-                factor_groups = factor_groups.sort_values('mean', ascending=False)
-
-                # Prepare data for plotting
-                factor_values = factor_groups[factor].values
-                means = factor_groups['mean'].values * 100  # Convert to percentage
-                stds = factor_groups['std'].values * 100
-                counts = factor_groups['count'].values
-
-                # Replace NaN std with 0
-                stds = np.nan_to_num(stds)
-
-                # Create bar plot
-                bars = ax.bar(range(len(factor_values)), means,
-                              yerr=stds, capsize=5, alpha=0.7,
-                              color=self.colors[i % len(self.colors)])
-
-                # Add value labels on bars
-                for j, (bar, mean_val, count) in enumerate(zip(bars, means, counts)):
-                    height = bar.get_height()
-                    ax.text(bar.get_x() + bar.get_width() / 2., height + stds[j] + 0.5,
-                            f'{mean_val:.1f}%\n(n={count})',
-                            ha='center', va='bottom', fontsize=10, fontweight='bold')
-
-                # Customize the subplot
-                ax.set_xlabel(factor.replace('_', ' ').title(), fontsize=14, fontweight='bold')
-                ax.set_ylabel('Accuracy (%)', fontsize=12)
-                ax.set_title(f'{factor.replace("_", " ").title()} Impact', fontsize=16, fontweight='bold')
-
-                # Set x-axis labels
-                ax.set_xticks(range(len(factor_values)))
-                ax.set_xticklabels([str(v) for v in factor_values], rotation=45, ha='right')
-
-                # Set y-axis limits
-                ax.set_ylim(0, min(100, max(means + stds) * 1.1))
-
-                # Add grid
-                ax.grid(True, alpha=0.3, axis='y')
-
-            # Hide unused subplots
-            for i in range(n_factors, nrows * ncols):
-                if i < len(axes):
-                    axes[i].set_visible(False)
-
-            # Main title
-            main_title = f'{formatted_dataset_name} - {get_model_display_name(model)} (Combined Analysis)'
-            fig.suptitle(main_title, fontsize=20, fontweight='bold', y=0.98)
-
-            plt.tight_layout()
-
-            # Save the plot
-            plt.savefig(output_png,
-                        dpi=PLOT_STYLE['figure_dpi'],
-                        bbox_inches=PLOT_STYLE['bbox_inches'],
-                        transparent=PLOT_STYLE['transparent'],
-                        facecolor=PLOT_STYLE['facecolor'])
-            plt.savefig(f'{dataset_output_dir}/{filename}.svg',
-                        bbox_inches=PLOT_STYLE['bbox_inches'],
-                        transparent=PLOT_STYLE['transparent'],
-                        facecolor=PLOT_STYLE['facecolor'])
-
-            plt.close()
-            print(f"✅ Created COMBINED prompt elements plot for {model_short_name}/{dataset_name}")
+        print(
+            f"✅ Completed COMBINED prompt elements analysis for {dataset_name} - created {len(models_with_data)} model-specific plots")
 
 
-def parse_arguments():
+def parse_arguments() -> argparse.Namespace:
     """Parse command line arguments with default values."""
     parser = argparse.ArgumentParser(
         description='Create prompt elements impact analysis plots for LLM evaluation data',
@@ -518,9 +581,9 @@ Examples:
                         help=f'List of datasets to analyze (default: {len(DEFAULT_DATASETS)} datasets)')
 
     parser.add_argument('--factors', nargs='+',
-                        default=['template', 'enumerator', 'separator', 'choices_order'],
-                        choices=['template', 'enumerator', 'separator', 'choices_order'],
-                        help='List of prompt factors to analyze (default: template enumerator separator choices_order)')
+                        default=['instruction_phrasing', 'enumerator', 'separator', 'choices_order'],
+                        choices=['instruction_phrasing', 'enumerator', 'separator', 'choices_order'],
+                        help='List of prompt factors to analyze (default: instruction_phrasing enumerator separator choices_order)')
 
     parser.add_argument('--shots', nargs='+', type=int, default=DEFAULT_SHOTS,
                         help=f'List of shot counts to analyze (default: {DEFAULT_SHOTS})')
@@ -546,12 +609,12 @@ Examples:
     return parser.parse_args()
 
 
-def main():
+def main() -> None:
     """
     Main function - processes each dataset separately for memory efficiency.
-    
+
     Creates detailed prompt elements analysis showing how different prompt components
-    (templates, enumerators, separators, choice ordering) affect model performance.
+    (instruction_phrasings, enumerators, separators, choice ordering) affect model performance.
     """
     args = parse_arguments()
 
@@ -699,9 +762,9 @@ def main():
         print(f"  - Each plot shows all factors for that specific model")
         print(f"  - Analyzed factors: {factors_to_analyze}")
         print(f"  - For each dataset: 3 files per model:")
-        print(f"    • 0-shot analysis (4 factors): template, enumerator, separator, choices_order")
-        print(f"    • 5-shot analysis (4 factors): template, enumerator, separator, choices_order")
-        print(f"    • Combined analysis (5 factors): template, enumerator, separator, choices_order, shots")
+        print(f"    • 0-shot analysis (4 factors): instruction_phrasing, enumerator, separator, choices_order")
+        print(f"    • 5-shot analysis (4 factors): instruction_phrasing, enumerator, separator, choices_order")
+        print(f"    • Combined analysis (5 factors): instruction_phrasing, enumerator, separator, choices_order, shots")
         print(f"  - Plots saved to: {output_dir}")
         print("=" * 60)
 
