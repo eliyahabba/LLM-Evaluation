@@ -4,7 +4,7 @@ Entry point for performance analysis.
 Runs the PerformanceAnalyzer to create performance variation plots.
 """
 
-from plotters.performance_analysis import main
+from src.analysis.plotting.plotters. performance_analysis import main
 
 if __name__ == "__main__":
     main() 
