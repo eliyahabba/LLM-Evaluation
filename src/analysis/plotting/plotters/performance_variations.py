@@ -25,7 +25,7 @@ from src.analysis.plotting.utils.data_manager import DataManager
 from src.analysis.plotting.utils.config import (
     DEFAULT_MODELS, DEFAULT_DATASETS, DEFAULT_SHOTS, DEFAULT_NUM_PROCESSES,
     PLOT_STYLE,
-    get_model_display_name, get_model_color, format_dataset_name
+    get_model_display_name, get_model_color, format_dataset_name, get_output_directory
 )
 from src.analysis.plotting.utils.auth import ensure_hf_authentication
 from src.analysis.plotting.utils.config import get_cache_directory
@@ -79,8 +79,7 @@ class PerformanceVariationsAnalyzer:
             dataset_name: str,
             models: List[str],
             shots_list: List[int] = [0, 5],
-            output_dir: str = "plots",
-            force_overwrite: bool = False
+            output_dir: Path = None
     ):
         """
         Create a performance variation plot for a single dataset showing all shot counts together.
@@ -90,9 +89,11 @@ class PerformanceVariationsAnalyzer:
             dataset_name: Name of the dataset to plot
             models: List of model names to include
             shots_list: List of shot counts to analyze
-            output_dir: Directory to save plots
-            force_overwrite: Whether to overwrite existing files
+            output_dir: Directory to save plots (Path object)
         """
+        if output_dir is None:
+            output_dir = get_output_directory('performance_variations')
+        
         # Filter data for the specific dataset (all shots)
         dataset_data = data[data['dataset'] == dataset_name].copy()
 
@@ -258,8 +259,7 @@ class PerformanceVariationsAnalyzer:
             dataset_name: str,
             models: List[str],
             shots_list: List[int] = [0, 5],
-            output_dir: str = "plots",
-            force_overwrite: bool = False
+            output_dir: Path = None
     ):
         """
         Create a unified performance variation plot for a single dataset combining all shot counts.
@@ -271,9 +271,11 @@ class PerformanceVariationsAnalyzer:
             dataset_name: Name of the dataset to plot
             models: List of model names to include
             shots_list: List of shot counts to combine
-            output_dir: Directory to save plots
-            force_overwrite: Whether to overwrite existing files
+            output_dir: Directory to save plots (Path object)
         """
+        if output_dir is None:
+            output_dir = get_output_directory('performance_variations')
+        
         # Filter data for the specific dataset (all shots)
         dataset_data = data[data['dataset'] == dataset_name].copy()
 
@@ -447,8 +449,8 @@ Examples:
     parser.add_argument('--num-processes', type=int, default=DEFAULT_NUM_PROCESSES,
                         help=f'Number of parallel processes (default: {DEFAULT_NUM_PROCESSES})')
 
-    parser.add_argument('--output-dir', default="plots/performance_variations",
-                        help='Output directory for plots (default: plots/performance_variations)')
+    parser.add_argument('--output-dir', type=Path, default=get_output_directory('performance_variations'),
+                        help=f'Output directory for plots (default: {get_output_directory("performance_variations")})')
 
     parser.add_argument('--no-cache', action='store_true',
                         help='Disable caching (default: cache enabled)')
@@ -521,36 +523,25 @@ def main():
         print("Will create 2 versions per dataset: combined (with distinction) + unified (without distinction)")
 
         for dataset in tqdm(selected_datasets, desc="Processing datasets"):
-            # Early check if files already exist - before loading data
             safe_dataset_name = dataset.replace('.', '_').replace('/', '_')
             dataset_output_dir = f'{output_dir}/{safe_dataset_name}'
-
-            # Check if both files exist
             output_png1 = f'{dataset_output_dir}/performance_variations.png'
             output_png2 = f'{dataset_output_dir}/performance_variations_unified.png'
-
             if not force_overwrite and os.path.exists(output_png1) and os.path.exists(output_png2):
                 print(f"⏭️  Skipping {dataset} - both files already exist")
                 continue
-
             print(f"Loading data for dataset: {dataset}")
-
-            # Load data for current dataset only
             dataset_data = data_manager.load_multiple_models(
                 model_names=models_to_evaluate,
-                datasets=[dataset],  # Only one dataset!
+                datasets=[dataset],
                 shots_list=shots_to_evaluate,
                 aggregate=True,
                 num_processes=num_processes
             )
-
             if dataset_data.empty:
                 print(f"⚠️  No data loaded for dataset: {dataset} - skipping")
                 continue
-
             print(f"✓ Loaded data for {dataset}: {dataset_data.shape}")
-
-            # Version 1: Combined plot with distinction between shots (with legend)
             if not os.path.exists(output_png1) or force_overwrite:
                 visualizer.create_performance_plot(
                     data=dataset_data,
@@ -558,12 +549,10 @@ def main():
                     models=models_to_evaluate,
                     shots_list=shots_to_evaluate,
                     output_dir=output_dir,
-                    force_overwrite=force_overwrite
+                    force_overwrite=True  # Always True here, since we already checked
                 )
             else:
                 print(f"⏭️  Skipping combined plot for {dataset} - file exists")
-
-            # Version 2: Unified plot without distinction between shots
             if not os.path.exists(output_png2) or force_overwrite:
                 visualizer.create_unified_plot(
                     data=dataset_data,
@@ -571,14 +560,11 @@ def main():
                     models=models_to_evaluate,
                     shots_list=shots_to_evaluate,
                     output_dir=output_dir,
-                    force_overwrite=force_overwrite
+                    force_overwrite=True  # Always True here, since we already checked
                 )
             else:
                 print(f"⏭️  Skipping unified plot for {dataset} - file exists")
-
             total_plots += 2
-
-            # Free memory
             del dataset_data
             print(f"✅ Completed {dataset} and freed memory")
 

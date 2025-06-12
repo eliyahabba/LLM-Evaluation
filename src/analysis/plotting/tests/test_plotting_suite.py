@@ -293,7 +293,7 @@ class PlottingTestSuite:
 
                 # Test analysis creation
                 print_info("Creating success rate distribution analysis...")
-                test_output_dir = f"{self.test_output_dir}/success_rate_distribution"
+                test_output_dir = Path(f"{self.test_output_dir}/success_rate_distribution")
 
                 analyzer.create_success_rate_analysis(
                     model_name=self.test_model,

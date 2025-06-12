@@ -23,7 +23,7 @@ from tqdm import tqdm
 from src.analysis.plotting.utils.config import (
     DEFAULT_MODELS, DEFAULT_DATASETS, DEFAULT_SHOTS, DEFAULT_NUM_PROCESSES,
     PLOT_STYLE,
-    get_model_display_name, format_dataset_name
+    get_model_display_name, format_dataset_name, get_output_directory
 )
 from src.analysis.plotting.utils.data_manager import DataManager
 from src.analysis.plotting.utils.auth import ensure_hf_authentication
@@ -366,8 +366,7 @@ class AccuracyMarginalizationAnalyzer:
             models: List[str],
             factors: Optional[List[str]] = None,
             shots: int = 0,
-            output_dir: str = "plots",
-            force_overwrite: bool = False
+            output_dir: Path = None
     ) -> None:
         """
         Create accuracy marginalization analysis for one dataset - separate graph for each model.
@@ -378,9 +377,11 @@ class AccuracyMarginalizationAnalyzer:
             models: List of model names to include
             factors: List of prompt factors to analyze
             shots: Number of shots (0 for zero-shot, 5 for few-shot)
-            output_dir: Directory to save plots
-            force_overwrite: Whether to overwrite existing files
+            output_dir: Directory to save plots (Path object)
         """
+        if output_dir is None:
+            output_dir = get_output_directory('accuracy_marginalization')
+        
         if factors is None:
             factors = ["instruction_phrasing", "enumerator", "separator", "choices_order"]
 
@@ -432,7 +433,7 @@ class AccuracyMarginalizationAnalyzer:
 
             output_png = f'{output_dir}/{model_short_name}/{safe_dataset_name}/{filename}.png'
 
-            if not force_overwrite and os.path.exists(output_png):
+            if os.path.exists(output_png):
                 print(f"⏭️  Skipping {model_short_name}/{dataset_name} ({shots}shot) - file already exists")
                 continue
 
@@ -468,8 +469,7 @@ class AccuracyMarginalizationAnalyzer:
             dataset_name: str,
             models: List[str],
             factors: Optional[List[str]] = None,
-            output_dir: str = "plots",
-            force_overwrite: bool = False
+            output_dir: Path = None
     ) -> None:
         """
         Create combined accuracy marginalization analysis (0-shot and 5-shot together) for one dataset.
@@ -482,9 +482,11 @@ class AccuracyMarginalizationAnalyzer:
             dataset_name: Name of the dataset to analyze
             models: List of model names to include
             factors: List of prompt factors to analyze (defaults to 5 including shots)
-            output_dir: Directory to save plots
-            force_overwrite: Whether to overwrite existing files
+            output_dir: Directory to save plots (Path object)
         """
+        if output_dir is None:
+            output_dir = get_output_directory('accuracy_marginalization')
+        
         if factors is None:
             factors = ["instruction_phrasing", "enumerator", "separator", "choices_order", "shots"]
 
@@ -533,7 +535,7 @@ class AccuracyMarginalizationAnalyzer:
 
             output_png = f'{output_dir}/{model_short_name}/{safe_dataset_name}/{filename}.png'
 
-            if not force_overwrite and os.path.exists(output_png):
+            if os.path.exists(output_png):
                 print(f"⏭️  Skipping {model_short_name}/{dataset_name} (combined) - file already exists")
                 continue
 
@@ -593,8 +595,8 @@ Examples:
     parser.add_argument('--num-processes', type=int, default=DEFAULT_NUM_PROCESSES,
                         help=f'Number of parallel processes (default: {DEFAULT_NUM_PROCESSES})')
 
-    parser.add_argument('--output-dir', default="plots/accuracy_marginalization",
-                        help='Output directory for plots (default: plots/accuracy_marginalization)')
+    parser.add_argument('--output-dir', type=Path, default=get_output_directory('accuracy_marginalization'),
+                        help=f'Output directory for plots (default: {get_output_directory("accuracy_marginalization")})')
 
     parser.add_argument('--no-cache', action='store_true',
                         help='Disable caching (default: cache enabled)')
@@ -665,94 +667,66 @@ def main() -> None:
         total_plots = 0
 
         for dataset in tqdm(selected_datasets, desc="Processing datasets"):
-            # Check which models are missing plots for this dataset
             safe_dataset_name = dataset.replace('.', '_').replace('/', '_')
-
-            # Identify models that need plots generated (missing files)
             models_needing_plots = []
             if not force_overwrite:
                 for model in models_to_evaluate:
                     model_short_name = model.split('/')[-1]
                     model_dataset_dir = f'{output_dir}/{model_short_name}/{safe_dataset_name}'
-
-                    # Check if any plot files are missing for this model
                     model_needs_plots = False
-
-                    # Check individual shots plots
                     for shots in shots_to_evaluate:
                         filename = f"accuracy_marginalization_{shots}shot.png"
                         output_file = f'{model_dataset_dir}/{filename}'
                         if not os.path.exists(output_file):
                             model_needs_plots = True
                             break
-
-                    # Check combined plot if individual shots plots exist
-                    if not model_needs_plots:
-                        combined_filename = f"accuracy_marginalization_combined.png"
-                        combined_output_file = f'{model_dataset_dir}/{combined_filename}'
-                        if not os.path.exists(combined_output_file):
-                            model_needs_plots = True
-
+                    combined_filename = f"accuracy_marginalization_combined.png"
+                    combined_output_file = f'{model_dataset_dir}/{combined_filename}'
+                    if not model_needs_plots and not os.path.exists(combined_output_file):
+                        model_needs_plots = True
                     if model_needs_plots:
                         models_needing_plots.append(model)
             else:
-                # If force overwrite, all models need plots
                 models_needing_plots = models_to_evaluate
-
-            # Skip if no models need plots
             if not models_needing_plots:
                 print(f"⏭️  Skipping {dataset} - all plots already exist for all models")
                 continue
-
             print(f"Loading data for dataset: {dataset}")
             print(f"  Models needing plots: {len(models_needing_plots)}/{len(models_to_evaluate)}")
             for model in models_needing_plots:
                 print(f"    - {model.split('/')[-1]}")
-
-            # Load data ONLY for models that need plots - OPTIMIZED!
             dataset_data = data_manager.load_multiple_models(
-                model_names=models_needing_plots,  # Only load for models that need plots!
-                datasets=[dataset],  # Only one dataset!
+                model_names=models_needing_plots,
+                datasets=[dataset],
                 shots_list=shots_to_evaluate,
                 aggregate=True,
                 num_processes=num_processes
             )
-
             if dataset_data.empty:
                 print(f"⚠️  No data loaded for dataset: {dataset} - skipping")
                 continue
-
             print(f"✓ Loaded data for {dataset}: {dataset_data.shape}")
-
-            # Create separate graphs for each shots setting
             for shots in shots_to_evaluate:
                 shots_text = "zero-shot" if shots == 0 else f"{shots}-shot"
                 print(f"Creating {shots_text} accuracy marginalization analysis for {dataset}...")
-
                 analyzer.create_analysis_plots(
                     data=dataset_data,
                     dataset_name=dataset,
                     models=models_needing_plots,
                     factors=factors_to_analyze,
                     shots=shots,
-                    output_dir=output_dir,
-                    force_overwrite=force_overwrite
+                    output_dir=output_dir
                 )
                 total_plots += 1
-
-            # Create combined graphs (0+5 shots) with shots as additional dimension
             print(f"Creating COMBINED accuracy marginalization analysis for {dataset}...")
             analyzer.create_combined_analysis(
                 data=dataset_data,
                 dataset_name=dataset,
                 models=models_needing_plots,
-                factors=None,  # Will use default of 5 dimensions
-                output_dir=output_dir,
-                force_overwrite=force_overwrite
+                factors=None,
+                output_dir=output_dir
             )
             total_plots += 1
-
-            # Free memory
             del dataset_data
             print(f"✅ Completed {dataset} and freed memory")
 

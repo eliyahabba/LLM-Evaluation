@@ -24,7 +24,7 @@ from tqdm import tqdm
 from src.analysis.plotting.utils.config import (
     DEFAULT_MODELS, DEFAULT_SHOTS, DEFAULT_DATASETS, DEFAULT_NUM_PROCESSES,
     PLOT_STYLE,
-    get_model_display_name, format_dataset_name
+    get_model_display_name, format_dataset_name, get_output_directory
 )
 from src.analysis.plotting.utils.data_manager import DataManager
 from src.analysis.plotting.utils.config import get_cache_directory
@@ -51,8 +51,7 @@ class FewShotVarianceAnalyzer:
             data: pd.DataFrame,
             dataset_name: str,
             models: List[str],
-            output_dir: str = "plots",
-            force_overwrite: bool = False
+            output_dir: Path = None
     ):
         """
         Create a few-shot variance analysis plot for a single dataset.
@@ -61,9 +60,11 @@ class FewShotVarianceAnalyzer:
             data: DataFrame containing evaluation results
             dataset_name: Name of the dataset to plot
             models: List of model names to include
-            output_dir: Directory to save plots
-            force_overwrite: Whether to overwrite existing files
+            output_dir: Directory to save plots (Path object)
         """
+        if output_dir is None:
+            output_dir = get_output_directory('few_shot_variance')
+        
         # Filter data for the specific dataset
         dataset_data = data[data['dataset'] == dataset_name].copy()
 
@@ -210,8 +211,8 @@ python run_few_shot_variance.py --num-processes 8 --no-cache
     parser.add_argument('--num-processes', type=int, default=DEFAULT_NUM_PROCESSES,
                         help=f'Number of parallel processes (default: {DEFAULT_NUM_PROCESSES})')
 
-    parser.add_argument('--output-dir', default="plots/few_shot_variance",
-                        help='Output directory for plots (default: plots/few_shot_variance)')
+    parser.add_argument('--output-dir', type=Path, default=get_output_directory('few_shot_variance'),
+                        help=f'Output directory for plots (default: {get_output_directory("few_shot_variance")})')
 
     parser.add_argument('--no-cache', action='store_true',
                         help='Disable caching (default: cache enabled)')
@@ -281,45 +282,32 @@ def main():
         print("Processing datasets one by one (memory efficient)...")
 
         for dataset in tqdm(selected_datasets, desc="Processing datasets"):
-            # Early check if file already exists - before loading data
             safe_dataset_name = dataset.replace('.', '_').replace('/', '_')
             filename = f"few_shot_variance_analysis"
             dataset_output_dir = f'{output_dir}/{safe_dataset_name}'
             output_png = f'{dataset_output_dir}/{filename}.png'
-
             if not force_overwrite and os.path.exists(output_png):
                 print(f"⏭️  Skipping {dataset} (few-shot variance) - file already exists: {output_png}")
                 continue
-
             print(f"Loading data for dataset: {dataset}")
-
-            # Load data for current dataset only
             dataset_data = data_manager.load_multiple_models(
                 model_names=models_to_evaluate,
-                datasets=[dataset],  # Only one dataset!
+                datasets=[dataset],
                 shots_list=shots_to_evaluate,
                 aggregate=True,
                 num_processes=num_processes
             )
-
             if dataset_data.empty:
                 print(f"⚠️  No data loaded for dataset: {dataset} - skipping")
                 continue
-
             print(f"✓ Loaded data for {dataset}: {dataset_data.shape}")
-
-            # Create plot for current dataset
             visualizer.create_comparison_plot(
                 data=dataset_data,
                 dataset_name=dataset,
                 models=models_to_evaluate,
-                output_dir=output_dir,
-                force_overwrite=force_overwrite
+                output_dir=output_dir
             )
-
             total_plots += 1
-
-            # Free memory
             del dataset_data
             print(f"✅ Completed {dataset} and freed memory")
 

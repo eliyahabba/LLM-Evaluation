@@ -4,6 +4,7 @@ Contains all shared config and configurations for different scripts.
 """
 
 import os
+from pathlib import Path
 
 # =============================================================================
 # USER CONFIGURATION SECTION - Modify these values as needed
@@ -19,6 +20,18 @@ HF_ACCESS_TOKEN = "None"  # Will be loaded from environment variables
 DEFAULT_CACHE_DIR = "Data/dove_lite_data"
 CACHE_DIR_ENV_VAR = "DOVE_CACHE_DIR"
 
+# Output Directory Configuration
+# Base directory where all plots will be saved
+DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parents[1] /  "plots"
+
+# Specific output directories for different plot types
+OUTPUT_DIRS = {
+    'accuracy_marginalization': DEFAULT_OUTPUT_DIR / "accuracy_marginalization",
+    'few_shot_variance': DEFAULT_OUTPUT_DIR / "few_shot_variance", 
+    'performance_variations': DEFAULT_OUTPUT_DIR / "performance_variations",
+    'success_rate_distribution': DEFAULT_OUTPUT_DIR / "success_rate_distribution",
+}
+
 def get_cache_directory() -> str:
     """
     Get the cache directory from environment variable or use default from config.
@@ -27,6 +40,21 @@ def get_cache_directory() -> str:
         Path to the cache directory
     """
     return os.getenv(CACHE_DIR_ENV_VAR, DEFAULT_CACHE_DIR)
+
+def get_output_directory(plot_type: str = None) -> Path:
+    """
+    Get the output directory for a specific plot type or the base directory.
+    
+    Args:
+        plot_type: Type of plot ('accuracy_marginalization', 'few_shot_variance', etc.)
+                  If None, returns the base output directory
+    
+    Returns:
+        Path object for the output directory
+    """
+    if plot_type is None:
+        return DEFAULT_OUTPUT_DIR
+    return OUTPUT_DIRS.get(plot_type, DEFAULT_OUTPUT_DIR / plot_type)
 
 # Model Configurations - Add or remove models as needed
 DEFAULT_MODELS = [

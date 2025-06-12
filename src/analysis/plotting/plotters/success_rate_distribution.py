@@ -24,7 +24,7 @@ from tqdm import tqdm
 
 from src.analysis.plotting.utils.config import (
     DEFAULT_MODELS, DEFAULT_DATASETS, DEFAULT_SHOTS, PLOT_STYLE,
-    get_model_display_name
+    get_model_display_name, get_output_directory
 )
 from src.analysis.plotting.utils.data_manager import DataManager
 from src.analysis.plotting.utils.auth import ensure_hf_authentication
@@ -89,8 +89,7 @@ class SuccessRateDistributionAnalyzer:
             self,
             question_stats: pd.DataFrame,
             model_name: str,
-            output_dir: str = "plots",
-            force_overwrite: bool = False
+            output_dir: Path = None
     ):
         """
         Create success rate distribution histogram showing success rate distribution across all questions.
@@ -98,9 +97,11 @@ class SuccessRateDistributionAnalyzer:
         Args:
             question_stats: DataFrame with success rate statistics
             model_name: Name of the model being analyzed
-            output_dir: Directory to save plots
-            force_overwrite: Whether to overwrite existing files
+            output_dir: Directory to save plots (Path object)
         """
+        if output_dir is None:
+            output_dir = get_output_directory('success_rate_distribution')
+        
         if question_stats.empty:
             print(f"⚠️  No question statistics for {model_name} - skipping plot")
             return
@@ -219,8 +220,7 @@ class SuccessRateDistributionAnalyzer:
             datasets: List[str],
             shots_list: List[int] = [0, 5],
             data_manager: DataManager = None,
-            output_dir: str = "plots",
-            force_overwrite: bool = False
+            output_dir: Path = None
     ):
         """
         Perform success rate distribution analysis for each question for one model across all datasets.
@@ -230,9 +230,11 @@ class SuccessRateDistributionAnalyzer:
             datasets: List of datasets to include in analysis
             shots_list: List of shot counts to analyze
             data_manager: DataManager instance for loading data
-            output_dir: Directory to save plots
-            force_overwrite: Whether to overwrite existing files
+            output_dir: Directory to save plots (Path object)
         """
+        if output_dir is None:
+            output_dir = get_output_directory('success_rate_distribution')
+        
         print(f"🔍 Starting success rate distribution analysis for {model_name}")
         print(f"  Datasets: {len(datasets)}")
         print(f"  Shots: {shots_list}")
@@ -308,8 +310,7 @@ class SuccessRateDistributionAnalyzer:
         self._create_success_rate_histogram(
             question_stats=valid_questions,
             model_name=model_name,
-            output_dir=output_dir,
-            force_overwrite=force_overwrite
+            output_dir=output_dir
         )
 
 
@@ -339,8 +340,8 @@ python run_success_rate_distribution.py --num-processes 1 --no-cache
     parser.add_argument('--num-processes', type=int, default=1,
                         help='Number of parallel processes (default: 1 - sequential processing)')
 
-    parser.add_argument('--output-dir', default="plots/success_rate_distribution",
-                        help='Output directory for plots (default: plots/success_rate_distribution)')
+    parser.add_argument('--output-dir', type=Path, default=get_output_directory('success_rate_distribution'),
+                        help=f'Output directory for plots (default: {get_output_directory("success_rate_distribution")})')
 
     parser.add_argument('--no-cache', action='store_true',
                         help='Disable caching (default: cache enabled)')
@@ -409,27 +410,22 @@ def main():
         total_analyses = 0
 
         for model in tqdm(models_to_evaluate, desc="Processing models"):
-            # Early check if file already exists - before loading data
             safe_model_name = model.replace('/', '_').replace('-', '_')
             filename = f"success_rate_distribution"
             model_output_dir = f'{output_dir}/{safe_model_name}'
             output_png = f'{model_output_dir}/{filename}.png'
-
             if not force_overwrite and os.path.exists(output_png):
                 print(f"⏭️  Skipping {model} - file already exists: {output_png}")
                 continue
-
             print(f"\n{'=' * 60}")
             print(f"Processing model: {model}")
             print(f"{'=' * 60}")
-
             analyzer.create_success_rate_analysis(
                 model_name=model,
                 datasets=selected_datasets,
                 shots_list=shots_to_evaluate,
                 data_manager=data_manager,
-                output_dir=output_dir,
-                force_overwrite=force_overwrite
+                output_dir=output_dir
             )
             total_analyses += 1
 
